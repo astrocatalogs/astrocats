@@ -11,16 +11,18 @@ from collections import OrderedDict
 from glob import glob
 
 import psutil
+from past.builtins import basestring
+from tqdm import tqdm
+
 from astrocats import __version__
 from astrocats.catalog import gitter
 from astrocats.catalog.entry import ENTRY, Entry
+from astrocats.catalog.model import MODEL
 from astrocats.catalog.source import SOURCE
 from astrocats.catalog.task import Task
 from astrocats.catalog.utils import (compress_gz, is_integer, log_memory, pbar,
                                      read_json_dict, repo_priority,
                                      uncompress_gz, uniq_cdl)
-from past.builtins import basestring
-from tqdm import tqdm
 
 
 class Catalog:
@@ -106,8 +108,8 @@ class Catalog:
                 if not bones and 'boneyard' in rep:
                     continue
                 these_files = glob(rep + "/*.json") + glob(rep + "/*.json.gz")
-                self.catalog.log.debug("Found {} files in '{}'".format(
-                    len(these_files), rep))
+                self.catalog.log.debug(
+                    "Found {} files in '{}'".format(len(these_files), rep))
                 files += these_files
 
             return files
@@ -407,8 +409,8 @@ class Catalog:
         """
         """
         def_task_list_filename = self.PATHS.TASK_LIST
-        self.log.debug("Loading task-list from '{}'".format(
-            def_task_list_filename))
+        self.log.debug(
+            "Loading task-list from '{}'".format(def_task_list_filename))
         data = json.load(open(def_task_list_filename, 'r'))
         # Create `Task` objects for each element in the tasks data file
         tasks = {}
@@ -541,19 +543,27 @@ class Catalog:
         self.copy_entry_to_entry(self.entries[fromname],
                                  self.entries[destname])
 
-    def copy_entry_to_entry(self, fromentry, destentry):
-        """
-
-        Used by `merge_duplicates`
+    def copy_entry_to_entry(self,
+                            fromentry,
+                            destentry,
+                            check_for_dupes=True,
+                            compare_to_existing=True):
+        """Used by `merge_duplicates`
         """
         self.log.info("Copy entry object '{}' to '{}'".format(fromentry[
             fromentry._KEYS.NAME], destentry[destentry._KEYS.NAME]))
-        newsourcealiases = {}
 
+        newsourcealiases = {}
         if self.proto._KEYS.SOURCES in fromentry:
             for source in fromentry[self.proto._KEYS.SOURCES]:
                 alias = source.pop(SOURCE.ALIAS)
                 newsourcealiases[alias] = source
+
+        newmodelaliases = {}
+        if self.proto._KEYS.MODELS in fromentry:
+            for model in fromentry[self.proto._KEYS.MODELS]:
+                alias = model.pop(MODEL.ALIAS)
+                newmodelaliases[alias] = model
 
         if self.proto._KEYS.ERRORS in fromentry:
             for err in fromentry[self.proto._KEYS.ERRORS]:
@@ -575,17 +585,33 @@ class Catalog:
                         nsid.append(destentry.add_source(**source))
                     else:
                         raise ValueError("Couldn't find source alias!")
-
                 item['source'] = uniq_cdl(nsid)
 
+                if 'model' in item:
+                    nmid = []
+                    for mid in item['model'].split(','):
+                        if mid in newmodelaliases:
+                            model = newmodelaliases[mid]
+                            nmid.append(destentry.add_model(**model))
+                        else:
+                            raise ValueError("Couldn't find model alias!")
+                    item['model'] = uniq_cdl(nmid)
+
                 if key == ENTRY.PHOTOMETRY:
-                    destentry.add_photometry(**item)
+                    destentry.add_photometry(
+                        compare_to_existing=compare_to_existing,
+                        **item)
                 elif key == ENTRY.SPECTRA:
-                    destentry.add_spectrum(**item)
+                    destentry.add_spectrum(
+                        compare_to_existing=compare_to_existing,
+                        **item)
                 elif key == ENTRY.ERRORS:
                     destentry.add_error(**item)
+                elif key == ENTRY.MODELS:
+                    continue
                 else:
                     destentry.add_quantity(
+                        compare_to_existing=compare_to_existing,
                         check_for_dupes=False, quantities=key, **item)
 
         return
@@ -838,8 +864,8 @@ class Catalog:
             self.log.info("Deleting entry file '{}' of entry '{}'".format(
                 entry_filename, entry_name))
             if not os.path.exists(entry_filename):
-                self.log.error("Filename '{}' does not exist".format(
-                    entry_filename))
+                self.log.error(
+                    "Filename '{}' does not exist".format(entry_filename))
             os.remove(entry_filename)
         else:
             self.log.debug("Not deleting '{}' because `write_entries`"
@@ -888,13 +914,13 @@ class Catalog:
                 if save_entry:
                     save_name = self.entries[name].save(
                         bury=bury_entry, final=final)
-                    self.log.info("Saved {} to '{}'.".format(
-                        name.ljust(20), save_name))
+                    self.log.info(
+                        "Saved {} to '{}'.".format(name.ljust(20), save_name))
                     if (gz and os.path.getsize(save_name) >
                             self.COMPRESS_ABOVE_FILESIZE):
                         save_name = compress_gz(save_name)
-                        self.log.debug("Compressed '{}' to '{}'".format(
-                            name, save_name))
+                        self.log.debug(
+                            "Compressed '{}' to '{}'".format(name, save_name))
                         # FIX: use subprocess
                         outdir, filename = os.path.split(save_name)
                         filename = filename.split('.')[0]
@@ -1019,8 +1045,8 @@ class Catalog:
                 if comp_failed:
                     # Raise an error
                     if fail:
-                        raise RuntimeError("File '{}' cannot be added!".format(
-                            fname))
+                        raise RuntimeError(
+                            "File '{}' cannot be added!".format(fname))
                     # Skip file without adding it
                     self.log.info("Skipping file.")
                     continue
@@ -1207,8 +1233,8 @@ class Catalog:
         # Write new url_txt to cache file
         # -------------------------------
         if write:
-            self.log.info("Writing `url_txt` to file '{}'.".format(
-                cached_path))
+            self.log.info(
+                "Writing `url_txt` to file '{}'.".format(cached_path))
             self._write_cache_file(url_txt, cached_path, json_sort=json_sort)
         # If `file_txt` doesnt exist but were not writing.. warn
         elif file_txt is None:
@@ -1227,8 +1253,8 @@ class Catalog:
             self.log.debug("URL: '{}', File: '{}'.".format(url_md5, file_md5))
             # If the data is the same, no need to parse (update), return None
             if url_md5 == file_md5:
-                self.log.info("Skipping file '{}', no changes.".format(
-                    cached_path))
+                self.log.info(
+                    "Skipping file '{}', no changes.".format(cached_path))
                 return None
             else:
                 self.log.info("File '{}' has been updated".format(cached_path))
@@ -1290,7 +1316,8 @@ class Catalog:
 
         try:
             headers = {
-                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X '
+                'User-Agent':
+                'Mozilla/5.0 (Macintosh; Intel Mac OS X '
                 '10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) '
                 'Chrome/39.0.2171.95 Safari/537.36'
             }
@@ -1302,10 +1329,8 @@ class Catalog:
                     data=post,
                     verify=verify)
             else:
-                response = session.get(url,
-                                       timeout=timeout,
-                                       headers=headers,
-                                       verify=verify)
+                response = session.get(
+                    url, timeout=timeout, headers=headers, verify=verify)
             response.raise_for_status()
             # Look for errors
             for xx in response.history:

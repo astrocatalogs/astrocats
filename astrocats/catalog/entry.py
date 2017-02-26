@@ -8,6 +8,8 @@ import os
 import sys
 from collections import OrderedDict
 
+from past.builtins import basestring
+
 from astrocats.catalog.catdict import CatDict, CatDictError
 from astrocats.catalog.error import ERROR, Error
 from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
@@ -18,8 +20,6 @@ from astrocats.catalog.source import SOURCE, Source
 from astrocats.catalog.spectrum import SPECTRUM, Spectrum
 from astrocats.catalog.utils import (alias_priority, dict_to_pretty_string,
                                      is_integer, is_number, listify)
-from past.builtins import basestring
-
 from cdecimal import Decimal
 
 
@@ -270,7 +270,8 @@ class Entry(OrderedDict):
                              fhand,
                              clean=False,
                              merge=True,
-                             pop_schema=True):
+                             pop_schema=True,
+                             compare_to_existing=True):
         """FIX: check for overwrite??
         """
         self._log.debug("_load_data_from_json(): {}\n\t{}".format(self.name(),
@@ -295,7 +296,11 @@ class Entry(OrderedDict):
             # that remains afterwards should be okay to just store to this
             # `Entry`
             self._convert_odict_to_classes(
-                data, clean=clean, merge=merge, pop_schema=pop_schema)
+                data,
+                clean=clean,
+                merge=merge,
+                pop_schema=pop_schema,
+                compare_to_existing=compare_to_existing)
             if len(data):
                 err_str = ("Remaining entries in `data` after "
                            "`_convert_odict_to_classes`.")
@@ -319,7 +324,8 @@ class Entry(OrderedDict):
                                   data,
                                   clean=False,
                                   merge=True,
-                                  pop_schema=True):
+                                  pop_schema=True,
+                                  compare_to_existing=True):
         """Convert an OrderedDict into an Entry class or its derivative
         classes.
         """
@@ -360,8 +366,6 @@ class Entry(OrderedDict):
 
             for src in sources:
                 self.add_source(allow_alias=True, **src)
-            # data['sources'] = newsources
-            # self.setdefault(src_key, []).extend(newsources)
 
         # Handle `photometry`
         # -------------------
@@ -371,7 +375,9 @@ class Entry(OrderedDict):
             self._log.debug("Found {} '{}' entries".format(
                 len(photoms), photo_key))
             for photo in photoms:
-                self._add_cat_dict(Photometry, self._KEYS.PHOTOMETRY, **photo)
+                self._add_cat_dict(
+                    Photometry, self._KEYS.PHOTOMETRY, **photo,
+                    compare_to_existing=compare_to_existing)
 
         # Handle `spectra`
         # ---------------
@@ -383,7 +389,9 @@ class Entry(OrderedDict):
             self._log.debug("Found {} '{}' entries".format(
                 len(spectra), spec_key))
             for spec in spectra:
-                self._add_cat_dict(Spectrum, self._KEYS.SPECTRA, **spec)
+                self._add_cat_dict(
+                    Spectrum, self._KEYS.SPECTRA, **spec,
+                    compare_to_existing=compare_to_existing)
 
         # Handle `error`
         # --------------
@@ -393,7 +401,22 @@ class Entry(OrderedDict):
             self._log.debug("Found {} '{}' entries".format(
                 len(errors), err_key))
             for err in errors:
-                self._add_cat_dict(Error, self._KEYS.ERRORS, **err)
+                self._add_cat_dict(
+                    Error, self._KEYS.ERRORS, **err)
+
+        # Handle `models`
+        # ---------------
+        model_key = self._KEYS.MODELS
+        if model_key in data:
+            # When we are cleaning internal data, we don't always want to
+            # require all of the normal spectrum data elements.
+            model = data.pop(model_key)
+            self._log.debug("Found {} '{}' entries".format(
+                len(model), model_key))
+            for mod in model:
+                self._add_cat_dict(
+                    Model, self._KEYS.MODELS, **mod,
+                    compare_to_existing=compare_to_existing)
 
         # Handle everything else --- should be `Quantity`s
         # ------------------------------------------------
@@ -410,7 +433,10 @@ class Entry(OrderedDict):
                 self._log.debug("{}: {}".format(key, vals))
                 for vv in vals:
                     self._add_cat_dict(
-                        Quantity, key, check_for_dupes=merge, **vv)
+                        Quantity, key,
+                        check_for_dupes=merge,
+                        compare_to_existing=compare_to_existing,
+                        **vv)
 
         if merge and self.dupe_of:
             self.merge_dupes()
@@ -461,7 +487,7 @@ class Entry(OrderedDict):
                       cat_dict_class,
                       key_in_self,
                       check_for_dupes=True,
-                      compare_against_existing=True,
+                      compare_to_existing=True,
                       **kwargs):
         """Add a CatDict to this Entry if initialization succeeds and it
         doesn't already exist within the Entry.
@@ -486,7 +512,7 @@ class Entry(OrderedDict):
             return False
 
         # Compare this new entry with all previous entries to make sure is new
-        if compare_against_existing and cat_dict_class != Error:
+        if compare_to_existing and cat_dict_class != Error:
             for item in self.get(key_in_self, []):
                 if new_entry.is_duplicate_of(item):
                     item.append_sources_from(new_entry)
@@ -532,7 +558,8 @@ class Entry(OrderedDict):
                        path=None,
                        clean=False,
                        merge=True,
-                       pop_schema=True):
+                       pop_schema=True,
+                       compare_to_existing=True):
         """Construct a new `Entry` instance from an input file.
 
         The input file can be given explicitly by `path`, or a path will
@@ -591,7 +618,11 @@ class Entry(OrderedDict):
         new_entry = cls(catalog, name)
         # Fill it with data from json file
         new_entry._load_data_from_json(
-            load_path, clean=clean, merge=merge, pop_schema=pop_schema)
+            load_path,
+            clean=clean,
+            merge=merge,
+            pop_schema=pop_schema,
+            compare_to_existing=compare_to_existing)
 
         return new_entry
 
@@ -619,13 +650,13 @@ class Entry(OrderedDict):
         self._add_cat_dict(Error, self._KEYS.ERRORS, **kwargs)
         return
 
-    def add_photometry(self, compare_against_existing=True, **kwargs):
+    def add_photometry(self, compare_to_existing=True, **kwargs):
         """Add a `Photometry` instance to this entry.
         """
         self._add_cat_dict(
             Photometry,
             self._KEYS.PHOTOMETRY,
-            compare_against_existing=compare_against_existing,
+            compare_to_existing=compare_to_existing,
             **kwargs)
         return
 
@@ -646,6 +677,7 @@ class Entry(OrderedDict):
                      value,
                      source,
                      check_for_dupes=True,
+                     compare_to_existing=True,
                      **kwargs):
         """Add an `Quantity` instance to this entry.
         """
@@ -653,7 +685,9 @@ class Entry(OrderedDict):
         for quantity in listify(quantities):
             kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: source})
             cat_dict = self._add_cat_dict(
-                Quantity, quantity, check_for_dupes=check_for_dupes, **kwargs)
+                Quantity, quantity,
+                compare_to_existing=compare_to_existing,
+                check_for_dupes=check_for_dupes, **kwargs)
             if isinstance(cat_dict, CatDict):
                 self._append_additional_tags(quantity, source, cat_dict)
                 success = False
@@ -716,7 +750,7 @@ class Entry(OrderedDict):
         self.setdefault(self._KEYS.MODELS, []).append(model_obj)
         return model_obj[model_obj._KEYS.ALIAS]
 
-    def add_spectrum(self, **kwargs):
+    def add_spectrum(self, compare_to_existing=True, **kwargs):
         """Add an `Spectrum` instance to this entry.
         """
         spec_key = self._KEYS.SPECTRA
