@@ -14,11 +14,14 @@ class MODEL(KeyCollection):
     NAME = Key('name', KEY_TYPES.STRING)
     VERSION = Key('version', KEY_TYPES.STRING)
     DATE = Key('date', KEY_TYPES.STRING)
-    DESC = Key('description', KEY_TYPES.STRING, compare=False)
+    DESCRIPTION = Key('description', KEY_TYPES.STRING, compare=False)
     # Numbers
     ALIAS = Key('alias', KEY_TYPES.NUMERIC, compare=False)
-    # Arrays
+    STEPS = Key('steps', KEY_TYPES.NUMERIC, compare=False)
+    # Arrays/dictionaries
+    CONVERGENCE = Key('convergence', compare=False)
     REALIZATIONS = Key('realizations', compare=False)
+    SCORE = Key('score', compare=False)
     SETUP = Key('setup', compare=False)
 
 

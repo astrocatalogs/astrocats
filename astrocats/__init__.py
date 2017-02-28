@@ -3,8 +3,8 @@
 
 import os
 
-__version__ = '0.3.6'
-__author__ = 'James Guillochon'
+__version__ = '0.3.10'
+__author__ = 'James Guillochon & Luke Kelley'
 __license__ = 'MIT'
 
 # Set the path for the user's configuration file
