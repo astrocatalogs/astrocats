@@ -209,8 +209,8 @@ class Entry(OrderedDict):
         nkeys = list(sorted(odict.keys(), key=key))
         for key in nkeys:
             if isinstance(odict[key], OrderedDict):
-                ndict[key] = self._ordered(odict[key])
-            elif isinstance(odict[key], list):
+                odict[key] = self._ordered(odict[key])
+            if isinstance(odict[key], list):
                 if (not (odict[key] and
                          not isinstance(odict[key][0], OrderedDict))):
                     nlist = []
@@ -219,9 +219,8 @@ class Entry(OrderedDict):
                             nlist.append(self._ordered(item))
                         else:
                             nlist.append(item)
-                    ndict[key] = nlist
-            else:
-                ndict[key] = odict[key]
+                    odict[key] = nlist
+            ndict[key] = odict[key]
 
         return ndict
 
@@ -824,7 +823,6 @@ class Entry(OrderedDict):
         """Retrieve the raw text from a file.
         """
         import gzip
-        print(fname)
         if fname.split('.')[-1] == 'gz':
             with gzip.open(fname, 'rt') as f:
                 filetext = f.read()
