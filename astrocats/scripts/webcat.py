@@ -831,22 +831,33 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 realizbandset = list(set(realizband))
                 for rz in range(nrealiz):
                     for rzb in realizbandset:
-                        pdata = list(zip(*[[x, y, z, w, s] for x, y, z, w, s, i in
-                            zip(realiztime, realizAB, realizband, realizinstru, realizsource, realiznum) if i == rz and z == rzb]))
+                        pdata = list(zip(*[[x, y, z, s] for x, y, z, s, i in
+                            zip(realiztime, realizAB, realizband, realizsource, realiznum) if i == rz and z == rzb]))
                         if len(pdata):
                             data = dict(
                                 x=pdata[0],
                                 y=pdata[1],
                                 desc=pdata[2],
-                                instr=pdata[3],
-                                src=pdata[4])
+                                src=pdata[3])
+                            if 'maxabsmag' in catalog[
+                                    entry] and 'maxappmag' in catalog[entry]:
+                                data['yabs'] = [
+                                    x - distancemod for x in pdata[1]
+                                ]
                             rsources.append(ColumnDataSource(data))
-                            rglyphs.append(p1.line(pdata[0], pdata[1], line_width=1, color=bandcolorf(rzb), line_alpha=0.5))
+                            rglyphs.append(p1.line('x', 'y', source=rsources[-1], line_width=1, color=bandcolorf(rzb), line_alpha=0.5))
                             if mi != 0:
                                 rglyphs[-1].glyph.visible = False
                             msources.append(ColumnDataSource({'id': [mi]}))
 
         if len(models) > 0:
+            rtt = [("Source ID(s)", "@src"),
+                  ("Epoch (" + photoutime + ")",
+                   "@x{1.11}"), ("Apparent Magnitude", "@y{1.111}")]
+            if 'maxabsmag' in catalog[entry] and 'maxappmag' in catalog[entry]:
+                rtt += [("Absolute Magnitude", "@yabs{1.111}")]
+            rtt += [("Band", "@desc")]
+
             realizdicts = {}
             mdicts = {}
             for rgi, rg in enumerate(rglyphs):
@@ -870,11 +881,10 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 }
             """)
             realizchecks = Select(
-                title="Model to show:",
+                title="Model to compare to data:",
                 value="0",
                 options=[(str(i), x) for i, x in enumerate(modelnames)] + [("-1", "None")],
                 callback=realizcallback)
-
         # End realizations
 
         xs = []
@@ -1046,7 +1056,11 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
         hover = HoverTool(
             tooltips=tt, renderers=[x for y in ttglyphs for x in y])
+        if len(rglyphs) > 0:
+            hover2 = HoverTool(
+                tooltips=rtt, renderers=rglyphs, line_policy='interp')
         p1.add_tools(hover)
+        p1.add_tools(hover2)
 
         if any([x != 'raw' for x in photocorr]):
             photodicts = {}
@@ -1070,9 +1084,9 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 for (c = 0; c < """ + str(len(corrects)) + """; c++) {
                     for (g = 0; g < """ + str(len(glyphs[0])) + """; g++) {
                         if (show == 'all' || corrects[c] != show) {
-                            eval(corrects[c] + g).attributes.visible = viz;
+                            eval(corrects[c] + g).visible = viz;
                         } else if (show != 'all' || corrects[c] == show) {
-                            eval(corrects[c] + g).attributes.visible = !viz;
+                            eval(corrects[c] + g).visible = !viz;
                         }
                     }
                 }
