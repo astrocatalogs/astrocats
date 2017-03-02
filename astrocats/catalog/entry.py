@@ -7,8 +7,7 @@ import logging
 import os
 import sys
 from collections import OrderedDict
-
-from past.builtins import basestring
+from copy import deepcopy
 
 from astrocats.catalog.catdict import CatDict, CatDictError
 from astrocats.catalog.error import ERROR, Error
@@ -21,6 +20,7 @@ from astrocats.catalog.spectrum import SPECTRUM, Spectrum
 from astrocats.catalog.utils import (alias_priority, dict_to_pretty_string,
                                      is_integer, is_number, listify)
 from cdecimal import Decimal
+from past.builtins import basestring
 
 
 class ENTRY(KeyCollection):
@@ -232,7 +232,7 @@ class Entry(OrderedDict):
             keys = list(self.keys())
 
         string_rep = ''
-        oself = self._ordered(self)
+        oself = self._ordered(deepcopy(self))
         for key in keys:
             string_rep += json.dumps(oself[key], sort_keys=True)
 
@@ -381,8 +381,10 @@ class Entry(OrderedDict):
                 len(photoms), photo_key))
             for photo in photoms:
                 self._add_cat_dict(
-                    Photometry, self._KEYS.PHOTOMETRY,
-                    compare_to_existing=compare_to_existing, **photo)
+                    Photometry,
+                    self._KEYS.PHOTOMETRY,
+                    compare_to_existing=compare_to_existing,
+                    **photo)
 
         # Handle `spectra`
         # ---------------
@@ -395,8 +397,10 @@ class Entry(OrderedDict):
                 len(spectra), spec_key))
             for spec in spectra:
                 self._add_cat_dict(
-                    Spectrum, self._KEYS.SPECTRA,
-                    compare_to_existing=compare_to_existing, **spec)
+                    Spectrum,
+                    self._KEYS.SPECTRA,
+                    compare_to_existing=compare_to_existing,
+                    **spec)
 
         # Handle `error`
         # --------------
@@ -406,8 +410,7 @@ class Entry(OrderedDict):
             self._log.debug("Found {} '{}' entries".format(
                 len(errors), err_key))
             for err in errors:
-                self._add_cat_dict(
-                    Error, self._KEYS.ERRORS, **err)
+                self._add_cat_dict(Error, self._KEYS.ERRORS, **err)
 
         # Handle `models`
         # ---------------
@@ -420,8 +423,10 @@ class Entry(OrderedDict):
                 len(model), model_key))
             for mod in model:
                 self._add_cat_dict(
-                    Model, self._KEYS.MODELS,
-                    compare_to_existing=compare_to_existing, **mod)
+                    Model,
+                    self._KEYS.MODELS,
+                    compare_to_existing=compare_to_existing,
+                    **mod)
 
         # Handle everything else --- should be `Quantity`s
         # ------------------------------------------------
@@ -438,7 +443,8 @@ class Entry(OrderedDict):
                 self._log.debug("{}: {}".format(key, vals))
                 for vv in vals:
                     self._add_cat_dict(
-                        Quantity, key,
+                        Quantity,
+                        key,
                         check_for_dupes=merge,
                         compare_to_existing=compare_to_existing,
                         **vv)
@@ -692,9 +698,11 @@ class Entry(OrderedDict):
         for quantity in listify(quantities):
             kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: source})
             cat_dict = self._add_cat_dict(
-                Quantity, quantity,
+                Quantity,
+                quantity,
                 compare_to_existing=compare_to_existing,
-                check_for_dupes=check_for_dupes, **kwargs)
+                check_for_dupes=check_for_dupes,
+                **kwargs)
             if isinstance(cat_dict, CatDict):
                 self._append_additional_tags(quantity, source, cat_dict)
                 success = False
