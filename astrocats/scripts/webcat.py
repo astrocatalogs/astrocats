@@ -1056,11 +1056,11 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
         hover = HoverTool(
             tooltips=tt, renderers=[x for y in ttglyphs for x in y])
+        p1.add_tools(hover)
         if len(rglyphs) > 0:
             hover2 = HoverTool(
                 tooltips=rtt, renderers=rglyphs, line_policy='interp')
-        p1.add_tools(hover)
-        p1.add_tools(hover2)
+            p1.add_tools(hover2)
 
         if any([x != 'raw' for x in photocorr]):
             photodicts = {}
