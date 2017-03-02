@@ -31,7 +31,7 @@ before_install:
       fi
 install:
     - conda install --yes python=$TRAVIS_PYTHON_VERSION scipy matplotlib
-    - pip install -r requirements.txt
+    - xargs -L 1 pip install < requirements.txt
     - pip install coveralls
 
 # Run test
