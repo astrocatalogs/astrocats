@@ -271,6 +271,7 @@ class Entry(OrderedDict):
                              clean=False,
                              merge=True,
                              pop_schema=True,
+                             ignore_keys=[],
                              compare_to_existing=True):
         """FIX: check for overwrite??
         """
@@ -290,6 +291,11 @@ class Entry(OrderedDict):
             # Remove the outmost dict level
             data = data[name]
             self._log.debug("Name: {}".format(name))
+
+            # Delete ignored keys
+            for key in ignore_keys:
+                if key in data:
+                    del data[key]
 
             # Convert the OrderedDict data from json into class structure i.e.
             # `Sources` will be extracted and created from the dict Everything
@@ -559,6 +565,7 @@ class Entry(OrderedDict):
                        clean=False,
                        merge=True,
                        pop_schema=True,
+                       ignore_keys=[],
                        compare_to_existing=True):
         """Construct a new `Entry` instance from an input file.
 
@@ -622,6 +629,7 @@ class Entry(OrderedDict):
             clean=clean,
             merge=merge,
             pop_schema=pop_schema,
+            ignore_keys=ignore_keys,
             compare_to_existing=compare_to_existing)
 
         return new_entry
