@@ -164,7 +164,7 @@ class CatDict(OrderedDict):
     def __deepcopy__(self, memo):
         dict_copy = OrderedDict()
         for key in self:
-            if not key.startswith('_'):
+            if not key.startswith('__'):
                 dict_copy[key] = deepcopy(self[key])
         return self.__class__(self._parent, key=self._key,
                               **dict_copy)

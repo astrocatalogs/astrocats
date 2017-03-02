@@ -265,6 +265,14 @@ class Entry(OrderedDict):
 
         return True
 
+    def __deepcopy__(self, memo):
+        dict_copy = OrderedDict()
+        new_entry = self.__class__(self.catalog)
+        for key in self:
+            if not key.startswith('__') and key != 'catalog':
+                new_entry[key] = deepcopy(self[key])
+        return new_entry
+
     def _load_data_from_json(self,
                              fhand,
                              clean=False,
