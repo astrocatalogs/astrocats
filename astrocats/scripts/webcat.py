@@ -633,51 +633,59 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
     if photoavail and dohtml and args.writehtml:
         phototime = [
             float(x['time']) for x in catalog[entry]['photometry']
-            if 'magnitude' in x
+            if 'magnitude' in x and 'realization' not in x
         ]
         phototimelowererrs = [
             float(x['e_lower_time'])
             if ('e_lower_time' in x and 'e_upper_time' in x) else
             (float(x['e_time']) if 'e_time' in x else 0.)
             for x in catalog[entry]['photometry'] if 'magnitude' in x
+            and 'realization' not in x 
         ]
         phototimeuppererrs = [
             float(x['e_upper_time'])
             if ('e_lower_time' in x and 'e_upper_time' in x) else
             (float(x['e_time']) if 'e_time' in x else 0.)
             for x in catalog[entry]['photometry'] if 'magnitude' in x
+            and 'realization' not in x 
         ]
         photoAB = [
             float(x['magnitude']) for x in catalog[entry]['photometry']
-            if 'magnitude' in x
+            if 'magnitude' in x and 'realization' not in x 
         ]
         photoABlowererrs = [
             float(x['e_lower_magnitude'])
             if ('e_lower_magnitude' in x) else (float(x['e_magnitude'])
                                                 if 'e_magnitude' in x else 0.)
             for x in catalog[entry]['photometry'] if 'magnitude' in x
+            and 'realization' not in x 
         ]
         photoABuppererrs = [
             float(x['e_upper_magnitude'])
             if ('e_upper_magnitude' in x) else (float(x['e_magnitude'])
                                                 if 'e_magnitude' in x else 0.)
             for x in catalog[entry]['photometry'] if 'magnitude' in x
+            and 'realization' not in x 
         ]
         photoband = [(bandaliasf(x['band']) if 'band' in x else '?')
-                     for x in catalog[entry]['photometry'] if 'magnitude' in x]
+                     for x in catalog[entry]['photometry'] if 'magnitude' in x
+                     and 'realization' not in x]
         photoinstru = [(x['instrument'] if 'instrument' in x else '')
                        for x in catalog[entry]['photometry']
-                       if 'magnitude' in x]
+                       if 'magnitude' in x and 'realization' not in x]
         photosource = [
             ', '.join(
                 str(j)
                 for j in sorted(int(i) for i in x['source'].split(',')))
             for x in catalog[entry]['photometry'] if 'magnitude' in x
+            and 'realization' not in x
         ]
         phototype = [(x['upperlimit'] if 'upperlimit' in x else False)
-                     for x in catalog[entry]['photometry'] if 'magnitude' in x]
+                     for x in catalog[entry]['photometry'] if 'magnitude' in x
+                     and 'realization' not in x]
         photocorr = [('k' if 'kcorrected' in x else 'raw')
-                     for x in catalog[entry]['photometry'] if 'magnitude' in x]
+                     for x in catalog[entry]['photometry'] if 'magnitude' in x
+                     and 'realization' not in x]
 
         photoutime = catalog[entry]['photometry'][0][
             'u_time'] if 'u_time' in catalog[entry]['photometry'][0] else 'MJD'
@@ -784,6 +792,101 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                     axis_label_text_font_size='11pt'),
                 'right')
 
+        # Realizations
+        realizchecks = ''
+        models = catalog[entry].get('models', [{}])
+        modelnames = [x.get('name', str(mi)) for mi, x in enumerate(models)]
+        rglyphs = []
+        rsources = []
+        msources = []
+        for mi, model in enumerate(models):
+            nrealiz = min(10, len(model.get('realizations', [])))
+            if nrealiz > 0:
+                realiztime = [
+                    float(x['time']) for x in catalog[entry]['photometry']
+                    if 'magnitude' in x and 'realization' in x
+                ]
+                realizAB = [
+                    float(x['magnitude']) for x in catalog[entry]['photometry']
+                    if 'magnitude' in x and 'realization' in x 
+                ]
+                realizband = [(bandaliasf(x['band']) if 'band' in x else '?')
+                             for x in catalog[entry]['photometry'] if 'magnitude' in x
+                             and 'realization' in x]
+                realizinstru = [(x['instrument'] if 'instrument' in x else '')
+                               for x in catalog[entry]['photometry']
+                               if 'magnitude' in x and 'realization' in x]
+                realizsource = [
+                    ', '.join(
+                        str(j)
+                        for j in sorted(int(i) for i in x['source'].split(',')))
+                    for x in catalog[entry]['photometry'] if 'magnitude' in x
+                    and 'realization' in x
+                ]
+                realiznum = [
+                    int(x['realization']) for x in catalog[entry]['photometry']
+                    if 'magnitude' in x and 'realization' in x
+                ]
+
+                realizbandset = list(set(realizband))
+                for rz in range(nrealiz):
+                    for rzb in realizbandset:
+                        pdata = list(zip(*[[x, y, z, s] for x, y, z, s, i in
+                            zip(realiztime, realizAB, realizband, realizsource, realiznum) if i == rz and z == rzb]))
+                        if len(pdata):
+                            data = dict(
+                                x=pdata[0],
+                                y=pdata[1],
+                                desc=pdata[2],
+                                src=pdata[3])
+                            if 'maxabsmag' in catalog[
+                                    entry] and 'maxappmag' in catalog[entry]:
+                                data['yabs'] = [
+                                    x - distancemod for x in pdata[1]
+                                ]
+                            rsources.append(ColumnDataSource(data))
+                            rglyphs.append(p1.line('x', 'y', source=rsources[-1], line_width=1, color=bandcolorf(rzb), line_alpha=0.5))
+                            if mi != 0:
+                                rglyphs[-1].glyph.visible = False
+                            msources.append(ColumnDataSource({'id': [mi]}))
+
+        if len(models) > 0:
+            rtt = [("Source ID(s)", "@src"),
+                  ("Epoch (" + photoutime + ")",
+                   "@x{1.11}"), ("Apparent Magnitude", "@y{1.111}")]
+            if 'maxabsmag' in catalog[entry] and 'maxappmag' in catalog[entry]:
+                rtt += [("Absolute Magnitude", "@yabs{1.111}")]
+            rtt += [("Band", "@desc")]
+
+            realizdicts = {}
+            mdicts = {}
+            for rgi, rg in enumerate(rglyphs):
+                realizdicts['rg' + str(rgi)] = rg.glyph
+                mdicts['m' + str(rgi)] = msources[rgi]
+            sdicts = dict(
+                zip(['s' + str(x) for x in range(len(rsources))], rsources))
+            realizdicts.update(sdicts)
+            realizdicts.update(mdicts)
+            realizcallback = CustomJS(
+                args=realizdicts,
+                code="""
+                var mis = parseInt(cb_obj.get('value'));
+                console.log(mis);
+                for (g = 0; g < """ + str(len(rglyphs)) + """; g++) {
+                    var m = eval('m'+g).data['id'][0];
+                    eval('rg' + g).visible = (m == mis);
+                }
+                for (s = 0; s < """ + str(len(rsources)) + """; s++) {
+                    eval('s'+s).trigger('change');
+                }
+            """)
+            realizchecks = Select(
+                title="Model to compare to data:",
+                value="0",
+                options=[(str(i), x) for i, x in enumerate(modelnames)] + [("-1", "None")],
+                callback=realizcallback)
+        # End realizations
+
         xs = []
         ys = []
         err_xs = []
@@ -806,7 +909,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         bandset = [i for (k, j, i) in bandsortlists]
 
         sources = []
-        corrects = ['raw', 'k']
+        corrects = ['raw', 'k', 's']
         glyphs = [[] for x in range(len(corrects))]
         ttglyphs = [[] for x in range(len(corrects))]
         for ci, corr in enumerate(corrects):
@@ -953,7 +1056,11 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
         hover = HoverTool(
             tooltips=tt, renderers=[x for y in ttglyphs for x in y])
+        if len(rglyphs) > 0:
+            hover2 = HoverTool(
+                tooltips=rtt, renderers=rglyphs, line_policy='interp')
         p1.add_tools(hover)
+        p1.add_tools(hover2)
 
         if any([x != 'raw' for x in photocorr]):
             photodicts = {}
@@ -977,9 +1084,9 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 for (c = 0; c < """ + str(len(corrects)) + """; c++) {
                     for (g = 0; g < """ + str(len(glyphs[0])) + """; g++) {
                         if (show == 'all' || corrects[c] != show) {
-                            eval(corrects[c] + g).attributes.visible = viz;
+                            eval(corrects[c] + g).visible = viz;
                         } else if (show != 'all' || corrects[c] == show) {
-                            eval(corrects[c] + g).attributes.visible = !viz;
+                            eval(corrects[c] + g).visible = !viz;
                         }
                     }
                 }
@@ -2105,10 +2212,12 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         # if (photoavail and spectraavail) and dohtml and args.writehtml:
         plots = []
         if photoavail:
+            photoitems = [p1]
             if photochecks:
-                p1box = column(p1, photochecks)
-            else:
-                p1box = p1
+                photoitems.append(photochecks)
+            if realizchecks:
+                photoitems.append(realizchecks)
+            p1box = column(*photoitems)
             plots += [p1box]
         if spectraavail:
             plots += [column(p2, bokehrow(binslider, spacingslider))]
