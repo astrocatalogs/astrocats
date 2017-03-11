@@ -139,7 +139,7 @@ class Spectrum(CatDict):
         for ri, row in enumerate(self.get(self._KEYS.DATA, [])):
             lambda1, flux1 = tuple(row[0:2])
             if (self._KEYS.DATA not in other or
-                    ri > len(self[self._KEYS.DATA])):
+                    ri > len(other[self._KEYS.DATA])):
                 break
             lambda2, flux2 = tuple(other[self._KEYS.DATA][ri][0:2])
             minlambdalen = min(len(lambda1), len(lambda2))
