@@ -397,6 +397,8 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
          for x in catalog[entry]['photometry']])
     spectraavail = 'spectra' in catalog[entry]
 
+    realizchecks = ''
+
     # Must be two sigma above host magnitude, if host magnitude known, to add
     # to phot count.
     numphoto = len([
@@ -793,7 +795,6 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 'right')
 
         # Realizations
-        realizchecks = ''
         models = catalog[entry].get('models', [{}])
         modelnames = [x.get('name', str(mi)) for mi, x in enumerate(models)]
         rglyphs = []
