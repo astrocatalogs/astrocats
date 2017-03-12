@@ -151,6 +151,9 @@ class Spectrum(CatDict):
             # Five row matches should be enough to be sure spectrum is a dupe.
             if row_matches >= 5:
                 return True
+            # Matches need to happen in the first 10 rows.
+            if ri >= 10:
+                break
         return False
 
     def sort_func(self, key):
