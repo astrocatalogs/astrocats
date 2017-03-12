@@ -795,7 +795,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 'right')
 
         # Realizations
-        models = catalog[entry].get('models', [{}])
+        models = catalog[entry].get('models', [])
         modelnames = [x.get('name', str(mi)) for mi, x in enumerate(models)]
         rglyphs = []
         rsources = []
