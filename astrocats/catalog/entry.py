@@ -787,19 +787,19 @@ class Entry(OrderedDict):
         if new_spectrum is None:
             return None
 
-        num_spec = len(self.get(spec_key, []))
-        for si in range(num_spec):
-            item = self[spec_key][si]
+        is_dupe = False
+        for item in self.get(spec_key, []):
             # Only the `filename` should be compared for duplicates If a
             # duplicate is found, that means the previous `exclude` array
             # should be saved to the new object, and the old deleted
             if new_spectrum.is_duplicate_of(item):
                 if SPECTRUM.EXCLUDE in item:
                     new_spectrum[SPECTRUM.EXCLUDE] = item[SPECTRUM.EXCLUDE]
-                del self[spec_key][si]
+                is_dupe = True
                 break
 
-        self.setdefault(spec_key, []).append(new_spectrum)
+        if not is_dupe:
+            self.setdefault(spec_key, []).append(new_spectrum)
         return
 
     def check(self):
