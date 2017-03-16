@@ -187,6 +187,10 @@ def git_clone_all_repos(cat):
             log.debug("Cloning directory...")
             clone(repo, cat.log, depth=max(cat.args.clone_depth, 1))
 
+        if cat.args.purge_outputs:
+            for fil in os.path.join(repo, '*.json'):
+                os.remove(fil)
+
         grepo = git.cmd.Git(repo)
         try:
             grepo.status()

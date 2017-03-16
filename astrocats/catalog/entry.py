@@ -774,8 +774,7 @@ class Entry(OrderedDict):
         return model_obj[model_obj._KEYS.ALIAS]
 
     def add_spectrum(self, compare_to_existing=True, **kwargs):
-        """Add an `Spectrum` instance to this entry.
-        """
+        """Add a `Spectrum` instance to this entry."""
         spec_key = self._KEYS.SPECTRA
         # Make sure that a source is given, and is valid (nor erroneous)
         source = self._check_cat_dict_source(Spectrum, spec_key, **kwargs)
@@ -789,7 +788,7 @@ class Entry(OrderedDict):
 
         is_dupe = False
         for item in self.get(spec_key, []):
-            # Only the `filename` should be compared for duplicates If a
+            # Only the `filename` should be compared for duplicates. If a
             # duplicate is found, that means the previous `exclude` array
             # should be saved to the new object, and the old deleted
             if new_spectrum.is_duplicate_of(item):
@@ -803,8 +802,7 @@ class Entry(OrderedDict):
         return
 
     def check(self):
-        """Check that the entry has the required fields.
-        """
+        """Check that the entry has the required fields."""
         # Make sure there is a schema key in dict
         if self._KEYS.SCHEMA not in self:
             self[self._KEYS.SCHEMA] = self.catalog.SCHEMA.URL
@@ -844,8 +842,7 @@ class Entry(OrderedDict):
         return aliases
 
     def get_entry_text(self, fname):
-        """Retrieve the raw text from a file.
-        """
+        """Retrieve the raw text from a file."""
         import gzip
         if fname.split('.')[-1] == 'gz':
             with gzip.open(fname, 'rt') as f:
