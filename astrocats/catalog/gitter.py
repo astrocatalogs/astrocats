@@ -3,6 +3,7 @@
 
 import os
 import subprocess
+from glob import glob
 
 import git
 
@@ -188,7 +189,7 @@ def git_clone_all_repos(cat):
             clone(repo, cat.log, depth=max(cat.args.clone_depth, 1))
 
         if cat.args.purge_outputs:
-            for fil in os.path.join(repo, '*.json'):
+            for fil in glob(os.path.join(repo, '*.json')):
                 os.remove(fil)
 
         grepo = git.cmd.Git(repo)
