@@ -792,7 +792,7 @@ class Entry(OrderedDict):
             # duplicate is found, that means the previous `exclude` array
             # should be saved to the new object, and the old deleted
             if new_spectrum.is_duplicate_of(item):
-                if SPECTRUM.EXCLUDE in item:
+                if SPECTRUM.EXCLUDE in new_spectrum:
                     item[SPECTRUM.EXCLUDE] = new_spectrum[SPECTRUM.EXCLUDE]
                 is_dupe = True
                 break
