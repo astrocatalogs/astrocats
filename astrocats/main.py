@@ -207,6 +207,12 @@ def load_command_line_args(clargs=None):
         help=('When cloning git repos, only clone out to this depth '
               '(default: 0 = all levels).'))
     parser.add_argument(
+        '--purge-outputs',
+        dest='purge_outputs',
+        default=False,
+        action='store_true',
+        help=('Purge git outputs after cloning.'))
+    parser.add_argument(
         '--log',
         dest='log_filename',
         default=None,
