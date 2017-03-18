@@ -1,5 +1,4 @@
-"""
-"""
+"""Definitions related to the `Entry` class for catalog entries."""
 import codecs
 import hashlib
 import json
@@ -24,8 +23,8 @@ from past.builtins import basestring
 
 
 class ENTRY(KeyCollection):
-    """General `CatDict` keys which should be relevant for all catalogs.
-    """
+    """General `CatDict` keys which should be relevant for all catalogs."""
+
     # Constants for use in key definitions
     _DIST_PREF_KINDS = [
         'heliocentric', 'cmb', 'spectroscopic', 'photometric', 'host',
@@ -158,20 +157,19 @@ class Entry(OrderedDict):
         return
 
     def __repr__(self):
-        """Return JSON representation of self
-        """
+        """Return JSON representation of self."""
         jsonstring = dict_to_pretty_string({ENTRY.NAME: self})
         return jsonstring
 
     def _append_additional_tags(self, quantity, source, cat_dict):
-        """Append additional bits of data to an existing quantity when a newly
-        added quantity is found to be a duplicate
+        """Append additional bits of data to an existing quantity.
+
+        Called when a newly added quantity is found to be a duplicate.
         """
         pass
 
     def _get_save_path(self, bury=False):
-        """Return the path that this Entry should be saved to.
-        """
+        """Return the path that this Entry should be saved to."""
         filename = self.get_filename(self[self._KEYS.NAME])
 
         # Put objects that shouldn't belong in this catalog in the boneyard
@@ -197,8 +195,7 @@ class Entry(OrderedDict):
         return outdir, filename
 
     def _ordered(self, odict):
-        """Convert the object into a plain OrderedDict.
-        """
+        """Convert the object into a plain OrderedDict."""
         ndict = OrderedDict()
 
         if isinstance(odict, CatDict) or isinstance(odict, Entry):
@@ -225,9 +222,7 @@ class Entry(OrderedDict):
         return ndict
 
     def get_hash(self, keys=[]):
-        """Return a unique hash associated with the listed keys
-        """
-
+        """Return a unique hash associated with the listed keys."""
         if not len(keys):
             keys = list(self.keys())
 
@@ -239,8 +234,7 @@ class Entry(OrderedDict):
         return hashlib.sha512(string_rep.encode()).hexdigest()[:16]
 
     def _clean_quantity(self, quantity):
-        """Clean quantity value before it is added to entry.
-        """
+        """Clean quantity value before it is added to entry."""
         value = quantity.get(QUANTITY.VALUE, '').strip()
         error = quantity.get(QUANTITY.E_VALUE, '').strip()
         unit = quantity.get(QUANTITY.U_VALUE, '').strip()
@@ -266,7 +260,7 @@ class Entry(OrderedDict):
         return True
 
     def __deepcopy__(self, memo):
-        dict_copy = OrderedDict()
+        """Define how an `Entry` should be deep copied."""
         new_entry = self.__class__(self.catalog)
         for key in self:
             if not key.startswith('__') and key != 'catalog':
@@ -280,8 +274,7 @@ class Entry(OrderedDict):
                              pop_schema=True,
                              ignore_keys=[],
                              compare_to_existing=True):
-        """FIX: check for overwrite??
-        """
+        # FIX: check for overwrite??"""
         self._log.debug("_load_data_from_json(): {}\n\t{}".format(self.name(),
                                                                   fhand))
         # Store the filename this was loaded from
@@ -339,9 +332,7 @@ class Entry(OrderedDict):
                                   merge=True,
                                   pop_schema=True,
                                   compare_to_existing=True):
-        """Convert an OrderedDict into an Entry class or its derivative
-        classes.
-        """
+        """Convert `OrderedDict` into `Entry` or its derivative classes."""
         self._log.debug("_convert_odict_to_classes(): {}".format(self.name()))
         self._log.debug("This should be a temporary fix.  Dont be lazy.")
 
@@ -463,8 +454,7 @@ class Entry(OrderedDict):
         return
 
     def _check_cat_dict_source(self, cat_dict_class, key_in_self, **kwargs):
-        """Check that a source exists and that a quantity isn't erroneous.
-        """
+        """Check that a source exists and that a quantity isn't erroneous."""
         # Make sure that a source is given
         source = kwargs.get(cat_dict_class._KEYS.SOURCE, None)
         if source is None:
@@ -490,8 +480,7 @@ class Entry(OrderedDict):
         return source
 
     def _init_cat_dict(self, cat_dict_class, key_in_self, **kwargs):
-        """Initialize a CatDict object, checking for errors.
-        """
+        """Initialize a CatDict object, checking for errors."""
         # Catch errors associated with crappy, but not unexpected data
         try:
             new_entry = cat_dict_class(self, key=key_in_self, **kwargs)
@@ -508,7 +497,9 @@ class Entry(OrderedDict):
                       check_for_dupes=True,
                       compare_to_existing=True,
                       **kwargs):
-        """Add a CatDict to this Entry if initialization succeeds and it
+        """Add a `CatDict` to this `Entry`.
+
+        CatDict only added if initialization succeeds and it
         doesn't already exist within the Entry.
         """
         # Make sure that a source is given, and is valid (nor erroneous)
@@ -565,8 +556,7 @@ class Entry(OrderedDict):
 
     @classmethod
     def get_filename(cls, name):
-        """Convert from an `Entry` name into an appropriate filename.
-        """
+        """Convert from an `Entry` name into an appropriate filename."""
         fname = name.replace('/', '_')
         return fname
 
@@ -665,15 +655,13 @@ class Entry(OrderedDict):
         return alias
 
     def add_error(self, value, **kwargs):
-        """Add an `Error` instance to this entry.
-        """
+        """Add an `Error` instance to this entry."""
         kwargs.update({ERROR.VALUE: value})
         self._add_cat_dict(Error, self._KEYS.ERRORS, **kwargs)
         return
 
     def add_photometry(self, compare_to_existing=True, **kwargs):
-        """Add a `Photometry` instance to this entry.
-        """
+        """Add a `Photometry` instance to this entry."""
         self._add_cat_dict(
             Photometry,
             self._KEYS.PHOTOMETRY,
@@ -682,6 +670,7 @@ class Entry(OrderedDict):
         return
 
     def merge_dupes(self):
+        """Merge two entries that correspond to the same entry."""
         for dupe in self.dupe_of:
             if dupe in self.catalog.entries:
                 if self.catalog.entries[dupe]._stub:
@@ -700,8 +689,7 @@ class Entry(OrderedDict):
                      check_for_dupes=True,
                      compare_to_existing=True,
                      **kwargs):
-        """Add an `Quantity` instance to this entry.
-        """
+        """Add an `Quantity` instance to this entry."""
         success = True
         for quantity in listify(quantities):
             kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: source})
@@ -718,8 +706,9 @@ class Entry(OrderedDict):
         return success
 
     def add_self_source(self):
-        """Add a source that refers to the catalog itself. For now this points
-        to the Open Supernova Catalog by default.
+        """Add a source that refers to the catalog itself.
+
+        For now this points to the Open Supernova Catalog by default.
         """
         return self.add_source(
             bibcode=self.catalog.OSC_BIBCODE,
@@ -728,8 +717,7 @@ class Entry(OrderedDict):
             secondary=True)
 
     def add_source(self, allow_alias=False, **kwargs):
-        """Add a `Source` instance to this entry.
-        """
+        """Add a `Source` instance to this entry."""
         if not allow_alias and SOURCE.ALIAS in kwargs:
             err_str = "`{}` passed in kwargs, this shouldn't happen!".format(
                 SOURCE.ALIAS)
@@ -751,8 +739,7 @@ class Entry(OrderedDict):
         return source_obj[source_obj._KEYS.ALIAS]
 
     def add_model(self, allow_alias=False, **kwargs):
-        """Add a `Model` instance to this entry.
-        """
+        """Add a `Model` instance to this entry."""
         if not allow_alias and MODEL.ALIAS in kwargs:
             err_str = "`{}` passed in kwargs, this shouldn't happen!".format(
                 SOURCE.ALIAS)
@@ -821,9 +808,7 @@ class Entry(OrderedDict):
         return data
 
     def extra_aliases(self):
-        """These aliases are considered when merging duplicates only, but are
-        not added to the list of aliases that would be included with the event
-        """
+        """Return aliases considered when merging duplicates."""
         return []
 
     def get_aliases(self, includename=True):
@@ -900,14 +885,15 @@ class Entry(OrderedDict):
         return stub
 
     def is_erroneous(self, field, sources):
+        """Check if attribute has been marked as being erroneous."""
         if self._KEYS.ERRORS in self:
             my_errors = self[self._KEYS.ERRORS]
             for alias in sources.split(','):
                 source = self.get_source_by_alias(alias)
                 bib_err_values = [
                     err[ERROR.VALUE] for err in my_errors
-                    if err[ERROR.KIND] == SOURCE.BIBCODE and err[ERROR.EXTRA]
-                    == field
+                    if err[ERROR.KIND] == SOURCE.BIBCODE and
+                    err[ERROR.EXTRA] == field
                 ]
                 if (SOURCE.BIBCODE in source and
                         source[SOURCE.BIBCODE] in bib_err_values):
@@ -925,7 +911,8 @@ class Entry(OrderedDict):
         return False
 
     def is_private(self, key, sources):
-        # Aliases are always public
+        """Check if attribute is private."""
+        # aliases are always public.
         if key == ENTRY.ALIAS:
             return False
         return all([
@@ -934,8 +921,7 @@ class Entry(OrderedDict):
         ])
 
     def name(self):
-        """Returns own name.
-        """
+        """Return own name."""
         try:
             return self[self._KEYS.NAME]
         except KeyError:
@@ -962,8 +948,7 @@ class Entry(OrderedDict):
         return len(self.get(self._KEYS.MODELS, []))
 
     def priority_prefixes(self):
-        """Prefixes to given priority to when merging duplicate entries.
-        """
+        """Return prefixes to given priority when merging duplicate entries."""
         return ()
 
     def sanitize(self):
@@ -1010,7 +995,10 @@ class Entry(OrderedDict):
                     SPECTRUM.TIME in x for x in self[self._KEYS.SPECTRA]
                 ]))):
             self[self._KEYS.SPECTRA].sort(
-                key=lambda x: (float(x[SPECTRUM.TIME]) if SPECTRUM.TIME in x else 0.0, x[SPECTRUM.FILENAME] if SPECTRUM.FILENAME in x else '')
+                key=lambda x: (float(x[SPECTRUM.TIME]) if
+                               SPECTRUM.TIME in x else 0.0,
+                               x[SPECTRUM.FILENAME] if
+                               SPECTRUM.FILENAME in x else '')
             )
 
         if self._KEYS.SOURCES in self:
@@ -1086,12 +1074,13 @@ class Entry(OrderedDict):
         return save_name
 
     def set_preferred_name(self):
-        # Do nothing by default
+        """Set a preferred name for the entry."""
         return self[self._KEYS.NAME]
 
     def sort_func(self, key):
-        """Used to sort keys when writing Entry to JSON format. Should be
-        supplemented/overridden by inheriting classes.
+        """Used to sort keys when writing Entry to JSON format.
+
+        Should be supplemented/overridden by inheriting classes.
         """
         if key == self._KEYS.SCHEMA:
             return 'aaa'
