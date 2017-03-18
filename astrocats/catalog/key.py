@@ -5,12 +5,13 @@ from astrocats.catalog.utils import is_number
 from past.builtins import basestring
 
 
-class KeyCollection:
+class KeyCollection(object):
     """General container class with methods to list attribute names and values.
 
     Used mostly by different `CatDict` subclasses to contain the 'keys' to
     their internal dictionaries.
     """
+
     _keys = []
     _vals = []
     _compare_vals = []
@@ -136,6 +137,7 @@ class KeyCollection:
 
 class KEY_TYPES(KeyCollection):
     NUMERIC = 'numeric'
+    TIME = 'time'
     STRING = 'string'
     BOOL = 'bool'
     DICT = 'dict'
@@ -242,6 +244,9 @@ class Key(str):
 
         # `is_number` already checks for either list or single value
         if self.type == KEY_TYPES.NUMERIC and not is_number(val):
+            return False
+        elif (self.type == KEY_TYPES.TIME and
+              not is_number(val) and '-' not in val and '/' not in val):
             return False
         elif self.type == KEY_TYPES.STRING:
             # If its a list, check first element

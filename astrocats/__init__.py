@@ -1,4 +1,6 @@
-"""Astrocats: Scripts for creating and analyzing catalogs of astronomical data.
+"""Astrocats.
+
+Scripts for creating and analyzing catalogs of astronomical data.
 """
 
 import os

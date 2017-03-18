@@ -1,11 +1,11 @@
-"""Class for representing photometric data.
-"""
+"""Class for representing photometric data."""
 from collections import OrderedDict
 from random import seed, shuffle
 
+from astropy.time import Time as astrotime
 from palettable import colorbrewer, cubehelix, wesanderson
 
-from astrocats.catalog.catdict import CatDict
+from astrocats.catalog.catdict import CatDict, CatDictError
 from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
 from astrocats.catalog.utils import get_sig_digits
 from cdecimal import Decimal, localcontext
@@ -16,7 +16,9 @@ D25 = Decimal('2.5')
 
 
 class PHOTOMETRY(KeyCollection):
-    TIME = Key('time', KEY_TYPES.NUMERIC, listable=True, priority=10)
+    """Keys for the `Photometry` class."""
+
+    TIME = Key('time', KEY_TYPES.TIME, listable=True, priority=10)
     MAGNITUDE = Key('magnitude', KEY_TYPES.NUMERIC, priority=9)
     FLUX = Key('flux', KEY_TYPES.NUMERIC)
     FLUX_DENSITY = Key('fluxdensity', KEY_TYPES.NUMERIC)
@@ -31,6 +33,9 @@ class PHOTOMETRY(KeyCollection):
     NHMW = Key('nhmw', KEY_TYPES.NUMERIC)
     PHOTON_INDEX = Key('photonindex', KEY_TYPES.NUMERIC)
     UNABSORBED_FLUX = Key('unabsorbedflux', KEY_TYPES.NUMERIC)
+    EXPOSURE_TIME = Key('exposuretime', KEY_TYPES.NUMERIC)
+    OFF_AXIS_ANGLE = Key('offaxisangle', KEY_TYPES.NUMERIC)
+    EXTRACTION_RADIUS = Key('extractionradius', KEY_TYPES.NUMERIC)
 
     E_COUNTS = Key('e_counts', KEY_TYPES.NUMERIC)
     E_FLUX = Key('e_flux', KEY_TYPES.NUMERIC)
@@ -71,6 +76,9 @@ class PHOTOMETRY(KeyCollection):
     U_WAVELENGTH = Key('u_wavelength', KEY_TYPES.STRING)
     U_ENERGY = Key('u_energy', KEY_TYPES.STRING)
     U_LUMINOSITY = Key('u_luminosity', KEY_TYPES.STRING)
+    U_EXPOSURE_TIME = Key('u_exposuretime', KEY_TYPES.STRING)
+    U_OFF_AXIS_ANGLE = Key('u_offaxisangle', KEY_TYPES.STRING)
+    U_EXTRACTION_RADIUS = Key('u_extractionradius', KEY_TYPES.STRING)
 
     SCORRECTED = Key('scorrected', KEY_TYPES.BOOL)
     KCORRECTED = Key('kcorrected', KEY_TYPES.BOOL)
@@ -88,19 +96,20 @@ class Photometry(CatDict):
     """Container for a single photometric point with associated metadata.
 
     `Source` citation required.
-    Photometry can be given as [magnitude, flux, flux-density, counts, luminosity].
+    Photometry can be given as [magnitude, flux, flux-density, counts,
+    luminosity].
     """
 
     _ALLOW_UNKNOWN_KEYS = True
     _KEYS = PHOTOMETRY
 
     def __init__(self, parent, **kwargs):
+        """Initialize."""
         self._REQ_KEY_SETS = [[PHOTOMETRY.SOURCE, PHOTOMETRY.MODEL],
                               [PHOTOMETRY.TIME, PHOTOMETRY.HOST], [
                                   PHOTOMETRY.MAGNITUDE, PHOTOMETRY.FLUX,
                                   PHOTOMETRY.FLUX_DENSITY, PHOTOMETRY.COUNTS,
-                                  PHOTOMETRY.LUMINOSITY
-                              ]]
+                                  PHOTOMETRY.LUMINOSITY]]
         # Note: `_check()` is called at end of `super().__init__`
         super(Photometry, self).__init__(parent, **kwargs)
 
@@ -117,6 +126,16 @@ class Photometry(CatDict):
                     if temp is not None:
                         self[bmf] = temp
 
+        # Convert dates to MJD
+        timestr = str(self.get(self._KEYS.TIME, ''))
+        if any(x in timestr for x in ['-', '/']):
+            timestr = timestr.replace('/', '-')
+            try:
+                self[self._KEYS.TIME] = str(
+                    astrotime(timestr, format='isot').mjd)
+            except Exception:
+                raise CatDictError('Unable to convert date to MJD.')
+
         # Time unit is necessary for maximum time determination
         if self._KEYS.U_TIME not in self and self._KEYS.TIME in self:
             self._log.info('`{}` not found in photometry, assuming '
@@ -126,9 +145,7 @@ class Photometry(CatDict):
         return
 
     def _check(self):
-        """
-
-        """
+        """Check that entry attributes are legal."""
         # Run the super method
         super(Photometry, self)._check()
 
@@ -179,6 +196,7 @@ class Photometry(CatDict):
         return value
 
     def sort_func(self, key):
+        """Specify order for attributes."""
         if key == self._KEYS.TIME:
             return 'aaa'
         if key == self._KEYS.MODEL:
