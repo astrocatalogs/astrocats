@@ -135,6 +135,8 @@ class Photometry(CatDict):
                     astrotime(timestr, format='isot').mjd)
             except Exception:
                 raise CatDictError('Unable to convert date to MJD.')
+        elif timestr:  # Make sure time is string
+            self[self._KEYS.TIME] = timestr
 
         # Time unit is necessary for maximum time determination
         if self._KEYS.U_TIME not in self and self._KEYS.TIME in self:

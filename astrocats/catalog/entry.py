@@ -981,7 +981,8 @@ class Entry(OrderedDict):
         if self._KEYS.PHOTOMETRY in self:
             self[self._KEYS.PHOTOMETRY].sort(
                 key=lambda x: ((float(x[PHOTOMETRY.TIME]) if
-                                isinstance(x[PHOTOMETRY.TIME], basestring)
+                                isinstance(x[PHOTOMETRY.TIME],
+                                           (basestring, float, int))
                                 else min([float(y) for y in
                                           x[PHOTOMETRY.TIME]])) if
                                PHOTOMETRY.TIME in x else 0.0,
