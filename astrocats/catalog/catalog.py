@@ -25,7 +25,7 @@ from astrocats.catalog.utils import (compress_gz, is_integer, log_memory, pbar,
                                      uncompress_gz, uniq_cdl)
 
 
-class Catalog:
+class Catalog(object):
     """Object to hold the main catalog dictionary and other catalog globals.
 
     Attributes
@@ -49,7 +49,7 @@ class Catalog:
     TRAVIS_QUERY_LIMIT = 10
     COMPRESS_ABOVE_FILESIZE = 90e6  # bytes
 
-    class PATHS:
+    class PATHS(object):
         """Store and control catalog file-structure information.
 
         Individual catalogs must provide the below file structure.
