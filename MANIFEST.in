@@ -1,2 +1,5 @@
 include requirements.txt
 include *.md
+include LICENSE
+exclude supernovae
+exclude tidaldisruptions
