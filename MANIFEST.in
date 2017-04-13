@@ -3,3 +3,6 @@ include *.md
 include LICENSE
 exclude supernovae
 exclude tidaldisruptions
+exclude *.key
+global-exclude .DS_Store
+global-exclude *.prof
