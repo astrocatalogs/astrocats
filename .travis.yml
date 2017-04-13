@@ -29,7 +29,7 @@ before_install:
       then conda update -q conda;
       fi
 install:
-    - conda install --yes python=$TRAVIS_PYTHON_VERSION scipy matplotlib argparse astropy beautifulsoup4 bokeh gitpython inflect palettable psutil seaborn tqdm tweepy coveralls
+    - conda install --yes python=$TRAVIS_PYTHON_VERSION scipy matplotlib argparse astropy beautifulsoup4 bokeh gitpython palettable psutil seaborn tqdm tweepy coveralls
     - xargs -L 1 pip install < requirements.txt
 
 # Run test
