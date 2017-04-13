@@ -45,7 +45,7 @@ from bokeh.resources import CDN
 from bs4 import BeautifulSoup
 from palettable import cubehelix
 
-from cdecimal import Decimal
+from decimal import Decimal
 from past.builtins import basestring
 
 parser = argparse.ArgumentParser(
