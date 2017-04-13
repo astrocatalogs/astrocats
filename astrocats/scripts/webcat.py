@@ -577,27 +577,27 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             (mean([float(y) for y in x['time']])
              if isinstance(x['time'], list) else float(x['time']))
             for x in catalog[entry]['photometry']
-            if any([y in x for y in ['fluxdensity', 'magnitude', 'flux']])
+            if any([y in x for y in ['fluxdensity', 'magnitude', 'flux', 'counts']])
         ]
         phototimelowererrs = [
             float(x['e_lower_time'])
             if ('e_lower_time' in x and 'e_upper_time' in x) else
             (float(x['e_time']) if 'e_time' in x else 0.)
             for x in catalog[entry]['photometry']
-            if any([y in x for y in ['fluxdensity', 'magnitude', 'flux']])
+            if any([y in x for y in ['fluxdensity', 'magnitude', 'flux', 'counts']])
         ]
         phototimeuppererrs = [
             float(x['e_upper_time'])
             if ('e_lower_time' in x and 'e_upper_time' in x) in x else
             (float(x['e_time']) if 'e_time' in x else 0.)
             for x in catalog[entry]['photometry']
-            if any([y in x for y in ['fluxdensity', 'magnitude', 'flux']])
+            if any([y in x for y in ['fluxdensity', 'magnitude', 'flux', 'counts']])
         ]
         mmphototime = [
             (mean([float(y) for y in x['time']])
              if isinstance(x['time'], list) else float(x['time']))
             for x in catalog[entry]['photometry']
-            if (any([y in x for y in ['fluxdensity', 'magnitude', 'flux']]) and
+            if (any([y in x for y in ['fluxdensity', 'magnitude', 'flux', 'counts']]) and
                 'upperlimit' not in x and 'includeshost' not in x)
         ]
         mmphototimelowererrs = [
@@ -605,7 +605,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             if ('e_lower_time' in x and 'e_upper_time' in x) else
             (float(x['e_time']) if 'e_time' in x else 0.)
             for x in catalog[entry]['photometry']
-            if (any([y in x for y in ['fluxdensity', 'magnitude', 'flux']]) and
+            if (any([y in x for y in ['fluxdensity', 'magnitude', 'flux', 'counts']]) and
                 'upperlimit' not in x and 'includeshost' not in x)
         ]
         mmphototimeuppererrs = [
@@ -613,7 +613,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             if ('e_lower_time' in x and 'e_upper_time' in x) in x else
             (float(x['e_time']) if 'e_time' in x else 0.)
             for x in catalog[entry]['photometry']
-            if (any([y in x for y in ['fluxdensity', 'magnitude', 'flux']]) and
+            if (any([y in x for y in ['fluxdensity', 'magnitude', 'flux', 'counts']]) and
                 'upperlimit' not in x and 'includeshost' not in x)
         ]
 
@@ -1804,11 +1804,17 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 for x in catalog[entry]['photometry']
                 if 'counts' in x and 'magnitude' not in x
             ]
+            photofllowererrs = [(float(x['e_counts'])
+                                 if 'e_counts' in x else 0.)
+                                for x in catalog[entry]['photometry']
+                                if 'counts' in x and 'magnitude' not in x]
             photofluppererrs = [(float(x['e_counts'])
                                  if 'e_counts' in x else 0.)
                                 for x in catalog[entry]['photometry']
                                 if 'counts' in x and 'magnitude' not in x]
             photoufl = ['' for x in photofl]
+            phototype = [(True if 'upperlimit' in x else False)
+                         for x in catalog[entry]['photometry'] if 'counts' in x]
             hasfl = len(list(filter(None, photofl)))
             hasflerrs = len(list(filter(None, photofluppererrs)))
         tt = [("Source ID(s)", "@src"),
