@@ -781,6 +781,8 @@ class Entry(OrderedDict):
             if new_spectrum.is_duplicate_of(item):
                 if SPECTRUM.EXCLUDE in new_spectrum:
                     item[SPECTRUM.EXCLUDE] = new_spectrum[SPECTRUM.EXCLUDE]
+                elif SPECTRUM.EXCLUDE in item:
+                    item.update(new_spectrum)
                 is_dupe = True
                 break
 

@@ -29,9 +29,9 @@ before_install:
       then conda update -q conda;
       fi
 install:
-    - conda install --yes python=$TRAVIS_PYTHON_VERSION scipy matplotlib
+    - conda config --add channels conda-forge
+    - conda install --yes python=$TRAVIS_PYTHON_VERSION scipy matplotlib  astropy beautifulsoup4 bokeh gitpython palettable psutil seaborn tqdm coveralls
     - xargs -L 1 pip install < requirements.txt
-    - pip install coveralls
 
 # Run test
 script:
