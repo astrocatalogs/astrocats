@@ -8,7 +8,7 @@ from palettable import colorbrewer, cubehelix, wesanderson
 from astrocats.catalog.catdict import CatDict, CatDictError
 from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
 from astrocats.catalog.utils import get_sig_digits
-from decimal import Decimal, localcontext
+from cdecimal import Decimal, localcontext
 
 DEFAULT_UL_SIGMA = 3.0
 DEFAULT_ZP = 30.0

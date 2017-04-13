@@ -18,7 +18,7 @@ from astrocats.catalog.source import SOURCE, Source
 from astrocats.catalog.spectrum import SPECTRUM, Spectrum
 from astrocats.catalog.utils import (alias_priority, dict_to_pretty_string,
                                      is_integer, is_number, listify)
-from decimal import Decimal
+from cdecimal import Decimal
 from past.builtins import basestring
 
 

@@ -45,7 +45,7 @@ from bokeh.resources import CDN
 from bs4 import BeautifulSoup
 from palettable import cubehelix
 
-from decimal import Decimal
+from cdecimal import Decimal
 from past.builtins import basestring
 
 parser = argparse.ArgumentParser(
@@ -642,32 +642,32 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             if ('e_lower_time' in x and 'e_upper_time' in x) else
             (float(x['e_time']) if 'e_time' in x else 0.)
             for x in catalog[entry]['photometry'] if 'magnitude' in x
-            and 'realization' not in x 
+            and 'realization' not in x
         ]
         phototimeuppererrs = [
             float(x['e_upper_time'])
             if ('e_lower_time' in x and 'e_upper_time' in x) else
             (float(x['e_time']) if 'e_time' in x else 0.)
             for x in catalog[entry]['photometry'] if 'magnitude' in x
-            and 'realization' not in x 
+            and 'realization' not in x
         ]
         photoAB = [
             float(x['magnitude']) for x in catalog[entry]['photometry']
-            if 'magnitude' in x and 'realization' not in x 
+            if 'magnitude' in x and 'realization' not in x
         ]
         photoABlowererrs = [
             float(x['e_lower_magnitude'])
             if ('e_lower_magnitude' in x) else (float(x['e_magnitude'])
                                                 if 'e_magnitude' in x else 0.)
             for x in catalog[entry]['photometry'] if 'magnitude' in x
-            and 'realization' not in x 
+            and 'realization' not in x
         ]
         photoABuppererrs = [
             float(x['e_upper_magnitude'])
             if ('e_upper_magnitude' in x) else (float(x['e_magnitude'])
                                                 if 'e_magnitude' in x else 0.)
             for x in catalog[entry]['photometry'] if 'magnitude' in x
-            and 'realization' not in x 
+            and 'realization' not in x
         ]
         photoband = [(bandaliasf(x['band']) if 'band' in x else '?')
                      for x in catalog[entry]['photometry'] if 'magnitude' in x
@@ -809,7 +809,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 ]
                 realizAB = [
                     float(x['magnitude']) for x in catalog[entry]['photometry']
-                    if 'magnitude' in x and 'realization' in x 
+                    if 'magnitude' in x and 'realization' in x
                 ]
                 realizband = [(bandaliasf(x['band']) if 'band' in x else '?')
                              for x in catalog[entry]['photometry'] if 'magnitude' in x
