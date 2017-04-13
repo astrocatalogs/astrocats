@@ -30,7 +30,7 @@ before_install:
       fi
 install:
     - conda config --add channels conda-forge
-    - conda install --yes python=$TRAVIS_PYTHON_VERSION scipy matplotlib  astropy beautifulsoup4 bokeh gitpython palettable psutil seaborn tqdm tweepy coveralls
+    - conda install --yes python=$TRAVIS_PYTHON_VERSION scipy matplotlib  astropy beautifulsoup4 bokeh gitpython palettable psutil seaborn tqdm coveralls
     - xargs -L 1 pip install < requirements.txt
 
 # Run test
