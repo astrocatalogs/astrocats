@@ -18,7 +18,7 @@ from astrocats.catalog.source import SOURCE, Source
 from astrocats.catalog.spectrum import SPECTRUM, Spectrum
 from astrocats.catalog.utils import (alias_priority, dict_to_pretty_string,
                                      is_integer, is_number, listify)
-from cdecimal import Decimal
+from decimal import Decimal
 from past.builtins import basestring
 
 
@@ -781,6 +781,8 @@ class Entry(OrderedDict):
             if new_spectrum.is_duplicate_of(item):
                 if SPECTRUM.EXCLUDE in new_spectrum:
                     item[SPECTRUM.EXCLUDE] = new_spectrum[SPECTRUM.EXCLUDE]
+                elif SPECTRUM.EXCLUDE in item:
+                    item.update(new_spectrum)
                 is_dupe = True
                 break
 

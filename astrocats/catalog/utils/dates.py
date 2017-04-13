@@ -1,7 +1,7 @@
 '''Utility functions related to dates.
 '''
 from .digits import is_number
-from cdecimal import Decimal
+from decimal import Decimal
 
 __all__ = ['jd_to_mjd', 'make_date_string', 'get_source_year']
 
