@@ -22,7 +22,7 @@ class PHOTOMETRY(KeyCollection):
     MAGNITUDE = Key('magnitude', KEY_TYPES.NUMERIC, priority=9)
     FLUX = Key('flux', KEY_TYPES.NUMERIC)
     FLUX_DENSITY = Key('fluxdensity', KEY_TYPES.NUMERIC)
-    COUNTS = Key('countrate', KEY_TYPES.NUMERIC)
+    COUNT_RATE = Key('countrate', KEY_TYPES.NUMERIC)
     LUMINOSITY = Key('luminosity', KEY_TYPES.NUMERIC)
     ZERO_POINT = Key('zeropoint', KEY_TYPES.NUMERIC)
     UPPER_LIMIT_SIGMA = Key('upperlimitsigma', KEY_TYPES.NUMERIC)
@@ -37,15 +37,15 @@ class PHOTOMETRY(KeyCollection):
     OFF_AXIS_ANGLE = Key('offaxisangle', KEY_TYPES.NUMERIC)
     EXTRACTION_RADIUS = Key('extractionradius', KEY_TYPES.NUMERIC)
 
-    E_COUNTS = Key('e_countrate', KEY_TYPES.NUMERIC)
+    E_COUNT_RATE = Key('e_countrate', KEY_TYPES.NUMERIC)
     E_FLUX = Key('e_flux', KEY_TYPES.NUMERIC)
     E_FLUX_DENSITY = Key('e_fluxdensity', KEY_TYPES.NUMERIC)
     E_LUMINOSITY = Key('e_luminosity', KEY_TYPES.NUMERIC)
     E_MAGNITUDE = Key('e_magnitude', KEY_TYPES.NUMERIC, priority=7)
     E_TIME = Key('e_time', KEY_TYPES.NUMERIC)
     E_UNABSORBED_FLUX = Key('e_unabsorbedflux', KEY_TYPES.NUMERIC)
-    E_LOWER_COUNTS = Key('e_lower_countrate', KEY_TYPES.NUMERIC)
-    E_UPPER_COUNTS = Key('e_upper_countrate', KEY_TYPES.NUMERIC)
+    E_LOWER_COUNT_RATE = Key('e_lower_countrate', KEY_TYPES.NUMERIC)
+    E_UPPER_COUNT_RATE = Key('e_upper_countrate', KEY_TYPES.NUMERIC)
     E_LOWER_MAGNITUDE = Key('e_lower_magnitude', KEY_TYPES.NUMERIC)
     E_UPPER_MAGNITUDE = Key('e_upper_magnitude', KEY_TYPES.NUMERIC)
     E_LOWER_FLUX = Key('e_lower_flux', KEY_TYPES.NUMERIC)
@@ -70,7 +70,7 @@ class PHOTOMETRY(KeyCollection):
 
     DESCRIPTION = Key('description', KEY_TYPES.STRING, compare=False)
 
-    U_COUNTS = Key('u_countrate', KEY_TYPES.STRING)
+    U_COUNT_RATE = Key('u_countrate', KEY_TYPES.STRING)
     U_TIME = Key('u_time', KEY_TYPES.STRING)
     U_FLUX = Key('u_flux', KEY_TYPES.STRING)
     U_FLUX_DENSITY = Key('u_fluxdensity', KEY_TYPES.STRING)
@@ -110,7 +110,7 @@ class Photometry(CatDict):
         self._REQ_KEY_SETS = [[PHOTOMETRY.SOURCE, PHOTOMETRY.MODEL],
                               [PHOTOMETRY.TIME, PHOTOMETRY.HOST], [
                                   PHOTOMETRY.MAGNITUDE, PHOTOMETRY.FLUX,
-                                  PHOTOMETRY.FLUX_DENSITY, PHOTOMETRY.COUNTS,
+                                  PHOTOMETRY.FLUX_DENSITY, PHOTOMETRY.COUNT_RATE,
                                   PHOTOMETRY.LUMINOSITY]]
         # Note: `_check()` is called at end of `super().__init__`
         super(Photometry, self).__init__(parent, **kwargs)
@@ -150,9 +150,9 @@ class Photometry(CatDict):
                            ' MJD.'.format(self._KEYS.U_TIME))
             self[self._KEYS.U_TIME] = 'MJD'
 
-        if self._KEYS.U_COUNTS not in self and self._KEYS.COUNTS in self:
+        if self._KEYS.U_COUNT_RATE not in self and self._KEYS.COUNT_RATE in self:
             self._log.info('`{}` not found in photometry, assuming '
-                           ' s^-1.'.format(self._KEYS.U_COUNTS))
+                           ' s^-1.'.format(self._KEYS.U_COUNT_RATE))
             self[self._KEYS.U_TIME] = 's^-1'
 
         return
