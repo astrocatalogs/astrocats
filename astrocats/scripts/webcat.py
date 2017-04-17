@@ -1,4 +1,3 @@
-#!/usr/local/bin/python3.5
 import argparse
 import csv
 import filecmp
@@ -15,6 +14,7 @@ import urllib.request
 import warnings
 from collections import OrderedDict
 from copy import deepcopy
+from decimal import Decimal
 from glob import glob
 from math import ceil, isnan, pi
 from statistics import mean
@@ -26,7 +26,7 @@ from astrocats.catalog.utils import (bandaliasf, bandcodes, bandcolorf,
                                      bandgroupf, bandshortaliasf, bandwavef,
                                      bandwavelengths, get_sig_digits,
                                      is_number, pretty_num, radiocolorf,
-                                     round_sig, tprint, tq, xraycolorf)
+                                     round_sig, tq, xraycolorf)
 from astrocats.scripts.events import get_event_filename, get_event_text
 from astrocats.scripts.repos import (get_rep_folder, get_rep_folders,
                                      repo_file_list)
@@ -44,8 +44,6 @@ from bokeh.plotting import Figure, reset_output
 from bokeh.resources import CDN
 from bs4 import BeautifulSoup
 from palettable import cubehelix
-
-from decimal import Decimal
 from past.builtins import basestring
 
 parser = argparse.ArgumentParser(
@@ -151,7 +149,8 @@ travislimit = 100
 
 radiosigma = 3.0
 
-googlepingurl = "http://www.google.com/webmasters/tools/ping?sitemap=https%3A%2F%2F" + moduleurl + "%2Fsitemap.xml"
+googlepingurl = "http://www.google.com/webmasters/tools/ping?sitemap=https%3A%2F%2F" + \
+    moduleurl + "%2Fsitemap.xml"
 
 linkdir = "https://" + moduleurl + "/" + modulename + "/"
 
@@ -274,7 +273,7 @@ def is_valid_link(url):
         response.raise_for_status()
     except (KeyboardInterrupt, SystemExit):
         raise
-    except:
+    except Exception:
         return False
     return True
 
@@ -393,7 +392,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         for x in catalog[entry]['photometry']
     ])
     xrayavail = 'photometry' in catalog[entry] and any(
-        [('counts' in x or 'flux' in x) and 'magnitude' not in x
+        [('countrate' in x or 'flux' in x) and 'magnitude' not in x
          for x in catalog[entry]['photometry']])
     spectraavail = 'spectra' in catalog[entry]
 
@@ -412,12 +411,12 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         if 'upperlimit' not in x and 'fluxdensity' in x and 'magnitude' not in
         x and (not x['e_fluxdensity'] or float(x[
             'fluxdensity']) > radiosigma * float(x['e_fluxdensity'])
-               ) and (not hostmag or 'includeshost' not in x or float(x[
-                   'magnitude']) <= (hostmag - 2.0 * hosterr))
+        ) and (not hostmag or 'includeshost' not in x or float(x[
+            'magnitude']) <= (hostmag - 2.0 * hosterr))
     ]) if photoavail else 0
     numxray = len([
         x for x in catalog[entry]['photometry']
-        if 'upperlimit' not in x and ('counts' in x or 'flux' in x
+        if 'upperlimit' not in x and ('countrate' in x or 'flux' in x
                                       ) and 'magnitude' not in x and
         (not hostmag or 'includeshost' not in x or float(x['magnitude']) <= (
             hostmag - 2.0 * hosterr))
@@ -442,7 +441,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             mjdmax = astrotime(datestr.replace('/', '-')).mjd
         except (KeyboardInterrupt, SystemExit):
             raise
-        except:
+        except Exception:
             pass
 
     minphotoep = ''
@@ -483,7 +482,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         catalog[entry]['photolink'] = (str(numphoto) + (
             (',' + minphotoep + ',' + maxphotoep) if
             (minphotoep and maxphotoep and minphotoep != maxphotoep
-                ) else ((',' + minphotoep) if minphotoep and maxphotoep else '')))
+             ) else ((',' + minphotoep) if minphotoep and maxphotoep else '')))
     if radioavail:
         catalog[entry]['radiolink'] = str(numradio)
     if xrayavail:
@@ -577,27 +576,31 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             (mean([float(y) for y in x['time']])
              if isinstance(x['time'], list) else float(x['time']))
             for x in catalog[entry]['photometry']
-            if any([y in x for y in ['fluxdensity', 'magnitude', 'flux', 'counts']])
+            if any([y in x for y in [
+                'fluxdensity', 'magnitude', 'flux', 'countrate']])
         ]
         phototimelowererrs = [
             float(x['e_lower_time'])
             if ('e_lower_time' in x and 'e_upper_time' in x) else
             (float(x['e_time']) if 'e_time' in x else 0.)
             for x in catalog[entry]['photometry']
-            if any([y in x for y in ['fluxdensity', 'magnitude', 'flux', 'counts']])
+            if any([y in x for y in [
+                'fluxdensity', 'magnitude', 'flux', 'countrate']])
         ]
         phototimeuppererrs = [
             float(x['e_upper_time'])
             if ('e_lower_time' in x and 'e_upper_time' in x) in x else
             (float(x['e_time']) if 'e_time' in x else 0.)
             for x in catalog[entry]['photometry']
-            if any([y in x for y in ['fluxdensity', 'magnitude', 'flux', 'counts']])
+            if any([y in x for y in [
+                'fluxdensity', 'magnitude', 'flux', 'countrate']])
         ]
         mmphototime = [
             (mean([float(y) for y in x['time']])
              if isinstance(x['time'], list) else float(x['time']))
             for x in catalog[entry]['photometry']
-            if (any([y in x for y in ['fluxdensity', 'magnitude', 'flux', 'counts']]) and
+            if (any([y in x for y in [
+                'fluxdensity', 'magnitude', 'flux', 'countrate']]) and
                 'upperlimit' not in x and 'includeshost' not in x)
         ]
         mmphototimelowererrs = [
@@ -605,7 +608,8 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             if ('e_lower_time' in x and 'e_upper_time' in x) else
             (float(x['e_time']) if 'e_time' in x else 0.)
             for x in catalog[entry]['photometry']
-            if (any([y in x for y in ['fluxdensity', 'magnitude', 'flux', 'counts']]) and
+            if (any([y in x for y in [
+                'fluxdensity', 'magnitude', 'flux', 'countrate']]) and
                 'upperlimit' not in x and 'includeshost' not in x)
         ]
         mmphototimeuppererrs = [
@@ -613,7 +617,8 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             if ('e_lower_time' in x and 'e_upper_time' in x) in x else
             (float(x['e_time']) if 'e_time' in x else 0.)
             for x in catalog[entry]['photometry']
-            if (any([y in x for y in ['fluxdensity', 'magnitude', 'flux', 'counts']]) and
+            if (any([y in x for y in [
+                'fluxdensity', 'magnitude', 'flux', 'countrate']]) and
                 'upperlimit' not in x and 'includeshost' not in x)
         ]
 
@@ -628,9 +633,11 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                     if max_photo_time != min_photo_time else 1.0)
 
         min_x_range = -0.5 * x_buffer + \
-            min([x - y for x, y in list(zip(mmphototime, mmphototimeuppererrs))])
+            min([x - y for x, y in list(zip(
+                mmphototime, mmphototimeuppererrs))])
         max_x_range = 2.0 * x_buffer + \
-            max([x + y for x, y in list(zip(mmphototime, mmphototimelowererrs))])
+            max([x + y for x, y in list(zip(
+                mmphototime, mmphototimelowererrs))])
 
     if photoavail and dohtml and args.writehtml:
         phototime = [
@@ -812,11 +819,11 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                     if 'magnitude' in x and 'realization' in x
                 ]
                 realizband = [(bandaliasf(x['band']) if 'band' in x else '?')
-                             for x in catalog[entry]['photometry'] if 'magnitude' in x
-                             and 'realization' in x]
+                              for x in catalog[entry]['photometry'] if 'magnitude' in x
+                              and 'realization' in x]
                 realizinstru = [(x['instrument'] if 'instrument' in x else '')
-                               for x in catalog[entry]['photometry']
-                               if 'magnitude' in x and 'realization' in x]
+                                for x in catalog[entry]['photometry']
+                                if 'magnitude' in x and 'realization' in x]
                 realizsource = [
                     ', '.join(
                         str(j)
@@ -833,7 +840,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 for rz in range(nrealiz):
                     for rzb in realizbandset:
                         pdata = list(zip(*[[x, y, z, s] for x, y, z, s, i in
-                            zip(realiztime, realizAB, realizband, realizsource, realiznum) if i == rz and z == rzb]))
+                                           zip(realiztime, realizAB, realizband, realizsource, realiznum) if i == rz and z == rzb]))
                         if len(pdata):
                             data = dict(
                                 x=pdata[0],
@@ -846,15 +853,16 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                                     x - distancemod for x in pdata[1]
                                 ]
                             rsources.append(ColumnDataSource(data))
-                            rglyphs.append(p1.line('x', 'y', source=rsources[-1], line_width=1, color=bandcolorf(rzb), line_alpha=0.5))
+                            rglyphs.append(p1.line(
+                                'x', 'y', source=rsources[-1], line_width=1, color=bandcolorf(rzb), line_alpha=0.5))
                             if mi != 0:
                                 rglyphs[-1].glyph.visible = False
                             msources.append(ColumnDataSource({'id': [mi]}))
 
         if len(models) > 0:
             rtt = [("Source ID(s)", "@src"),
-                  ("Epoch (" + photoutime + ")",
-                   "@x{1.11}"), ("Apparent Magnitude", "@y{1.111}")]
+                   ("Epoch (" + photoutime + ")",
+                    "@x{1.11}"), ("Apparent Magnitude", "@y{1.111}")]
             if 'maxabsmag' in catalog[entry] and 'maxappmag' in catalog[entry]:
                 rtt += [("Absolute Magnitude", "@yabs{1.111}")]
             rtt += [("Band", "@desc")]
@@ -884,7 +892,8 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             realizchecks = Select(
                 title="Model to compare to data:",
                 value="0",
-                options=[(str(i), x) for i, x in enumerate(modelnames)] + [("-1", "None")],
+                options=[(str(i), x)
+                         for i, x in enumerate(modelnames)] + [("-1", "None")],
                 callback=realizcallback)
         # End realizations
 
@@ -1433,7 +1442,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             True if 'upperlimit' in x or
             radiosigma * float(x['e_fluxdensity']) >= float(x['fluxdensity'])
             else False) for x in catalog[entry]['photometry']
-                     if 'fluxdensity' in x and 'magnitude' not in x]
+            if 'fluxdensity' in x and 'magnitude' not in x]
 
         photoutime = catalog[entry]['photometry'][0][
             'u_time'] if 'u_time' in catalog[entry]['photometry'][0] else 'MJD'
@@ -1797,26 +1806,26 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         if not hasfl:
             yaxis = 'Counts'
             photofl = [
-                float(x['counts'])
-                if ('e_counts' not in x or
-                    float(x['counts']) > radiosigma * float(x['e_counts']))
+                float(x['countrate'])
+                if ('e_countrate' not in x or
+                    float(x['countrate']) > radiosigma * float(x['e_countrate']))
                 else round_sig(
-                    radiosigma * float(x['e_counts']),
-                    sig=get_sig_digits(x['e_counts']))
+                    radiosigma * float(x['e_countrate']),
+                    sig=get_sig_digits(x['e_countrate']))
                 for x in catalog[entry]['photometry']
-                if 'counts' in x and 'magnitude' not in x
+                if 'countrate' in x and 'magnitude' not in x
             ]
-            photofllowererrs = [(float(x['e_counts'])
-                                 if 'e_counts' in x else 0.)
+            photofllowererrs = [(float(x['e_countrate'])
+                                 if 'e_countrate' in x else 0.)
                                 for x in catalog[entry]['photometry']
-                                if 'counts' in x and 'magnitude' not in x]
-            photofluppererrs = [(float(x['e_counts'])
-                                 if 'e_counts' in x else 0.)
+                                if 'countrate' in x and 'magnitude' not in x]
+            photofluppererrs = [(float(x['e_countrate'])
+                                 if 'e_countrate' in x else 0.)
                                 for x in catalog[entry]['photometry']
-                                if 'counts' in x and 'magnitude' not in x]
+                                if 'countrate' in x and 'magnitude' not in x]
             photoufl = ['' for x in photofl]
             phototype = [(True if 'upperlimit' in x else False)
-                         for x in catalog[entry]['photometry'] if 'counts' in x]
+                         for x in catalog[entry]['photometry'] if 'countrate' in x]
             hasfl = len(list(filter(None, photofl)))
             hasflerrs = len(list(filter(None, photofluppererrs)))
         tt = [("Source ID(s)", "@src"),
@@ -2102,7 +2111,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             c = coord(ra=snra, dec=sndec, unit=(un.hourangle, un.deg))
         except (KeyboardInterrupt, SystemExit):
             raise
-        except:
+        except Exception:
             warnings.warn('Malformed angle for event ' + entry + '.')
         else:
             # if 'lumdist' in catalog[entry] and float(catalog[entry]['lumdist'][0]['value']) > 0.:
@@ -2136,7 +2145,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                     resptxt = response.read()
                 except (KeyboardInterrupt, SystemExit):
                     raise
-                except:
+                except Exception:
                     hasimage = False
                 else:
                     with open(outdir + htmldir + fileeventname + '-host.jpg',
@@ -2167,7 +2176,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                         bandsoup = BeautifulSoup(response, "html5lib")
                     except (KeyboardInterrupt, SystemExit):
                         raise
-                    except:
+                    except Exception:
                         hasimage = False
                     else:
                         images = bandsoup.findAll('img')
@@ -2187,7 +2196,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                                 imgsrc = 'DSS'
                             except (KeyboardInterrupt, SystemExit):
                                 raise
-                            except:
+                            except Exception:
                                 hasimage = False
                         else:
                             hasimage = False
@@ -2324,7 +2333,8 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                                         x.strip()
                                         for x in row['source'].split(',')
                                     ],
-                                    key=lambda x: float(x) if is_number(x) else float("inf")
+                                    key=lambda x: float(x) if is_number(
+                                        x) else float("inf")
                                 )
                             ]
                             sourcehtml = ''
@@ -2477,7 +2487,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         # dec., # obs., link
         csvpages.append([
             entry, ",".join(
-                [x['value'] for x in catalog[entry].get('alias', [{'value':entry}])]),
+                [x['value'] for x in catalog[entry].get('alias', [{'value': entry}])]),
             get_first_value(entry, 'maxappmag'),
             get_first_value(entry, 'maxdate'),
             get_first_value(entry, 'claimedtype'), get_first_value(
@@ -2708,7 +2718,8 @@ if args.writecatalog and not args.eventlist:
 
     names = OrderedDict()
     for ev in catalog:
-        names[ev['name']] = [x['value'] for x in ev.get('alias', [{'value':ev['name']}])]
+        names[ev['name']] = [x['value']
+                             for x in ev.get('alias', [{'value': ev['name']}])]
     jsonstring = json.dumps(names, separators=(',', ':'))
     with open(outdir + 'names' + ('-by' if args.boneyard else '') + '.min.json' + testsuffix, 'w') as f:
         f.write(jsonstring)
