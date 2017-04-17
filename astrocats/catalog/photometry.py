@@ -139,7 +139,7 @@ class Photometry(CatDict):
                     raise CatDictError('Unable to convert date to MJD.')
             elif timestr:  # Make sure time is string
                 timestrs[ti] = timestr
-        self[self._KEYS.TIME] = timestrs if len(timestrs) > 0 else timestrs[0]
+        self[self._KEYS.TIME] = timestrs if len(timestrs) > 1 else timestrs[0]
 
         # Time unit is necessary for maximum time determination
         if self._KEYS.U_TIME not in self and self._KEYS.TIME in self:
