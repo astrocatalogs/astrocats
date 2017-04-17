@@ -7,7 +7,7 @@ from palettable import colorbrewer, cubehelix, wesanderson
 
 from astrocats.catalog.catdict import CatDict, CatDictError
 from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
-from astrocats.catalog.utils import get_sig_digits
+from astrocats.catalog.utils import get_sig_digits, listify
 from decimal import Decimal, localcontext
 
 DEFAULT_UL_SIGMA = 3.0
@@ -127,16 +127,18 @@ class Photometry(CatDict):
                         self[bmf] = temp
 
         # Convert dates to MJD
-        timestr = str(self.get(self._KEYS.TIME, ''))
-        if any(x in timestr for x in ['-', '/']):
-            timestr = timestr.replace('/', '-')
-            try:
-                self[self._KEYS.TIME] = str(
-                    astrotime(timestr, format='isot').mjd)
-            except Exception:
-                raise CatDictError('Unable to convert date to MJD.')
-        elif timestr:  # Make sure time is string
-            self[self._KEYS.TIME] = timestr
+        timestrs = [str(x) for x in listify(self.get(self._KEYS.TIME, ''))]
+        for ti, timestr in enumerate(timestrs):
+            if any(x in timestr for x in ['-', '/']):
+                timestrs[ti] = timestr.replace('/', '-')
+                try:
+                    timestrs[ti] = str(
+                        astrotime(timestrs[ti], format='isot').mjd)
+                except Exception:
+                    raise CatDictError('Unable to convert date to MJD.')
+            elif timestr:  # Make sure time is string
+                timestrs[ti] = timestr
+        self[self._KEYS.TIME] = timestrs if len(timestrs) > 0 else timestrs[0]
 
         # Time unit is necessary for maximum time determination
         if self._KEYS.U_TIME not in self and self._KEYS.TIME in self:

@@ -251,7 +251,7 @@ class CatDict(OrderedDict):
                 raise CatDictError("`value` '{}' for '{}' should be boolean".
                                    format(value, key.pretty()))
         # Strings and numeric types should be stored as strings
-        elif key.type in [KEY_TYPES.STRING, KEY_TYPES.NUMERIC]:
+        elif key.type in [KEY_TYPES.STRING, KEY_TYPES.NUMERIC, KEY_TYPES.TIME]:
             # Clean leading/trailing whitespace
             value = [
                 val.strip() if isinstance(val, (str, basestring)) else str(val)
