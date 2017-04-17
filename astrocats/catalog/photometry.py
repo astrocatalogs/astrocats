@@ -60,6 +60,7 @@ class PHOTOMETRY(KeyCollection):
     SOURCE = Key('source', KEY_TYPES.STRING, compare=False)
     TELESCOPE = Key('telescope', KEY_TYPES.STRING, compare=False)
     INSTRUMENT = Key('instrument', KEY_TYPES.STRING, compare=False)
+    MODE = Key('mode', KEY_TYPES.STRING, compare=False)
     BAND = Key('band', KEY_TYPES.STRING, priority=8)
     OBSERVATORY = Key('observatory', KEY_TYPES.STRING, compare=False)
     OBSERVER = Key('observer', KEY_TYPES.STRING, compare=False)
