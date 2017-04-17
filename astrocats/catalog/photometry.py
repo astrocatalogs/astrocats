@@ -70,6 +70,7 @@ class PHOTOMETRY(KeyCollection):
 
     DESCRIPTION = Key('description', KEY_TYPES.STRING, compare=False)
 
+    U_COUNTS = Key('u_counts', KEY_TYPES.STRING)
     U_TIME = Key('u_time', KEY_TYPES.STRING)
     U_FLUX = Key('u_flux', KEY_TYPES.STRING)
     U_FLUX_DENSITY = Key('u_fluxdensity', KEY_TYPES.STRING)
@@ -148,6 +149,11 @@ class Photometry(CatDict):
             self._log.info('`{}` not found in photometry, assuming '
                            ' MJD.'.format(self._KEYS.U_TIME))
             self[self._KEYS.U_TIME] = 'MJD'
+
+        if self._KEYS.U_COUNTS not in self and self._KEYS.COUNTS in self:
+            self._log.info('`{}` not found in photometry, assuming '
+                           ' s^-1.'.format(self._KEYS.U_COUNTS))
+            self[self._KEYS.U_TIME] = 's^-1'
 
         return
 
