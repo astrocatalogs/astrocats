@@ -1054,6 +1054,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         p1.legend.label_width = 20
         p1.legend.label_height = 14
         p1.legend.glyph_height = 14
+        p1.legend.click_policy = "hide"
 
         hover = HoverTool(
             tooltips=tt, renderers=[x for y in ttglyphs for x in y])
@@ -1716,6 +1717,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         p3.legend.label_width = 20
         p3.legend.label_height = 14
         p3.legend.glyph_height = 14
+        p3.legend.click_policy = "hide"
 
         hover = HoverTool(tooltips=tt, renderers=ttglyphs)
         p3.add_tools(hover)
@@ -1723,59 +1725,59 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
     if xrayavail and dohtml and args.writehtml:
         phototime = [(mean([float(y) for y in x['time']])
                       if isinstance(x['time'], list) else float(x['time']))
-                     for x in catalog[entry]['photometry'] if 'flux' in x]
+                     for x in catalog[entry]['photometry'] if 'flux' in x and float(x['flux']) > 0]
         phototimelowererrs = [
             float(x['e_lower_time'])
             if ('e_lower_time' in x and 'e_upper_time' in x) else
             (float(x['e_time']) if 'e_time' in x else 0.)
-            for x in catalog[entry]['photometry'] if 'flux' in x
+            for x in catalog[entry]['photometry'] if 'flux' in x and float(x['flux']) > 0
         ]
         phototimeuppererrs = [
             float(x['e_upper_time'])
             if ('e_lower_time' in x and 'e_upper_time' in x) in x else
             (float(x['e_time']) if 'e_time' in x else 0.)
-            for x in catalog[entry]['photometry'] if 'flux' in x
+            for x in catalog[entry]['photometry'] if 'flux' in x and float(x['flux']) > 0
         ]
         photofl = [
             np.log10(float(x['flux'])) for x in catalog[entry]['photometry']
-            if 'flux' in x
+            if 'flux' in x and float(x['flux']) > 0
         ]
         photofllowererrs = [
-            np.log10(float(x['flux'])) -
-            np.log10(float(x['flux']) - float(x['e_lower_flux']))
-            if ('e_lower_flux' in x) else
             (np.log10(float(x['flux'])) -
-             np.log10(float(x['flux']) - float(x['e_flux']))
-             if 'e_flux' in x else 0.) for x in catalog[entry]['photometry']
-            if 'flux' in x
+             np.log10(float(x['flux']) - float(x['e_lower_flux'])))
+            if ('e_lower_flux' in x and float(x['flux']) - float(x['e_lower_flux']) > 0) else
+            ((np.log10(float(x['flux'])) -
+              np.log10(float(x['flux']) - float(x['e_flux'])))
+             if ('e_flux' in x and float(x['flux']) - float(x['e_flux']) > 0) else 0.) for x in catalog[entry]['photometry']
+            if 'flux' in x and float(x['flux']) > 0
         ]
         photofluppererrs = [
-            np.log10(float(x['flux']) + float(x['e_upper_flux'])) -
-            np.log10(float(x['flux'])) if ('e_upper_flux' in x) else
-            (np.log10(float(x['flux']) + float(x['e_flux'])) -
-             np.log10(float(x['flux'])) if 'e_flux' in x else 0.)
-            for x in catalog[entry]['photometry'] if 'flux' in x
+            (np.log10(float(x['flux']) + float(x['e_upper_flux'])) -
+             np.log10(float(x['flux']))) if ('e_upper_flux' in x) else
+            ((np.log10(float(x['flux']) + float(x['e_flux'])) -
+              np.log10(float(x['flux']))) if 'e_flux' in x else 0.)
+            for x in catalog[entry]['photometry'] if 'flux' in x and float(x['flux']) > 0
         ]
         photoufl = [(x['u_flux'] if 'flux' in x else '')
-                    for x in catalog[entry]['photometry'] if 'flux' in x]
+                    for x in catalog[entry]['photometry'] if 'flux' in x and float(x['flux']) > 0]
         photoener = [((' - '.join([y.rstrip('.') for y in x['energy']])
                        if isinstance(x['energy'], list) else x['energy'])
                       if 'flux' in x else '')
-                     for x in catalog[entry]['photometry'] if 'flux' in x]
+                     for x in catalog[entry]['photometry'] if 'flux' in x and float(x['flux']) > 0]
         photouener = [(x['u_energy'] if 'flux' in x else '')
-                      for x in catalog[entry]['photometry'] if 'flux' in x]
+                      for x in catalog[entry]['photometry'] if 'flux' in x and float(x['flux']) > 0]
         photoinstru = [(x['instrument'] if 'instrument' in x else '')
-                       for x in catalog[entry]['photometry'] if 'flux' in x]
+                       for x in catalog[entry]['photometry'] if 'flux' in x and float(x['flux']) > 0]
         photosource = [
             ', '.join(
                 str(j)
                 for j in sorted(
                     int(i) for i in catalog[entry]['photometry'][x]['source']
                     .split(',')))
-            for x, y in enumerate(catalog[entry]['photometry']) if 'flux' in y
+            for x, y in enumerate(catalog[entry]['photometry']) if 'flux' in y and float(y['flux']) > 0
         ]
         phototype = [(True if 'upperlimit' in x else False)
-                     for x in catalog[entry]['photometry'] if 'flux' in x]
+                     for x in catalog[entry]['photometry'] if 'flux' in x and float(x['flux']) > 0]
 
         photoutime = catalog[entry]['photometry'][0][
             'u_time'] if 'u_time' in catalog[entry]['photometry'][0] else 'MJD'
@@ -2086,6 +2088,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         p4.legend.label_width = 20
         p4.legend.label_height = 14
         p4.legend.glyph_height = 14
+        p4.legend.click_policy = "hide"
         hover = HoverTool(tooltips=tt, renderers=ttglyphs)
         p4.add_tools(hover)
 
