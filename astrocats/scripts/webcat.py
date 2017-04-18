@@ -941,6 +941,51 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 indye = set(indb).intersection(indt).intersection(
                     indc).intersection(set(indyey).union(indyex))
 
+                indt = [i for i, j in enumerate(phototype) if j]
+                ind = set(indb).intersection(indt).intersection(indc)
+                if ind:
+                    data = dict(
+                        x=[phototime[i] for i in ind],
+                        y=[photoAB[i] for i in ind],
+                        lerr=[photoABlowererrs[i] for i in ind],
+                        uerr=[photoABuppererrs[i] for i in ind],
+                        desc=[photoband[i] for i in ind],
+                        instr=[photoinstru[i] for i in ind],
+                        src=[photosource[i] for i in ind])
+                    if 'maxabsmag' in catalog[
+                            entry] and 'maxappmag' in catalog[entry]:
+                        data['yabs'] = [photoAB[i] - distancemod for i in ind]
+                    if hastimeerrs:
+                        data['xle'] = [phototimelowererrs[i] for i in ind]
+                        data['xue'] = [phototimeuppererrs[i] for i in ind]
+
+                    sources.append(ColumnDataSource(data))
+                    # Currently Bokeh doesn't support tooltips for
+                    # inverted_triangle, so hide an invisible circle behind for the
+                    # tooltip
+                    glyphs[ci].append(
+                        p1.circle(
+                            'x', 'y', source=sources[-1], alpha=0.0, size=7))
+                    ttglyphs[ci].append(glyphs[ci][-1])
+                    uppdict = {
+                        'source': sources[-1],
+                        'color': bandcolorf(band),
+                        'size': 7
+                    }
+                    uppdict['legend'] = value(bandname) if bandname else ''
+                    glyphs[ci].append(
+                        p1.inverted_triangle('x', 'y', **uppdict))
+                    uppdict['color'] = 'white'
+                    uppdict['size'] = 10
+                    del(uppdict['source'])
+                    glyphs[ci].append(
+                        p1.inverted_triangle([None], [None], **uppdict))
+                    ttglyphs[ci].append(glyphs[ci][-1])
+
+                    for gi, gly in enumerate(glyphs[ci]):
+                        if corr != 'raw':
+                            glyphs[ci][gi].glyph.visible = False
+
                 if indne:
                     noerrorlegend = value(bandname)
 
@@ -997,13 +1042,21 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                             [err_xs[x] for x in indye], [[ys[x], ys[x]]
                                                          for x in indye],
                             color=bandcolorf(band),
-                            legend=''))
+                            legend=value(bandname) if bandname else ''))
                     glyphs[ci].append(
                         p1.multi_line(
                             [[xs[x], xs[x]]
                              for x in indye], [err_ys[x] for x in indye],
                             color=bandcolorf(band),
-                            legend=''))
+                            legend=value(bandname) if bandname else ''))
+                    # To hide the extra legend glyph
+                    glyphs[ci].append(
+                        p1.multi_line(
+                            [[]], [[]],
+                            color='white',
+                            line_width=2,
+                            line_cap='square',
+                            legend=value(bandname) if bandname else ''))
                     glyphs[ci].append(
                         p1.circle(
                             'x',
@@ -1014,49 +1067,6 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                             size=4))
                     ttglyphs[ci].append(glyphs[ci][-1])
 
-                upplimlegend = value(bandname) if (not indye and
-                                                   not indne) else ''
-
-                indt = [i for i, j in enumerate(phototype) if j]
-                ind = set(indb).intersection(indt).intersection(indc)
-                if ind:
-                    data = dict(
-                        x=[phototime[i] for i in ind],
-                        y=[photoAB[i] for i in ind],
-                        lerr=[photoABlowererrs[i] for i in ind],
-                        uerr=[photoABuppererrs[i] for i in ind],
-                        desc=[photoband[i] for i in ind],
-                        instr=[photoinstru[i] for i in ind],
-                        src=[photosource[i] for i in ind])
-                    if 'maxabsmag' in catalog[
-                            entry] and 'maxappmag' in catalog[entry]:
-                        data['yabs'] = [photoAB[i] - distancemod for i in ind]
-                    if hastimeerrs:
-                        data['xle'] = [phototimelowererrs[i] for i in ind]
-                        data['xue'] = [phototimeuppererrs[i] for i in ind]
-
-                    sources.append(ColumnDataSource(data))
-                    # Currently Bokeh doesn't support tooltips for
-                    # inverted_triangle, so hide an invisible circle behind for the
-                    # tooltip
-                    glyphs[ci].append(
-                        p1.circle(
-                            'x', 'y', source=sources[-1], alpha=0.0, size=7))
-                    ttglyphs[ci].append(glyphs[ci][-1])
-                    uppdict = {
-                        'source': sources[-1],
-                        'color': bandcolorf(band),
-                        'size': 7
-                    }
-                    if upplimlegend:
-                        uppdict['legend'] = upplimlegend
-                    glyphs[ci].append(
-                        p1.inverted_triangle('x', 'y', **uppdict))
-                    ttglyphs[ci].append(glyphs[ci][-1])
-
-                    for gi, gly in enumerate(glyphs[ci]):
-                        if corr != 'raw':
-                            glyphs[ci][gi].glyph.visible = False
 
         p1.legend.label_text_font = 'futura'
         p1.legend.label_text_font_size = '8pt'
