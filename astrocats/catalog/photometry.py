@@ -205,6 +205,8 @@ class Photometry(CatDict):
         # Do some basic homogenization
         if key == self._KEYS.BAND:
             return bandrepf(value)
+        elif key == self._KEYS.INSTRUMENT:
+            return instrumentrepf(value)
 
         return value
 
@@ -256,6 +258,10 @@ BAND_META = {
     'Kepler': {
         PHOTOMETRY.TELESCOPE: 'Kepler',
         PHOTOMETRY.INSTRUMENT: 'Kepler'
+    },
+    'G': {
+        PHOTOMETRY.TELESCOPE: 'Gaia',
+        PHOTOMETRY.INSTRUMENT: 'Astrometric'
     }
 }
 
@@ -309,6 +315,10 @@ BAND_WAVELENGTHS = {
 RADIO_CODES = ["5.9"]
 XRAY_CODES = ["0.3 - 10", "0.5 - 8"]
 
+INSTRUMENT_REPS = {
+    'Astrometric': 'Gaia-photometric'
+}
+
 seed(101)
 # bandcolors = ["#%06x" % round(float(x)/float(len(BAND_CODES))*0xFFFEFF)
 # for x in range(len(BAND_CODES))]
@@ -342,6 +352,13 @@ def bandcolorf(code):
     if newcode in bandcolordict:
         return bandcolordict[newcode]
     return 'black'
+
+
+def instrumentrepf(code):
+    for rep in INSTRUMENT_REPS:
+        if code in INSTRUMENT_REPS[rep]:
+            return rep
+    return code
 
 
 def radiocolorf(code):
