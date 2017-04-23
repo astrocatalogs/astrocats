@@ -150,7 +150,8 @@ class Photometry(CatDict):
                            ' MJD.'.format(self._KEYS.U_TIME))
             self[self._KEYS.U_TIME] = 'MJD'
 
-        if self._KEYS.U_COUNT_RATE not in self and self._KEYS.COUNT_RATE in self:
+        if (self._KEYS.U_COUNT_RATE not in self and
+                self._KEYS.COUNT_RATE in self):
             self._log.info('`{}` not found in photometry, assuming '
                            ' s^-1.'.format(self._KEYS.U_COUNT_RATE))
             self[self._KEYS.U_COUNT_RATE] = 's^-1'
