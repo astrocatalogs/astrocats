@@ -2393,7 +2393,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                                 "<span class='sttt'><button class='sme' type='button' onclick='markError(\""
                                 + entry + "\", \"" + key + "\", \"" +
                                 ','.join(idtypes) + "\", \"" +
-                                ','.join(sourceids) + "\", \"" + edit +
+                                ','.join(sourceids) + "\", \"" + edit + "\", \"" + modulename +
                                 "\")'>Flag as erroneous</button></span>")
                             keyhtml = keyhtml + r'</div><sup>' + sourcehtml + r'</sup>'
                         elif isinstance(row, basestring):
@@ -2410,7 +2410,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                             newhtml + '<div class="stt">' +
                             eventpageheader[key] +
                             "<span class='sttright'><button class='saq' type='button' onclick='addQuantity(\""
-                            + entry + "\", \"" + key + "\", \"" + edit +
+                            + entry + "\", \"" + key + "\", \"" + edit + "\", \"" + modulename +
                             "\")'>Add new value</button></span></div>")
                     else:
                         newhtml = newhtml + eventpageheader[key]
