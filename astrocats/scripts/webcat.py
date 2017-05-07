@@ -870,7 +870,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             realizdicts = {}
             mdicts = {}
             for rgi, rg in enumerate(rglyphs):
-                realizdicts['rg' + str(rgi)] = rg.glyph
+                realizdicts['rg' + str(rgi)] = rg
                 mdicts['m' + str(rgi)] = msources[rgi]
             sdicts = dict(
                 zip(['s' + str(x) for x in range(len(rsources))], rsources))
@@ -884,9 +884,6 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 for (g = 0; g < """ + str(len(rglyphs)) + """; g++) {
                     var m = eval('m'+g).data['id'][0];
                     eval('rg' + g).visible = (m == mis);
-                }
-                for (s = 0; s < """ + str(len(rsources)) + """; s++) {
-                    eval('s'+s).trigger('change');
                 }
             """)
             realizchecks = Select(
@@ -1086,7 +1083,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             photodicts = {}
             for ci, corr in enumerate(corrects):
                 for gi, gly in enumerate(glyphs[ci]):
-                    photodicts[corr + str(gi)] = gly.glyph
+                    photodicts[corr + str(gi)] = gly
             sdicts = dict(
                 zip(['source' + str(x) for x in range(len(sources))], sources))
             photodicts.update(sdicts)
@@ -1115,9 +1112,6 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                             eval(corrects[c] + g).visible = false;
                         }
                     }
-                }
-                for (s = 0; s < """ + str(len(sources)) + """; s++) {
-                    eval('source'+s).trigger('change');
                 }
             """)
             photoopts = ["Raw"]
