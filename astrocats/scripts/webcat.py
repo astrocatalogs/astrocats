@@ -692,7 +692,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         phototype = [(x['upperlimit'] if 'upperlimit' in x else False)
                      for x in catalog[entry]['photometry'] if 'magnitude' in x
                      and 'realization' not in x]
-        photocorr = [('k' if 'kcorrected' in x else 'raw')
+        photocorr = [('kcorr' if 'kcorrected' in x else 'scorr' if 'scorrected' in x else 'raw')
                      for x in catalog[entry]['photometry'] if 'magnitude' in x
                      and 'realization' not in x]
 
@@ -856,7 +856,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                             rglyphs.append(p1.line(
                                 'x', 'y', source=rsources[-1], line_width=1, color=bandcolorf(rzb), line_alpha=0.5))
                             if mi != 0:
-                                rglyphs[-1].glyph.visible = False
+                                rglyphs[-1].visible = False
                             msources.append(ColumnDataSource({'id': [mi]}))
 
         if len(models) > 0:
@@ -919,7 +919,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         bandset = [i for (k, j, i) in bandsortlists]
 
         sources = []
-        corrects = ['raw', 'k', 's']
+        corrects = ['raw', 'kcorr', 'scorr']
         glyphs = [[] for x in range(len(corrects))]
         ttglyphs = [[] for x in range(len(corrects))]
         for ci, corr in enumerate(corrects):
@@ -981,10 +981,6 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                     glyphs[ci].append(
                         p1.inverted_triangle([None], [None], **uppdict))
                     ttglyphs[ci].append(glyphs[ci][-1])
-
-                    for gi, gly in enumerate(glyphs[ci]):
-                        if corr != 'raw':
-                            glyphs[ci][gi].glyph.visible = False
 
                 if indne:
                     noerrorlegend = value(bandname)
@@ -1067,6 +1063,9 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                             size=4))
                     ttglyphs[ci].append(glyphs[ci][-1])
 
+            for gi, gly in enumerate(glyphs[ci]):
+                if corr != 'raw':
+                    glyphs[ci][gi].visible = False
 
         p1.legend.label_text_font = 'futura'
         p1.legend.label_text_font_size = '8pt'
@@ -1089,7 +1088,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 for gi, gly in enumerate(glyphs[ci]):
                     photodicts[corr + str(gi)] = gly.glyph
             sdicts = dict(
-                zip(['s' + str(x) for x in range(len(sources))], sources))
+                zip(['source' + str(x) for x in range(len(sources))], sources))
             photodicts.update(sdicts)
             photocallback = CustomJS(
                 args=photodicts,
@@ -1098,27 +1097,39 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 if (cb_obj.get('value') == 'Raw') {
                     show = 'raw';
                 } else if (cb_obj.get('value') == 'K-Corrected') {
-                    show = 'k';
+                    show = 'kcorr';
+                } else if (cb_obj.get('value') == 'S-Corrected') {
+                    show = 'scorr';
                 }
-                var viz = (show == 'all') ? true : false;
-                var corrects = ["raw", "k"];
+                var corrects = ["raw", "kcorr", "scorr"];
                 for (c = 0; c < """ + str(len(corrects)) + """; c++) {
-                    for (g = 0; g < """ + str(len(glyphs[0])) + """; g++) {
-                        if (show == 'all' || corrects[c] != show) {
-                            eval(corrects[c] + g).visible = viz;
-                        } else if (show != 'all' || corrects[c] == show) {
-                            eval(corrects[c] + g).visible = !viz;
+                    for (g = 0; g < """ + str(max([len(x) for x in glyphs])) + """; g++) {
+                        try {
+                            eval(corrects[c] + g);
+                        } catch(e) {
+                            continue;
+                        }
+                        if (show == 'all' || corrects[c] == show) {
+                            eval(corrects[c] + g).visible = true;
+                        } else {
+                            eval(corrects[c] + g).visible = false;
                         }
                     }
                 }
                 for (s = 0; s < """ + str(len(sources)) + """; s++) {
-                    eval('s'+s).trigger('change');
+                    eval('source'+s).trigger('change');
                 }
             """)
+            photoopts = ["Raw"]
+            if 'kcorr' in photocorr:
+                photoopts.append("K-Corrected")
+            if 'scorr' in photocorr:
+                photoopts.append("S-Corrected")
+            photoopts.append("All")
             photochecks = Select(
                 title="Photometry to show:",
                 value="Raw",
-                options=["Raw", "K-Corrected", "All"],
+                options=photoopts,
                 callback=photocallback)
         else:
             photochecks = ''
