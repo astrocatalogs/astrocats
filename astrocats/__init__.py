@@ -5,7 +5,7 @@ Scripts for creating and analyzing catalogs of astronomical data.
 
 import os
 
-__version__ = '0.3.20'
+__version__ = '0.3.21'
 __author__ = 'James Guillochon & Luke Kelley'
 __license__ = 'MIT'
 
