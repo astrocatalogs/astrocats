@@ -23,11 +23,10 @@ import numpy as np
 from astrocats.catalog.utils import (bandaliasf, bandcodes, bandcolorf,
                                      bandgroupf, bandshortaliasf, bandwavef,
                                      bandwavelengths, get_sig_digits,
-                                     is_number, pretty_num, radiocolorf,
+                                     is_number, pretty_num, production, radiocolorf,
                                      round_sig, tq, xraycolorf)
-from astrocats.scripts.repos import (get_rep_folder, get_rep_folders,
+from astrocats.scripts.repos import (get_rep_folder, get_all_rep_folders,
                                      repo_file_list)
-from astrocats.utils import production
 from astropy import units as un
 from astropy.coordinates import SkyCoord as coord
 from astropy.time import Time as astrotime
@@ -144,7 +143,8 @@ elif args.catalog == 'sne':
 else:
     raise ValueError('Unknown catalog!')
 
-repofolders = get_rep_folders(moduledir)
+repofolders = get_all_rep_folders(moduledir)
+log.warning("repofolders = '{}'".format(repofolders))
 
 outdir = "astrocats/" + moduledir + "/output/"
 cachedir = "cache/"
@@ -308,6 +308,7 @@ for event_count, event_fname in enumerate(tq(sorted(files, key=lambda s: s.lower
 
     event_name = entry
     log.warning("event_name = '{}'".format(event_name))
+    sys.exit(5)
 
     # Skip events that aren't targetted
     if args.eventlist and event_name not in args.eventlist:

@@ -13,7 +13,7 @@ from astropy.time import Time as astrotime
 from tqdm import tqdm
 
 from astrocats.catalog.utils import pretty_num
-from astrocats.scripts.repos import repo_file_list, get_rep_folders
+from astrocats.scripts.repos import repo_file_list, get_all_rep_folders
 
 parser = argparse.ArgumentParser(
     description='Generate a host galaxy catalog JSON file and plot HTML files from AstroCats data.'
@@ -52,7 +52,7 @@ def touch(fname, times=None):
     with open(fname, 'a'):
         os.utime(fname, times)
 
-repofolders = get_rep_folders(moduledir)
+repofolders = get_all_rep_folders(moduledir)
 files = repo_file_list(moduledir, repofolders, normal=True, bones=False)
 
 for fcnt, eventfile in enumerate(tqdm(sorted(files, key=lambda s: s.lower()))):

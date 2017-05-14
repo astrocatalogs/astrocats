@@ -7,7 +7,7 @@ from collections import OrderedDict
 
 import ads
 from astrocats.catalog.utils import tq
-from astrocats.scripts.repos import get_rep_folders, repo_file_list
+from astrocats.scripts.repos import get_all_rep_folders, repo_file_list
 from astropy.time import Time as astrotime
 
 parser = argparse.ArgumentParser(
@@ -33,7 +33,7 @@ elif args.catalog == 'hvs':
 else:
     raise ValueError('Unknown catalog!')
 
-repofolders = get_rep_folders(moduledir)
+repofolders = get_all_rep_folders(moduledir)
 
 biblio = OrderedDict()
 

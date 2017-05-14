@@ -18,7 +18,7 @@ from palettable import cubehelix
 
 from astrocats.catalog.utils import tprint, tq
 from astrocats.catalog.utils import production
-from astrocats.scripts.repos import repo_file_list, get_rep_folders
+from astrocats.scripts.repos import repo_file_list, get_all_rep_folders
 
 parser = argparse.ArgumentParser(
     description='Generate a sky location map AstroCats data.'
