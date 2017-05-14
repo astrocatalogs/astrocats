@@ -321,7 +321,7 @@ def clone(repo, log, depth=1):
         repo_name = os.path.split(repo)[-1]
         repo_name = "https://github.com/astrocatalogs/" + repo_name + ".git"
         log.warning("Cloning '{}' (only needs to be done ".format(repo) +
-                    "once, may take few minutes per repo).")
+                    "once, may take a few minutes per repo).")
         grepo = git.Repo.clone_from(repo_name, repo, **kwargs)
     except Exception:
         log.error("CLONING '{}' INTERRUPTED".format(repo))

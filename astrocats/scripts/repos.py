@@ -4,15 +4,16 @@ from glob import glob
 from astrocats.catalog.utils import is_number
 
 
-
 def get_rep_folders(module):
     with open('astrocats/' + module + '/input/rep-folders.txt', 'r') as f:
         return f.read().splitlines()
+
 
 def get_rep_years(repofolders):
     repoyears = [int(repofolders[x][-4:]) for x in range(len(repofolders) - 1)]
     repoyears[0] -= 1
     return repoyears
+
 
 def repo_file_list(module, repofolders, normal=True, bones=True):
     outdir = 'astrocats/' + module + '/output/'
