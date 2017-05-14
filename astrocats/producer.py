@@ -2,7 +2,6 @@ import argparse
 import csv
 import filecmp
 import gzip
-import hashlib
 import json
 import operator
 import os
@@ -21,30 +20,35 @@ from statistics import mean
 
 import inflect
 import numpy as np
-import requests
 from astrocats.catalog.utils import (bandaliasf, bandcodes, bandcolorf,
                                      bandgroupf, bandshortaliasf, bandwavef,
                                      bandwavelengths, get_sig_digits,
                                      is_number, pretty_num, radiocolorf,
                                      round_sig, tq, xraycolorf)
-from astrocats.scripts.events import get_event_filename, get_event_text
 from astrocats.scripts.repos import (get_rep_folder, get_rep_folders,
                                      repo_file_list)
+from astrocats.utils import production
 from astropy import units as un
 from astropy.coordinates import SkyCoord as coord
 from astropy.time import Time as astrotime
-from bokeh.core.properties import value
-from bokeh.embed import file_html
-from bokeh.layouts import row as bokehrow
-from bokeh.layouts import column, layout
-from bokeh.models import (ColumnDataSource, CustomJS, DatetimeAxis, HoverTool,
-                          LinearAxis, Range1d, Slider)
-from bokeh.models.widgets import Select
-from bokeh.plotting import Figure, reset_output
-from bokeh.resources import CDN
+
+# from bokeh.core.properties import value
+# from bokeh.embed import file_html
+# from bokeh.layouts import row as bokehrow
+# from bokeh.layouts import column, layout
+# from bokeh.models import (ColumnDataSource, CustomJS, DatetimeAxis, HoverTool,
+#                           LinearAxis, Range1d, Slider)
+# from bokeh.models.widgets import Select
+# from bokeh.plotting import Figure, reset_output
+# from bokeh.resources import CDN
+
 from bs4 import BeautifulSoup
-from palettable import cubehelix
-from past.builtins import basestring
+# from palettable import cubehelix
+# from past.builtins import basestring
+
+from .catalog.utils import logger
+log = logger.get_logger(tofile='producer.log')
+log.warning("astrocats.producer()")
 
 parser = argparse.ArgumentParser(
     description='Generate a catalog JSON file and plot HTML files from AstroCats data.'
@@ -122,6 +126,8 @@ parser.add_argument(
     type=str)
 args = parser.parse_args()
 
+log.warning("args = {}".format(args))
+
 infl = inflect.engine()
 infl.defnoun("spectrum", "spectra")
 
@@ -156,7 +162,7 @@ linkdir = "https://" + moduleurl + "/" + modulename + "/"
 
 testsuffix = '.test' if args.test else ''
 
-mycolors = cubehelix.perceptual_rainbow_16.hex_colors[:14]
+# mycolors = cubehelix.perceptual_rainbow_16.hex_colors[:14]
 
 columnkey = [
     "check", "name", "alias", "discoverdate", "maxdate", "maxappmag",
@@ -237,65 +243,6 @@ titles = OrderedDict(list(zip(columnkey, titles)))
 
 wavedict = dict(list(zip(bandcodes, bandwavelengths)))
 
-
-def event_filename(name):
-    return (name.replace('/', '_'))
-
-
-# Replace bands with real colors, if possible.
-# for b, code in enumerate(bandcodes):
-#    if (code in bandwavelengths):
-#        hexstr = irgb_string_from_xyz(xyz_from_wavelength(bandwavelengths[code]))
-#        if (hexstr != "#000000"):
-#            bandcolors[b] = hexstr
-
-coldict = dict(list(zip(list(range(len(columnkey))), columnkey)))
-
-
-def touch(fname, times=None):
-    with open(fname, 'a'):
-        os.utime(fname, times)
-
-
-def utf8(x):
-    return str(x, 'utf-8')
-
-
-def label_format(label):
-    newlabel = label.replace('Angstrom', 'Å')
-    newlabel = newlabel.replace('^2', '²')
-    return newlabel
-
-
-def is_valid_link(url):
-    response = requests.get(url)
-    try:
-        response.raise_for_status()
-    except (KeyboardInterrupt, SystemExit):
-        raise
-    except Exception:
-        return False
-    return True
-
-
-def get_first_value(name, field):
-    return catalog[name][field][0]['value'] if field in catalog[
-        name] and catalog[name][field] else ''
-
-
-def get_first_kind(name, field):
-    return (catalog[name][field][0]['kind'] if field in catalog[name] and
-            catalog[name][field] and 'kind' in catalog[name][field][0] else '')
-
-
-def md5file(fname):
-    hash_md5 = hashlib.md5()
-    with open(fname, "rb") as f:
-        for chunk in iter(lambda: f.read(4096), b""):
-            hash_md5.update(chunk)
-    return hash_md5.hexdigest()
-
-
 catalog = OrderedDict()
 catalogcopy = OrderedDict()
 csvpages = [[
@@ -322,7 +269,9 @@ else:
 
 files = repo_file_list(
     moduledir, repofolders, normal=(not args.boneyard), bones=args.boneyard)
+log.warning("{} Files, e.g. '{}'".format(len(files), files[0]))
 
+# Load existing MD5 checksums
 if os.path.isfile(outdir + cachedir + 'md5s.json'):
     with open(outdir + cachedir + 'md5s.json', 'r') as f:
         filetext = f.read()
@@ -330,36 +279,43 @@ if os.path.isfile(outdir + cachedir + 'md5s.json'):
 else:
     md5dict = {}
 
-for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
-    fileeventname = os.path.splitext(os.path.basename(eventfile))[0].replace(
+# Iterate over all events
+# -----------------------
+for event_count, event_fname in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
+    log.warning("{} {}".format(event_count, event_fname))
+
+    event_name_from_fname = os.path.splitext(os.path.basename(event_fname))[0].replace(
         '.json', '')
-    if args.eventlist and fileeventname not in args.eventlist:
+    # Skip events that weren't specifically targetted
+    if args.eventlist and event_name_from_fname not in args.eventlist:
         continue
 
-    if args.travis and fcnt >= travislimit:
+    if args.travis and event_count >= travislimit:
         break
 
+    # Generate checksum for each json input file, compare to previous (if they exist)
+    # to determine if a file needs to be reprocessed
     entry_changed = False
-    checksum = md5file(eventfile)
-    if eventfile not in md5dict or md5dict[eventfile] != checksum:
+    checksum = production.md5file(event_fname)
+    if event_fname not in md5dict or md5dict[event_fname] != checksum:
         entry_changed = True
-        md5dict[eventfile] = checksum
+        md5dict[event_fname] = checksum
 
-    filetext = get_event_text(eventfile)
-
+    # Add this entry into the catalog
+    filetext = production.get_event_text(event_fname)
     catalog.update(json.loads(filetext, object_pairs_hook=OrderedDict))
     entry = next(reversed(catalog))
 
-    eventname = entry
+    event_name = entry
+    log.warning("event_name = '{}'".format(event_name))
 
-    if args.eventlist and eventname not in args.eventlist:
+    # Skip events that aren't targetted
+    if args.eventlist and event_name not in args.eventlist:
         continue
-
-    # tprint(eventfile + ' [' + checksum + ']')
 
     repfolder = get_rep_folder(catalog[entry], repofolders)
     if os.path.isfile("astrocats/" + moduledir + "/input/" + modulename +
-                      "-internal/" + fileeventname + ".json"):
+                      "-internal/" + event_name_from_fname + ".json"):
         catalog[entry]['download'] = 'e'
     if 'discoverdate' in catalog[entry]:
         for d, date in enumerate(catalog[entry]['discoverdate']):
@@ -474,10 +430,10 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
     distancemod = 0.0
     if 'maxabsmag' in catalog[entry] and 'maxappmag' in catalog[entry]:
-        distancemod = float(get_first_value(entry, 'maxappmag')) - \
-            float(get_first_value(entry, 'maxabsmag'))
+        distancemod = float(production.get_first_value(catalog, entry, 'maxappmag')) - \
+            float(production.get_first_value(catalog, entry, 'maxabsmag'))
 
-    plotlink = modulename + "/" + fileeventname + "/"
+    plotlink = modulename + "/" + event_name_from_fname + "/"
     if photoavail:
         catalog[entry]['photolink'] = (str(numphoto) + (
             (',' + minphotoep + ',' + maxphotoep) if
@@ -563,13 +519,13 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
     # expensive
     dohtml = True
     if not args.forcehtml:
-        if os.path.isfile(outdir + htmldir + fileeventname + ".html"):
+        if os.path.isfile(outdir + htmldir + event_name_from_fname + ".html"):
             if not entry_changed:
                 dohtml = False
 
     # Copy JSON files up a directory if they've changed
     if dohtml:
-        shutil.copy2(eventfile, outdir + jsondir + os.path.basename(eventfile))
+        shutil.copy2(event_fname, outdir + jsondir + os.path.basename(event_fname))
 
     if (photoavail or radioavail or xrayavail) and dohtml and args.writehtml:
         phototime = [
@@ -727,79 +683,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             for x, y, z in list(zip(photoAB, photoABlowererrs, phototype))
         ])
 
-        p1 = Figure(
-            title='Photometry for ' + eventname,
-            active_drag='box_zoom',
-            # sizing_mode = "scale_width",
-            y_axis_label='Apparent Magnitude',
-            tools=tools,
-            plot_width=485,
-            plot_height=485,
-            x_range=(min_x_range, max_x_range),
-            y_range=(min_y_range, max_y_range),
-            toolbar_location='above',
-            toolbar_sticky=False)
-        p1.xaxis.axis_label_text_font = 'futura'
-        p1.yaxis.axis_label_text_font = 'futura'
-        p1.xaxis.major_label_text_font = 'futura'
-        p1.yaxis.major_label_text_font = 'futura'
-        p1.xaxis.axis_label_text_font_size = '11pt'
-        p1.yaxis.axis_label_text_font_size = '11pt'
-        p1.xaxis.major_label_text_font_size = '8pt'
-        p1.yaxis.major_label_text_font_size = '8pt'
-        p1.title.align = 'center'
-        p1.title.text_font_size = '16pt'
-        p1.title.text_font = 'futura'
 
-        min_x_date = astrotime(min_x_range, format='mjd').datetime
-        max_x_date = astrotime(max_x_range, format='mjd').datetime
-
-        p1.extra_x_ranges = {
-            "gregorian date": Range1d(
-                start=min_x_date, end=max_x_date)
-        }
-        p1.add_layout(
-            DatetimeAxis(
-                major_label_text_font_size='8pt',
-                axis_label='Time (' + photoutime + '/Gregorian)',
-                major_label_text_font='futura',
-                axis_label_text_font='futura',
-                major_tick_in=0,
-                x_range_name="gregorian date",
-                axis_label_text_font_size='11pt'),
-            'below')
-
-        if mjdmax:
-            min_xm_range = (min_x_range - mjdmax) * redshiftfactor
-            max_xm_range = (max_x_range - mjdmax) * redshiftfactor
-            p1.extra_x_ranges["time since max"] = Range1d(
-                start=min_xm_range, end=max_xm_range)
-            p1.add_layout(
-                LinearAxis(
-                    axis_label="Time since max (" + dayframe + ")",
-                    major_label_text_font_size='8pt',
-                    major_label_text_font='futura',
-                    axis_label_text_font='futura',
-                    x_range_name="time since max",
-                    axis_label_text_font_size='11pt'),
-                'above')
-
-        if 'maxabsmag' in catalog[entry] and 'maxappmag' in catalog[entry]:
-            min_y_absmag = min_y_range - distancemod
-            max_y_absmag = max_y_range - distancemod
-            p1.extra_y_ranges = {
-                "abs mag": Range1d(
-                    start=min_y_absmag, end=max_y_absmag)
-            }
-            p1.add_layout(
-                LinearAxis(
-                    axis_label="Absolute Magnitude*",
-                    major_label_text_font_size='8pt',
-                    major_label_text_font='futura',
-                    axis_label_text_font='futura',
-                    y_range_name="abs mag",
-                    axis_label_text_font_size='11pt'),
-                'right')
 
         # Realizations
         models = catalog[entry].get('models', [])
@@ -1252,10 +1136,10 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         hover = HoverTool(tooltips=tt2)
 
         p2 = Figure(
-            title='Spectra for ' + eventname,
-            x_axis_label=label_format('Observed Wavelength (Å)'),
+            title='Spectra for ' + event_name,
+            x_axis_label=production.label_format('Observed Wavelength (Å)'),
             active_drag='box_zoom',
-            y_axis_label=label_format('Flux (scaled)' + (' + offset' if (
+            y_axis_label=production.label_format('Flux (scaled)' + (' + offset' if (
                 nspec > 1) else '')),
             x_range=x_range,
             tools=tools,  # sizing_mode = "scale_width",
@@ -1288,7 +1172,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 x0=prunedwave[i],
                 y0=prunedscaled[i],
                 yorig=spectrumflux[i],
-                fluxunit=[label_format(fluxunit)] * sl,
+                fluxunit=[production.label_format(fluxunit)] * sl,
                 x=prunedwave[i],
                 y=[y_offsets[i] + j for j in prunedscaled[i]],
                 src=[catalog[entry]['spectra'][i]['source']] * sl)
@@ -1388,7 +1272,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             value=1,
             step=0.5,
             width=230,
-            title=label_format("Bin size (Angstrom)"),
+            title=production.label_format("Bin size (Angstrom)"),
             callback=callback)
         spacingslider = Slider(
             start=0,
@@ -1396,7 +1280,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             value=1,
             step=0.02,
             width=230,
-            title=label_format("Spacing"),
+            title=production.label_format("Spacing"),
             callback=callback)
 
     if radioavail and dohtml and args.writehtml:
@@ -1498,7 +1382,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
         ttglyphs = []
         p3 = Figure(
-            title='Radio Observations of ' + eventname,
+            title='Radio Observations of ' + event_name,
             active_drag='box_zoom',
             # sizing_mode = "scale_width",
             y_axis_label='Flux Density (µJy)',
@@ -1878,7 +1762,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
         ttglyphs = []
         p4 = Figure(
-            title='X-ray Observations of ' + eventname,
+            title='X-ray Observations of ' + event_name,
             active_drag='box_zoom',
             # sizing_mode = "scale_width",
             y_axis_label='Log Flux (ergs s⁻¹ cm⁻²)',
@@ -2148,8 +2032,8 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
             imgsrc = ''
             hasimage = True
-            if eventname in hostimgdict:
-                imgsrc = hostimgdict[eventname]
+            if event_name in hostimgdict:
+                imgsrc = hostimgdict[event_name]
             elif args.collecthosts:
                 try:
                     response = urllib.request.urlopen(
@@ -2163,13 +2047,13 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 except Exception:
                     hasimage = False
                 else:
-                    with open(outdir + htmldir + fileeventname + '-host.jpg',
+                    with open(outdir + htmldir + event_name_from_fname + '-host.jpg',
                               'wb') as f:
                         f.write(resptxt)
                     imgsrc = 'SDSS'
 
                 if hasimage and filecmp.cmp(
-                        outdir + htmldir + fileeventname + '-host.jpg',
+                        outdir + htmldir + event_name_from_fname + '-host.jpg',
                         'astrocats/' + moduledir + '/input/missing.jpg'):
                     hasimage = False
 
@@ -2205,7 +2089,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                                 response = urllib.request.urlopen(
                                     'http://skyview.gsfc.nasa.gov/tempspace/fits/'
                                     + imgname)
-                                with open(outdir + htmldir + fileeventname +
+                                with open(outdir + htmldir + event_name_from_fname +
                                           '-host.jpg', 'wb') as f:
                                     f.write(response.read())
                                 imgsrc = 'DSS'
@@ -2218,14 +2102,14 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
         if hasimage:
             if imgsrc == 'SDSS':
-                hostimgdict[eventname] = 'SDSS'
+                hostimgdict[event_name] = 'SDSS'
                 skyhtml = (
                     '<a href="http://skyserver.sdss.org/DR12/en/tools/chart/navi.aspx?opt=G&ra='
                     + str(c.ra.deg) + '&dec=' + str(c.dec.deg) +
                     '&scale=0.15"><img src="' + urllib.parse.quote(
-                        fileeventname) + '-host.jpg" width=250></a>')
+                        event_name_from_fname) + '-host.jpg" width=250></a>')
             elif imgsrc == 'DSS':
-                hostimgdict[eventname] = 'DSS'
+                hostimgdict[event_name] = 'DSS'
                 url = (
                     "http://skyview.gsfc.nasa.gov/current/cgi/runquery.pl?Position="
                     + str(urllib.parse.quote_plus(snra + " " + sndec)) +
@@ -2237,10 +2121,10 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                     "&catalogurl=&CatalogIDs=on&RGB=1&survey=DSS2+IR&survey=DSS2+Red&survey=DSS2+Blue&IOSmooth=&contour=&contourSmooth=&ebins=null"
                 )
                 skyhtml = ('<a href="' + url + '"><img src="' +
-                           urllib.parse.quote(fileeventname) +
+                           urllib.parse.quote(event_name_from_fname) +
                            '-host.jpg" width=250></a>')
         else:
-            hostimgdict[eventname] = 'None'
+            hostimgdict[event_name] = 'None'
 
     if dohtml and args.writehtml:
         # if (photoavail and spectraavail) and dohtml and args.writehtml:
@@ -2265,9 +2149,9 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             ncols=2,
             toolbar_location=None)
 
-        html = '<html><head><title>' + eventname + '</title>'
+        html = '<html><head><title>' + event_name + '</title>'
         if photoavail or spectraavail or radioavail or xrayavail:
-            html = file_html(p, CDN, eventname)
+            html = file_html(p, CDN, event_name)
             # html = html + '''<link href="https://cdn.pydata.org/bokeh/release/bokeh-0.11.0.min.css" rel="stylesheet" type="text/css">
             #    <script src="https://cdn.pydata.org/bokeh/release/bokeh-0.11.0.min.js"></script>''' + script + '</head><body>'
         else:
@@ -2295,27 +2179,27 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             '''/wp-content/plugins/transient-table/transient-table.js" type="text/js"></script>\n
             <script type="text/javascript">\n
                 if(top==self)\n
-                this.location="''' + eventname + '''"\n
+                this.location="''' + event_name + '''"\n
             </script>''', html)
 
         repfolder = get_rep_folder(catalog[entry], repofolders)
         html = re.sub(
             r'(\<\/body\>)', '<div class="event-download">' + r'<a href="' +
-            r'../json/' + fileeventname + r'.json" download>' +
-            r'Download all data for ' + eventname + r'</a></div>\n\1', html)
-        issueargs = '?title=' + ('[' + eventname + '] <Descriptive issue title>').encode('ascii', 'xmlcharrefreplace').decode("utf-8") + '&body=' + \
-            ('Please describe the issue with ' + eventname + '\'s data here, be as descriptive as possible! ' +
+            r'../json/' + event_name_from_fname + r'.json" download>' +
+            r'Download all data for ' + event_name + r'</a></div>\n\1', html)
+        issueargs = '?title=' + ('[' + event_name + '] <Descriptive issue title>').encode('ascii', 'xmlcharrefreplace').decode("utf-8") + '&body=' + \
+            ('Please describe the issue with ' + event_name + '\'s data here, be as descriptive as possible! ' +
              'If you believe the issue appears in other events as well, please identify which other events the issue possibly extends to.').encode('ascii', 'xmlcharrefreplace').decode("utf-8")
         html = re.sub(r'(\<\/body\>)', '<div class="event-issue">' +
                       r'<a href="https://github.com/astrocatalogs/' + moduledir
                       + '/issues/new' + issueargs + r'" target="_blank">' +
-                      r'Report an issue with ' + eventname + r'</a></div>\n\1',
+                      r'Report an issue with ' + event_name + r'</a></div>\n\1',
                       html)
 
         newhtml = r'<div class="event-tab-div"><h3 class="event-tab-title">Event metadata</h3><table class="event-table"><tr><th width=100px class="event-cell">Quantity</th><th class="event-cell">Value<sup>Sources</sup> [Kind]</th></tr>\n'
         edit = "true" if os.path.isfile(
             'astrocats/' + moduledir + '/input/' + modulename + '-internal/' +
-            get_event_filename(entry) + '.json') else "false"
+            production.get_event_filename(entry) + '.json') else "false"
         for key in columnkey:
             if key in catalog[entry] and key not in eventignorekey and len(
                     catalog[entry][key]) > 0:
@@ -2480,9 +2364,9 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
         html = re.sub(r'(\<\/body\>)', newhtml, html)
 
-        with gzip.open(outdir + htmldir + fileeventname + ".html.gz",
+        with gzip.open(outdir + htmldir + event_name_from_fname + ".html.gz",
                        'wt') as fff:
-            touch(outdir + htmldir + fileeventname + ".html")
+            production.touch(outdir + htmldir + event_name_from_fname + ".html")
             fff.write(html)
 
     # Necessary to clear Bokeh state
@@ -2491,7 +2375,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
     # if spectraavail and dohtml:
     #    sys.exit()
 
-    # if fcnt > 100:
+    # if event_count > 100:
     #    sys.exit()
 
     # Save this stuff because next line will delete it.
@@ -2503,11 +2387,13 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         csvpages.append([
             entry, ",".join(
                 [x['value'] for x in catalog[entry].get('alias', [{'value': entry}])]),
-            get_first_value(entry, 'maxappmag'),
-            get_first_value(entry, 'maxdate'),
-            get_first_value(entry, 'claimedtype'), get_first_value(
-                entry, 'redshift'), get_first_kind(entry, 'redshift'),
-            get_first_value(entry, 'ra'), get_first_value(entry, 'dec'),
+            production.get_first_value(catalog, entry, 'maxappmag'),
+            production.get_first_value(catalog, entry, 'maxdate'),
+            production.get_first_value(catalog, entry, 'claimedtype'),
+            production.get_first_value(catalog, entry, 'redshift'),
+            production.get_first_kind(catalog, entry, 'redshift'),
+            production.get_first_value(catalog, entry, 'ra'),
+            production.get_first_value(catalog, entry, 'dec'),
             catalog[entry]['numphoto'], 'https://' + moduleurl + '/' + plotlink
         ])
 

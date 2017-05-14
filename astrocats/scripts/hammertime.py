@@ -17,7 +17,7 @@ from bokeh.resources import CDN
 from palettable import cubehelix
 
 from astrocats.catalog.utils import tprint, tq
-from astrocats.scripts.events import get_event_text
+from astrocats.catalog.utils import production
 from astrocats.scripts.repos import repo_file_list, get_rep_folders
 
 parser = argparse.ArgumentParser(
@@ -105,7 +105,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()),
     # if fcnt > 5000:
     #    break
 
-    filetext = get_event_text(eventfile)
+    filetext = production.get_event_text(eventfile)
 
     thisevent = json.loads(filetext, object_pairs_hook=OrderedDict)
     thisevent = thisevent[list(thisevent.keys())[0]]
