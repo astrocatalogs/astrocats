@@ -17,7 +17,7 @@ from bokeh.resources import CDN
 from palettable import cubehelix
 
 from astrocats.catalog.utils import tprint, tq
-from astrocats.catalog.utils import production
+from astrocats.catalog.production import utils as production_utils
 from astrocats.scripts.repos import repo_file_list, get_all_rep_folders
 
 parser = argparse.ArgumentParser(
@@ -105,7 +105,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()),
     # if fcnt > 5000:
     #    break
 
-    filetext = production.get_event_text(eventfile)
+    filetext = production_utils.get_event_text(eventfile)
 
     thisevent = json.loads(filetext, object_pairs_hook=OrderedDict)
     thisevent = thisevent[list(thisevent.keys())[0]]
@@ -354,7 +354,7 @@ for ci, ct in enumerate(claimedtypes):
         tcolor = colors[ci]
         falpha = 1.0
     glyphs.append(p1.circle('x', 'y', source=source, color=tcolor,
-              fill_alpha=falpha, legend=ct, size=glsize))
+                  fill_alpha=falpha, legend=ct, size=glsize))
 
 hover = HoverTool(tooltips=tt, renderers=glyphs)
 p1.add_tools(hover)

@@ -5,25 +5,18 @@ from copy import deepcopy
 
 import numpy as np
 
-from astrocats.catalog.utils import (production, tq)
+from astrocats.catalog.utils import tq
+from . import utils as production_utils
 
 
-def produce(cat_catalog, args):
-    log = cat_catalog.log
+def produce(catalog, args):
+    log = catalog.log
     log.debug("producer.produce()")
 
-    log.warning("Running `produce` on catalog {} ('{}')".format(cat_catalog.name, str(cat_catalog)))
-    # for aa in vars(args):
-    #     log.info("{}: '{}'".format(aa, getattr(args, aa)))
-    # log.info(str(cat_catalog.PATHS))
+    log.warning("Running `produce` on catalog {} ('{}')".format(catalog.name, str(catalog)))
 
     catalog_fname_prefix = 'catalog'
     names_fname_prefix = 'names'
-
-    travislimit = 100
-
-    # testsuffix = '.test' if args.test else ''
-    testsuffix = ''
 
     columnkey = [
         "check", "name", "alias", "discoverdate", "maxdate", "maxappmag",
@@ -40,7 +33,7 @@ def produce(cat_catalog, args):
     output = OrderedDict()
     output_copy = OrderedDict()
 
-    event_filenames = cat_catalog.PATHS.get_repo_output_file_list(
+    event_filenames = catalog.PATHS.get_repo_output_file_list(
         normal=(not args.boneyard), bones=args.boneyard)
     event_filenames = sorted(event_filenames, key=lambda s: s.lower())
 
@@ -51,7 +44,7 @@ def produce(cat_catalog, args):
     log.warning("{} Files, e.g. '{}'".format(num_events, np.random.choice(event_filenames)))
 
     # Load existing MD5 checksums
-    md5_fname = cat_catalog.PATHS.get_md5_filename()
+    md5_fname = catalog.PATHS.get_md5_filename()
     log.info("Checking MD5 file '{}'".format(md5_fname))
     try:
         with open(md5_fname) as f:
@@ -66,24 +59,24 @@ def produce(cat_catalog, args):
     # -----------------------
     for event_count, event_fname in enumerate(tq(event_filenames)):
 
-        event_name = production.get_event_name_from_filename(event_fname)
+        event_name = production_utils.get_event_name_from_filename(event_fname)
 
         # Skip events that weren't specifically targetted
         if (args.event_list is not None) and (event_name not in args.event_list):
             log.debug("event_name {} not in event_list".format(event_name))
             continue
 
-        if args.travis and event_count >= travislimit:
+        if args.travis and (event_count >= catalog.TRAVIS_QUERY_LIMIT):
             break
 
         # Generate checksum for each json input file, compare to previous (if they exist)
         #    to determine if a file needs to be reprocessed
-        checksum = production.md5file(event_fname)
+        checksum = production_utils.md5file(event_fname)
         if (event_fname not in md5dict) or (md5dict[event_fname] != checksum):
             md5dict[event_fname] = checksum
 
         # Add this entry into the catalog
-        filetext = production.get_event_text(event_fname)
+        filetext = production_utils.get_event_text(event_fname)
         output.update(json.loads(filetext, object_pairs_hook=OrderedDict))
         # `entry` is the event-name as recorded in the file usually same as `event_name`
         #    may differ if `entry` contains (e.g.) a slash, etc
@@ -91,7 +84,7 @@ def produce(cat_catalog, args):
 
         log.debug("entry = '{}' (from fname: '{}')".format(entry, event_name))
 
-        internal_event_fname = cat_catalog.PATHS.get_filename_for_internal_event(event_name)
+        internal_event_fname = catalog.PATHS.get_filename_for_internal_event(event_name)
         log.debug("Checking for internal event '{}'".format(internal_event_fname))
         if os.path.isfile(internal_event_fname):
             output[entry]['download'] = 'e'
@@ -120,8 +113,7 @@ def produce(cat_catalog, args):
     output = deepcopy(output_copy)
 
     # Write the MD5 checksums
-    md5_fname = cat_catalog.PATHS.get_md5_filename()
-    md5_fname += testsuffix
+    md5_fname = catalog.PATHS.get_md5_filename()
     log.warning("Writing checksums to '{}'".format(md5_fname))
     jsonstring = json.dumps(md5dict, indent='\t', separators=(',', ':'))
     with open(md5_fname, 'w') as ff:
@@ -134,15 +126,13 @@ def produce(cat_catalog, args):
     # Convert to array since that's what datatables expects
     output = list(output.values())
 
-    cat_fname = os.path.join(cat_catalog.PATHS.PATH_OUTPUT, catalog_fname_prefix + '.min.json')
-    cat_fname += testsuffix
+    cat_fname = os.path.join(catalog.PATHS.PATH_OUTPUT, catalog_fname_prefix + '.min.json')
     log.warning("Writing 'minimum' catalog to '{}'".format(cat_fname))
     json_str = json.dumps(output, separators=(',', ':'))
     with open(cat_fname, 'w') as ff:
         ff.write(json_str)
 
-    cat_fname = os.path.join(cat_catalog.PATHS.PATH_OUTPUT, catalog_fname_prefix + '.json')
-    cat_fname += testsuffix
+    cat_fname = os.path.join(catalog.PATHS.PATH_OUTPUT, catalog_fname_prefix + '.json')
     log.warning("Writing catalog to '{}'".format(cat_fname))
     json_str = json.dumps(output, indent='\t', separators=(',', ':'))
     with open(cat_fname, 'w') as ff:
@@ -153,8 +143,7 @@ def produce(cat_catalog, args):
         names[ev['name']] = [
             x['value'] for x in ev.get('alias', [{'value': ev['name']}])
         ]
-    names_fname = os.path.join(cat_catalog.PATHS.PATH_OUTPUT, names_fname_prefix + '.min.json')
-    names_fname += testsuffix
+    names_fname = os.path.join(catalog.PATHS.PATH_OUTPUT, names_fname_prefix + '.min.json')
     log.warning("Writing names to '{}'".format(names_fname))
     json_str = json.dumps(names, separators=(',', ':'))
     with open(names_fname, 'w') as ff:
