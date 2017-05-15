@@ -50,3 +50,12 @@ def md5file(fname):
         for chunk in iter(lambda: f.read(4096), b""):
             hash_md5.update(chunk)
     return hash_md5.hexdigest()
+
+
+def get_event_name_from_filename(fname):
+    event_name = os.path.basename(fname)
+    # Remove the terminal extension (either 'json' or 'gz')
+    event_name = os.path.splitext(event_name)[0]
+    # if there is still a json extension, remove that.
+    event_name = event_name.replace('.json', '')
+    return event_name
