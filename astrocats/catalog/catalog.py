@@ -144,6 +144,17 @@ class Catalog(object):
             bone_path = os.path.join(self.PATH_OUTPUT, bone_path, '')
             return bone_path
 
+        def get_filename_for_internal_event(self, event_name, suffix='.json'):
+            """Get the full path to the target input folder.
+            """
+            folder = self.repos_dict.get('internal')
+            # 'internal' must be a unique folder
+            if (folder is None) or (len(folder) != 1):
+                return None
+
+            fname = os.path.join(self.PATH_INPUT, folder[0], event_name + suffix)
+            return fname
+
         def get_repo_input_folders(self, private=False):
             """Get the full paths of the input data repositories."""
             repo_folders = []
@@ -167,8 +178,8 @@ class Catalog(object):
             These are the files deleted in the `delete_old_entry_files` task.
             """
             repo_folders = self.get_repo_output_folders(bones=bones)
-            return self._get_repo_file_list(
-                repo_folders, normal=normal, bones=bones)
+            repo_files = self._get_repo_file_list(repo_folders, normal=normal, bones=bones)
+            return repo_files
 
         def get_repo_output_folders(self, bones=True):
             """Get the full paths of the output data repositories."""
@@ -230,9 +241,9 @@ class Catalog(object):
         if os.path.exists(os.path.join(parent_path, '.git')):
             astrocats_sha = gitter.get_sha(path=parent_path, log=self.log)
         # Name of this class (if subclassed)
-        my_name = type(self).__name__
+        self.name = type(self).__name__
         self._version_long = "Astrocats v'{}' SHA'{}' - {} SHA'{}'".format(
-            __version__, astrocats_sha, my_name, catalog_sha)
+            __version__, astrocats_sha, self.name, catalog_sha)
         self.log.debug(self._version_long)
         return
 
