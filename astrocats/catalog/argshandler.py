@@ -25,7 +25,7 @@ class ArgsHandler:
         elif args.subcommand == 'produce':
             from . import producer
             self.log.log(log_lvl, "Running 'produce'.")
-            producer.produce(catalog)
+            producer.produce(catalog, args)
 
         # Git Subcommands
         # ---------------
@@ -158,10 +158,22 @@ class ArgsHandler:
             "produce",
             help="Produce output data products (json files) from the catalog.")
 
-        # prod_pars.add_argument(
-        #     '--count', '-c', dest='count',
-        #     default=False, action='store_true',
-        #     help='Determine counts of entries, files, etc.')
+        prod_pars.add_argument(
+            '--event-list',
+            '-el',
+            dest='event_list',
+            help='Process (only) a list of target events',
+            default=None,
+            type=str,
+            nargs='+')
+
+        prod_pars.add_argument(
+            '--boneyard',
+            '-by',
+            dest='boneyard',
+            help='Make "boneyard" catalog',
+            default=False,
+            action='store_true')
 
         return prod_pars
 
