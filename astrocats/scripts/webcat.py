@@ -27,14 +27,9 @@ from astrocats.catalog.utils import (bandaliasf, bandcodes, bandcolorf,
                                      bandgroupf, bandshortaliasf, bandwavef,
                                      bandwavelengths, get_sig_digits,
                                      is_number, pretty_num, radiocolorf,
-<<<<<<< HEAD
                                      round_sig, tq, xraycolorf, listify)
 from astrocats.scripts.events import get_event_filename, get_event_text
 from astrocats.scripts.repos import (get_rep_folder, get_rep_folders,
-=======
-                                     round_sig, tq, xraycolorf, production)
-from astrocats.scripts.repos import (get_rep_folder, get_all_rep_folders,
->>>>>>> MAINT: rename 'get_rep_folders' to 'get_all_rep_folders' (better distinguish from 'get_rep_folder')
                                      repo_file_list)
 from astropy import units as un
 from astropy.coordinates import SkyCoord as coord
