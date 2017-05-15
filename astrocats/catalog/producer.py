@@ -1,52 +1,29 @@
 import json
 import os
-import re
-
 from collections import OrderedDict
 from copy import deepcopy
-from decimal import Decimal
 
-from astrocats.catalog.utils import (bandshortaliasf, bandwavef,
-                                     pretty_num, production, tq)
-from astrocats.scripts.repos import (get_all_rep_folders, repo_file_list)
-from astropy.time import Time as astrotime
+import numpy as np
+
+from astrocats.catalog.utils import (production, tq)
 
 
-def produce(catalog):
-    log = catalog.log
+def produce(cat_catalog, args):
+    log = cat_catalog.log
     log.debug("producer.produce()")
 
-    log.warning("Running `produce` on catalog '{}'".format(catalog))
+    log.warning("Running `produce` on catalog {} ('{}')".format(cat_catalog.name, str(cat_catalog)))
+    # for aa in vars(args):
+    #     log.info("{}: '{}'".format(aa, getattr(args, aa)))
+    # log.info(str(cat_catalog.PATHS))
 
-    return
-
-    if args.catalog == 'tde':
-        catalog_dir = 'tidaldisruptions'
-        catalog_name_short = 'tde'
-        catalog_url = 'tde.space'
-        catalog_title = 'TDE'
-    elif args.catalog == 'sne':
-        catalog_dir = 'supernovae'
-        catalog_name_short = 'sne'
-        catalog_url = 'sne.space'
-        catalog_title = 'Supernova'
-    else:
-        raise ValueError('Unknown catalog!')
-
-    repo_folders = get_all_rep_folders(catalog_dir)
-    log.warning("repo_folders = '{}'".format(repo_folders))
-
-    outdir = "astrocats/" + catalog_dir + "/output/"
-    cachedir = "cache/"
-    jsondir = "json/"
-    html_subdir = "html/"
+    catalog_fname_prefix = 'catalog'
+    names_fname_prefix = 'names'
 
     travislimit = 100
-    radiosigma = 3.0
 
-    linkdir = "https://" + catalog_url + "/" + catalog_name_short + "/"
-
-    testsuffix = '.test' if args.test else ''
+    # testsuffix = '.test' if args.test else ''
+    testsuffix = ''
 
     columnkey = [
         "check", "name", "alias", "discoverdate", "maxdate", "maxappmag",
@@ -60,368 +37,178 @@ def produce(catalog):
     prune_tags = ['source', 'u_value', 'e_value', 'e_upper_value',
                   'e_lower_value', 'derived']
 
-    catalog = OrderedDict()
-    catalogcopy = OrderedDict()
-    sourcedict = {}
+    output = OrderedDict()
+    output_copy = OrderedDict()
 
-    if os.path.isfile(outdir + cachedir + 'hostimgs.json'):
-        with open(outdir + cachedir + 'hostimgs.json', 'r') as f:
-            filetext = f.read()
-        hostimgdict = json.loads(filetext)
-    else:
-        hostimgdict = {}
+    event_filenames = cat_catalog.PATHS.get_repo_output_file_list(
+        normal=(not args.boneyard), bones=args.boneyard)
+    event_filenames = sorted(event_filenames, key=lambda s: s.lower())
 
-    files = repo_file_list(
-        catalog_dir, repo_folders, normal=(not args.boneyard), bones=args.boneyard)
-    log.warning("{} Files, e.g. '{}'".format(len(files), files[0]))
+    # log.warning("Shuffling!")
+    # np.random.shuffle(event_filenames)
+
+    num_events = len(event_filenames)
+    log.warning("{} Files, e.g. '{}'".format(num_events, np.random.choice(event_filenames)))
 
     # Load existing MD5 checksums
-    if os.path.isfile(outdir + cachedir + 'md5s.json'):
-        with open(outdir + cachedir + 'md5s.json', 'r') as f:
+    md5_fname = cat_catalog.PATHS.get_md5_filename()
+    log.info("Checking MD5 file '{}'".format(md5_fname))
+    try:
+        with open(md5_fname) as f:
             filetext = f.read()
         md5dict = json.loads(filetext)
-    else:
+        log.info("Loaded {} MD5 checksums".format(len(md5dict)))
+    except FileNotFoundError:
+        log.info("MD5 file does not exist.")
         md5dict = {}
 
     # Iterate over all events
     # -----------------------
-    for event_count, event_fname in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
-        event_name_from_fname = os.path.splitext(os.path.basename(event_fname))[0].replace(
-            '.json', '')
+    for event_count, event_fname in enumerate(tq(event_filenames)):
+
+        event_name = production.get_event_name_from_filename(event_fname)
+
         # Skip events that weren't specifically targetted
-        if args.eventlist and event_name_from_fname not in args.eventlist:
+        if (args.event_list is not None) and (event_name not in args.event_list):
+            log.debug("event_name {} not in event_list".format(event_name))
             continue
 
         if args.travis and event_count >= travislimit:
             break
 
         # Generate checksum for each json input file, compare to previous (if they exist)
-        # to determine if a file needs to be reprocessed
-        entry_changed = False
+        #    to determine if a file needs to be reprocessed
         checksum = production.md5file(event_fname)
-        if event_fname not in md5dict or md5dict[event_fname] != checksum:
-            entry_changed = True
+        if (event_fname not in md5dict) or (md5dict[event_fname] != checksum):
             md5dict[event_fname] = checksum
 
         # Add this entry into the catalog
         filetext = production.get_event_text(event_fname)
-        catalog.update(json.loads(filetext, object_pairs_hook=OrderedDict))
-        entry = next(reversed(catalog))
+        output.update(json.loads(filetext, object_pairs_hook=OrderedDict))
+        # `entry` is the event-name as recorded in the file usually same as `event_name`
+        #    may differ if `entry` contains (e.g.) a slash, etc
+        entry = next(reversed(output))
 
-        event_name = entry
-        # log.warning("event_name = '{}'".format(event_name))
+        log.debug("entry = '{}' (from fname: '{}')".format(entry, event_name))
 
-        # Skip events that aren't targetted
-        if args.eventlist and event_name not in args.eventlist:
-            continue
-
-        if os.path.isfile("astrocats/" + catalog_dir + "/input/" + catalog_name_short +
-                          "-internal/" + event_name_from_fname + ".json"):
-            catalog[entry]['download'] = 'e'
-        if 'discoverdate' in catalog[entry]:
-            for d, date in enumerate(catalog[entry]['discoverdate']):
-                catalog[entry]['discoverdate'][d]['value'] = catalog[entry][
-                    'discoverdate'][d]['value'].split('.')[0]
-        if 'maxdate' in catalog[entry]:
-            for d, date in enumerate(catalog[entry]['maxdate']):
-                catalog[entry]['maxdate'][d]['value'] = catalog[entry]['maxdate'][
-                    d]['value'].split('.')[0]
-
-        # Get host (galaxy) magnitude information
-        hostmag = ''
-        hosterr = ''
-        if 'photometry' in catalog[entry]:
-            for photo in catalog[entry]['photometry']:
-                if 'host' in photo and ('upperlimit' not in photo or not photo['upperlimit']):
-                    hostmag = float(photo['magnitude'])
-                    hosterr = float(photo['e_magnitude']) if 'e_magnitude' in photo else 0.0
-
-            # Delete the host magnitudes so they are not plotted as points
-            catalog[entry]['photometry'][:] = [
-                x for x in catalog[entry]['photometry'] if 'host' not in x
-            ]
-
-        # Find what parameters exist in this entry
-        photoavail = 'photometry' in catalog[entry] and any(
-            ['magnitude' in x for x in catalog[entry]['photometry']])
-        radioavail = 'photometry' in catalog[entry] and any([
-            'fluxdensity' in x and 'magnitude' not in x
-            for x in catalog[entry]['photometry']
-        ])
-        xrayavail = 'photometry' in catalog[entry] and any(
-            [('countrate' in x or 'flux' in x) and 'magnitude' not in x
-             for x in catalog[entry]['photometry']])
-        spectraavail = 'spectra' in catalog[entry]
-
-        realizchecks = ''
-
-        # Must be two sigma above host magnitude, if host magnitude known, to add
-        # to phot count.
-        numphoto = len([
-            x for x in catalog[entry]['photometry']
-            if 'upperlimit' not in x and 'magnitude' in x and
-            (not hostmag or 'includeshost' not in x or float(x['magnitude']) <= (
-                hostmag - 2.0 * hosterr))
-        ]) if photoavail else 0
-        numradio = len([
-            x for x in catalog[entry]['photometry']
-            if 'upperlimit' not in x and 'fluxdensity' in x and 'magnitude' not in
-            x and (not x['e_fluxdensity'] or float(x[
-                'fluxdensity']) > radiosigma * float(x['e_fluxdensity'])
-            ) and (not hostmag or 'includeshost' not in x or float(x[
-                'magnitude']) <= (hostmag - 2.0 * hosterr))
-        ]) if photoavail else 0
-        numxray = len([
-            x for x in catalog[entry]['photometry']
-            if 'upperlimit' not in x and ('countrate' in x or 'flux' in x
-                                          ) and 'magnitude' not in x and
-            (not hostmag or 'includeshost' not in x or float(x['magnitude']) <= (
-                hostmag - 2.0 * hosterr))
-        ]) if photoavail else 0
-        numspectra = len(catalog[entry]['spectra']) if spectraavail else 0
-
-        # log.warning("numphoto = {}".format(numphoto))
-        # log.warning("numradio = {}".format(numradio))
-        # log.warning("numxray = {}".format(numxray))
-        # log.warning("numspectra = {}".format(numspectra))
-
-        redshiftfactor = (1.0 / (
-            1.0 + float(catalog[entry]['redshift'][0]['value']))) if (
-                'redshift' in catalog[entry]) else 1.0
-
-        mjdmax = ''
-        if 'maxdate' in catalog[entry]:
-            datestr = catalog[entry]['maxdate'][0]['value']
-            datesplit = datestr.split('/')
-            if len(datesplit) < 2:
-                datestr += "/01"
-            if len(datesplit) < 3:
-                datestr += "/01"
-            try:
-                mjdmax = astrotime(datestr.replace('/', '-')).mjd
-            except (KeyboardInterrupt, SystemExit):
-                raise
-            except Exception:
-                pass
-
-        minphotoep = ''
-        maxphotoep = ''
-        if mjdmax:
-            photoeps = [(Decimal(x['time']) - Decimal(mjdmax + 0.5)) *
-                        Decimal(redshiftfactor)
-                        for x in catalog[entry]['photometry']
-                        if 'upperlimit' not in x and 'includeshost' not in x and
-                        'magnitude' in x and 'time' in x] if photoavail else []
-            if photoeps:
-                minphotoep = pretty_num(float(min(photoeps)), sig=3)
-                maxphotoep = pretty_num(float(max(photoeps)), sig=3)
-
-        minspectraep = ''
-        maxspectraep = ''
-        if mjdmax:
-            spectraeps = ([(Decimal(x['time']) - Decimal(mjdmax + 0.5)) *
-                           Decimal(redshiftfactor)
-                           for x in catalog[entry]['spectra'] if 'time' in x]
-                          if spectraavail else [])
-            if spectraeps:
-                minspectraep = pretty_num(float(min(spectraeps)), sig=3)
-                maxspectraep = pretty_num(float(max(spectraeps)), sig=3)
-
-        catalog[entry]['numphoto'] = numphoto
-        catalog[entry]['numradio'] = numradio
-        catalog[entry]['numxray'] = numxray
-        catalog[entry]['numspectra'] = numspectra
-
-        distancemod = 0.0
-        if 'maxabsmag' in catalog[entry] and 'maxappmag' in catalog[entry]:
-            distancemod = float(production.get_first_value(catalog, entry, 'maxappmag')) - \
-                float(production.get_first_value(catalog, entry, 'maxabsmag'))
-
-        plotlink = catalog_name_short + "/" + event_name_from_fname + "/"
-        if photoavail:
-            catalog[entry]['photolink'] = (str(numphoto) + (
-                (',' + minphotoep + ',' + maxphotoep) if
-                (minphotoep and maxphotoep and minphotoep != maxphotoep
-                 ) else ((',' + minphotoep) if minphotoep and maxphotoep else '')))
-        if radioavail:
-            catalog[entry]['radiolink'] = str(numradio)
-        if xrayavail:
-            catalog[entry]['xraylink'] = str(numxray)
-        if spectraavail:
-            catalog[entry]['spectralink'] = (str(numspectra) + (
-                (',' + minspectraep + ',' + maxspectraep)
-                if (minspectraep and maxspectraep and minspectraep != maxspectraep
-                    ) else ((',' + minspectraep) if minspectraep and maxspectraep else '')))
-
-        # range of photometry elements
-        prange = list(range(len(catalog[entry][
-            'photometry']))) if 'photometry' in catalog[entry] else []
-
-        instrulist = sorted([
-            _f
-            for _f in list({
-                catalog[entry]['photometry'][x]['instrument']
-                if 'instrument' in catalog[entry]['photometry'][x] else None
-                for x in prange
-            }) if _f
-        ])
-        if len(instrulist) > 0:
-            instruments = ''
-            for i, instru in enumerate(instrulist):
-                instruments += instru
-                bandlist = sorted(
-                    [
-                        _f
-                        for _f in list({
-                            bandshortaliasf(catalog[entry]['photometry'][x][
-                                'band'] if 'band' in catalog[entry]['photometry'][
-                                    x] else '') if 'instrument' in catalog[entry]
-                            ['photometry'][x] and catalog[entry]['photometry'][x][
-                                'instrument'] == instru else ""
-                            for x in prange
-                        }) if _f
-                    ],
-                    key=lambda y: (bandwavef(y), y))
-                if bandlist:
-                    instruments += ' (' + ", ".join(bandlist) + ')'
-                if i < len(instrulist) - 1:
-                    instruments += ', '
-
-            # Now add bands without attached instrument
-            obandlist = sorted(
-                [
-                    _f
-                    for _f in list({
-                        bandshortaliasf(catalog[entry]['photometry'][x]['band']
-                                        if 'band' in catalog[entry]['photometry'][
-                                            x] else '') if 'instrument' not in
-                        catalog[entry]['photometry'][x] else ""
-                        for x in prange
-                    }) if _f
-                ],
-                key=lambda y: (bandwavef(y), y))
-            if obandlist:
-                instruments += ", " + ", ".join(obandlist)
-            catalog[entry]['instruments'] = instruments
-            # log.warning("'{}' added instruments: {}".format(entry, instruments))
-        else:
-            bandlist = sorted(
-                [
-                    _f
-                    for _f in list({
-                        bandshortaliasf(catalog[entry]['photometry'][x]['band']
-                                        if 'band' in catalog[entry]['photometry'][
-                                            x] else '')
-                        for x in prange
-                    }) if _f
-                ],
-                key=lambda y: (bandwavef(y), y))
-            if len(bandlist) > 0:
-                catalog[entry]['instruments'] = ", ".join(bandlist)
-                # log.warning("'{}' added instruments (bandlist): {}".format(
-                #     entry, catalog[entry]['instruments']))
+        internal_event_fname = cat_catalog.PATHS.get_filename_for_internal_event(event_name)
+        log.debug("Checking for internal event '{}'".format(internal_event_fname))
+        if os.path.isfile(internal_event_fname):
+            output[entry]['download'] = 'e'
+            log.debug("...exists")
 
         # Save this stuff because next line will delete it.
-        if args.writecatalog:
-            if 'sources' in catalog[entry]:
-                lsourcedict = {}
-                for sourcerow in catalog[entry]['sources']:
-                    if 'name' not in sourcerow:
-                        continue
-                    strippedname = re.sub('<[^<]+?>', '', sourcerow['name'].encode(
-                        'ascii', 'xmlcharrefreplace').decode("utf-8"))
-                    alias = sourcerow['alias']
-                    if 'bibcode' in sourcerow and 'secondary' not in sourcerow:
-                        lsourcedict[alias] = {
-                            'bibcode': sourcerow['bibcode'],
-                            'count': 0
-                        }
-                    if strippedname in sourcedict:
-                        sourcedict[strippedname] += 1
-                    else:
-                        sourcedict[strippedname] = 1
+        if 'sources' in output[entry]:
+            ranked_sources = rank_sources(output[entry])
+            if ranked_sources is not None:
+                output[entry]['references'] = ', '.join(ranked_sources[:5])
 
-                for key in catalog[entry].keys():
-                    if isinstance(catalog[entry][key], list):
-                        for row in catalog[entry][key]:
-                            if 'source' in row:
-                                for lsource in lsourcedict:
-                                    if lsource in row['source'].split(','):
-                                        if key == 'spectra':
-                                            lsourcedict[lsource]['count'] += 10
-                                        else:
-                                            lsourcedict[lsource]['count'] += 1
+        # Delete unneeded data from output, add blank entries when data missing.
+        output_copy[entry] = OrderedDict()
+        for col in columnkey:
+            if col in output[entry]:
+                output_copy[entry][col] = deepcopy(output[entry][col])
 
-                ssources = sorted(
-                    list(lsourcedict.values()), key=lambda x: x['count'], reverse=True)
-                if ssources:
-                    catalog[entry]['references'] = ','.join([y['bibcode'] for y in ssources[:5]])
-                    # log.warning("'{}' added references: {} (from {})".format(
-                    #     entry, catalog[entry]['references'], _old_refs))
+        del output[entry]
 
-            # Delete unneeded data from catalog, add blank entries when data missing.
-            catalogcopy[entry] = OrderedDict()
-            for col in columnkey:
-                if col in catalog[entry]:
-                    vals = catalog[entry][col]
-                    if isinstance(vals, list):
-                        vals = sorted(vals)
-                    catalogcopy[entry][col] = deepcopy(catalog[entry][col])
-
-        # print()
-        # for k1, v1 in catalog[entry].items():
-        #     out_str = "{}: {}".format(k1, v1)
-        #     if k1 in catalogcopy[entry]:
-        #         out_str += "\n\t{}: {}".format(k1, catalogcopy[entry][k1])
-        #     print(out_str)
-
-        del catalog[entry]
-        # sys.exit(2342)
+    if args.event_list is not None:
+        return
 
     # Write it all out at the end
-    if args.writecatalog and not args.eventlist:
-        catalog = deepcopy(catalogcopy)
+    # ---------------------------
 
-        # Write the MD5 checksums
-        jsonstring = json.dumps(md5dict, indent='\t', separators=(',', ':'))
-        with open(outdir + cachedir + 'md5s.json' + testsuffix, 'w') as f:
-            f.write(jsonstring)
+    output = deepcopy(output_copy)
 
-        # Prune extraneous fields not required for main catalog file
-        catalogcopy = OrderedDict()
-        for entry in catalog:
-            catalogcopy[entry] = OrderedDict()
-            for col in catalog[entry]:
-                catalogcopy[entry][col] = deepcopy(catalog[entry][col])
-                if catalogcopy[entry][col]:
-                    for row in catalogcopy[entry][col]:
-                        for tag in prune_tags:
-                            if tag in row:
-                                del row[tag]
-        catalog = deepcopy(catalogcopy)
+    # Write the MD5 checksums
+    md5_fname = cat_catalog.PATHS.get_md5_filename()
+    md5_fname += testsuffix
+    log.warning("Writing checksums to '{}'".format(md5_fname))
+    jsonstring = json.dumps(md5dict, indent='\t', separators=(',', ':'))
+    with open(md5_fname, 'w') as ff:
+        ff.write(jsonstring)
 
-        # Convert to array since that's what datatables expects
-        catalog = list(catalog.values())
+    # Prune extraneous fields not required for main catalog file
+    log.info("Pruning output")
+    output = prune_output(output, prune_tags)
 
-        if args.boneyard:
-            catprefix = 'bones'
-        else:
-            catprefix = 'catalog'
+    # Convert to array since that's what datatables expects
+    output = list(output.values())
 
-        jsonstring = json.dumps(catalog, separators=(',', ':'))
-        with open(outdir + catprefix + '.min.json' + testsuffix, 'w') as f:
-            f.write(jsonstring)
+    cat_fname = os.path.join(cat_catalog.PATHS.PATH_OUTPUT, catalog_fname_prefix + '.min.json')
+    cat_fname += testsuffix
+    log.warning("Writing 'minimum' catalog to '{}'".format(cat_fname))
+    json_str = json.dumps(output, separators=(',', ':'))
+    with open(cat_fname, 'w') as ff:
+        ff.write(json_str)
 
-        jsonstring = json.dumps(catalog, indent='\t', separators=(',', ':'))
-        with open(outdir + catprefix + '.json' + testsuffix, 'w') as f:
-            f.write(jsonstring)
+    cat_fname = os.path.join(cat_catalog.PATHS.PATH_OUTPUT, catalog_fname_prefix + '.json')
+    cat_fname += testsuffix
+    log.warning("Writing catalog to '{}'".format(cat_fname))
+    json_str = json.dumps(output, indent='\t', separators=(',', ':'))
+    with open(cat_fname, 'w') as ff:
+        ff.write(json_str)
 
-        names = OrderedDict()
-        for ev in catalog:
-            names[ev['name']] = [
-                x['value'] for x in ev.get('alias', [{'value': ev['name']}])
-            ]
-        jsonstring = json.dumps(names, separators=(',', ':'))
-        boneyard_fname = outdir + 'names' + ('-by' if args.boneyard else '') + '.min.json' + testsuffix
-        with open(boneyard_fname, 'w') as f:
-            f.write(jsonstring)
+    names = OrderedDict()
+    for ev in output:
+        names[ev['name']] = [
+            x['value'] for x in ev.get('alias', [{'value': ev['name']}])
+        ]
+    names_fname = os.path.join(cat_catalog.PATHS.PATH_OUTPUT, names_fname_prefix + '.min.json')
+    names_fname += testsuffix
+    log.warning("Writing names to '{}'".format(names_fname))
+    json_str = json.dumps(names, separators=(',', ':'))
+    with open(names_fname, 'w') as ff:
+        ff.write(json_str)
+
+    return
+
+
+def prune_output(output, prune_tags):
+    output_copy = OrderedDict()
+    for entry in output:
+        output_copy[entry] = OrderedDict()
+        for col in output[entry]:
+            output_copy[entry][col] = deepcopy(output[entry][col])
+            if output_copy[entry][col]:
+                for row in output_copy[entry][col]:
+                    for tag in prune_tags:
+                        if tag in row:
+                            del row[tag]
+
+    return deepcopy(output_copy)
+
+
+def rank_sources(entry_data):
+    # Store sources for this entry to count their usage
+    #    only store primary sources which contain a 'bibcode' and 'name'
+    ranked_sources = {}
+    for source in entry_data['sources']:
+        if ('name' not in source) or ('bibcode' not in source) or ('secondary' in source):
+            continue
+
+        alias = source['alias']
+        ranked_sources[alias] = {
+            'bibcode': source['bibcode'],
+            'count': 0
+        }
+
+    if len(ranked_sources) == 0:
+        return None
+
+    # Go through all data in this entry, and count the contributions from each source
+    for key, vals in entry_data.items():
+        if isinstance(vals, list):
+            for row in vals:
+                if 'source' in row:
+                    _split = row['source'].split(',')
+                    for source in ranked_sources:
+                        if source in _split:
+                            if key == 'spectra':
+                                ranked_sources[source]['count'] += 10
+                            else:
+                                ranked_sources[source]['count'] += 1
+
+    ranked_sources = [src['bibcode'] for src in
+                      sorted(ranked_sources.values(), key=lambda x: x['count'], reverse=True)]
+
+    return ranked_sources
