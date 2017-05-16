@@ -229,7 +229,7 @@ class Entry(OrderedDict):
         string_rep = ''
         oself = self._ordered(deepcopy(self))
         for key in keys:
-            string_rep += json.dumps(oself[key], sort_keys=True)
+            string_rep += json.dumps(oself.get(key, ''), sort_keys=True)
 
         return hashlib.sha512(string_rep.encode()).hexdigest()[:16]
 
