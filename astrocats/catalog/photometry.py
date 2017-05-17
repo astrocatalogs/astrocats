@@ -88,6 +88,7 @@ class PHOTOMETRY(KeyCollection):
     KCORRECTED = Key('kcorrected', KEY_TYPES.BOOL)
     MCORRECTED = Key('mcorrected', KEY_TYPES.BOOL)
     SYNTHETIC = Key('synthetic', KEY_TYPES.BOOL)
+    SIMULATED = Key('simulated', KEY_TYPES.BOOL)
     UPPER_LIMIT = Key('upperlimit', KEY_TYPES.BOOL, priority=6)
     LOWER_LIMIT = Key('lowerlimit', KEY_TYPES.BOOL)
     HOST = Key('host', KEY_TYPES.BOOL)

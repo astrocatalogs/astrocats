@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-"""
+"""Class defitions for `CatDict` and `CatDictError`, data storage classes."""
 from collections import OrderedDict
 from copy import deepcopy
 
@@ -14,10 +13,10 @@ except NameError:
 
 
 class CatDictError(Exception):
-    """Special Error class for non-fatal errors raised in CatDict.
-    """
+    """Special Error class for non-fatal errors raised in CatDict."""
 
     def __init__(self, *args, **kwargs):
+        """Initialize `CatDictError`."""
         # If `warn` is True, then a warning should be issues.  Otherwise ignore
         # completely
         self.warn = True
@@ -82,6 +81,7 @@ class CatDict(OrderedDict):
     _REQ_KEY_SETS = []
 
     def __init__(self, parent, key=None, **kwargs):
+        """Initialize `CatDict`."""
         super(CatDict, self).__init__()
         # Store the parent object (an `Entry` subclass) to which this instance
         # will belong.  e.g. a `Supernova` entry.
@@ -110,12 +110,12 @@ class CatDict(OrderedDict):
                 if kiv:
                     key_obj = vals[vals.index(key)]
                 else:
-                    self._log.warn('[{}] `{}` not in list of keys for `{}`, '
+                    self._log.info('[{}] `{}` not in list of keys for `{}`, '
                                    'adding anyway as allow unknown keys is '
                                    '`{}`.'.format(parent[
                                        parent._KEYS.NAME], key,
-                                                  type(self).__name__,
-                                                  self._ALLOW_UNKNOWN_KEYS))
+                                       type(self).__name__,
+                                       self._ALLOW_UNKNOWN_KEYS))
                     key_obj = Key(key)
 
                 # Handle Special Cases
@@ -200,8 +200,7 @@ class CatDict(OrderedDict):
         return True
 
     def append_sources_from(self, other):
-        """Merge the source alias lists of two CatDicts.
-        """
+        """Merge the source alias lists of two CatDicts."""
         # Get aliases lists from this `CatDict` and other
         self_aliases = self[self._KEYS.SOURCE].split(',')
         other_aliases = other[self._KEYS.SOURCE].split(',')
