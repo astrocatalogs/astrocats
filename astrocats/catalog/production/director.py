@@ -10,19 +10,13 @@ from astrocats.catalog.utils import tq  # , dict_to_pretty_string
 from . import utils as production_utils
 from . import producer
 
-catalog_fname_prefix = 'catalog'
-names_fname_prefix = 'names'
-
 
 class Director(producer.Producer_Base):
 
     SAVE_ENTRY_KEYS = [
-        "check", "name", "alias", "discoverdate", "maxdate", "maxappmag",
-        "maxabsmag", "host", "ra", "dec", "hostra", "hostdec", "hostoffsetang",
-        "hostoffsetdist", "altitude", "azimuth", "airmass", "skybrightness",
-        "instruments", "redshift", "velocity", "lumdist",
-        "claimedtype", "ebv", "photolink", "spectralink", "radiolink", "xraylink",
-        "references", "download", "responsive"
+        "name", "alias", "ra", "dec", "altitude", "azimuth",
+        "instruments", "redshift", "lumdist",
+        "references"
     ]
 
     DEL_QUANTITY_KEYS = ['source', 'u_value', 'e_value', 'e_upper_value',
