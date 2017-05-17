@@ -77,6 +77,7 @@ class Analysis:
         log = self.log
         catalog = self.catalog
         log.info("Running 'data_tree'")
+        save_fname = "{}_data_tree.json".format(catalog.name)
 
         # Load filenames for all events that have been imported
         event_filenames = catalog.PATHS.get_repo_output_file_list()
@@ -101,13 +102,18 @@ class Analysis:
             event_name = production_utils.get_event_name_from_filename(event_fname)
             entry, event_data = production_utils.load_event_from_filename(event_fname, log)
             log.debug("entry = '{}' (from fname: '{}')".format(entry, event_name))
-            # log.warning(dict_to_pretty_string(event_data))
 
+            # Store element from this events data into the tree
             _load_tree(data_tree, event_data)
-            # log.warning(dict_to_pretty_string(data_tree))
-            # break
 
-        log.warning(dict_to_pretty_string(data_tree))
+        #
+        log.warning("Resulting data tree:")
+        json_str = dict_to_pretty_string(data_tree)
+        log.warning(json_str)
+        with open(save_fname, 'w') as ff:
+            ff.write(json_str)
+
+        log.warning("Saved to '{}'".format(save_fname))
 
         return
 
@@ -232,18 +238,34 @@ def _get_last_dirs(path, num=1):
     return last_path
 
 
-def _load_tree(tree, data, dd=0, debug=False):
+def _load_tree(tree, data, depth=0, debug=False):
+    """Store the element-types in `data` into the dict `tree`.
+
+    Method calls itself recursively to get deeper levels within `data`.
+    """
+
     for key, vals in data.items():
-        if key not in tree:
-            _str = "{}{}".format(dd*"\t", key)
-            vals = np.atleast_1d(vals)
-            for vv in vals:
-                if isinstance(vv, dict):
+        _str = "{}{}".format(depth*"\t", key)
+        vals = np.atleast_1d(vals)
+        for vv in vals:
+            if isinstance(vv, dict):
+                # If this `key` is not already stored, add a new dict for it
+                if key not in tree:
                     tree[key] = OrderedDict()
-                    _load_tree(tree[key], vv, dd+1)
-                else:
-                    tree[key] = str(type(vv))
-                    _str += ": {}".format(tree[key])
-            if debug:
-                print(_str)
+                # Add entries one-level deeper
+                _load_tree(tree[key], vv, depth+1)
+            else:
+                _val = str(type(vv))
+                # Store a non-existing value-type
+                if key not in tree:
+                    tree[key] = [_val]
+                # if this is a different value-type, store that
+                elif _val not in tree[key]:
+                    tree[key].append(_val)
+
+                _str += ": {}".format(tree[key])
+
+        if debug:
+            print(_str)
+
     return
