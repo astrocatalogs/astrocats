@@ -7,6 +7,8 @@ Copied in from 'webcat.py', 'scripts/events.py'.
 import gzip
 import os
 import hashlib
+import json
+from collections import OrderedDict
 
 
 def get_event_text(eventfile):
@@ -59,3 +61,17 @@ def get_event_name_from_filename(fname):
     # if there is still a json extension, remove that.
     event_name = event_name.replace('.json', '')
     return event_name
+
+
+def load_event_from_filename(event_fname, log):
+    file_text = get_event_text(event_fname)
+    event_data = json.loads(file_text, object_pairs_hook=OrderedDict)
+    try:
+        entry, event_data = list(event_data.items())[0]
+    except Exception as err:
+        log.error("Error unpacking event from '{}'".format(event_fname))
+        log.error("Error: {}".format(str(err)))
+        log.error("Contents: {}".format(event_data))
+        raise
+
+    return entry, event_data

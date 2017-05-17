@@ -1,6 +1,5 @@
 """
 """
-import json
 import os
 from collections import OrderedDict
 from copy import deepcopy
@@ -55,8 +54,8 @@ class Director(producer.Producer_Base):
             normal=(not args.boneyard), bones=args.boneyard)
         event_filenames = sorted(event_filenames, key=lambda s: s.lower())
 
-        log.warning("Shuffling!")
-        np.random.shuffle(event_filenames)
+        # log.warning("Shuffling!")
+        # np.random.shuffle(event_filenames)
 
         num_events = len(event_filenames)
         log.warning("{} Files, e.g. '{}'".format(num_events, np.random.choice(event_filenames)))
@@ -83,7 +82,7 @@ class Director(producer.Producer_Base):
             # Load this entry from the file
             #    `entry` is the event-name as recorded in the file, usually same as `event_name`.
             #    May differ if `entry` contains (e.g.) a slash, etc
-            entry, event_data = load_event(event_fname, log)
+            entry, event_data = production_utils.load_event_from_filename(event_fname, log)
             log.debug("entry = '{}' (from fname: '{}')".format(entry, event_name))
 
             # Generate checksum for each json input file, compare to previous (if they exist)
@@ -208,17 +207,3 @@ def rank_sources(event_data):
                       sorted(ranked_sources.values(), key=lambda x: x['count'], reverse=True)]
 
     return ranked_sources
-
-
-def load_event(event_fname, log):
-    file_text = production_utils.get_event_text(event_fname)
-    event_data = json.loads(file_text, object_pairs_hook=OrderedDict)
-    try:
-        entry, event_data = list(event_data.items())[0]
-    except Exception as err:
-        log.error("Error unpacking event from '{}'".format(event_fname))
-        log.error("Error: {}".format(str(err)))
-        log.error("Contents: {}".format(event_data))
-        raise
-
-    return entry, event_data
