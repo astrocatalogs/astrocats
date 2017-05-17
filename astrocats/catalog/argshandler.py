@@ -58,9 +58,9 @@ class ArgsHandler:
         # ----------------
         elif args.subcommand == 'analyze':
             self.log.log(log_lvl, "Running 'analyze'.")
-            from .analysis import Analysis
+            from . import analysis
             # Create an `Analysis` instance
-            lysis = Analysis(catalog, self.log)
+            lysis = analysis.analysis.Analysis(catalog, self.log)
             # Pass the command-line arguments to run.
             lysis.analyze(args)
 
