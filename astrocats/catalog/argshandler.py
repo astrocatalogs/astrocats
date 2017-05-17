@@ -23,9 +23,9 @@ class ArgsHandler:
         # Data Export
         # -----------
         elif args.subcommand == 'produce':
-            from . import production
+            # from . import production
             self.log.log(log_lvl, "Running 'produce'.")
-            manager = production.director.Director(catalog, args)
+            manager = catalog.Director(catalog, args)
             manager.produce(args)
 
         # Git Subcommands
