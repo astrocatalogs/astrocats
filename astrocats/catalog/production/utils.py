@@ -44,7 +44,7 @@ def get_first_kind(catalog, name, field):
             catalog[name][field] and 'kind' in catalog[name][field][0] else '')
 
 
-def md5file(fname):
+def load_md5_file(fname):
     hash_md5 = hashlib.md5()
     with open(fname, "rb") as f:
         for chunk in iter(lambda: f.read(4096), b""):

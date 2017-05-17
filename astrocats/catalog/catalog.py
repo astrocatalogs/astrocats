@@ -90,9 +90,16 @@ class Catalog(object):
                                               self.catalog_dir, '')
             self.PATH_INPUT = os.path.join(self.PATH_BASE, 'input', '')
             self.PATH_OUTPUT = os.path.join(self.PATH_BASE, 'output', '')
+
             self.PATH_CACHE = os.path.join(self.PATH_OUTPUT, 'cache', '')
+            self.PATH_MD5 = os.path.join(self.PATH_CACHE, 'md5s.json')
+            self.PATH_AUTHORS = os.path.join(self.PATH_CACHE, 'bibauthors.json')
+            self.PATH_ALL_AUTHORS = os.path.join(self.PATH_CACHE, 'biballauthors.json')
+
             self.PATH_JSON = os.path.join(self.PATH_OUTPUT, 'json', '')
             self.PATH_HTML = os.path.join(self.PATH_OUTPUT, 'html', '')
+            self.PATH_BIBLIO = os.path.join(self.PATH_OUTPUT, 'biblio.json')
+
             # critical datafiles
             self.REPOS_LIST = os.path.join(self.PATH_INPUT, 'repos.json')
             self.TASK_LIST = os.path.join(self.PATH_INPUT, 'tasks.json')
@@ -104,8 +111,12 @@ class Catalog(object):
             rstr += "\n`PATH_INPUT` = '{}'".format(self.PATH_INPUT)
             rstr += "\n`PATH_OUTPUT` = '{}'".format(self.PATH_OUTPUT)
             rstr += "\n\t`PATH_CACHE` = '{}'".format(self.PATH_CACHE)
+            rstr += "\n\t\t`PATH_MD5` = '{}'".format(self.PATH_MD5)
+            rstr += "\n\t\t`PATH_AUTHORS` = '{}'".format(self.PATH_AUTHORS)
+            rstr += "\n\t\t`PATH_ALL_AUTHORS` = '{}'".format(self.PATH_ALL_AUTHORS)
             rstr += "\n\t`PATH_JSON` = '{}'".format(self.PATH_JSON)
             rstr += "\n\t`PATH_HTML` = '{}'".format(self.PATH_HTML)
+            rstr += "\n\t`PATH_BIBLIO` = '{}'".format(self.PATH_BIBLIO)
             rstr += "\n`REPOS_LIST` = '{}'".format(self.REPOS_LIST)
             rstr += "\n`TASK_LIST` = '{}'".format(self.TASK_LIST)
             return rstr
@@ -765,7 +776,7 @@ class Catalog(object):
                     #         "Still journaling...".format(len(self.entries)))
                     self.journal_entries()
 
-            if self.args.travis and n1 > self.TRAVIS_QUERY_LIMIT:
+            if self.args.travis and (n1 > self.TRAVIS_QUERY_LIMIT):
                 break
             n1 = n1 + 1
             mainpbar.update(1)
@@ -995,7 +1006,7 @@ class Catalog(object):
             name = self.add_entry(oname)
             self.entries[name].set_preferred_name()
 
-            if self.args.travis and ni > self.TRAVIS_QUERY_LIMIT:
+            if self.args.travis and (ni > self.TRAVIS_QUERY_LIMIT):
                 break
 
         return

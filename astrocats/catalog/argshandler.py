@@ -23,9 +23,10 @@ class ArgsHandler:
         # Data Export
         # -----------
         elif args.subcommand == 'produce':
-            from . import producer
+            from . import production
             self.log.log(log_lvl, "Running 'produce'.")
-            producer.produce(catalog, args)
+            manager = production.director.Director(catalog, args)
+            manager.produce(args)
 
         # Git Subcommands
         # ---------------
@@ -172,6 +173,13 @@ class ArgsHandler:
             '-by',
             dest='boneyard',
             help='Make "boneyard" catalog',
+            default=False,
+            action='store_true')
+
+        prod_pars.add_argument(
+            '--authors',
+            dest='authors',
+            help='Query ADS for all-authors information (slow!)',
             default=False,
             action='store_true')
 
