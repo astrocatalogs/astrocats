@@ -7,20 +7,28 @@ from copy import deepcopy
 import numpy as np
 
 from astrocats.catalog.utils import tq  # , dict_to_pretty_string
+from astrocats.catalog.source import SOURCE
 from . import utils as production_utils
 from . import producer
 
 
 class Director(producer.Producer_Base):
 
-    SAVE_ENTRY_KEYS = [
+    # Subclasses should modify these variables to add custom keys to saving/deleting.
+    #    Combined with defaults (below) into `self.SAVE_ENTRY_KEYS` and `self.DEL_QUANTITY_KEYS`
+    _SAVE_ENTRY_KEYS = []
+    _DEL_QUANTITY_KEYS = []
+
+    DEF_SAVE_ENTRY_KEYS = [
         "name", "alias", "ra", "dec", "altitude", "azimuth",
         "instruments", "redshift", "lumdist",
         "references"
     ]
 
-    DEL_QUANTITY_KEYS = ['source', 'u_value', 'e_value', 'e_upper_value',
-                         'e_lower_value', 'derived']
+    DEF_DEL_QUANTITY_KEYS = [
+        'source', 'u_value', 'e_value', 'e_upper_value',
+        'e_lower_value', 'derived'
+    ]
 
     def __init__(self, catalog, args):
         log = catalog.log
@@ -31,9 +39,17 @@ class Director(producer.Producer_Base):
         self.output_data = OrderedDict()
         self.names_data = OrderedDict()
 
-        self.web_table_min_fname = os.path.join(self.catalog.PATHS.PATH_OUTPUT, 'catalog.min.json')
-        self.web_table_fname = os.path.join(self.catalog.PATHS.PATH_OUTPUT, 'catalog.json')
-        self.names_fname = os.path.join(self.catalog.PATHS.PATH_OUTPUT, 'names.min.json')
+        self.SAVE_ENTRY_KEYS = self.DEF_SAVE_ENTRY_KEYS + self._SAVE_ENTRY_KEYS
+        self.DEL_QUANTITY_KEYS = self.DEF_DEL_QUANTITY_KEYS + self._DEL_QUANTITY_KEYS
+        log.info("`SAVE_ENTRY_KEYS` = '{}'".format(", ".join(self.SAVE_ENTRY_KEYS)))
+        log.info("`DEL_QUANTITY_KEYS` = '{}'".format(", ".join(self.DEL_QUANTITY_KEYS)))
+
+        self.web_table_min_fname = self.catalog.PATHS.WEB_TABLE_MIN_FILE
+        self.web_table_fname = self.catalog.PATHS.WEB_TABLE_FILE
+        self.names_fname = self.catalog.PATHS.NAMES_MIN_FILE
+        log.info("`web_table_min_fname` = '{}'".format(self.web_table_min_fname))
+        log.info("`web_table_fname` = '{}'".format(self.web_table_fname))
+        log.info("`names_fname` = '{}'".format(self.names_fname))
 
         return
 
@@ -62,6 +78,7 @@ class Director(producer.Producer_Base):
         for event_count, event_fname in enumerate(tq(event_filenames)):
 
             if args.travis and (event_count >= catalog.TRAVIS_QUERY_LIMIT):
+                self.log.warning("Reached travis limit ({})".format(event_count))
                 break
 
             event_name = production_utils.get_event_name_from_filename(event_fname)
@@ -118,20 +135,24 @@ class Director(producer.Producer_Base):
             event_data['download'] = 'e'
             self.log.debug("...exists")
 
-        # Store the top 5 ranking references (sources)
+        # Store the top 5 ranking references (sources), and add an ID to each source
         if 'sources' in event_data:
+            self.log.debug("Ranking sources")
             ranked_sources = rank_sources(event_data)
+            num_rs = 0 if ranked_sources is None else len(ranked_sources)
+            self.log.debug("Retrieved {} ranked sources".format(num_rs))
             if ranked_sources is not None:
                 event_data['references'] = ', '.join(ranked_sources[:5])
 
-        # Store desired data
+        # Store desired data (filtering keys, parameters, etc)
         self.output_data[event_name] = self._clean_event_dict(event_data)
         return
 
     def finish(self):
         self.log.debug("Director.finish()")
-
+        self.log.debug("finishing web-table outputs")
         self._finish_web_table_output()
+        self.log.debug("finishing names output")
         self._finish_names_output()
         return
 
@@ -140,13 +161,16 @@ class Director(producer.Producer_Base):
         output = list(self.output_data.values())
 
         # Produce 'min'imal version of web-table
+        self.log.info("Writing web-table (min)")
         self._save_json(self.web_table_min_fname, output, expanded=False)
 
         # Produce expanded version of web-table
+        self.log.info("Writing web-table (full)")
         self._save_json(self.web_table_fname, output, expanded=True)
         return
 
     def _finish_names_output(self):
+        self.log.info("Writing names table")
         self._save_json(self.names_fname, self.names_data, expanded=False)
         return
 
@@ -172,14 +196,22 @@ def rank_sources(event_data):
     #    only store primary sources which contain a 'bibcode' and 'name'
     ranked_sources = {}
     for source in event_data['sources']:
-        if ('name' not in source) or ('bibcode' not in source) or ('secondary' in source):
+        if 'secondary' in source:
             continue
 
         alias = source['alias']
         ranked_sources[alias] = {
-            'bibcode': source['bibcode'],
             'count': 0
         }
+        # Store some sort of identification for this source (preferrence: first to last)
+        #    The `Source` specification requires one of these to exist
+        _source_id = [SOURCE.BIBCODE, SOURCE.ARXIVID, SOURCE.URL, SOURCE.NAME]
+        for sid in _source_id:
+            if sid in source:
+                ranked_sources[alias][sid] = source[sid]
+                # Also store this to a universal key (regardless of what type)
+                ranked_sources[alias]['ID'] = source[sid]
+                break
 
     if len(ranked_sources) == 0:
         return None
@@ -197,7 +229,7 @@ def rank_sources(event_data):
                             else:
                                 ranked_sources[source]['count'] += 1
 
-    ranked_sources = [src['bibcode'] for src in
+    ranked_sources = [src['ID'] for src in
                       sorted(ranked_sources.values(), key=lambda x: x['count'], reverse=True)]
 
     return ranked_sources

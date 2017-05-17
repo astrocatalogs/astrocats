@@ -66,7 +66,7 @@ class MD5_Pro(Producer_Base):
         self.log = log
         log.debug("MD5_Pro.__init__()")
 
-        self.md5_fname = catalog.PATHS.PATH_MD5
+        self.md5_fname = catalog.PATHS.MD5_FILE
         log.debug("`md5_fname` = '{}'".format(self.md5_fname))
 
         self.md5_data = self._load_default_json(self.md5_fname)
@@ -99,9 +99,10 @@ class Bib_Pro(Producer_Base):
         self.log = log
         log.debug("Bib_Pro.__init__()")
 
-        self.biblio_fname = catalog.PATHS.PATH_BIBLIO
-        self.authors_fname = catalog.PATHS.PATH_AUTHORS
-        self.all_authors_fname = catalog.PATHS.PATH_ALL_AUTHORS
+        self.biblio_fname = catalog.PATHS.BIBLIO_FILE
+        self.biblio_min_fname = catalog.PATHS.BIBLIO_MIN_FILE
+        self.authors_fname = catalog.PATHS.AUTHORS_FILE
+        self.all_authors_fname = catalog.PATHS.ALL_AUTHORS_FILE
         log.debug("`authors_fname` = '{}'".format(self.authors_fname))
         log.debug("`all_authors_fname` = '{}'".format(self.all_authors_fname))
 
@@ -179,9 +180,16 @@ class Bib_Pro(Producer_Base):
 
     def finish(self):
         self.log.debug("Bib_Pro.finish()")
-        self._save_json(self.biblio_fname, self.bib_data)
+        # Each reference includes a list of events it has contributed, also include a count
+        for key, vals in self.bib_data.items():
+            num_events = len(vals['events'])
+            vals['num_events'] = num_events
+
         self.log.warning("'{}' is not being constructed".format(self.authors_fname))
         # self._save_json(self.authors_fname, self.bib_authors_data)
+
+        self._save_json(self.biblio_fname, self.bib_data, expanded=True)
+        self._save_json(self.biblio_min_fname, self.bib_data, expanded=False)
         if self.load_all_authors_flag:
             self._save_json(self.all_authors_fname, self.bib_all_authors_data)
         return

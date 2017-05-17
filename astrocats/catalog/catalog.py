@@ -15,6 +15,7 @@ from tqdm import tqdm
 
 from astrocats import __version__
 from astrocats.catalog import gitter
+from astrocats.catalog.production import director
 from astrocats.catalog.entry import ENTRY, Entry
 from astrocats.catalog.struct import (MODEL, SOURCE)
 from astrocats.catalog.task import Task
@@ -89,18 +90,33 @@ class Catalog(object):
                 self.PATH_BASE = os.path.join(catalog.args.base_path,
                                               self.catalog_dir, '')
             self.PATH_INPUT = os.path.join(self.PATH_BASE, 'input', '')
+
+            # Output Paths and Files
+            # ----------------------
             self.PATH_OUTPUT = os.path.join(self.PATH_BASE, 'output', '')
 
-            self.PATH_CACHE = os.path.join(self.PATH_OUTPUT, 'cache', '')
-            self.PATH_MD5 = os.path.join(self.PATH_CACHE, 'md5s.json')
-            self.PATH_AUTHORS = os.path.join(self.PATH_CACHE, 'bibauthors.json')
-            self.PATH_ALL_AUTHORS = os.path.join(self.PATH_CACHE, 'biballauthors.json')
+            self.BIBLIO_FILE = os.path.join(self.PATH_OUTPUT, 'biblio.json')
+            self.BIBLIO_MIN_FILE = os.path.join(self.PATH_OUTPUT, 'biblio.min.json')
 
+            self.WEB_TABLE_FILE = os.path.join(self.PATH_OUTPUT, 'catalog.json')
+            self.WEB_TABLE_MIN_FILE = os.path.join(self.PATH_OUTPUT, 'catalog.min.json')
+
+            self.NAMES_MIN_FILE = os.path.join(self.PATH_OUTPUT, 'names.min.json')
+
+            # Cache path and files
+            self.PATH_CACHE = os.path.join(self.PATH_OUTPUT, 'cache', '')
+
+            self.MD5_FILE = os.path.join(self.PATH_CACHE, 'md5s.json')
+            self.AUTHORS_FILE = os.path.join(self.PATH_CACHE, 'bibauthors.json')
+            self.ALL_AUTHORS_FILE = os.path.join(self.PATH_CACHE, 'biballauthors.json')
+
+            # json path and files
             self.PATH_JSON = os.path.join(self.PATH_OUTPUT, 'json', '')
+            # html path and files
             self.PATH_HTML = os.path.join(self.PATH_OUTPUT, 'html', '')
-            self.PATH_BIBLIO = os.path.join(self.PATH_OUTPUT, 'biblio.json')
 
             # critical datafiles
+            # ------------------
             self.REPOS_LIST = os.path.join(self.PATH_INPUT, 'repos.json')
             self.TASK_LIST = os.path.join(self.PATH_INPUT, 'tasks.json')
             self.repos_dict = read_json_dict(self.REPOS_LIST)
@@ -110,13 +126,15 @@ class Catalog(object):
             rstr = "`catalog_dir` = '{}'".format(self.catalog_dir)
             rstr += "\n`PATH_INPUT` = '{}'".format(self.PATH_INPUT)
             rstr += "\n`PATH_OUTPUT` = '{}'".format(self.PATH_OUTPUT)
+            rstr += "\n\t`BIBLIO_FILE` = '{}'".format(self.BIBLIO_FILE)
+            rstr += "\n\t`NAMES_MIN_FILE` = '{}'".format(self.NAMES_MIN_FILE)
+            rstr += "\n\t`WEB_TABLE_FILE` = '{}'".format(self.WEB_TABLE_FILE)
             rstr += "\n\t`PATH_CACHE` = '{}'".format(self.PATH_CACHE)
-            rstr += "\n\t\t`PATH_MD5` = '{}'".format(self.PATH_MD5)
-            rstr += "\n\t\t`PATH_AUTHORS` = '{}'".format(self.PATH_AUTHORS)
-            rstr += "\n\t\t`PATH_ALL_AUTHORS` = '{}'".format(self.PATH_ALL_AUTHORS)
+            rstr += "\n\t\t`MD5_FILE` = '{}'".format(self.MD5_FILE)
+            rstr += "\n\t\t`AUTHORS_FILE` = '{}'".format(self.AUTHORS_FILE)
+            rstr += "\n\t\t`ALL_AUTHORS_FILE` = '{}'".format(self.ALL_AUTHORS_FILE)
             rstr += "\n\t`PATH_JSON` = '{}'".format(self.PATH_JSON)
             rstr += "\n\t`PATH_HTML` = '{}'".format(self.PATH_HTML)
-            rstr += "\n\t`PATH_BIBLIO` = '{}'".format(self.PATH_BIBLIO)
             rstr += "\n`REPOS_LIST` = '{}'".format(self.REPOS_LIST)
             rstr += "\n`TASK_LIST` = '{}'".format(self.TASK_LIST)
             return rstr
@@ -219,6 +237,7 @@ class Catalog(object):
         self.args = args
         self.log = log
         self.proto = Entry
+        self.Director = director.Director
 
         # Instantiate PATHS
         self.PATHS = self.PATHS(self)
