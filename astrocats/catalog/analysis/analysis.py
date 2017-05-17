@@ -9,7 +9,12 @@ To-Do
 """
 import os
 from glob import glob
+from collections import OrderedDict
+
 import numpy as np
+
+from astrocats.catalog.utils import tq, dict_to_pretty_string
+from astrocats.catalog.production import utils as production_utils
 
 
 class Analysis:
@@ -36,12 +41,15 @@ class Analysis:
         """
         self.log.info("Running catalog analysis")
 
-        if args.count:
-            self.count()
+        if args.count_flag:
+            self.count(args)
+
+        if args.data_tree_flag:
+            self.data_tree(args)
 
         return
 
-    def count(self):
+    def count(self, args):
         """Analyze the counts of ...things.
 
         Returns
@@ -62,6 +70,46 @@ class Analysis:
         retvals['num_files'] = num_files
 
         return retvals
+
+    def data_tree(self, args):
+        """
+        """
+        log = self.log
+        catalog = self.catalog
+        log.info("Running 'data_tree'")
+
+        # Load filenames for all events that have been imported
+        event_filenames = catalog.PATHS.get_repo_output_file_list()
+        event_filenames = sorted(event_filenames, key=lambda s: s.lower())
+        num_events = len(event_filenames)
+        log.debug("{} Files, e.g. '{}'".format(num_events, np.random.choice(event_filenames)))
+
+        log.warning("Shuffling!")
+        np.random.shuffle(event_filenames)
+        data_tree = OrderedDict()
+
+        # Iterate over all events
+        # -----------------------
+        for event_count, event_fname in enumerate(tq(event_filenames)):
+
+            if args.travis and (event_count >= catalog.TRAVIS_QUERY_LIMIT):
+                break
+
+            # Load this entry from the file
+            #    `entry` is the event-name as recorded in the file, usually same as `event_name`.
+            #    May differ if `entry` contains (e.g.) a slash, etc
+            event_name = production_utils.get_event_name_from_filename(event_fname)
+            entry, event_data = production_utils.load_event_from_filename(event_fname, log)
+            log.debug("entry = '{}' (from fname: '{}')".format(entry, event_name))
+            # log.warning(dict_to_pretty_string(event_data))
+
+            _load_tree(data_tree, event_data)
+            # log.warning(dict_to_pretty_string(data_tree))
+            # break
+
+        log.warning(dict_to_pretty_string(data_tree))
+
+        return
 
     def _count_tasks(self):
         """Count the number of tasks, both in the json and directory.
@@ -182,3 +230,20 @@ def _get_last_dirs(path, num=1):
 
     last_path = "..." + last_path
     return last_path
+
+
+def _load_tree(tree, data, dd=0, debug=False):
+    for key, vals in data.items():
+        if key not in tree:
+            _str = "{}{}".format(dd*"\t", key)
+            vals = np.atleast_1d(vals)
+            for vv in vals:
+                if isinstance(vv, dict):
+                    tree[key] = OrderedDict()
+                    _load_tree(tree[key], vv, dd+1)
+                else:
+                    tree[key] = str(type(vv))
+                    _str += ": {}".format(tree[key])
+            if debug:
+                print(_str)
+    return

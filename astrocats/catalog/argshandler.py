@@ -222,8 +222,13 @@ class ArgsHandler:
             help="Perform basic analysis on this catalog.")
 
         lyze_pars.add_argument(
-            '--count', '-c', dest='count',
+            '--count', '-c', dest='count_flag',
             default=False, action='store_true',
             help='Determine counts of entries, files, etc.')
+
+        lyze_pars.add_argument(
+            '--data-tree', dest='data_tree_flag',
+            default=True, action='store_true',
+            help='Determine what entries, quantities, parameters are stored in the catalog.')
 
         return lyze_pars
