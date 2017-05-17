@@ -5,7 +5,6 @@ import json
 from collections import OrderedDict
 
 from . import utils as production_utils
-from astropy.time import Time as astrotime
 
 
 class Producer_Base:
