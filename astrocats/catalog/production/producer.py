@@ -5,6 +5,9 @@ import json
 from collections import OrderedDict
 
 from . import utils as production_utils
+from .. source import SOURCE
+from .. entry import ENTRY
+from .. quantity import QUANTITY
 
 
 class Producer_Base:
@@ -124,14 +127,14 @@ class Bib_Pro(Producer_Base):
         bib_authors_data = self.bib_authors_data
         bib_all_authors_data = self.bib_all_authors_data
 
-        if 'sources' not in event_data:
+        if ENTRY.SOURCES not in event_data:
             return
 
-        for source in event_data['sources']:
-            if 'bibcode' not in source:
+        for source in event_data[ENTRY.SOURCES]:
+            if SOURCE.BIBCODE not in source:
                 continue
 
-            bc = source['bibcode']
+            bc = source[SOURCE.BIBCODE]
             if bc not in bib_data:
 
                 authors = ''
@@ -157,14 +160,14 @@ class Bib_Pro(Producer_Base):
 
                 bib_data[bc] = OrderedDict(
                     [('authors', authors), ('all_authors', all_authors),
-                     ('bibcode', bc), ('events', []), ('eventdates', []),
+                     (SOURCE.BIBCODE, bc), ('events', []), ('eventdates', []),
                      ('types', []), ('photocount', 0), ('spectracount', 0),
                      ('metacount', 0)])
 
             bib_data[bc]['events'].append(event_data['name'])
 
             for key in list(event_data.keys()):
-                bcalias = source['alias']
+                bcalias = source[SOURCE.ALIAS]
                 lc = 0
                 if key in [
                         'name', 'sources', 'schema', 'photometry',
@@ -172,7 +175,7 @@ class Bib_Pro(Producer_Base):
                 ]:
                     continue
                 for quantum in event_data[key]:
-                    if bcalias in quantum['source'].split(','):
+                    if bcalias in quantum[QUANTITY.SOURCE].split(','):
                         lc += 1
                 bib_data[bc]['metacount'] += lc
 

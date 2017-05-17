@@ -10,6 +10,8 @@ from astrocats.catalog.utils import tq  # , dict_to_pretty_string
 from astrocats.catalog.source import SOURCE
 from . import utils as production_utils
 from . import producer
+from .. entry import ENTRY
+from .. quantity import QUANTITY
 
 
 class Director(producer.Producer_Base):
@@ -122,11 +124,11 @@ class Director(producer.Producer_Base):
         self.log.debug("Director.update()")
 
         # Store names and aliases to a special dictionary
-        if 'alias' in event_data:
-            store_names = [x['value'] for x in event_data['alias']]
+        if ENTRY.ALIAS in event_data:
+            store_names = [x[QUANTITY.VALUE] for x in event_data[ENTRY.ALIAS]]
         else:
-            store_names = [event_data['name']]
-        self.names_data[event_data['name']] = store_names
+            store_names = [event_data[ENTRY.NAME]]
+        self.names_data[event_data[ENTRY.NAME]] = store_names
 
         # For events with internal json files, add {'download' = 'e'} elements into dicts
         internal_event_fname = self.catalog.PATHS.get_filename_for_internal_event(event_name)
@@ -136,7 +138,7 @@ class Director(producer.Producer_Base):
             self.log.debug("...exists")
 
         # Store the top 5 ranking references (sources), and add an ID to each source
-        if 'sources' in event_data:
+        if ENTRY.SOURCES in event_data:
             self.log.debug("Ranking sources")
             ranked_sources = rank_sources(event_data)
             num_rs = 0 if ranked_sources is None else len(ranked_sources)
@@ -193,13 +195,13 @@ class Director(producer.Producer_Base):
 
 def rank_sources(event_data):
     # Store sources for this entry to count their usage
-    #    only store primary sources which contain a 'bibcode' and 'name'
+    #    only store primary sources
     ranked_sources = {}
-    for source in event_data['sources']:
-        if 'secondary' in source:
+    for source in event_data[ENTRY.SOURCES]:
+        if SOURCE.SECONDARY in source:
             continue
 
-        alias = source['alias']
+        alias = source[SOURCE.ALIAS]
         ranked_sources[alias] = {
             'count': 0
         }
@@ -220,8 +222,8 @@ def rank_sources(event_data):
     for key, vals in event_data.items():
         if isinstance(vals, list):
             for row in vals:
-                if 'source' in row:
-                    _split = row['source'].split(',')
+                if QUANTITY.SOURCE in row:
+                    _split = row[QUANTITY.SOURCE].split(',')
                     for source in ranked_sources:
                         if source in _split:
                             if key == 'spectra':
