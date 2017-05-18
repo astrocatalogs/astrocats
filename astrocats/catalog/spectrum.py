@@ -53,7 +53,7 @@ class Spectrum(CatDict):
 
     def __init__(self, parent, **kwargs):
         self._REQ_KEY_SETS = [
-            [SPECTRUM.SOURCE, SPECTRUM.FILENAME],
+            [SPECTRUM.SOURCE],
             [SPECTRUM.U_FLUXES, SPECTRUM.FILENAME],
             [SPECTRUM.U_WAVELENGTHS, SPECTRUM.FILENAME],
         ]

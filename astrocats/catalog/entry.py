@@ -454,23 +454,21 @@ class Entry(OrderedDict):
         return
 
     def _check_cat_dict_source(self, cat_dict_class, key_in_self, **kwargs):
-        """Check that a source exists and that a quantity isn't erroneous."""
+        """Check that the quantity isn't erroneous or private."""
         # Make sure that a source is given
         source = kwargs.get(cat_dict_class._KEYS.SOURCE, None)
-        if source is None:
-            raise CatDictError(
-                "{}: `source` must be provided!".format(self[self._KEYS.NAME]),
-                warn=True)
-        # If this source/data is erroneous, skip it
-        if self.is_erroneous(key_in_self, source):
-            self._log.info("This source is erroneous, skipping")
-            return None
-        # If this source/data is private, skip it
-        if (self.catalog.args is not None and not self.catalog.args.private and
-                self.is_private(key_in_self, source)):
-            self._log.info("This source is private, skipping")
-            return None
-        return source
+        if source is not None:
+            # If this source/data is erroneous, skip it
+            if self.is_erroneous(key_in_self, source):
+                self._log.info("This source is erroneous, skipping")
+                return False
+            # If this source/data is private, skip it
+            if (self.catalog.args is not None and not self.catalog.args.private and
+                    self.is_private(key_in_self, source)):
+                self._log.info("This source is private, skipping")
+                return False
+
+        return True
 
     def _init_cat_dict(self, cat_dict_class, key_in_self, **kwargs):
         """Initialize a CatDict object, checking for errors."""
@@ -497,16 +495,8 @@ class Entry(OrderedDict):
         """
         # Make sure that a source is given, and is valid (nor erroneous)
         if cat_dict_class != Error:
-            try:
-                source = self._check_cat_dict_source(cat_dict_class,
-                                                     key_in_self, **kwargs)
-            except CatDictError as err:
-                if err.warn:
-                    self._log.info("'{}' Not adding '{}': '{}'".format(self[
-                        self._KEYS.NAME], key_in_self, str(err)))
-                return False
-
-            if source is None:
+            retval = self._check_cat_dict_source(cat_dict_class, key_in_self, **kwargs)
+            if not retval:
                 return False
 
         # Try to create a new instance of this subclass of `CatDict`
@@ -757,8 +747,8 @@ class Entry(OrderedDict):
         """Add a `Spectrum` instance to this entry."""
         spec_key = self._KEYS.SPECTRA
         # Make sure that a source is given, and is valid (nor erroneous)
-        source = self._check_cat_dict_source(Spectrum, spec_key, **kwargs)
-        if source is None:
+        retval = self._check_cat_dict_source(Spectrum, spec_key, **kwargs)
+        if not retval:
             return None
 
         # Try to create a new instance of `Spectrum`
