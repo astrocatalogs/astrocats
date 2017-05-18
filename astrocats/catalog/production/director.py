@@ -193,12 +193,12 @@ class Director(producer.Producer_Base):
         return new_data
 
 
-def rank_sources(event_data):
+def rank_sources(event_data, skip_secondary=False):
     # Store sources for this entry to count their usage
     #    only store primary sources
     ranked_sources = {}
     for source in event_data[ENTRY.SOURCES]:
-        if SOURCE.SECONDARY in source:
+        if (SOURCE.SECONDARY in source) and (skip_secondary):
             continue
 
         alias = source[SOURCE.ALIAS]
