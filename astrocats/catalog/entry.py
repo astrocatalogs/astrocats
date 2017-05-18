@@ -364,6 +364,12 @@ class Entry(struct.Meta_Struct):
 
     def _check_cat_dict_source(self, cat_dict_class, key_in_self, **kwargs):
         """Check that a source exists and that a quantity isn't erroneous."""
+        # Make sure that a source is given
+        source = kwargs.get(cat_dict_class._KEYS.SOURCE, None)
+        if source is None:
+            raise CatDictError(
+                "{}: `source` must be provided!".format(self[self._KEYS.NAME]),
+                warn=True)
         # If this source/data is erroneous, skip it
         if self.is_erroneous(key_in_self, source):
             self._log.info("This source is erroneous, skipping")
