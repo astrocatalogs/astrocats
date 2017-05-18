@@ -30,7 +30,7 @@ class SOURCE(KeyCollection):
     ACKNOWLEDGMENT = Key('acknowledgment', KEY_TYPES.STRING, compare=False)
     REFERENCE = Key('reference', KEY_TYPES.STRING, compare=False)
     # Numbers
-    ALIAS = Key('alias', KEY_TYPES.NUMERIC, compare=False)
+    ALIAS = Key('alias', KEY_TYPES.INTEGER, compare=False)
     # Booleans
     SECONDARY = Key('secondary', KEY_TYPES.BOOL, compare=False)
     PRIVATE = Key('private', KEY_TYPES.BOOL, compare=False)
