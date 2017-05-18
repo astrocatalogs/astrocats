@@ -246,7 +246,7 @@ def _load_tree(tree, data, depth=0, debug=False):
 
     for key, vals in data.items():
         _str = "{}{}".format(depth*"\t", key)
-        vals = np.atleast_1d(vals)
+        vals = np.atleast_1d(vals).tolist()
         for vv in vals:
             if isinstance(vv, dict):
                 # If this `key` is not already stored, add a new dict for it
