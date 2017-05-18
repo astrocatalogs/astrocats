@@ -560,14 +560,6 @@ class Entry(struct.Meta_Struct):
         self.add_quantity(self._KEYS.ALIAS, alias, source)
         return alias
 
-    def add_origin_task(self, task):
-        """Add the task (i.e. during import) that this entry originated (or was modified) from.
-        """
-        # print("adding ", task)
-        retval = self.add_quantity(self._KEYS.TASKS, task, None)
-        if not retval:
-            raise RuntimeError("Add task '{}' failed".format(task))
-
     def add_error(self, value, **kwargs):
         """Add an `Error` instance to this entry."""
         kwargs.update({ERROR.VALUE: value})
