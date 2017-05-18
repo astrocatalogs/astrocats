@@ -367,14 +367,9 @@ class Entry(struct.Meta_Struct):
         # Make sure that a source is given
         source = kwargs.get(cat_dict_class._KEYS.SOURCE, None)
         if source is None:
-            err = "{}: `source` must be provided!".format(self[self._KEYS.NAME])
-            raise struct.CatDictError(err, warn=True)
-        # Check that source is a list of integers
-        for x in source.split(','):
-            if not utils.is_integer(x):
-                err = "{}: `source` is comma-delimited list of integers!".format(
-                    self[self._KEYS.NAME])
-                raise struct.CatDictError(err, warn=True)
+            raise CatDictError(
+                "{}: `source` must be provided!".format(self[self._KEYS.NAME]),
+                warn=True)
         # If this source/data is erroneous, skip it
         if self.is_erroneous(key_in_self, source):
             self._log.info("This source is erroneous, skipping")
