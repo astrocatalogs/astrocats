@@ -24,7 +24,7 @@ class Director(producer.Producer_Base):
     DEF_SAVE_ENTRY_KEYS = [
         "name", "alias", "ra", "dec", "altitude", "azimuth",
         "instruments", "redshift", "lumdist",
-        "references"
+        "references", "sources"
     ]
 
     DEF_DEL_QUANTITY_KEYS = [
