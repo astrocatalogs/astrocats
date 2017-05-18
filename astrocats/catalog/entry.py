@@ -461,13 +461,6 @@ class Entry(OrderedDict):
             raise CatDictError(
                 "{}: `source` must be provided!".format(self[self._KEYS.NAME]),
                 warn=True)
-        # Check that source is a list of integers
-        for x in source.split(','):
-            if not is_integer(x):
-                raise CatDictError(
-                    "{}: `source` is comma-delimited list of "
-                    " integers!".format(self[self._KEYS.NAME]),
-                    warn=True)
         # If this source/data is erroneous, skip it
         if self.is_erroneous(key_in_self, source):
             self._log.info("This source is erroneous, skipping")
