@@ -19,9 +19,7 @@ from astrocats.catalog.production import director
 from astrocats.catalog.entry import ENTRY, Entry
 from astrocats.catalog.struct import (MODEL, SOURCE)
 from astrocats.catalog.task import Task
-from astrocats.catalog.utils import (compress_gz, is_integer, log_memory, pbar,
-                                     read_json_dict, repo_priority, log_raise,
-                                     uncompress_gz, uniq_cdl)
+from astrocats.catalog import utils
 
 
 class Catalog(object):
@@ -119,7 +117,7 @@ class Catalog(object):
             # ------------------
             self.REPOS_LIST = os.path.join(self.PATH_INPUT, 'repos.json')
             self.TASK_LIST = os.path.join(self.PATH_INPUT, 'tasks.json')
-            self.repos_dict = read_json_dict(self.REPOS_LIST)
+            self.repos_dict = utils.read_json_dict(self.REPOS_LIST)
             return
 
         def __str__(self):
@@ -219,7 +217,7 @@ class Catalog(object):
             repo_folders = list(
                 sorted(
                     list(set(repo_folders)),
-                    key=lambda key: repo_priority(key)))
+                    key=lambda key: utils.repo_priority(key)))
             repo_folders = [
                 os.path.join(self.PATH_OUTPUT, rf) for rf in repo_folders
                 if len(rf)
@@ -243,7 +241,7 @@ class Catalog(object):
         self.PATHS = self.PATHS(self)
 
         # Load repos dictionary (required)
-        self.repos_dict = read_json_dict(self.PATHS.REPOS_LIST)
+        self.repos_dict = utils.read_json_dict(self.PATHS.REPOS_LIST)
         # self.clone_repos()
         if git_clone:
             log.debug("Cloning all repos")
@@ -554,7 +552,7 @@ class Catalog(object):
             raise RuntimeError(err_str)
         # Delete all old entry JSON files
         repo_files = self.PATHS.get_repo_output_file_list()
-        for rfil in pbar(repo_files, desc='Deleting old entries'):
+        for rfil in utils.pbar(repo_files, desc='Deleting old entries'):
             os.remove(rfil)
             self.log.debug("Deleted '{}'".format(os.path.split(rfil)[-1]))
         return
@@ -641,7 +639,7 @@ class Catalog(object):
                         nsid.append(destentry.add_source(**source))
                     else:
                         raise ValueError("Couldn't find source alias!")
-                item['source'] = uniq_cdl(nsid)
+                item['source'] = utils.uniq_cdl(nsid)
 
                 if 'model' in item:
                     nmid = []
@@ -651,7 +649,7 @@ class Catalog(object):
                             nmid.append(destentry.add_model(**model))
                         else:
                             raise ValueError("Couldn't find model alias!")
-                    item['model'] = uniq_cdl(nmid)
+                    item['model'] = utils.uniq_cdl(nmid)
 
                 if key == ENTRY.PHOTOMETRY:
                     destentry.add_photometry(
@@ -803,7 +801,7 @@ class Catalog(object):
 
     def sanitize(self):
         task_str = self.get_current_task_str()
-        for name in pbar(list(sorted(self.entries.keys())), task_str):
+        for name in utils.pbar(list(sorted(self.entries.keys())), task_str):
             self.add_entry(name)
             self.journal_entries(bury=True, final=True)
 
@@ -829,7 +827,7 @@ class Catalog(object):
             slow and memory intensive, hence this improved approach.
             """
             # FIX: should this be ``fi.endswith(``.gz')`` ?
-            fname = uncompress_gz(_fname) if '.gz' in _fname else _fname
+            fname = utils.uncompress_gz(_fname) if '.gz' in _fname else _fname
 
             stub = None
             stub_name = None
@@ -883,7 +881,7 @@ class Catalog(object):
 
         currenttask = 'Loading entry stubs'
         files = self.PATHS.get_repo_output_file_list()
-        for ii, _fname in enumerate(pbar(files, currenttask)):
+        for ii, _fname in enumerate(utils.pbar(files, currenttask)):
             # Run normally
             # _add_stub(_fname)
 
@@ -893,7 +891,7 @@ class Catalog(object):
             if log_mem:
                 rss = process.memory_info().rss / 1024 / 1024
                 if ii % LOG_MEMORY_INT == 0 or rss > MEMORY_LIMIT:
-                    log_memory(self.log, "\nLoaded stub {}".format(ii), logging.INFO)
+                    utils.log_memory(self.log, "\nLoaded stub {}".format(ii), logging.INFO)
                     if rss > MEMORY_LIMIT:
                         err = (
                             "Memory usage {}, has exceeded {} on file {} '{}'".
@@ -966,11 +964,15 @@ class Catalog(object):
                     (bury_entry, save_entry) = self.should_bury(name)
 
                 if save_entry:
-                    save_name = self.entries[name].save(bury=bury_entry, final=final)
-                    self.log.info("Saved {} to '{}'.".format(name.ljust(20), save_name))
-                    if (gz and os.path.getsize(save_name) > self.COMPRESS_ABOVE_FILESIZE):
-                        save_name = compress_gz(save_name)
-                        self.log.debug("Compressed '{}' to '{}'".format(name, save_name))
+                    save_name = self.entries[name].save(
+                        bury=bury_entry, final=final)
+                    self.log.info(
+                        "Saved {} to '{}'.".format(name.ljust(20), save_name))
+                    if (gz and os.path.getsize(save_name) >
+                            self.COMPRESS_ABOVE_FILESIZE):
+                        save_name = utils.compress_gz(save_name)
+                        self.log.debug(
+                            "Compressed '{}' to '{}'".format(name, save_name))
                         # FIX: use subprocess
                         outdir, filename = os.path.split(save_name)
                         filename = filename.split('.')[0]
@@ -1021,7 +1023,7 @@ class Catalog(object):
             self.load_stubs()
 
         task_str = self.get_current_task_str()
-        for ni, oname in enumerate(pbar(self.entries, task_str)):
+        for ni, oname in enumerate(utils.pbar(self.entries, task_str)):
             name = self.add_entry(oname)
             self.entries[name].set_preferred_name()
 
@@ -1083,7 +1085,7 @@ class Catalog(object):
                         comp_failed = True
                     # Not yet compressed - compress it
                     else:
-                        fname = compress_gz(fname)
+                        fname = utils.compress_gz(fname)
                         fsize = os.path.getsize(fname)
                         self.log.info("Compressed to '{}', size '{}' MB".
                                       format(fname, fsize / 1028 / 1028))
@@ -1422,7 +1424,7 @@ def _get_task_priority(tasks, task_priority):
     """
     if task_priority is None:
         return None
-    if is_integer(task_priority):
+    if utils.is_integer(task_priority):
         return task_priority
     if isinstance(task_priority, basestring):
         if task_priority in tasks:
