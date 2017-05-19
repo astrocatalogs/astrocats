@@ -7,7 +7,7 @@ from collections import OrderedDict
 from .digits import is_number
 
 __all__ = ['compress_gz', 'convert_aq_output', 'read_json_dict',
-           'read_json_arr', 'uncompress_gz']
+           'read_json_arr', 'uncompress_gz', 'import_ads']
 
 
 def convert_aq_output(row):
@@ -69,3 +69,23 @@ def uncompress_gz(fname):
         shutil.copyfileobj(f_in, f_out)
     os.remove(fname)
     return uncomp_name
+
+
+def import_ads():
+    """Load and return the ads package checking that a token file exists.
+    """
+    import ads
+
+    ads_key_path = os.path.join(os.path.expanduser('~'), '.ads/dev_key')
+    if not os.path.exists(ads_key_path):
+        local_path = 'ads.key'
+        if os.path.isfile(local_path):
+            with open(local_path, 'r') as ff:
+                ads.config.token = ff.read().splitlines()[0]
+        else:
+            token_url = "https://ui.adsabs.harvard.edu/#user/settings/token"
+            err = "Cannot find '{}' or '{}'.".format(ads_key_path, local_path)
+            err += "Generate one at '{}', and place it in one of these files.".format(token_url)
+            raise IOError(err)
+
+    return ads

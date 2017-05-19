@@ -4,6 +4,7 @@ import os
 import json
 from collections import OrderedDict
 
+from astrocats.catalog import utils
 from . import utils as production_utils
 from .. source import SOURCE
 from .. entry import ENTRY
@@ -95,7 +96,6 @@ class MD5_Pro(Producer_Base):
 class Bib_Pro(Producer_Base):
     """
     """
-    import ads
 
     def __init__(self, catalog, args):
         log = catalog.log
@@ -117,8 +117,11 @@ class Bib_Pro(Producer_Base):
         self.load_all_authors_flag = args.authors
         log.warning("`load_all_authors_flag` = '{}'".format(self.load_all_authors_flag))
 
-        log.info("Initializing ADS...")
-        self._init_ads()
+        # ads packagee only needed for loading author data
+        if self.load_all_authors_flag:
+            log.info("Initializing ADS...")
+            self.ads = utils.import_ads()
+
         return
 
     def update(self, fname, event_name, event_data):
@@ -195,17 +198,4 @@ class Bib_Pro(Producer_Base):
         self._save_json(self.biblio_min_fname, self.bib_data, expanded=False)
         if self.load_all_authors_flag:
             self._save_json(self.all_authors_fname, self.bib_all_authors_data)
-        return
-
-    def _init_ads(self):
-        path = 'ads.key'
-        if os.path.isfile(path):
-            with open(path, 'r') as ff:
-                self.ads.config.token = ff.read().splitlines()[0]
-        else:
-            raise IOError(
-                "Cannot find ads.key, please generate one at "
-                "https://ui.adsabs.harvard.edu/#user/settings/token and place it in "
-                "this file.")
-
         return
