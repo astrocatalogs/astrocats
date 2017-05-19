@@ -3,13 +3,10 @@
 from collections import OrderedDict
 from copy import deepcopy
 
+import six
+
 from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
 from astrocats.catalog.utils import listify, uniq_cdl
-
-try:
-    basestring
-except NameError:
-    basestring = str
 
 
 class CatDictError(Exception):
@@ -249,6 +246,7 @@ class CatDict(OrderedDict):
         # Strings and numeric types should be stored as strings
         elif key.type in [KEY_TYPES.STRING, KEY_TYPES.NUMERIC, KEY_TYPES.TIME]:
             # Clean leading/trailing whitespace
+<<<<<<< HEAD
             if single:
                 value = value.strip() if isinstance(
                     value, (str, basestring)) else str(value)
@@ -260,5 +258,17 @@ class CatDict(OrderedDict):
                 ]
                 # Only keep values that are not empty
                 value = list(filter(None, value))
+=======
+            value = [
+                val.strip() if isinstance(val, six.string_types) else str(val)
+                for val in value
+            ]
+            # Only keep values that are not empty
+            value = [val for val in value if len(val)]
+
+        # Convert back to single value, if thats how it started
+        if single and len(value):
+            value = value[0]
+>>>>>>> MAINT: use 'six.string_types' instead of 'basestring'
 
         return value
