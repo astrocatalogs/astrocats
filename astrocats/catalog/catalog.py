@@ -99,6 +99,7 @@ class Catalog(object):
             self.WEB_TABLE_FILE = os.path.join(self.PATH_OUTPUT, 'catalog.json')
             self.WEB_TABLE_MIN_FILE = os.path.join(self.PATH_OUTPUT, 'catalog.min.json')
 
+            self.NAMES_FILE = os.path.join(self.PATH_OUTPUT, 'names.json')
             self.NAMES_MIN_FILE = os.path.join(self.PATH_OUTPUT, 'names.min.json')
 
             # Cache path and files
@@ -946,6 +947,10 @@ class Catalog(object):
         -   If ``clear == True``, then each element of `entries` is deleted,
             and a `stubs` entry is added
         """
+        self.log.debug("catalog.journal_entries()")
+        # if (self.current_task.priority >= 0 and
+        #        self.current_task.priority < self.min_journal_priority):
+        #    return
 
         # Write it all out!
         # NOTE: this needs to use a `list` wrapper to allow modification of
@@ -964,8 +969,15 @@ class Catalog(object):
                     (bury_entry, save_entry) = self.should_bury(name)
 
                 if save_entry:
-                    save_name = self.entries[name].save(
-                        bury=bury_entry, final=final)
+                    try:
+                        save_name = self.entries[name].save(bury=bury_entry, final=final)
+                    except Exception as err:
+                        self.log.error("Saving entry '{}' failed".format(name))
+                        self.log.error("ERROR: {}".format(err))
+                        # entry_str = dict_to_pretty_string(self.entries[name])
+                        self.log.error("\n\n{}\n\n".format(self.entries[name]))
+                        raise
+
                     self.log.info(
                         "Saved {} to '{}'.".format(name.ljust(20), save_name))
                     if (gz and os.path.getsize(save_name) >
