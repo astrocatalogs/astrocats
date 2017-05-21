@@ -48,7 +48,8 @@ class Director(producer.Producer_Base):
 
         self.web_table_min_fname = self.catalog.PATHS.WEB_TABLE_MIN_FILE
         self.web_table_fname = self.catalog.PATHS.WEB_TABLE_FILE
-        self.names_fname = self.catalog.PATHS.NAMES_MIN_FILE
+        self.names_fname = self.catalog.PATHS.NAMES_FILE
+        self.names_min_fname = self.catalog.PATHS.NAMES_MIN_FILE
         log.info("`web_table_min_fname` = '{}'".format(self.web_table_min_fname))
         log.info("`web_table_fname` = '{}'".format(self.web_table_fname))
         log.info("`names_fname` = '{}'".format(self.names_fname))
@@ -172,8 +173,11 @@ class Director(producer.Producer_Base):
         return
 
     def _finish_names_output(self):
-        self.log.info("Writing names table")
-        self._save_json(self.names_fname, self.names_data, expanded=False)
+        self.log.info("Writing names table (min)")
+        self._save_json(self.names_min_fname, self.names_data, expanded=False)
+
+        self.log.info("Writing names table (full)")
+        self._save_json(self.names_fname, self.names_data, expanded=True)
         return
 
     def _clean_event_dict(self, event_data):
