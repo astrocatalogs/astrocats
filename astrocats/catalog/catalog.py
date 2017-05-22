@@ -45,6 +45,8 @@ class Catalog(object):
 
     TRAVIS_QUERY_LIMIT = 10
     COMPRESS_ABOVE_FILESIZE = 90e6  # bytes
+    # Raise an error if adding a quantity (photometry, source, etc) fails
+    RAISE_ERROR_ON_ADDITION_FAILURE = False
 
     class PATHS(object):
         """Store and control catalog file-structure information.

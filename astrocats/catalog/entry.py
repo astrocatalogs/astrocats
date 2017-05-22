@@ -447,9 +447,15 @@ class Entry(struct.Meta_Struct):
         # Try to create a new instance of this subclass of `CatDict`
         new_entry = self._init_cat_dict(cat_dict_class, key_in_self, **kwargs)
         if new_entry is None:
+            if self.catalog.RAISE_ERROR_ON_ADDITION_FAILURE:
+                err_str = "Entry._init_cat_dict() failed!"
+                err_str += "class: '{}', key_in_self: '{}', kwargs: '{}'".format(
+                    cat_dict_class, key_in_self, kwargs)
+                utils.log_raise(self._log, err_str, RuntimeError)
             return False
 
         # Compare this new entry with all previous entries to make sure is new
+        #    If it is NOT new, return the entry
         if compare_to_existing and cat_dict_class != Error:
             for item in self.get(key_in_self, []):
                 if new_entry.is_duplicate_of(item):
@@ -584,6 +590,8 @@ class Entry(struct.Meta_Struct):
                 **kwargs)
             if isinstance(cat_dict, struct.Meta_Struct):
                 self._append_additional_tags(quantity, source, cat_dict)
+                success = False
+            elif cat_dict is False:
                 success = False
 
         return success
