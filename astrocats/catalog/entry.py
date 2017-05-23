@@ -1022,7 +1022,8 @@ class Entry(struct.Meta_Struct):
                 if key in _SOURCES_SKIP_KEYS:
                     continue
                 for item in self[key]:
-                    source_list += item[item._KEYS.SOURCE].split(',')
+                    if item._KEYS.SOURCE in item:
+                        source_list += item[item._KEYS.SOURCE].split(',')
             new_src_list = sorted(list(set(source_aliases).intersection(source_list)))
             new_sources = []
             for source in self[self._KEYS.SOURCES]:
@@ -1055,11 +1056,10 @@ class Entry(struct.Meta_Struct):
             self.sanitize()
 
         # FIX: use 'dump' not 'dumps'
-        jsonstring = json.dumps(
-            {self[self._KEYS.NAME]: self._ordered(self)},
-            indent='\t' if sys.version_info[0] >= 3 else 4,
-            separators=(',', ':'),
-            ensure_ascii=False)
+        jsonstring = json.dumps({self[self._KEYS.NAME]: self._ordered(self)},
+                                indent='\t' if sys.version_info[0] >= 3 else 4,
+                                separators=(',', ':'),
+                                ensure_ascii=False)
         if not os.path.isdir(outdir):
             raise RuntimeError("Output directory '{}' for event '{}' does "
                                "not exist.".format(outdir, self[self._KEYS.NAME]))

@@ -727,14 +727,9 @@ class Catalog(object):
         num_entries = len(keys)
         self.log.info("Merging with {} entries".format(num_entries))
         n1 = 0
-        count = 0
+        count_dupes = 0
         mainpbar = tqdm(total=num_entries, desc=task_str)
         while n1 < num_entries:
-            count += 1
-            if count > 2*num_entries:
-                utils.log_raise(self.log, "Stuck n1: {}, count: {}, total: {}".format(
-                    n1, count, num_entries))
-
             name1 = keys[n1]
             if name1 not in self.entries:
                 self.log.info("Entry for {} not found, likely already "
@@ -815,6 +810,7 @@ class Catalog(object):
                             self.copy_to_entry_in_catalog(name1, name2)
                             keys.append(name2)
                             del self.entries[name1]
+                        count_dupes += 1
                     else:
                         self.log.warning('Duplicate already deleted')
 
@@ -825,6 +821,8 @@ class Catalog(object):
             n1 = n1 + 1
             mainpbar.update(1)
         mainpbar.close()
+        self.log.info("Removed {} duplicates".format(count_dupes))
+        return
 
     def sanitize(self):
         task_str = self.get_current_task_str()
