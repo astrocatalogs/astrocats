@@ -601,11 +601,8 @@ class Catalog(object):
         self.copy_entry_to_entry(self.entries[fromname],
                                  self.entries[destname])
 
-    def copy_entry_to_entry(self,
-                            fromentry,
-                            destentry,
-                            check_for_dupes=True,
-                            compare_to_existing=True):
+    def copy_entry_to_entry(self, fromentry, destentry,
+                            check_for_dupes=True, compare_to_existing=True):
         """Used by `merge_duplicates`
         """
         self.log.info("Copy entry object '{}' to '{}'".format(fromentry[
@@ -629,7 +626,7 @@ class Catalog(object):
 
         for rkey in fromentry:
             key = fromentry._KEYS.get_key_by_name(rkey)
-            if key.no_source:
+            if not key.require_source:
                 continue
             for item in fromentry[key]:
                 # isd = False
@@ -730,8 +727,14 @@ class Catalog(object):
         num_entries = len(keys)
         self.log.info("Merging with {} entries".format(num_entries))
         n1 = 0
+        count = 0
         mainpbar = tqdm(total=num_entries, desc=task_str)
-        while n1 < len(keys):
+        while n1 < num_entries:
+            count += 1
+            if count > 2*num_entries:
+                utils.log_raise(self.log, "Stuck n1: {}, count: {}, total: {}".format(
+                    n1, count, num_entries))
+
             name1 = keys[n1]
             if name1 not in self.entries:
                 self.log.info("Entry for {} not found, likely already "
@@ -749,6 +752,8 @@ class Catalog(object):
                     alias1 = allnames1.pop()
                     if alias1 != name1:
                         utils.log_raise(self.log, "alias '{}' != name '{}'!".format(alias1, name1))
+                n1 = n1 + 1
+                mainpbar.update(1)
                 continue
 
             # Search all later names
@@ -920,6 +925,10 @@ class Catalog(object):
                             format(rss, MEMORY_LIMIT, ii, _fname))
                         self.log.error(err)
                         raise RuntimeError(err)
+
+            if self.args.travis and (ii > self.TRAVIS_QUERY_LIMIT):
+                self.log.warning("Exiting on travis limit")
+                break
 
         return self.entries
 
