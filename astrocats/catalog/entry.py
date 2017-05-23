@@ -423,6 +423,59 @@ class Entry(struct.Meta_Struct):
 
         return new_entry
 
+    def add_data(self, key_in_self, value=None, source=None, cat_dict_class=Quantity,
+                 check_for_dupes=True, dupes_merge_tags=True, **kwargs):
+        """Add a `CatDict` data container (dict) to this `Entry`.
+
+        CatDict only added if initialization succeeds and it
+        doesn't already exist within the Entry.
+        """
+        log = self._log
+        log.debug("Entry.add_data()")
+        FAIL = 0
+        DUPE = -1
+        SUCC = 1
+
+        if value is not None:
+            if QUANTITY.VALUE in kwargs:
+                utils.log_raise(log, "`value` given as both arg and kwarg!\n{}".format(kwargs))
+            kwargs[QUANTITY.VALUE] = value
+
+        if source is not None:
+            if QUANTITY.SOURCE in kwargs:
+                utils.log_raise(log, "`source` given as both arg and kwarg!\n{}".format(kwargs))
+            kwargs[QUANTITY.SOURCE] = source
+
+        # Make sure that a source, if given, is valid
+        retval = self._check_cat_dict_source(cat_dict_class, key_in_self, **kwargs)
+        if not retval:
+            self._handle_addition_failure(
+                "Entry._check_cat_dict_source()", cat_dict_class, key_in_self, **kwargs)
+            return None, FAIL
+
+        # Try to create a new instance of this subclass of `CatDict`
+        new_data = self._init_cat_dict(cat_dict_class, key_in_self, **kwargs)
+        if new_data is None:
+            self._handle_addition_failure(
+                "Entry._init_cat_dict()", cat_dict_class, key_in_self, **kwargs)
+            return None, FAIL
+
+        # Compare this new entry with all previous entries to make sure is new
+        if check_for_dupes:
+            for item in self.get(key_in_self, []):
+                # Do not add duplicates
+                if new_data.is_duplicate_of(item):
+
+                    # Combine tags if desired
+                    if dupes_merge_tags:
+                        item.append_sources_from(new_data)
+                    return new_data, DUPE
+
+        # Add data
+        self.setdefault(key_in_self, []).append(new_data)
+
+        return new_data, SUCC
+
     def _add_cat_dict(self, cat_dict_class, key_in_self,
                       check_for_dupes=True, compare_to_existing=True, **kwargs):
         """Add a `CatDict` to this `Entry`.
@@ -464,6 +517,10 @@ class Entry(struct.Meta_Struct):
                     # tags to augment the old entry
                     return new_entry
 
+        self.setdefault(key_in_self, []).append(new_entry)
+
+        # NOTE: below code moved to `add_alias`
+        '''
         # If this is an alias, add it to the parent catalog's reverse
         # dictionary linking aliases to names for fast lookup.
         if key_in_self == self._KEYS.ALIAS:
@@ -483,6 +540,7 @@ class Entry(struct.Meta_Struct):
 
         if (key_in_self == self._KEYS.ALIAS and check_for_dupes and self.dupe_of):
             self.merge_dupes()
+        '''
 
         return True
 
@@ -583,7 +641,7 @@ class Entry(struct.Meta_Struct):
 
         return new_entry
 
-    def add_alias(self, alias, source, clean=True):
+    def add_alias(self, alias, source, clean=True, check_for_dupes=True, **kwargs):
         """Add an alias, optionally 'cleaning' the alias string.
 
         Calls the parent `catalog` method `clean_entry_name` - to apply the
@@ -597,7 +655,29 @@ class Entry(struct.Meta_Struct):
         """
         if clean:
             alias = self.catalog.clean_entry_name(alias)
-        self.add_quantity(self._KEYS.ALIAS, alias, source)
+
+        # self.add_quantity(self._KEYS.ALIAS, alias, source)
+        kwargs.update({QUANTITY.VALUE: alias, QUANTITY.SOURCE: source})
+        new_data, retval = self.add_data(
+            self._KEYS.ALIAS, check_for_dupes=check_for_dupes, **kwargs)
+
+        # Check if this adding this alias makes us a dupe, if so mark ourselves as a dupe.
+        if check_for_dupes and (alias in self.catalog.aliases):
+            poss_dupe = self.catalog.aliases[alias]
+            if (poss_dupe != self[self._KEYS.NAME]) and (poss_dupe in self.catalog.entries):
+                self.dupe_of.append(poss_dupe)
+
+        # If we're not checking for duplicates, warn about overwriting
+        elif alias in self.catalog.aliases:
+            self._log.warning("Warning, overwriting alias '{}': '{}'".format(
+                alias, self.catalog.aliases[alias]))
+
+        # Add this alias to parent catalog's reverse dictionary linking aliases to names
+        self.catalog.aliases[alias] = self[self._KEYS.NAME]
+
+        if self.dupe_of:
+            self.merge_dupes()
+
         return alias
 
     def add_error(self, value, **kwargs):
@@ -607,9 +687,38 @@ class Entry(struct.Meta_Struct):
         return
 
     def add_photometry(self, compare_to_existing=True, **kwargs):
+<<<<<<< HEAD
         """Add a `Photometry` instance to this entry."""
         self._add_cat_dict(Photometry, self._KEYS.PHOTOMETRY,
                            compare_to_existing=compare_to_existing, **kwargs)
+=======
+        """Add a `Photometry` instance to this entry.
+
+        Returns
+        -------
+        retval : bool
+            True on succesful addition, False otherwise.
+        """
+        retval = self._add_cat_dict(
+            Photometry,
+            self._KEYS.PHOTOMETRY,
+            compare_to_existing=compare_to_existing,
+            **kwargs)
+        return retval
+
+    def merge_dupes(self):
+        """Merge two entries that correspond to the same entry."""
+        for dupe in self.dupe_of:
+            if dupe in self.catalog.entries:
+                if self.catalog.entries[dupe]._stub:
+                    # merge = False to avoid infinite recursion
+                    self.catalog.load_entry_from_name(dupe, delete=True, merge=False)
+                self.catalog.copy_entry_to_entry(self.catalog.entries[dupe], self)
+                self.log.debug("Deleting dupe: '{}' in favor of '{}'".format(
+                    dupe, self[self._KEYS.NAME]))
+                del self.catalog.entries[dupe]
+        self.dupe_of = []
+>>>>>>> ENH: new method 'Entry.add_data()' trying to combine 'add_quantity' and '_add_cat_dict()'.
         return
 
     def add_quantity(self, quantities, value, source,
