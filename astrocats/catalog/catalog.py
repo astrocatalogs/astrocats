@@ -714,6 +714,7 @@ class Catalog(object):
         for duplicates in name or alias.  If a duplicate is found, they are
         merged and written to file.
         """
+        self.log.debug("Catalog.merge_duplicates()")
         if len(self.entries) == 0:
             self.log.error("WARNING: `entries` is empty, loading stubs")
             if self.args.update:
@@ -726,8 +727,10 @@ class Catalog(object):
         task_str = self.get_current_task_str()
 
         keys = list(sorted(self.entries.keys()))
+        num_entries = len(keys)
+        self.log.info("Merging with {} entries".format(num_entries))
         n1 = 0
-        mainpbar = tqdm(total=len(keys), desc=task_str)
+        mainpbar = tqdm(total=num_entries, desc=task_str)
         while n1 < len(keys):
             name1 = keys[n1]
             if name1 not in self.entries:
@@ -736,8 +739,17 @@ class Catalog(object):
                 n1 = n1 + 1
                 mainpbar.update(1)
                 continue
-            allnames1 = set(self.entries[name1].get_aliases() + self.entries[
-                name1].extra_aliases())
+            allnames1 = set(self.entries[name1].get_aliases() +
+                            self.entries[name1].extra_aliases())
+            # If there are no additional aliases (besides name) then there can't be duplicates
+            if len(allnames1) <= 1:
+                if len(allnames1) == 0:
+                    utils.log_raise(self.log, "No aliases (missing name) for '{}'!".format(name1))
+                else:
+                    alias1 = allnames1.pop()
+                    if alias1 != name1:
+                        utils.log_raise(self.log, "alias '{}' != name '{}'!".format(alias1, name1))
+                continue
 
             # Search all later names
             for name2 in keys[n1 + 1:]:
@@ -754,12 +766,22 @@ class Catalog(object):
 
                 allnames2 = set(self.entries[name2].get_aliases() +
                                 self.entries[name2].extra_aliases())
+                # If there are no additional aliases (besides name) then there can't be duplicates
+                if len(allnames2) <= 1:
+                    if len(allnames2) == 0:
+                        utils.log_raise(self.log,
+                                        "No aliases (missing name) for '{}'!".format(name2))
+                    else:
+                        alias2 = allnames2.pop()
+                        if alias2 != name2:
+                            utils.log_raise(self.log,
+                                            "alias '{}' != name '{}'!".format(alias2, name2))
+                    continue
 
                 # If there are any common names or aliases, merge
                 if len(allnames1 & allnames2):
                     self.log.warning("Found two entries with common aliases "
-                                     "('{}' and '{}'), merging.".format(name1,
-                                                                        name2))
+                                     "('{}' and '{}'), merging.".format(name1, name2))
 
                     load1 = self.proto.init_from_file(self, name=name1)
                     load2 = self.proto.init_from_file(self, name=name2)
@@ -791,10 +813,6 @@ class Catalog(object):
                     else:
                         self.log.warning('Duplicate already deleted')
 
-                    # if len(self.entries) != 1:
-                    #     self.log.error(
-                    #         "WARNING: len(entries) = {}, expected 1.  "
-                    #         "Still journaling...".format(len(self.entries)))
                     self.journal_entries()
 
             if self.args.travis and (n1 > self.TRAVIS_QUERY_LIMIT):
