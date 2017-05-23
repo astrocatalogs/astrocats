@@ -465,10 +465,7 @@ class Entry(struct.Meta_Struct):
             for item in self.get(key_in_self, []):
                 # Do not add duplicates
                 if new_data.is_duplicate_of(item):
-
-                    # Combine tags if desired
-                    if dupes_merge_tags:
-                        item.append_sources_from(new_data)
+                    item.append_sources_from(new_data)
                     return new_data, DUPE
 
         # Add data
@@ -687,38 +684,9 @@ class Entry(struct.Meta_Struct):
         return
 
     def add_photometry(self, compare_to_existing=True, **kwargs):
-<<<<<<< HEAD
         """Add a `Photometry` instance to this entry."""
         self._add_cat_dict(Photometry, self._KEYS.PHOTOMETRY,
                            compare_to_existing=compare_to_existing, **kwargs)
-=======
-        """Add a `Photometry` instance to this entry.
-
-        Returns
-        -------
-        retval : bool
-            True on succesful addition, False otherwise.
-        """
-        retval = self._add_cat_dict(
-            Photometry,
-            self._KEYS.PHOTOMETRY,
-            compare_to_existing=compare_to_existing,
-            **kwargs)
-        return retval
-
-    def merge_dupes(self):
-        """Merge two entries that correspond to the same entry."""
-        for dupe in self.dupe_of:
-            if dupe in self.catalog.entries:
-                if self.catalog.entries[dupe]._stub:
-                    # merge = False to avoid infinite recursion
-                    self.catalog.load_entry_from_name(dupe, delete=True, merge=False)
-                self.catalog.copy_entry_to_entry(self.catalog.entries[dupe], self)
-                self.log.debug("Deleting dupe: '{}' in favor of '{}'".format(
-                    dupe, self[self._KEYS.NAME]))
-                del self.catalog.entries[dupe]
-        self.dupe_of = []
->>>>>>> ENH: new method 'Entry.add_data()' trying to combine 'add_quantity' and '_add_cat_dict()'.
         return
 
     def add_quantity(self, quantities, value, source,
@@ -1037,6 +1005,8 @@ class Entry(struct.Meta_Struct):
         '''
 
         if self._KEYS.SOURCES in self:
+            _NO_SRCS_REQUIRED = [self._KEYS.NAME, self._KEYS.SCHEMA, self._KEYS.SOURCES,
+                                 self._KEYS.ERRORS]
             # Remove orphan sources
             source_aliases = [x[SOURCE.ALIAS] for x in self[self._KEYS.SOURCES]]
             # Sources with the `PRIVATE` attribute are always retained

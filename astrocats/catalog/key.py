@@ -177,30 +177,16 @@ class Key(str):
 
     """
 
-    def __new__(cls,
-                name,
-                type=None,
-                no_source=False,
-                listable=False,
-                compare=True,
-                priority=0,
-                kind_preference=[],
-                replace_better=False,
-                **kwargs):
+    def __new__(cls, name,
+                type=None, require_source=True, listable=False, compare=True, priority=0,
+                kind_preference=[], replace_better=False, **kwargs):
         """Construct the underlying str object with `name`.
         """
         return str.__new__(cls, name)
 
-    def __init__(self,
-                 name,
-                 type=None,
-                 no_source=False,
-                 listable=False,
-                 compare=True,
-                 priority=0,
-                 kind_preference=[],
-                 replace_better=False,
-                 **kwargs):
+    def __init__(self, name,
+                 type=None, require_source=True, listable=False, compare=True, priority=0,
+                 kind_preference=[], replace_better=False, **kwargs):
         super(Key, self).__init__()
         # Make sure type is allowed
         if type is not None and type not in KEY_TYPES.vals():
@@ -210,7 +196,7 @@ class Key(str):
         self.type = type
         self.listable = listable
         self.compare = compare
-        self.no_source = no_source
+        self.require_source = require_source
         self.priority = priority
         self.kind_preference = kind_preference
         self.replace_better = replace_better
