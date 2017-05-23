@@ -197,10 +197,14 @@ class CatDict(OrderedDict):
         return True
 
     def append_sources_from(self, other):
-        """Merge the source alias lists of two CatDicts."""
+        """Merge the source alias lists of two CatDicts.
+        """
+        SRC_KEY = self._KEYS.SOURCE
+        if (SRC_KEY not in self) or (SRC_KEY not in other):
+            return
         # Get aliases lists from this `CatDict` and other
-        self_aliases = self[self._KEYS.SOURCE].split(',')
-        other_aliases = other[self._KEYS.SOURCE].split(',')
+        self_aliases = self[SRC_KEY].split(',')
+        other_aliases = other[SRC_KEY].split(',')
 
         # Store alias to `self`
         self[self._KEYS.SOURCE] = uniq_cdl(self_aliases + other_aliases)
