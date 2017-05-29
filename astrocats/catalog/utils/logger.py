@@ -131,6 +131,9 @@ def get_logger(name=None, stream_fmt=None, file_fmt=None, date_fmt=None,
         strHandler.setLevel(stream_level)
         logger.addHandler(strHandler)
 
+    for lvl in ['DEBUG', 'INFO', 'WARNING', 'ERROR']:
+        setattr(logger, lvl, getattr(logging, lvl))
+
     if tofile is not None:
         logger.warning("... Writing to '{}'".format(os.path.abspath(tofile)))
 
