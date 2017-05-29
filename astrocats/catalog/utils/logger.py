@@ -1,6 +1,7 @@
 """Logging submodule and related functions.
 """
 
+import os
 import inspect
 import logging
 from logging import DEBUG, INFO, WARNING
@@ -129,6 +130,9 @@ def get_logger(name=None, stream_fmt=None, file_fmt=None, date_fmt=None,
         strHandler.setFormatter(strFormatter)
         strHandler.setLevel(stream_level)
         logger.addHandler(strHandler)
+
+    if tofile is not None:
+        logger.warning("... Writing to '{}'".format(os.path.abspath(tofile)))
 
     return logger
 
