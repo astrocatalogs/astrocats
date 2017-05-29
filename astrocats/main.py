@@ -212,6 +212,12 @@ def load_command_line_args(clargs=None):
         action='store_true',
         help='Run import script in test mode for Travis.')
     parser.add_argument(
+        '--test',
+        dest='test',
+        default=False,
+        action='store_true',
+        help='Run in test mode (WARNING: could have strange behavior).')
+    parser.add_argument(
         '--clone-depth',
         dest='clone_depth',
         default=0,
