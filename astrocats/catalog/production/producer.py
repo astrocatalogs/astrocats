@@ -28,6 +28,18 @@ class Producer_Base:
         self.log.debug("Producer_Base.finish()")
         return
 
+    def _save(self, fname, data):
+        """Write to text file.
+        """
+        self.log.debug("Producer_Base._save()")
+        self.log.warning("Writing to '{}'".format(fname))
+        with open(fname, 'w') as ff:
+            ff.write(data)
+
+        fsize = os.path.getsize(fname)/1024/1024
+        self.log.info("size: '{:.2f}' MB".format(fsize))
+        return fname
+
     def _save_json(self, fname, data, expanded=False, **dump_kwargs):
         """Write data to JSON file.
         """
@@ -58,7 +70,6 @@ class Producer_Base:
         fname_gz = fname + '.gz'
         self.log.warning("Writing to gzip '{}'".format(fname_gz))
         with gzip.open(fname_gz, 'w') as ff:
-            self.touch(fname)
             ff.write(data)
 
         fsize = os.path.getsize(fname)/1024/1024
@@ -344,9 +355,8 @@ class HTML_Pro(Producer_Base):
                       html)
 
         newhtml = r'<div class="event-tab-div"><h3 class="event-tab-title">Event metadata</h3><table class="event-table"><tr><th width=100px class="event-cell">Quantity</th><th class="event-cell">Value<sup>Sources</sup> [Kind]</th></tr>\n'
-        edit = "true" if os.path.isfile(
-            'astrocats/' + self.module_dir + '/input/' + self.module_name + '-internal/' +
-            production_utils.get_event_filename(event_name) + '.json') else "false"
+        # Check if this corresponds to an 'internal' file
+        edit = self.catalog.PATHS.is_internal_event(event_name)
 
         for key in self.COLUMN_KEY:
             if key in event_data and key not in self.EVENT_IGNORE_KEY and len(event_data[key]) > 0:
@@ -483,7 +493,9 @@ class HTML_Pro(Producer_Base):
 
         html = re.sub(r'(\<\/body\>)', newhtml, html)
 
-        fname_out = os.path.join(self.HTML_OUT_DIR, event_name + ".html.gz")
+        fname_out = os.path.join(self.HTML_OUT_DIR, event_name + ".html")
+        # self.touch(fname_out)
+        self._save(fname_out, html)
         self._save_gzip(fname_out, html.encode())
 
         return
