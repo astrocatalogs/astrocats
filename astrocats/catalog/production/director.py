@@ -60,6 +60,9 @@ class Director(producer.Producer_Base):
     def direct(self, args, write_collected=True, write_individual=True):
         catalog = self.catalog
         log = catalog.log
+        _str = ["", "", "="*100, "", ""]
+        for ss in _str:
+            log.debug(ss)
         log.debug("Director.direct()")
 
         log.warning("Running `direct` on catalog {} ('{}')".format(catalog.name, type(catalog)))
@@ -140,9 +143,8 @@ class Director(producer.Producer_Base):
         self.names_data[event_data[ENTRY.NAME]] = store_names
 
         # For events with internal json files, add {'download' = 'e'} elements into dicts
-        internal_event_fname = self.catalog.PATHS.get_filename_for_internal_event(event_name)
-        self.log.debug("Checking for internal event '{}'".format(internal_event_fname))
-        if os.path.isfile(internal_event_fname):
+        self.log.debug("Checking for internal event '{}'".format(event_name))
+        if self.catalog.PATHS.is_internal_event(event_name):
             event_data['download'] = 'e'
             self.log.debug("...exists")
 
