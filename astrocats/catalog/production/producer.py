@@ -58,16 +58,18 @@ class Producer_Base:
         self.log.info("size: '{:.2f}' MB".format(fsize))
         return fname
 
-    def _save_gzip(self, fname, data, append_suffix=True):
+    def _save_gzip(self, fname, data, append_suffix=True, lvl=None):
         """Write to a gzipped file.
 
         NOTE: `data` must be gzip writable, i.e. bytes.  To convert from `str`, use `str.encode()`.
         """
+        if lvl is None:
+            lvl = self.log.WARNING
         self.log.debug("Producer_Base._save_gzip()")
         if fname.endswith('.gz'):
             fname = fname[:-3]
         fname_gz = fname + '.gz'
-        self.log.warning("Writing to gzip '{}'".format(fname_gz))
+        self.log.log(lvl, "Writing to gzip '{}'".format(fname_gz))
         with gzip.open(fname_gz, 'w') as ff:
             ff.write(data)
 
