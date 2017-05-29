@@ -86,15 +86,19 @@ class Catalog(object):
             this_file = os.path.abspath(sys.modules[self.__module__].__file__)
             self.catalog_dir = os.path.dirname(this_file)
             self.tasks_dir = os.path.join(self.catalog_dir, 'tasks')
+            _check_dirs = []
+
             self.PATH_BASE = ''
             if catalog.args:
                 self.PATH_BASE = os.path.join(catalog.args.base_path,
                                               self.catalog_dir, '')
             self.PATH_INPUT = os.path.join(self.PATH_BASE, 'input', '')
+            _check_dirs.append(self.PATH_INPUT)
 
             # Output Paths and Files
             # ----------------------
             self.PATH_OUTPUT = os.path.join(self.PATH_BASE, 'output', '')
+            _check_dirs.append(self.PATH_OUTPUT)
 
             self.BIBLIO_FILE = os.path.join(self.PATH_OUTPUT, 'biblio.json')
             self.BIBLIO_MIN_FILE = os.path.join(self.PATH_OUTPUT, 'biblio.min.json')
@@ -107,6 +111,7 @@ class Catalog(object):
 
             # Cache path and files
             self.PATH_CACHE = os.path.join(self.PATH_OUTPUT, 'cache', '')
+            _check_dirs.append(self.PATH_CACHE)
 
             self.MD5_FILE = os.path.join(self.PATH_CACHE, 'md5s.json')
             self.AUTHORS_FILE = os.path.join(self.PATH_CACHE, 'bibauthors.json')
@@ -114,14 +119,21 @@ class Catalog(object):
 
             # json path and files
             self.PATH_JSON = os.path.join(self.PATH_OUTPUT, 'json', '')
+            _check_dirs.append(self.PATH_JSON)
             # html path and files
             self.PATH_HTML = os.path.join(self.PATH_OUTPUT, 'html', '')
+            _check_dirs.append(self.PATH_HTML)
 
             # critical datafiles
             # ------------------
             self.REPOS_LIST = os.path.join(self.PATH_INPUT, 'repos.json')
             self.TASK_LIST = os.path.join(self.PATH_INPUT, 'tasks.json')
             self.repos_dict = utils.read_json_dict(self.REPOS_LIST)
+
+            # Create directories that dont exist
+            for cd in _check_dirs:
+                self._check_create_dir(cd)
+
             return
 
         def __str__(self):
@@ -227,6 +239,17 @@ class Catalog(object):
                 if len(rf)
             ]
             return repo_folders
+
+        def _check_create_dir(self, dir_):
+            if not os.path.isdir(dir_):
+                try:
+                    os.makedirs(dir_)
+                    self.catalog.log.warning("Created path '{}'".format(dir_))
+                except FileExistsError as err:
+                    self.catalog.log.error("Catalog.PATHS._check_create_dir(): '{}'".format(dir_))
+                    self.catalog.log.error(err)
+                    raise
+            return
 
     '''
     class SCHEMA:
