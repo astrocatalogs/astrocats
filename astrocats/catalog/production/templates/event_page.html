@@ -1,0 +1,30 @@
+<html>
+    <title></title>
+    <base target="_parent" />
+    <link rel="stylesheet" href="https://sne.space/wp-content/themes/astrocats-child-theme/event-iframe.css" type="text/css">
+    <script type="text/javascript" src="https://sne.space/wp-content/plugins/transient-table/transient-table.js" type="text/js"></script>
+    {FORCE_FRAME}
+    
+    <!--
+    ==============================
+    =========    BODY    =========
+    ==============================
+    -->
+
+    <body class='event-body'>
+        <div style="padding-bottom:8px;"><strong>Disclaimer:</strong> {DISCLAIMER}</div>
+        <div class="event-download"><a href={DOWNLOAD_PATH} download>Download all data for {EVENT_NAME}</a></div>
+        <div class="event-issue"><a href="{GITHUB_URL}/issues/new?title=[{EVENT_NAME}] <Descriptive issue title>&body={ISSUE_TEXT}" target="_blank">Report an issue with {EVENT_NAME}</a></div>
+
+        <!--
+        =========    METADATA    =========
+        -->
+        {META_DATA_TABLE}
+
+        <!--
+        =========    SOURCES    =========
+        -->
+        {SOURCES_TABLE}
+
+    </body>
+</html>
