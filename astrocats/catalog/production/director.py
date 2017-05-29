@@ -1,16 +1,16 @@
 """
 """
-import os
+# import os
 import sys
 from collections import OrderedDict
 from copy import deepcopy
 
 import numpy as np
 
-from astrocats.catalog.utils import tq  # , dict_to_pretty_string
+from astrocats.catalog.utils import tq
 from astrocats.catalog.source import SOURCE
 from . import utils as production_utils
-from . import producer
+from . import producer, html_pro
 from .. entry import ENTRY
 from .. quantity import QUANTITY
 
@@ -80,7 +80,7 @@ class Director(producer.Producer_Base):
         md5_pro = producer.MD5_Pro(catalog, args)
         bib_pro = producer.Bib_Pro(catalog, args)
         # Initialize an HTML Producer (for web html tables)
-        web_pro = producer.HTML_Pro(catalog, args)
+        web_pro = html_pro.HTML_Pro(catalog, args)
 
         # Iterate over all events
         # -----------------------

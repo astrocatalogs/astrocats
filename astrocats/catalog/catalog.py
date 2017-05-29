@@ -49,6 +49,27 @@ class Catalog(object):
     #    Options are 'IGNORE', 'WARN', 'RAISE' (see `utils.imports`)
     ADDITION_FAILURE_BEHAVIOR = utils.ADD_FAIL_ACTION.IGNORE
 
+    # These Dictionaries are combined into `HTML_Pro.COLUMNS`.
+    #    The 'keys' determine which keys from each Entry are stored.  The 'values' define the
+    #    column header titles, and the order in which they are listed respectively
+    #    To customize the includes keys, add values to the `_COLUNNS_CUSTOM` in the appropriate
+    #    subclass.
+    _EVENT_HTML_COLUMNS = {
+        ENTRY.NAME: ["Name", 0],
+        ENTRY.ALIAS: ["Aliases", 1],
+        ENTRY.HOST: ["Host Name", 2],
+        ENTRY.RA: ["R.A.", 3],
+        ENTRY.DEC: ["Dec.", 4],
+        ENTRY.HOST_RA: ["Host R.A.", 5],
+        ENTRY.HOST_DEC: ["Host Dec.", 6],
+        ENTRY.HOST_OFFSET_ANG: ["Host Offset (\")", 7],
+        ENTRY.HOST_OFFSET_DIST: ["Host Offset (kpc)", 8],
+        ENTRY.REDSHIFT: [r"<em>z</em>", 9],
+        ENTRY.LUM_DIST: [r"<em>d</em><sub>L</sub> (Mpc)", 10],
+    }
+
+    _EVENT_HTML_COLUMNS_CUSTOM = {}
+
     class PATHS(object):
         """Store and control catalog file-structure information.
 
@@ -271,6 +292,8 @@ class Catalog(object):
         self.log = log
         self.proto = Entry
         self.Director = director.Director
+        # NOTE: this needs to be reset by subclasses for `HTML_Pro`
+        self.module_name = "ac"
 
         # Instantiate PATHS
         self.PATHS = self.PATHS(self)
@@ -286,9 +309,13 @@ class Catalog(object):
         self.entries = OrderedDict()
         self.aliases = {}
 
-        # Only journal tasks with priorities greater than this number,
-        # unless updating.
+        # Only journal tasks with priorities greater than this number, unless updating.
         self.min_journal_priority = 0
+
+        columns = self._EVENT_HTML_COLUMNS
+        columns.update(self._EVENT_HTML_COLUMNS_CUSTOM)
+
+        self.EVENT_HTML_COLUMNS = OrderedDict(sorted(columns.items(), key=lambda x: x[1][1]))
 
         # Store version information
         # -------------------------
@@ -709,29 +736,13 @@ class Catalog(object):
         """
         return name
 
-    def new_entry(self,
-                  name,
-                  load=True,
-                  delete=True,
-                  loadifempty=True,
-                  srcname='',
-                  reference='',
-                  url='',
-                  bibcode='',
-                  arxivid='',
-                  secondary=False,
-                  private=False,
-                  acknowledgment=''):
+    def new_entry(self, name, load=True, delete=True, loadifempty=True,
+                  srcname='', reference='', url='', bibcode='', arxivid='',
+                  secondary=False, private=False, acknowledgment=''):
         newname = self.add_entry(name, load=load, delete=delete)
         source = self.entries[newname].add_source(
-            bibcode=bibcode,
-            arxivid=arxivid,
-            name=srcname,
-            reference=reference,
-            url=url,
-            secondary=secondary,
-            private=private,
-            acknowledgment=acknowledgment)
+            bibcode=bibcode, arxivid=arxivid, name=srcname, reference=reference, url=url,
+            secondary=secondary, private=private, acknowledgment=acknowledgment)
         self.entries[newname].add_quantity(ENTRY.ALIAS, name, source)
         return newname, source
 
