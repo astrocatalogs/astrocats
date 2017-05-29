@@ -172,14 +172,15 @@ class Bib_Pro(Producer_Base):
             for key in list(event_data.keys()):
                 bcalias = source[SOURCE.ALIAS]
                 lc = 0
-                if key in [
-                        'name', 'sources', 'schema', 'photometry',
-                        'spectra', 'errors'
-                ]:
+                if key in ['name', 'sources', 'schema', 'photometry',
+                           'spectra', 'errors']:
                     continue
                 for quantum in event_data[key]:
+                    if QUANTITY.SOURCE not in quantum:
+                        break
                     if bcalias in quantum[QUANTITY.SOURCE].split(','):
                         lc += 1
+
                 bib_data[bc]['metacount'] += lc
 
         return
