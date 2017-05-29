@@ -26,7 +26,7 @@ class ArgsHandler:
             # from . import production
             self.log.log(log_lvl, "Running 'produce'.")
             manager = catalog.Director(catalog, args)
-            manager.produce(args)
+            manager.direct(args)
 
         # Git Subcommands
         # ---------------

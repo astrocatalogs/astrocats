@@ -1,6 +1,7 @@
 """
 """
 import os
+import sys
 from collections import OrderedDict
 from copy import deepcopy
 
@@ -56,12 +57,12 @@ class Director(producer.Producer_Base):
 
         return
 
-    def produce(self, args):
+    def direct(self, args, write_collected=True, write_individual=True):
         catalog = self.catalog
         log = catalog.log
-        log.debug("Director.produce()")
+        log.debug("Director.direct()")
 
-        log.warning("Running `produce` on catalog {} ('{}')".format(catalog.name, str(catalog)))
+        log.warning("Running `direct` on catalog {} ('{}')".format(catalog.name, type(catalog)))
 
         event_filenames = catalog.PATHS.get_repo_output_file_list(
             normal=(not args.boneyard), bones=args.boneyard)
@@ -75,6 +76,8 @@ class Director(producer.Producer_Base):
 
         md5_pro = producer.MD5_Pro(catalog, args)
         bib_pro = producer.Bib_Pro(catalog, args)
+        # Initialize an HTML Producer (for web html tables)
+        web_pro = producer.HTML_Pro(catalog, args)
 
         # Iterate over all events
         # -----------------------
@@ -106,8 +109,13 @@ class Director(producer.Producer_Base):
             # Store all bibliography and authors information
             bib_pro.update(event_fname, entry, event_data)
 
+            # Generate HTML file for this event
+            web_pro.produce(event_fname, entry, event_data)
+
             # Add this entry into the catalog after removing undesired elements
             self.update(event_fname, entry, event_data)
+            if args.test:
+                sys.exit(232)
 
         # Do not save additional files if only targeting select events
         if args.event_list is not None:
