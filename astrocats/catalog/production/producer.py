@@ -49,6 +49,8 @@ class Producer_Base:
 
     def _save_gzip(self, fname, data, append_suffix=True):
         """Write to a gzipped file.
+
+        NOTE: `data` must be gzip writable, i.e. bytes.  To convert from `str`, use `str.encode()`.
         """
         self.log.debug("Producer_Base._save_gzip()")
         if fname.endswith('.gz'):
@@ -57,7 +59,7 @@ class Producer_Base:
         self.log.warning("Writing to gzip '{}'".format(fname_gz))
         with gzip.open(fname_gz, 'w') as ff:
             self.touch(fname)
-            ff.write(self.html)
+            ff.write(data)
 
         fsize = os.path.getsize(fname)/1024/1024
         self.log.info("size: '{:.2f}' MB".format(fsize))
@@ -309,7 +311,7 @@ class HTML_Pro(Producer_Base):
         return
 
     def produce(self, fname, event_name, event_data):
-        self.log.debug("Bib_Pro.update()")
+        self.log.debug("HTML_Pro.produce()")
         module_url = self.module_url
         module_dir = self.module_dir
         module_name = self.module_name
@@ -482,6 +484,6 @@ class HTML_Pro(Producer_Base):
         html = re.sub(r'(\<\/body\>)', newhtml, html)
 
         fname_out = os.path.join(self.HTML_OUT_DIR, event_name + ".html.gz")
-        self._save_gzip(fname_out, self.html)
+        self._save_gzip(fname_out, html.encode())
 
         return
