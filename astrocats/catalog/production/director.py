@@ -57,6 +57,10 @@ class Director(producer.Producer_Base):
         log.info("`web_table_fname` = '{}'".format(self.web_table_fname))
         log.info("`names_fname` = '{}'".format(self.names_fname))
 
+        self.MD5_Pro = producer.MD5_Pro
+        self.Bib_Pro = producer.Bib_Pro
+        self.Host_Image_Pro = host_image_pro.Host_Image_Pro
+        self.HTML_Pro = html_pro.HTML_Pro
         return
 
     def direct(self, args, write_collected=True, write_individual=True):
@@ -85,17 +89,17 @@ class Director(producer.Producer_Base):
 
         producers = []
         # MD5 File Checksums
-        md5_pro = producer.MD5_Pro(catalog, args)
+        md5_pro = self.MD5_Pro(catalog, args)
         producers.append(md5_pro)
         # Bibliography creator
-        bib_pro = producer.Bib_Pro(catalog, args)
+        bib_pro = self.Bib_Pro(catalog, args)
         producers.append(bib_pro)
 
         # Collect host-images
-        img_pro = host_image_pro.Host_Image_Pro(catalog, args)
+        img_pro = self.Host_Image_Pro(catalog, args)
 
         # Initialize an HTML Producer (for web html tables)
-        web_pro = html_pro.HTML_Pro(catalog, args)
+        web_pro = self.HTML_Pro(catalog, args)
 
         # Iterate over all events
         # -----------------------
