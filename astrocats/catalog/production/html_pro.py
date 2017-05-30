@@ -361,7 +361,7 @@ class HTML_Pro(producer.Producer_Base):
         # Save to file(s)
         # ---------------
         fname_out = os.path.join(self.HTML_OUT_DIR, event_name + ".html")
-        if self.args.test:
+        if self.args.test or self.args.travis:
             self._save(fname_out, event_page, lvl=self.log.INFO)
         else:
             self.touch(fname_out)

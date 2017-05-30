@@ -83,9 +83,12 @@ class Director(producer.Producer_Base):
         num_events = len(event_filenames)
         log.warning("{} Files, e.g. '{}'".format(num_events, np.random.choice(event_filenames)))
 
-        event_list = args.event_list[:]
-        log.warning("Using event_list with '{}' events, e.g. '{}'".format(
-            len(event_list), event_list[0]))
+        if args.event_list is not None:
+            event_list = args.event_list[:]
+            log.warning("Using event_list with '{}' events, e.g. '{}'".format(
+                len(event_list), event_list[0]))
+        else:
+            event_list = None
 
         producers = []
         # MD5 File Checksums
@@ -119,7 +122,7 @@ class Director(producer.Producer_Base):
 
                 log.debug("event_name '{}' not in event_list".format(event_name))
                 continue
-            else:
+            elif event_list is not None:
                 log.info("Found targeted event '{}'".format(event_name))
                 del event_list[event_list.index(event_name)]
 
@@ -148,8 +151,8 @@ class Director(producer.Producer_Base):
 
             # Add this entry into the catalog after removing undesired elements
             self.update(event_fname, entry, event_data)
-            if args.test:
-                sys.exit(232)
+            # if args.test:
+            #     sys.exit(232)
 
         # Do not save additional files if only targeting select events
         if args.event_list is not None:
