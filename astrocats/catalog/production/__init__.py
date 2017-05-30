@@ -12,3 +12,5 @@ PATH_SDSS_FAILED_HOST_IMAGE = os.path.join(DIR_TEMPLATES, "sdss_failed_host.jpg"
 from . import director
 from . import producer
 from . import utils
+from . import html_pro
+from . import host_image_pro
