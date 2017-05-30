@@ -2153,7 +2153,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             elif args.collecthosts:
                 try:
                     response = urllib.request.urlopen(
-                        'http://skyservice.pha.jhu.edu/DR12/ImgCutout/getjpeg.aspx?ra='
+                        'http://skyserver.sdss.org/dr13/SkyServerWS/ImgCutout/getjpeg.aspx?ra='
                         + str(c.ra.deg) + '&dec=' + str(c.dec.deg) + '&scale='
                         + str(sdssimagescale) + '&width=500&height=500&opt=G',
                         timeout=60)
@@ -2220,7 +2220,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             if imgsrc == 'SDSS':
                 hostimgdict[eventname] = 'SDSS'
                 skyhtml = (
-                    '<a href="http://skyserver.sdss.org/DR12/en/tools/chart/navi.aspx?opt=G&ra='
+                    '<a href="http://skyserver.sdss.org/DR13/en/tools/chart/navi.aspx?opt=G&ra='
                     + str(c.ra.deg) + '&dec=' + str(c.dec.deg) +
                     '&scale=0.15"><img src="' + urllib.parse.quote(
                         fileeventname) + '-host.jpg" width=250></a>')
