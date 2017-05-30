@@ -79,6 +79,10 @@ class Director(producer.Producer_Base):
         num_events = len(event_filenames)
         log.warning("{} Files, e.g. '{}'".format(num_events, np.random.choice(event_filenames)))
 
+        event_list = args.event_list[:]
+        log.warning("Using event_list with '{}' events, e.g. '{}'".format(
+            len(event_list), event_list[0]))
+
         producers = []
         # MD5 File Checksums
         md5_pro = producer.MD5_Pro(catalog, args)
@@ -104,11 +108,16 @@ class Director(producer.Producer_Base):
             event_name = production_utils.get_event_name_from_filename(event_fname)
 
             # Skip events that weren't specifically targetted
-            if (args.event_list is not None) and (event_name not in args.event_list):
+            if (event_list is not None) and (event_name not in event_list):
+                if len(event_list) == 0:
+                    log.warning("Completed `event_list`.")
+                    break
+
                 log.debug("event_name '{}' not in event_list".format(event_name))
                 continue
             else:
                 log.info("Found targeted event '{}'".format(event_name))
+                del event_list[event_list.index(event_name)]
 
             # Load this entry from the file
             #    `entry` is the event-name as recorded in the file, usually same as `event_name`.
