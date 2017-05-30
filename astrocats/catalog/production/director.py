@@ -127,10 +127,10 @@ class Director(producer.Producer_Base):
             '''
 
             # Collect host-images
-            host_image_html = img_pro.update(event_fname, entry, event_data)
+            retval = img_pro.update(event_fname, entry, event_data)
 
             # Generate HTML file for this event
-            web_pro.update(event_fname, entry, event_data, host_image_html=host_image_html)
+            web_pro.update(event_fname, entry, event_data, host_image_info=retval)
 
             for pro in producers:
                 pro.update(event_fname, entry, event_data)

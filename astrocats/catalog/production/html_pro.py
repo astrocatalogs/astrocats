@@ -3,6 +3,8 @@
 import re
 import os
 
+import urllib
+
 from . import producer, DIR_TEMPLATES
 from .. import utils
 from .. entry import ENTRY
@@ -59,6 +61,8 @@ class HTML_Pro(producer.Producer_Base):
 
     # Redirect users from `event_name.html` to `event_name` : force the page into a frame
     FORCE_PAGE_TO_FRAME = False
+
+    IMAGE_SIZE_EVENT_PAGE = 256
 
     def __init__(self, catalog, args):
         log = catalog.log
@@ -276,7 +280,7 @@ class HTML_Pro(producer.Producer_Base):
             content = cont_file.read()
         return content
 
-    def update(self, fname, event_name, event_data, host_image_html=None):
+    def update(self, fname, event_name, event_data, host_image_info=None):
         self.log.debug("HTML_Pro.produce()")
 
         # Prepare quantities
@@ -290,8 +294,12 @@ class HTML_Pro(producer.Producer_Base):
         # Generate the table for sources
         sources_table = self._generate_sources_table(event_data)
 
-        if host_image_html is not None:
-            host_image = self.HOST_IMAGE.format(IMAGE_HTML=host_image_html)
+        if host_image_info is not None:
+            event_image_path, link_url = host_image_info
+            event_image_fname = os.path.basename(event_image_path)
+            local_url = urllib.parse.quote(event_image_fname)
+            host_image = self.HOST_IMAGE.format(LINK_URL=link_url, IMAGE_URL=local_url,
+                                                SIZE=self.IMAGE_SIZE_EVENT_PAGE)
         else:
             host_image = ""
 
@@ -305,10 +313,10 @@ class HTML_Pro(producer.Producer_Base):
         # Save to file(s)
         # ---------------
         fname_out = os.path.join(self.HTML_OUT_DIR, event_name + ".html")
-        # if self.args.test:
-        self._save(fname_out, event_page, lvl=self.log.INFO)
-        # else:
-        #     self.touch(fname_out)
+        if self.args.test:
+            self._save(fname_out, event_page, lvl=self.log.INFO)
+        else:
+            self.touch(fname_out)
         self._save_gzip(fname_out, event_page.encode(), lvl=self.log.INFO)
 
         return

@@ -4,6 +4,7 @@ import os
 import json
 import gzip
 from collections import OrderedDict
+import datetime
 
 import filecmp
 import urllib
@@ -22,9 +23,8 @@ from .. quantity import QUANTITY
 RELOAD_IMAGES = True
 
 _IMAGE_SIZE_REQUEST = 512
-_IMAGE_SIZE_EVENT_PAGE = 256
 
-_HTML_IMAGE_LINK = "<a href='{LINK_URL}'><img src='{IMAGE_URL}' width={SIZE}></a>"
+# _HTML_IMAGE_LINK = ""
 
 # Skyservice is used to get SDSS images
 # -------------------------------------
@@ -54,6 +54,14 @@ _URL_SKYVIEW_IMAGE_REQUEST = (
     "catalogurl=&CatalogIDs=on&RGB=1&survey=DSS2+IR&survey=DSS2+Red&survey=DSS2+Blue&"
     "IOSmooth=&contour=&contourSmooth=&ebins=null"
 )
+
+
+class HOST_IMAGE_KEYS:
+    SOURCE = "source"
+    IMAGE_PATH = "image_path"
+    LINK_URL = "link_url"
+    QUERY_URL = "query_url"
+    DOWNLOAD_DATE = "download_date"
 
 
 class Producer_Base:
@@ -311,8 +319,8 @@ class Host_Image_Pro(Producer_Base):
         self.count_added = 0
         return
 
-    def _get_image_fname(self, event_name):
-        fname = event_name + '-host.jpg'
+    def _get_image_fname(self, event_name, source):
+        fname = "{EVENT_NAME}__host_{SOURCE}.jpg".format(EVENT_NAME=event_name, SOURCE=source)
         path = os.path.join(self.dir_images, fname)
         return fname, path
 
@@ -330,8 +338,6 @@ class Host_Image_Pro(Producer_Base):
         dec_event = event_data['dec'][0]['value']
         try:
             coord = SkyCoord(ra=ra_event, dec=dec_event, unit=(un.hourangle, un.deg))
-            ra_str = str(coord.ra.deg)
-            dec_str = str(coord.dec.deg)
         except (KeyboardInterrupt, SystemExit):
             raise
         except Exception:
@@ -340,113 +346,156 @@ class Host_Image_Pro(Producer_Base):
             self.log.error(warn_str)
             return
 
-        img_src = ''
-        has_image_flag = True
-        event_image_fname, event_image_path = self._get_image_fname(event_name)
+        # img_src = ''
+        # event_image_fname, event_image_path = self._get_image_fname(event_name)
 
         if (event_name in host_images) and (not RELOAD_IMAGES):
-            img_src = host_images[event_name]
+            host_image_entry = host_images[event_name]
         else:
 
             # Try to get SDSS Image
-            # ---------------------
-            try:
-                # Construct the query URL
-                skyservice_url = _URL_SKYSERVICE_IMAGE_REQUEST.format(
-                    RA_DEG_STR=ra_str, DEC_DEG_STR=dec_str, SCALE=self.SDSS_IMAGE_SCALE,
-                    WIDTH=_IMAGE_SIZE_REQUEST, HEIGHT=_IMAGE_SIZE_REQUEST,
-                    FLAGS=_SKYSERVICE_OPTIONAL_FLAGS)
-                # Query server
-                self.log.debug("skyservice_url: '{}'".format(skyservice_url))
-                response = urllib.request.urlopen(skyservice_url, timeout=60)
-                resptxt = response.read()
-            except (KeyboardInterrupt, SystemExit):
-                raise
-            except Exception as err:
-                has_image_flag = False
-                self.log.warning("Event '{}' query '{}' failed: '{}'".format(
-                    event_name, skyservice_url, str(err)))
-            else:
-                # Save image
-                self._save(event_image_path, resptxt,
-                           format='wb', lvl=self.log.INFO)
-                img_src = 'SDSS'
-                self.count_added += 1
-
-            # Compare image to 'missing' and 'failed' host-images (retrieved if no image exists)
-            if has_image_flag:
-                if filecmp.cmp(event_image_path, PATH_SDSS_MISSING_HOST_IMAGE):
-                    self.log.info("Missing SDSS image for '{}'".format(event_name))
-                    has_image_flag = False
-                elif filecmp.cmp(event_image_path, PATH_SDSS_FAILED_HOST_IMAGE):
-                    self.log.info("Failed SDSS image for '{}'".format(event_name))
-                    has_image_flag = False
+            host_image_entry = self._download_sdss_image(event_name, coord)
 
             # Get DSS Image (on SDSS failure)
             # -------------------------------
-            if not has_image_flag:
-                has_image_flag = True
-                try:
-                    ra_dec = str(urllib.parse.quote_plus(ra_event + " " + dec_event))
-                    skyview_url = _URL_SKYVIEW_IMAGE_REQUEST.format(
-                        RA_DEC=ra_dec, SCALE=self.DSS_IMAGE_SCALE, SIZE=_IMAGE_SIZE_REQUEST)
-                    self.log.debug("skyview_url: '{}'".format(skyview_url))
-                    response = urllib.request.urlopen(skyview_url, timeout=60)
-                    bandsoup = BeautifulSoup(response, "html5lib")
-                except (KeyboardInterrupt, SystemExit):
-                    raise
-                except Exception:
-                    has_image_flag = False
-                else:
-                    images = bandsoup.findAll('img')
-                    imgname = ''
-                    for image in images:
-                        if "Quicklook RGB image" in image.get('alt', ''):
-                            imgname = image.get('src', '').split('/')[-1]
-                            break
+            if host_image_entry is None:
+                host_image_entry = self._download_dss_image(event_name, ra_event, dec_event)
 
-                    if imgname:
-                        try:
-                            response = urllib.request.urlopen(
-                                'http://skyview.gsfc.nasa.gov/tempspace/fits/'
-                                + imgname)
-                            self._save(event_image_path, response.read(),
-                                       format='wb', lvl=self.log.INFO)
-                            img_src = 'DSS'
-                            self.count_added += 1
-                        except (KeyboardInterrupt, SystemExit):
-                            raise
-                        except Exception:
-                            has_image_flag = False
-                    else:
-                        has_image_flag = False
+            if host_image_entry is not None:
+                self.count_added += 1
 
         # Construct HTML code to show image, and link to the source (skyservice or skyview)
         # ---------------------------------------------------------------------------------
-        host_image_html = None
-        if has_image_flag:
+        # host_image_html = None
+        now = datetime.datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
+        if host_image_entry is not None:
             self.count_exist += 1
-            # Construct the local image path
-            local_url = urllib.parse.quote(event_image_fname)
-            if img_src == 'SDSS':
-                host_images[event_name] = 'SDSS'
-                # Construct the URL to link to skyservice (NOTE: different than previous url)
-                skyservice_url = _URL_SKYSERVICE_IMAGE_LINK.format(
-                    RA_DEG_STR=ra_str, DEC_DEG_STR=dec_str)
-                # Construct the HTML code to place and link the image
-                host_image_html = _HTML_IMAGE_LINK.format(
-                    LINK_URL=skyservice_url, IMAGE_URL=local_url, SIZE=_IMAGE_SIZE_EVENT_PAGE)
 
-            elif img_src == 'DSS':
-                host_images[event_name] = 'DSS'
-                # Same link as image was saved from (before)
-                host_image_html = _HTML_IMAGE_LINK.format(
-                    LINK_URL=skyview_url, IMAGE_URL=local_url, SIZE=_IMAGE_SIZE_EVENT_PAGE)
+            link_url = host_image_entry[HOST_IMAGE_KEYS.LINK_URL]
+            event_image_path = host_image_entry[HOST_IMAGE_KEYS.IMAGE_PATH]
+            if not os.path.exists(event_image_path):
+                err = "Event '{}': path '{}' does not exist!".format(event_name, event_image_path)
+                self.log.error(err)
+                # Delete erroneous entry???!!!
+                # del host_images[event_name]
+                return
+
+            # event_image_fname = os.path.basename(event_image_path)
+            # local_url = urllib.parse.quote(event_image_fname)
+
         else:
             host_images[event_name] = 'None'
 
-        return host_image_html
+        return event_image_path, link_url
 
     def finish(self):
         self.log.info("{} Images exist.  {} Added.".format(self.count_exist, self.count_added))
         return
+
+    def _download_sdss_image(self, event_name, coord):
+        """Try to download the host for this event from SDSS (via: 'skyservice')
+
+        Returns
+        -------
+        host_image_entry : dict or None
+            On failure, `None` is returned.
+            On success, a dict with keys matching `HOST_IMAGE_KEYS` is returned
+
+        """
+        ra_str = str(coord.ra.deg)
+        dec_str = str(coord.dec.deg)
+        SRC = "SDSS-DR13"
+        event_image_fname, event_image_path = self._get_image_fname(event_name, SRC)
+
+        # Construct the query URL
+        query_url = _URL_SKYSERVICE_IMAGE_REQUEST.format(
+            RA_DEG_STR=ra_str, DEC_DEG_STR=dec_str, SCALE=self.SDSS_IMAGE_SCALE,
+            WIDTH=_IMAGE_SIZE_REQUEST, HEIGHT=_IMAGE_SIZE_REQUEST,
+            FLAGS=_SKYSERVICE_OPTIONAL_FLAGS)
+        # Query server
+        self.log.debug("query_url: '{}'".format(query_url))
+
+        try:
+            response = urllib.request.urlopen(query_url, timeout=60)
+            resptxt = response.read()
+        except (KeyboardInterrupt, SystemExit):
+            raise
+        except Exception as err:
+            self.log.warning("Event '{}' query '{}' failed: '{}'".format(
+                event_name, query_url, str(err)))
+            return
+
+        # Save image
+        self._save(event_image_path, resptxt, format='wb', lvl=self.log.INFO)
+
+        # Compare image to 'missing' and 'failed' host-images (retrieved if no image exists)
+        if filecmp.cmp(event_image_path, PATH_SDSS_MISSING_HOST_IMAGE):
+            self.log.info("Missing SDSS image for '{}'".format(event_name))
+            return
+
+        if filecmp.cmp(event_image_path, PATH_SDSS_FAILED_HOST_IMAGE):
+            self.log.info("Failed SDSS image for '{}'".format(event_name))
+            return
+
+        # Construct the URL to link to skyservice (NOTE: different than query url)
+        link_url = _URL_SKYSERVICE_IMAGE_LINK.format(RA_DEG_STR=ra_str, DEC_DEG_STR=dec_str)
+
+        host_image_entry = {
+            HOST_IMAGE_KEYS.SOURCE: SRC,
+            HOST_IMAGE_KEYS.QUERY_URL: query_url,
+            HOST_IMAGE_KEYS.LINK_URL: link_url,
+            HOST_IMAGE_KEYS.IMAGE_PATH: event_image_path,
+        }
+
+        return host_image_entry
+
+    def _download_dss_image(self, event_name, ra_event, dec_event):
+        """
+        """
+        SRC = "DSS-2"
+        host_image_entry = None
+        event_image_fname, event_image_path = self._get_image_fname(event_name, SRC)
+
+        try:
+            ra_dec = str(urllib.parse.quote_plus(ra_event + " " + dec_event))
+            temp_url = _URL_SKYVIEW_IMAGE_REQUEST.format(
+                RA_DEC=ra_dec, SCALE=self.DSS_IMAGE_SCALE, SIZE=_IMAGE_SIZE_REQUEST)
+            self.log.debug("skyview_url: '{}'".format(temp_url))
+            response = urllib.request.urlopen(temp_url, timeout=60)
+            bandsoup = BeautifulSoup(response, "html5lib")
+        except (KeyboardInterrupt, SystemExit):
+            raise
+        except Exception as err:
+            self.log.warning("Event '{}' query '{}' failed: '{}'".format(
+                event_name, temp_url, str(err)))
+            return host_image_entry
+
+        images = bandsoup.findAll('img')
+        imgname = ''
+        for image in images:
+            if "Quicklook RGB image" in image.get('alt', ''):
+                imgname = image.get('src', '').split('/')[-1]
+                break
+
+        if imgname:
+            query_url = 'http://skyview.gsfc.nasa.gov/tempspace/fits/' + imgname
+            try:
+                response = urllib.request.urlopen(query_url)
+                self._save(event_image_path, response.read(), format='wb', lvl=self.log.INFO)
+                self.count_added += 1
+                # local_url = urllib.parse.quote(event_image_fname)
+            except (KeyboardInterrupt, SystemExit):
+                raise
+            except Exception as err:
+                self.log.warning("Event '{}' query '{}' failed: '{}'".format(
+                    event_name, query_url, str(err)))
+                return host_image_entry
+
+        host_image_entry = {
+            HOST_IMAGE_KEYS.SOURCE: SRC,
+            HOST_IMAGE_KEYS.QUERY_URL: query_url,
+            HOST_IMAGE_KEYS.LINK_URL: query_url,
+            HOST_IMAGE_KEYS.IMAGE_PATH: event_image_path,
+        }
+
+        return host_image_entry
