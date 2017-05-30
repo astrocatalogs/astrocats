@@ -77,10 +77,20 @@ class Director(producer.Producer_Base):
         num_events = len(event_filenames)
         log.warning("{} Files, e.g. '{}'".format(num_events, np.random.choice(event_filenames)))
 
+        producers = []
+        # MD5 File Checksums
         md5_pro = producer.MD5_Pro(catalog, args)
+        producers.append(md5_pro)
+        # Bibliography creator
         bib_pro = producer.Bib_Pro(catalog, args)
+        producers.append(bib_pro)
         # Initialize an HTML Producer (for web html tables)
         web_pro = html_pro.HTML_Pro(catalog, args)
+        producers.append(web_pro)
+        # Collect host-images
+        if args.hosts:
+            img_pro = producer.Host_Image_Pro(catalog, args)
+            producers.append(img_pro)
 
         # Iterate over all events
         # -----------------------
@@ -105,15 +115,21 @@ class Director(producer.Producer_Base):
             entry, event_data = production_utils.load_event_from_filename(event_fname, log)
             log.debug("entry = '{}' (from fname: '{}')".format(entry, event_name))
 
+            '''
             # Generate checksum for each json input file, compare to previous (if they exist)
             #    to determine if a file needs to be reprocessed
             md5_pro.update(event_fname, entry, event_data)
-
             # Store all bibliography and authors information
             bib_pro.update(event_fname, entry, event_data)
-
             # Generate HTML file for this event
-            web_pro.produce(event_fname, entry, event_data)
+            web_pro.update(event_fname, entry, event_data)
+            # Collect host-images
+            if args.hosts:
+                img_pro.update(event_fname, entry, event_data)
+            '''
+
+            for pro in producers:
+                pro.update(event_fname, entry, event_data)
 
             # Add this entry into the catalog after removing undesired elements
             self.update(event_fname, entry, event_data)
@@ -126,8 +142,15 @@ class Director(producer.Producer_Base):
 
         # Write it all out at the end
         # ---------------------------
+        '''
         md5_pro.finish()
         bib_pro.finish()
+        if args.hosts:
+            img_pro.finish()
+        '''
+        for pro in producers:
+            pro.finish()
+
         self.finish()
 
         return

@@ -271,7 +271,7 @@ class HTML_Pro(producer.Producer_Base):
             content = cont_file.read()
         return content
 
-    def produce(self, fname, event_name, event_data):
+    def update(self, fname, event_name, event_data):
         self.log.debug("HTML_Pro.produce()")
 
         # Prepare quantities
@@ -302,3 +302,6 @@ class HTML_Pro(producer.Producer_Base):
         self._save_gzip(fname_out, event_page.encode(), lvl=self.log.INFO)
 
         return
+
+    def finish(self, *args, **kwargs):
+        pass
