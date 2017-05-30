@@ -5,11 +5,55 @@ import json
 import gzip
 from collections import OrderedDict
 
+import filecmp
+import urllib
+from bs4 import BeautifulSoup
+
+from astropy import units as un
+from astropy.coordinates import SkyCoord
+
 from astrocats.catalog import utils
 from . import utils as production_utils
+from . import PATH_SDSS_MISSING_HOST_IMAGE, PATH_SDSS_FAILED_HOST_IMAGE
 from .. source import SOURCE
 from .. entry import ENTRY
 from .. quantity import QUANTITY
+
+RELOAD_IMAGES = True
+
+_IMAGE_SIZE_REQUEST = 512
+_IMAGE_SIZE_EVENT_PAGE = 256
+
+_HTML_IMAGE_LINK = "<a href='{LINK_URL}'><img src='{IMAGE_URL}' width={SIZE}></a>"
+
+# Skyservice is used to get SDSS images
+# -------------------------------------
+# Options:  G: Grid, L: Label, P: PhotoObjs, S: SpecObjs, T: TargetObjs, O: Outline,
+#           B: BoundingBox, F: Fields, M: Masks, Q: Plates, I: InvertImage
+_SKYSERVICE_OPTIONAL_FLAGS = "GL"
+
+# See: http://skyserver.sdss.org/dr12/en/help/docs/api.aspx#imgcutout
+# Example: ("http://skyserver.sdss.org/dr13/SkyServerWS/ImgCutout/getjpeg?"
+#           "ra=224.5941&dec=-1.09&width=512&height=512&opt=OG")
+_URL_SKYSERVICE_IMAGE_REQUEST = (
+    # "http://skyservice.pha.jhu.edu/DR12/ImgCutout/getjpeg.aspx?"  # NOTE: May2017 not working
+    "http://skyserver.sdss.org/dr13/SkyServerWS/ImgCutout/getjpeg?"
+    "ra={RA_DEG_STR}&dec={DEC_DEG_STR}&scale={SCALE}&width={WIDTH}&height={HEIGHT}&opt={FLAGS}")
+
+_URL_SKYSERVICE_IMAGE_LINK = ("http://skyserver.sdss.org/DR13/en/tools/chart/navi.aspx?opt=G&"
+                              "ra={RA_DEG_STR}&dec={DEC_DEG_STR}&scale=0.15")
+
+
+# Skyview is used to get DSS images
+# ---------------------------------
+_URL_SKYVIEW_IMAGE_REQUEST = (
+    "http://skyview.gsfc.nasa.gov/current/cgi/runquery.pl?Position={RA_DEC}&coordinates=J2000"
+    "&coordinates=&projection=Tan&pixels={SIZE}&size={SCALE}&float=on&scaling=Log&"
+    "resolver=SIMBAD-NED&Sampler=_skip_&Deedger=_skip_&rotation=&Smooth=&"
+    "lut=colortables%2Fb-w-linear.bin&PlotColor=&grid=_skip_&gridlabels=1&"
+    "catalogurl=&CatalogIDs=on&RGB=1&survey=DSS2+IR&survey=DSS2+Red&survey=DSS2+Blue&"
+    "IOSmooth=&contour=&contourSmooth=&ebins=null"
+)
 
 
 class Producer_Base:
@@ -27,12 +71,14 @@ class Producer_Base:
         self.log.debug("Producer_Base.finish()")
         return
 
-    def _save(self, fname, data):
+    def _save(self, fname, data, format='w', lvl=None):
         """Write to text file.
         """
         self.log.debug("Producer_Base._save()")
-        self.log.warning("Writing to '{}'".format(fname))
-        with open(fname, 'w') as ff:
+        if lvl is None:
+            lvl = self.log.WARNING
+        self.log.log(lvl, "Writing to '{}'".format(fname))
+        with open(fname, format) as ff:
             ff.write(data)
 
         fsize = os.path.getsize(fname)/1024/1024
@@ -239,4 +285,168 @@ class Bib_Pro(Producer_Base):
         self._save_json(self.biblio_min_fname, self.bib_data, expanded=False)
         if self.load_all_authors_flag:
             self._save_json(self.all_authors_fname, self.bib_all_authors_data)
+        return
+
+
+class Host_Image_Pro(Producer_Base):
+    """
+    """
+
+    SDSS_IMAGE_SCALE = 0.3
+    DSS_IMAGE_SCALE = 0.13889 * SDSS_IMAGE_SCALE
+
+    def __init__(self, catalog, args):
+        log = catalog.log
+        self.log = log
+        log.debug("Host_Image_Pro.__init__()")
+
+        self.host_image_fname = catalog.PATHS.HOST_IMAGES_FILE
+        self.dir_images = catalog.PATHS.PATH_HTML
+        log.debug("`host_image_fname` = '{}'".format(self.host_image_fname))
+        log.debug("`dir_images` = '{}'".format(self.dir_images))
+
+        self.host_images = self._load_default_json(self.host_image_fname)
+        log.info("Loaded {} host image locations.".format(len(self.host_images)))
+        self.count_exist = 0
+        self.count_added = 0
+        return
+
+    def _get_image_fname(self, event_name):
+        fname = event_name + '-host.jpg'
+        path = os.path.join(self.dir_images, fname)
+        return fname, path
+
+    def update(self, fname, event_name, event_data):
+        self.log.debug("Host_Image_Pro.update()")
+
+        if ('ra' not in event_data) or ('dec' not in event_data):
+            self.log.debug("event '{}' missing ra/dec, skipping host image.".format(event_name))
+            return
+
+        host_images = self.host_images
+        # Convert / Process Coordinates
+        # -----------------------------
+        ra_event = event_data['ra'][0]['value']
+        dec_event = event_data['dec'][0]['value']
+        try:
+            coord = SkyCoord(ra=ra_event, dec=dec_event, unit=(un.hourangle, un.deg))
+            ra_str = str(coord.ra.deg)
+            dec_str = str(coord.dec.deg)
+        except (KeyboardInterrupt, SystemExit):
+            raise
+        except Exception:
+            warn_str = "Malformed angle for event '{}' - ra: '{}', dec: '{}'".format(
+                event_name, ra_event, dec_event)
+            self.log.error(warn_str)
+            return
+
+        img_src = ''
+        has_image_flag = True
+        event_image_fname, event_image_path = self._get_image_fname(event_name)
+
+        if (event_name in host_images) and (not RELOAD_IMAGES):
+            img_src = host_images[event_name]
+        else:
+
+            # Try to get SDSS Image
+            # ---------------------
+            try:
+                # Construct the query URL
+                skyservice_url = _URL_SKYSERVICE_IMAGE_REQUEST.format(
+                    RA_DEG_STR=ra_str, DEC_DEG_STR=dec_str, SCALE=self.SDSS_IMAGE_SCALE,
+                    WIDTH=_IMAGE_SIZE_REQUEST, HEIGHT=_IMAGE_SIZE_REQUEST,
+                    FLAGS=_SKYSERVICE_OPTIONAL_FLAGS)
+                # Query server
+                self.log.debug("skyservice_url: '{}'".format(skyservice_url))
+                response = urllib.request.urlopen(skyservice_url, timeout=60)
+                resptxt = response.read()
+            except (KeyboardInterrupt, SystemExit):
+                raise
+            except Exception as err:
+                has_image_flag = False
+                self.log.warning("Event '{}' query '{}' failed: '{}'".format(
+                    event_name, skyservice_url, str(err)))
+            else:
+                # Save image
+                self._save(event_image_path, resptxt,
+                           format='wb', lvl=self.log.INFO)
+                img_src = 'SDSS'
+                self.count_added += 1
+
+            # Compare image to 'missing' and 'failed' host-images (retrieved if no image exists)
+            if has_image_flag:
+                if filecmp.cmp(event_image_path, PATH_SDSS_MISSING_HOST_IMAGE):
+                    self.log.info("Missing SDSS image for '{}'".format(event_name))
+                    has_image_flag = False
+                elif filecmp.cmp(event_image_path, PATH_SDSS_FAILED_HOST_IMAGE):
+                    self.log.info("Failed SDSS image for '{}'".format(event_name))
+                    has_image_flag = False
+
+            # Get DSS Image (on SDSS failure)
+            # -------------------------------
+            if not has_image_flag:
+                has_image_flag = True
+                try:
+                    ra_dec = str(urllib.parse.quote_plus(ra_event + " " + dec_event))
+                    skyview_url = _URL_SKYVIEW_IMAGE_REQUEST.format(
+                        RA_DEC=ra_dec, SCALE=self.DSS_IMAGE_SCALE, SIZE=_IMAGE_SIZE_REQUEST)
+                    self.log.debug("skyview_url: '{}'".format(skyview_url))
+                    response = urllib.request.urlopen(skyview_url, timeout=60)
+                    bandsoup = BeautifulSoup(response, "html5lib")
+                except (KeyboardInterrupt, SystemExit):
+                    raise
+                except Exception:
+                    has_image_flag = False
+                else:
+                    images = bandsoup.findAll('img')
+                    imgname = ''
+                    for image in images:
+                        if "Quicklook RGB image" in image.get('alt', ''):
+                            imgname = image.get('src', '').split('/')[-1]
+                            break
+
+                    if imgname:
+                        try:
+                            response = urllib.request.urlopen(
+                                'http://skyview.gsfc.nasa.gov/tempspace/fits/'
+                                + imgname)
+                            self._save(event_image_path, response.read(),
+                                       format='wb', lvl=self.log.INFO)
+                            img_src = 'DSS'
+                            self.count_added += 1
+                        except (KeyboardInterrupt, SystemExit):
+                            raise
+                        except Exception:
+                            has_image_flag = False
+                    else:
+                        has_image_flag = False
+
+        # Construct HTML code to show image, and link to the source (skyservice or skyview)
+        # ---------------------------------------------------------------------------------
+        host_image_html = None
+        if has_image_flag:
+            self.count_exist += 1
+            # Construct the local image path
+            local_url = urllib.parse.quote(event_image_fname)
+            if img_src == 'SDSS':
+                host_images[event_name] = 'SDSS'
+                # Construct the URL to link to skyservice (NOTE: different than previous url)
+                skyservice_url = _URL_SKYSERVICE_IMAGE_LINK.format(
+                    RA_DEG_STR=ra_str, DEC_DEG_STR=dec_str)
+                # Construct the HTML code to place and link the image
+                host_image_html = _HTML_IMAGE_LINK.format(
+                    LINK_URL=skyservice_url, IMAGE_URL=local_url, SIZE=_IMAGE_SIZE_EVENT_PAGE)
+
+            elif img_src == 'DSS':
+                host_images[event_name] = 'DSS'
+                # Same link as image was saved from (before)
+                host_image_html = _HTML_IMAGE_LINK.format(
+                    LINK_URL=skyview_url, IMAGE_URL=local_url, SIZE=_IMAGE_SIZE_EVENT_PAGE)
+        else:
+            host_images[event_name] = 'None'
+
+        return host_image_html
+
+    def finish(self):
+        self.log.info("{} Images exist.  {} Added.".format(self.count_exist, self.count_added))
         return
