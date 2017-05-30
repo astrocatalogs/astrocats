@@ -183,6 +183,13 @@ class ArgsHandler:
             default=False,
             action='store_true')
 
+        prod_pars.add_argument(
+            '--hosts',
+            dest='hosts',
+            help='Query skyservice or skyview for host-images (slow!)',
+            default=False,
+            action='store_true')
+
         return prod_pars
 
     def _add_parser_arguments_git(self, subparsers):
