@@ -39,7 +39,7 @@ _SOURCE_ENTRY = \
     """
 
 _META_DATA_ENTRY = ("<tr><td class='event-cell'>{LABEL}</td>"
-                    "<td width=250px class='event-cell'>{VALUE}</td></tr>\n")
+                    "<td width={V_WIDTH} class='event-cell'>{VALUE}</td></tr>\n")
 
 _MARK_ERROR_BUTTON = ("<span class='sttt'><button class='sme' type='button' onclick='markError("
                       "'{EVENT_NAME}', '{KEY}', '{ID_TYPES_STR}', '{SOURCE_ID_STR}', "
@@ -65,6 +65,9 @@ class HTML_Pro(producer.Producer_Base):
     FORCE_PAGE_TO_FRAME = False
 
     IMAGE_SIZE_EVENT_PAGE = 256
+
+    META_DATA_QUANTITY_WIDTH = '128px'
+    META_DATA_VALUE_WIDTH = '256px'
 
     def __init__(self, catalog, args):
         log = catalog.log
@@ -105,88 +108,42 @@ class HTML_Pro(producer.Producer_Base):
 
         meta_data = []
         derived_flag = False
+        event_sources = event_data[ENTRY.SOURCES]
         for key, col_vals in self.COLUMNS.items():
             header = col_vals[0]
             if (key not in event_data) or (len(event_data[key]) == 0):
                 continue
 
-            value_html = []
+            html_value = []
             if isinstance(event_data[key], str):
                 subentry = re.sub('<[^<]+?>', '', event_data[key])
-                value_html.append(subentry)
+                html_value.append(subentry)
             else:
                 for r, row in enumerate(event_data[key]):
-                    if (QUANTITY.VALUE in row) and (QUANTITY.SOURCE in row):
-                        # Create list of source-aliases for value superscript
-                        # ---------------------------------------------------
-                        _srcs = [x.strip() for x in row[QUANTITY.SOURCE].split(',')]
-                        _srcs = sorted(_srcs, key=lambda x:
-                                       float(x) if utils.is_number(x) else float("inf"))
-                        sourcehtml = ["<a href='#source{src}' target='_self'>{src}</a>".format(
-                            src=str(x)) for x in _srcs]
-                        sourcehtml = ", ".join(sourcehtml)
-                        sup_sources = "<sup>{SOURCEHTML}</sup>".format(SOURCEHTML=sourcehtml)
+                    if QUANTITY.DERIVED in row and row[QUANTITY.DERIVED]:
+                        derived_flag = True
 
-                        # Create the printed value
-                        # ------------------------
-                        val = row[QUANTITY.VALUE]
-                        # Single error value
-                        if QUANTITY.E_VALUE in row:
-                            val += r' ± ' + row[QUANTITY.E_VALUE]
-                        # Upper and/or lower error-values
+                    retval = self._meta_data_entry(key, row, event_sources)
+                    if retval is not None:
+                        if isinstance(retval, str):
+                            html_value.append(retval)
                         else:
-                            hi = row.get(QUANTITY.E_UPPER_VALUE)
-                            lo = row.get(QUANTITY.E_LOWER_VALUE)
-                            if (hi is not None) and (lo is not None):
-                                if hi == lo:
-                                    val += r' ± ' + hi
-                                else:
-                                    val += " + {} - {}".format(hi, lo)
-                            elif (hi is not None):
-                                val += r' + ' + hi
-                            elif (lo is not None):
-                                val += r' - ' + lo
+                            raw_value, id_types_str, source_id_str, source_html, kind = retval
 
-                        if QUANTITY.DERIVED in row and row[QUANTITY.DERIVED]:
-                            derived_flag = True
-                            _value_html = "<span class='derived'>{}</span>".format(val)
-                        else:
-                            _value_html = "{}".format(val)
+                            error_button = _MARK_ERROR_BUTTON.format(
+                                EVENT_NAME=event_name, KEY=key, ID_TYPES_STR=id_types_str,
+                                SOURCE_ID_STR=source_id_str, EDIT=edit,
+                                MODULE_NAME=self.module_name)
 
-                        # Create Mark erroneous button
-                        # ----------------------------
-                        sourceids = []
-                        idtypes = []
-                        for alias in row[QUANTITY.SOURCE].split(','):
-                            for source in event_data[ENTRY.SOURCES]:
-                                if source[SOURCE.ALIAS] == alias:
-                                    if SOURCE.BIBCODE in source:
-                                        sourceids.append(source[SOURCE.BIBCODE])
-                                        idtypes.append(SOURCE.BIBCODE)
-                                    elif SOURCE.ARXIVID in source:
-                                        sourceids.append(source[SOURCE.ARXIVID])
-                                        idtypes.append(SOURCE.ARXIVID)
-                                    else:
-                                        sourceids.append(source[SOURCE.NAME])
-                                        idtypes.append(SOURCE.NAME)
-                        if (not sourceids) or (not idtypes):
-                            raise ValueError("Unable to find associated source by alias!")
+                            # Combine into value cell
+                            # -----------------------
+                            value_html = "<div class='stt'>{}{}</div><sup>{}</sup>".format(
+                                raw_value, error_button, source_html)
+                            if kind is not None:
+                                value_html += " [{}]".format(kind)
+                            html_value.append(value_html)
 
-                        id_types_str = ','.join(idtypes)
-                        source_id_str = ','.join(sourceids)
-                        mark_error_button = _MARK_ERROR_BUTTON.format(
-                            EVENT_NAME=event_name, KEY=key, ID_TYPES_STR=id_types_str,
-                            SOURCE_ID_STR=source_id_str, EDIT=edit, MODULE_NAME=self.module_name)
-
-                        # Combine into value cell
-                        # -----------------------
-                        value_html.append("<div class='stt'>" + _value_html + mark_error_button +
-                                          "</div>" + sup_sources)
-
-                    elif isinstance(row, str):
-                        value_html.append(row.strip())
-
-            if len(value_html):
+            if len(html_value):
                 if key not in self.SIMPLE_META_DATA_KEYS:
                     button = _ADD_DATA_BUTTON.format(
                         HEADER=header, EVENT_NAME=event_name, KEY=key, EDIT=edit,
@@ -196,9 +153,10 @@ class HTML_Pro(producer.Producer_Base):
                 else:
                     label_html = header
 
-                value_html = "<br>".join(value_html)
+                html_value = "<br>".join(html_value)
                 md_line = "<!--    {}    -->\n".format(key.upper())
-                md_line += _META_DATA_ENTRY.format(LABEL=label_html, VALUE=value_html)
+                md_line += _META_DATA_ENTRY.format(LABEL=label_html, VALUE=html_value,
+                                                   V_WIDTH=self.META_DATA_VALUE_WIDTH)
                 meta_data.append(md_line)
 
         meta_data_lines = "\n".join(meta_data)
@@ -207,7 +165,8 @@ class HTML_Pro(producer.Producer_Base):
         else:
             derived = ""
         meta_data_table = self.META_DATA_TABLE.format(
-            META_DATA_LINES=meta_data_lines, DERIVED=derived)
+            Q_WIDTH=self.META_DATA_QUANTITY_WIDTH, META_DATA_LINES=meta_data_lines,
+            DERIVED=derived)
 
         return meta_data_table
 
@@ -239,6 +198,74 @@ class HTML_Pro(producer.Producer_Base):
                                                   SECONDARY_SOURCES=secondary_sources)
 
         return sources_table
+
+    def _meta_data_entry(self, key, row, event_sources):
+        if (QUANTITY.VALUE not in row) and (QUANTITY.SOURCE not in row):
+            return
+
+        if isinstance(row, str):
+            return row.strip()
+
+        # Create list of source-aliases for value superscript
+        # ---------------------------------------------------
+        _srcs = [x.strip() for x in row[QUANTITY.SOURCE].split(',')]
+        _srcs = sorted(_srcs, key=lambda x:
+                       float(x) if utils.is_number(x) else float("inf"))
+        source_html = ["<a href='#source{src}' target='_self'>{src}</a>".format(
+            src=str(x)) for x in _srcs]
+        source_html = ", ".join(source_html)
+
+        # Create the printed value
+        # ------------------------
+        val = row[QUANTITY.VALUE]
+        # Single error value
+        if QUANTITY.E_VALUE in row:
+            val += r' ± ' + row[QUANTITY.E_VALUE]
+        # Upper and/or lower error-values
+        else:
+            hi = row.get(QUANTITY.E_UPPER_VALUE)
+            lo = row.get(QUANTITY.E_LOWER_VALUE)
+            if (hi is not None) and (lo is not None):
+                if hi == lo:
+                    val += r' ± ' + hi
+                else:
+                    val += " + {} - {}".format(hi, lo)
+            elif (hi is not None):
+                val += r' + ' + hi
+            elif (lo is not None):
+                val += r' - ' + lo
+
+        if QUANTITY.DERIVED in row and row[QUANTITY.DERIVED]:
+            # Parse this row formatting data into HTML
+            raw_value = "<span class='derived'>{}</span>".format(val)
+        else:
+            raw_value = "{}".format(val)
+
+        # Create Mark erroneous button
+        # ----------------------------
+        sourceids = []
+        idtypes = []
+        for alias in row[QUANTITY.SOURCE].split(','):
+            for source in event_sources:
+                if source[SOURCE.ALIAS] == alias:
+                    if SOURCE.BIBCODE in source:
+                        sourceids.append(source[SOURCE.BIBCODE])
+                        idtypes.append(SOURCE.BIBCODE)
+                    elif SOURCE.ARXIVID in source:
+                        sourceids.append(source[SOURCE.ARXIVID])
+                        idtypes.append(SOURCE.ARXIVID)
+                    else:
+                        sourceids.append(source[SOURCE.NAME])
+                        idtypes.append(SOURCE.NAME)
+        if (not sourceids) or (not idtypes):
+            raise ValueError("Unable to find associated source by alias!")
+
+        id_types_str = ','.join(idtypes)
+        source_id_str = ','.join(sourceids)
+
+        kind = self._meta_data_entry_kind(key, row)
+
+        return raw_value, id_types_str, source_id_str, source_html, kind
 
     def _source_entry(self, source):
         """Go through an individual 'source' and generate the sources-table entry for it.
@@ -295,6 +322,11 @@ class HTML_Pro(producer.Producer_Base):
         with open(fname, 'r') as cont_file:
             content = cont_file.read()
         return content
+
+    def _meta_data_entry_kind(self, key, row):
+        """Retrieve an additional 'kind' parameter to add to a Meta-Data value cell.
+        """
+        return
 
     def update(self, fname, event_name, event_data, host_image_info=None):
         self.log.debug("HTML_Pro.produce()")
