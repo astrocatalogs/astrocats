@@ -2,10 +2,10 @@
 """
 import numpy as np
 
-__all__ = ["convert_pm_errors_lin_to_log", "str_sig_figs"]
+__all__ = ["convert_lin_to_log", "str_sig_figs"]
 
 
-def convert_pm_errors_lin_to_log(val, err_lo, err_hi=None):
+def convert_lin_to_log(val, errors=None, error_interval=False):
     """Convert from a central value and plus/minus error(s) to log-value and log-errors.
 
     Values can be strings or floats.  If strings, then their significant figures are preserved,
@@ -13,41 +13,56 @@ def convert_pm_errors_lin_to_log(val, err_lo, err_hi=None):
 
     Example
     -------
-    >>> convert_pm_errors_lin_to_log('4.1e6', '1e6', '5.1e6')
+    >>> convert_pm_errors_lin_to_log('4.1e6', ['1e6', '5.1e6'])
     >>> '6.61', '0.1', '0.54'
 
     """
+
+    if errors is not None:
+        if np.size(errors) != 2:
+            raise ValueError("`errors` must be [lo, hi]")
 
     # Convert to floats if needed
     if isinstance(val, str):
         is_string = True
         # Get significant figures
         v_sf = str_sig_figs(val)
-        l_sf = str_sig_figs(err_lo)
         # Convert to floats
         val = np.float(val)
-        err_lo = np.float(err_lo)
-        if err_hi is not None:
-            h_sf = str_sig_figs(err_hi)
-            err_hi = np.float(err_hi)
+        if errors is not None:
+            e_sf = [str_sig_figs(ee) if (ee is not None) else None
+                    for ee in errors]
+            errors = [np.float(ee) if (ee is not None) else None
+                      for ee in errors]
 
     # Convert to errors in log-space
     lv = np.log10(val)
-    elo = err_lo/val/np.log(10.0)
-    if err_hi is not None:
-        ehi = err_hi/val/np.log(10.0)
+    if errors is not None:
+        # If these are confidence intervals, convert to plus/minus
+        if error_interval:
+            def rev(v1, v2):
+                return 1.0 if (v1 > v2) else -1.0
+
+            errors = [np.log10(ee) if (ee is not None) else None
+                      for ee in errors]
+            errors = [(lv - ee)*rev(lv, ee) if (ee is not None) else None
+                      for ee in errors]
+        # If these errors are plus/minus errors conver to plus/minus log
+        else:
+            errors = [ee/val/np.log(10.0) if (ee is not None) else None
+                      for ee in errors]
 
     # Convert back to string as needed
     if is_string:
         lv = round_to_str(lv, v_sf)
-        elo = round_to_str(elo, l_sf)
-        if err_hi is not None:
-            ehi = round_to_str(ehi, h_sf)
+        if errors is not None:
+            errors = [round_to_str(ee, sf) if (ee is not None) else None
+                      for (ee, sf) in zip(errors, e_sf)]
 
-    if err_hi is not None:
-        return lv, elo, ehi
+    if errors is None:
+        return lv
 
-    return lv, elo
+    return lv, errors
 
 
 def str_sig_figs(val):
