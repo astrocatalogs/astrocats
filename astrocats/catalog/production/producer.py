@@ -20,7 +20,8 @@ from .. source import SOURCE
 from .. entry import ENTRY
 from .. quantity import QUANTITY
 
-RELOAD_IMAGES = True
+# Force all host images to be reloaded
+FORCE_RELOAD_IMAGES_FLAG = False
 
 _IMAGE_SIZE_REQUEST = 512
 
@@ -57,14 +58,19 @@ _URL_SKYVIEW_IMAGE_REQUEST = (
 
 
 class HOST_IMAGE_KEYS:
-    SOURCE = "source"
+    # Required information for constructing webpages
     IMAGE_PATH = "image_path"
     LINK_URL = "link_url"
+
+    # Auxilliary information
+    SOURCE = "source"
     QUERY_URL = "query_url"
     DOWNLOAD_DATE = "download_date"
 
 
 class Producer_Base:
+
+    RUN_FINISH_ON_CHECKPOINT = True
 
     def __init__(self, catalog, args):
         self.log = catalog.log
@@ -73,6 +79,12 @@ class Producer_Base:
 
     def update(self, fname, event_name, event_data):
         self.log.debug("Producer_Base.update()")
+        return
+
+    def checkpoint(self, *args, **kwargs):
+        self.log.debug("Producer_Base.checkpoint()")
+        if self.RUN_FINISH_ON_CHECKPOINT:
+            self.finish(*args, **kwargs)
         return
 
     def finish(self):
@@ -319,19 +331,35 @@ class Host_Image_Pro(Producer_Base):
         self.count_added = 0
         return
 
-    def _get_image_fname(self, event_name, source):
-        fname = "{EVENT_NAME}__host_{SOURCE}.jpg".format(EVENT_NAME=event_name, SOURCE=source)
-        path = os.path.join(self.dir_images, fname)
-        return fname, path
-
     def update(self, fname, event_name, event_data):
+        """Retrieve and/or update the host-images dictionary for this event.
+
+        Dictionary entries have keys and values from `HOST_IMAGE_KEYS`.
+
+        Description
+        -----------
+        If an entry for this event exists, load it.
+        If not, try to download host images from online.
+            A new entry is created regardless.
+            If images are downloaded, `HOST_IMAGE_KEYS` parameters are added to the new entry.
+            If images are *not* downloaded, then only the datetime is recorded.
+        If images exist, then their file-location and link-url are returned (used by HTML_Pro).
+
+        If the event does *not* have RA/Dec, or they are erroneous, then no entry is added.
+        Otherwise an entry should always exist if the event has been processes.
+
+        Returns
+        -------
+        None if no images exist
+        (event_image_path, link_url) if images are found
+
+        """
         self.log.debug("Host_Image_Pro.update()")
 
         if ('ra' not in event_data) or ('dec' not in event_data):
-            self.log.debug("event '{}' missing ra/dec, skipping host image.".format(event_name))
+            self.log.error("event '{}' missing ra/dec, skipping host image.".format(event_name))
             return
 
-        host_images = self.host_images
         # Convert / Process Coordinates
         # -----------------------------
         ra_event = event_data['ra'][0]['value']
@@ -346,51 +374,61 @@ class Host_Image_Pro(Producer_Base):
             self.log.error(warn_str)
             return
 
-        # img_src = ''
-        # event_image_fname, event_image_path = self._get_image_fname(event_name)
+        now = datetime.datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
 
-        if (event_name in host_images) and (not RELOAD_IMAGES):
-            host_image_entry = host_images[event_name]
+        # Load existing entry for this event or construct a new one
+        # ---------------------------------------------------------
+        if (event_name in self.host_images) and (not FORCE_RELOAD_IMAGES_FLAG):
+            host_image_entry = self.host_images[event_name]
         else:
 
             # Try to get SDSS Image
             host_image_entry = self._download_sdss_image(event_name, coord)
 
             # Get DSS Image (on SDSS failure)
-            # -------------------------------
             if host_image_entry is None:
                 host_image_entry = self._download_dss_image(event_name, ra_event, dec_event)
 
-            if host_image_entry is not None:
+            if host_image_entry is None:
+                host_image_entry = {}
+            else:
                 self.count_added += 1
 
-        # Construct HTML code to show image, and link to the source (skyservice or skyview)
-        # ---------------------------------------------------------------------------------
-        # host_image_html = None
-        now = datetime.datetime.now().strftime("%Y/%m/%d - %H:%M:%S")
-        if host_image_entry is not None:
-            self.count_exist += 1
+            # Store the time of download
+            host_image_entry[HOST_IMAGE_KEYS.DOWNLOAD_DATE] = now
 
-            link_url = host_image_entry[HOST_IMAGE_KEYS.LINK_URL]
-            event_image_path = host_image_entry[HOST_IMAGE_KEYS.IMAGE_PATH]
-            if not os.path.exists(event_image_path):
-                err = "Event '{}': path '{}' does not exist!".format(event_name, event_image_path)
-                self.log.error(err)
-                # Delete erroneous entry???!!!
-                # del host_images[event_name]
-                return
+            # Store dictionary entry for this event
+            self.host_images[event_name] = host_image_entry
 
-            # event_image_fname = os.path.basename(event_image_path)
-            # local_url = urllib.parse.quote(event_image_fname)
+        # If we dont have the image, return None
+        if (((HOST_IMAGE_KEYS.LINK_URL not in host_image_entry) or
+             (HOST_IMAGE_KEYS.IMAGE_PATH not in host_image_entry))):
+            return
 
-        else:
-            host_images[event_name] = 'None'
+        # Extract the required parameters from the dictionary entry
+        # ---------------------------------------------------------
+        link_url = host_image_entry[HOST_IMAGE_KEYS.LINK_URL]
+        event_image_path = host_image_entry[HOST_IMAGE_KEYS.IMAGE_PATH]
+        # Make sure the stored image path exists
+        if not os.path.exists(event_image_path):
+            err = "Event '{}': path '{}' does not exist!".format(event_name, event_image_path)
+            self.log.error(err)
+            # Delete erroneous entry
+            del self.host_images[event_name]
+            return
+
+        self.count_exist += 1
 
         return event_image_path, link_url
 
     def finish(self):
         self.log.info("{} Images exist.  {} Added.".format(self.count_exist, self.count_added))
         return
+
+    def _get_image_fname(self, event_name, source):
+        fname = "{EVENT_NAME}__host_{SOURCE}.jpg".format(EVENT_NAME=event_name, SOURCE=source)
+        path = os.path.join(self.dir_images, fname)
+        return fname, path
 
     def _download_sdss_image(self, event_name, coord):
         """Try to download the host for this event from SDSS (via: 'skyservice')

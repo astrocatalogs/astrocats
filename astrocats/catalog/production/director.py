@@ -33,6 +33,8 @@ class Director(producer.Producer_Base):
         'e_lower_value', 'derived'
     ]
 
+    CHECKPOINT_INTERVAL = 5
+
     def __init__(self, catalog, args):
         log = catalog.log
         log.debug("Director.__init__()")
@@ -135,6 +137,12 @@ class Director(producer.Producer_Base):
             for pro in producers:
                 pro.update(event_fname, entry, event_data)
 
+            if event_count % self.CHECKPOINT_INTERVAL == 0:
+                img_pro.checkpoint()
+                web_pro.checkpoint()
+                for pro in producers:
+                    pro.checkpoint()
+
             # Add this entry into the catalog after removing undesired elements
             self.update(event_fname, entry, event_data)
             if args.test:
@@ -149,9 +157,9 @@ class Director(producer.Producer_Base):
         '''
         md5_pro.finish()
         bib_pro.finish()
-        if args.hosts:
-            img_pro.finish()
         '''
+        img_pro.finish()
+        web_pro.finish()
         for pro in producers:
             pro.finish()
 
