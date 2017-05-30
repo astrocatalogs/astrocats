@@ -137,6 +137,7 @@ class Catalog(object):
             self.MD5_FILE = os.path.join(self.PATH_CACHE, 'md5s.json')
             self.AUTHORS_FILE = os.path.join(self.PATH_CACHE, 'bibauthors.json')
             self.ALL_AUTHORS_FILE = os.path.join(self.PATH_CACHE, 'biballauthors.json')
+            self.HOST_IMAGES_FILE = os.path.join(self.PATH_CACHE, 'host_images.json')
 
             # json path and files
             self.PATH_JSON = os.path.join(self.PATH_OUTPUT, 'json', '')
