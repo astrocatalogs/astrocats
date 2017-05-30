@@ -10,7 +10,7 @@ import numpy as np
 from astrocats.catalog.utils import tq
 from astrocats.catalog.source import SOURCE
 from . import utils as production_utils
-from . import producer, html_pro
+from . import producer, html_pro, host_image_pro
 from .. entry import ENTRY
 from .. quantity import QUANTITY
 
@@ -33,7 +33,7 @@ class Director(producer.Producer_Base):
         'e_lower_value', 'derived'
     ]
 
-    CHECKPOINT_INTERVAL = 5
+    CHECKPOINT_INTERVAL = 100
 
     def __init__(self, catalog, args):
         log = catalog.log
@@ -88,13 +88,10 @@ class Director(producer.Producer_Base):
         producers.append(bib_pro)
 
         # Collect host-images
-        img_pro = producer.Host_Image_Pro(catalog, args)
-        # producers.append(img_pro)
+        img_pro = host_image_pro.Host_Image_Pro(catalog, args)
 
         # Initialize an HTML Producer (for web html tables)
         web_pro = html_pro.HTML_Pro(catalog, args)
-        # NOTE: this needs to be handled specially; dont add to list
-        # producers.append(web_pro)
 
         # Iterate over all events
         # -----------------------
@@ -119,15 +116,6 @@ class Director(producer.Producer_Base):
             entry, event_data = production_utils.load_event_from_filename(event_fname, log)
             log.debug("entry = '{}' (from fname: '{}')".format(entry, event_name))
 
-            '''
-            # Generate checksum for each json input file, compare to previous (if they exist)
-            #    to determine if a file needs to be reprocessed
-            md5_pro.update(event_fname, entry, event_data)
-
-            # Store all bibliography and authors information
-            bib_pro.update(event_fname, entry, event_data)
-            '''
-
             # Collect host-images
             retval = img_pro.update(event_fname, entry, event_data)
 
@@ -137,7 +125,9 @@ class Director(producer.Producer_Base):
             for pro in producers:
                 pro.update(event_fname, entry, event_data)
 
-            if event_count % self.CHECKPOINT_INTERVAL == 0:
+            if (event_count > 0) & (event_count % self.CHECKPOINT_INTERVAL == 0):
+                check_num = int(np.floor(event_count/self.CHECKPOINT_INTERVAL))
+                self.log.info("Reached checkpoint '{}'".format(check_num))
                 img_pro.checkpoint()
                 web_pro.checkpoint()
                 for pro in producers:
@@ -154,10 +144,6 @@ class Director(producer.Producer_Base):
 
         # Write it all out at the end
         # ---------------------------
-        '''
-        md5_pro.finish()
-        bib_pro.finish()
-        '''
         img_pro.finish()
         web_pro.finish()
         for pro in producers:
