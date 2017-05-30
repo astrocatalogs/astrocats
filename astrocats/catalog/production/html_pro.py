@@ -57,6 +57,9 @@ class HTML_Pro(producer.Producer_Base):
 
     SIMPLE_META_DATA_KEYS = [ENTRY.NAME]
 
+    # Redirect users from `event_name.html` to `event_name` : force the page into a frame
+    FORCE_PAGE_TO_FRAME = False
+
     def __init__(self, catalog, args):
         log = catalog.log
         self.args = args
@@ -79,11 +82,13 @@ class HTML_Pro(producer.Producer_Base):
         self.SOURCES_TABLE = self._load_content_from(sources_table_fname)
         meta_data_table_fname = os.path.join(DIR_TEMPLATES, 'meta_data_table.html')
         self.META_DATA_TABLE = self._load_content_from(meta_data_table_fname)
+        host_image_fname = os.path.join(DIR_TEMPLATES, 'host_image.html')
+        self.HOST_IMAGE = self._load_content_from(host_image_fname)
 
-        if args.test:
-            self.FORCE_FRAME = ""
-        else:
+        if self.FORCE_PAGE_TO_FRAME:
             self.FORCE_FRAME = _FORCE_FRAME
+        else:
+            self.FORCE_FRAME = ""
 
         return
 
@@ -271,7 +276,7 @@ class HTML_Pro(producer.Producer_Base):
             content = cont_file.read()
         return content
 
-    def update(self, fname, event_name, event_data):
+    def update(self, fname, event_name, event_data, host_image_html=None):
         self.log.debug("HTML_Pro.produce()")
 
         # Prepare quantities
@@ -285,23 +290,28 @@ class HTML_Pro(producer.Producer_Base):
         # Generate the table for sources
         sources_table = self._generate_sources_table(event_data)
 
+        if host_image_html is not None:
+            host_image = self.HOST_IMAGE.format(IMAGE_HTML=host_image_html)
+        else:
+            host_image = ""
+
         # Fill in the page values
         # -----------------------
         event_page = self.EVENT_PAGE.format(
             DOWNLOAD_PATH=download_path, EVENT_NAME=event_name, GITHUB_URL=github_url,
             DISCLAIMER=_DISCLAIMER, ISSUE_TEXT=issue_text, FORCE_FRAME=self.FORCE_FRAME,
-            SOURCES_TABLE=sources_table, META_DATA_TABLE=meta_data_table)
+            SOURCES_TABLE=sources_table, META_DATA_TABLE=meta_data_table, HOST_IMAGE=host_image)
 
         # Save to file(s)
         # ---------------
         fname_out = os.path.join(self.HTML_OUT_DIR, event_name + ".html")
-        if self.args.test:
-            self._save(fname_out, event_page)
-        else:
-            self.touch(fname_out)
+        # if self.args.test:
+        self._save(fname_out, event_page, lvl=self.log.INFO)
+        # else:
+        #     self.touch(fname_out)
         self._save_gzip(fname_out, event_page.encode(), lvl=self.log.INFO)
 
         return
 
     def finish(self, *args, **kwargs):
-        pass
+        return

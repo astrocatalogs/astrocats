@@ -84,13 +84,15 @@ class Director(producer.Producer_Base):
         # Bibliography creator
         bib_pro = producer.Bib_Pro(catalog, args)
         producers.append(bib_pro)
+
+        # Collect host-images
+        img_pro = producer.Host_Image_Pro(catalog, args)
+        # producers.append(img_pro)
+
         # Initialize an HTML Producer (for web html tables)
         web_pro = html_pro.HTML_Pro(catalog, args)
-        producers.append(web_pro)
-        # Collect host-images
-        if args.hosts:
-            img_pro = producer.Host_Image_Pro(catalog, args)
-            producers.append(img_pro)
+        # NOTE: this needs to be handled specially; dont add to list
+        # producers.append(web_pro)
 
         # Iterate over all events
         # -----------------------
@@ -119,14 +121,16 @@ class Director(producer.Producer_Base):
             # Generate checksum for each json input file, compare to previous (if they exist)
             #    to determine if a file needs to be reprocessed
             md5_pro.update(event_fname, entry, event_data)
+
             # Store all bibliography and authors information
             bib_pro.update(event_fname, entry, event_data)
-            # Generate HTML file for this event
-            web_pro.update(event_fname, entry, event_data)
-            # Collect host-images
-            if args.hosts:
-                img_pro.update(event_fname, entry, event_data)
             '''
+
+            # Collect host-images
+            host_image_html = img_pro.update(event_fname, entry, event_data)
+
+            # Generate HTML file for this event
+            web_pro.update(event_fname, entry, event_data, host_image_html=host_image_html)
 
             for pro in producers:
                 pro.update(event_fname, entry, event_data)
