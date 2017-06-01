@@ -2153,7 +2153,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             elif args.collecthosts:
                 try:
                     response = urllib.request.urlopen(
-                        'http://skyserver.sdss.org/dr13/SkyServerWS/ImgCutout/getjpeg.aspx?ra='
+                        'http://skyserver.sdss.org/dr13/SkyServerWS/ImgCutout/getjpeg?ra='
                         + str(c.ra.deg) + '&dec=' + str(c.dec.deg) + '&scale='
                         + str(sdssimagescale) + '&width=500&height=500&opt=G',
                         timeout=60)
