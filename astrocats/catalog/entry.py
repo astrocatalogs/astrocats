@@ -5,6 +5,7 @@ import json
 import logging
 import os
 import sys
+import gzip as gz
 from collections import OrderedDict
 from copy import deepcopy
 
@@ -273,46 +274,54 @@ class Entry(OrderedDict):
                              merge=True,
                              pop_schema=True,
                              ignore_keys=[],
-                             compare_to_existing=True):
+                             compare_to_existing=True,
+                             gzip=False):
         # FIX: check for overwrite??"""
         self._log.debug("_load_data_from_json(): {}\n\t{}".format(self.name(),
                                                                   fhand))
         # Store the filename this was loaded from
         self.filename = fhand
-        with open(fhand, 'r') as jfil:
-            data = json.load(jfil, object_pairs_hook=OrderedDict)
-            name = list(data.keys())
-            if len(name) != 1:
-                err = "json file '{}' has multiple keys: {}".format(fhand,
-                                                                    list(name))
-                self._log.error(err)
-                raise ValueError(err)
-            name = name[0]
-            # Remove the outmost dict level
-            data = data[name]
-            self._log.debug("Name: {}".format(name))
 
-            # Delete ignored keys
-            for key in ignore_keys:
-                if key in data:
-                    del data[key]
+        if gzip:
+            jfil = gz.open(fhand, 'rb')
+        else:
+            jfil = open(fhand, 'r')
 
-            # Convert the OrderedDict data from json into class structure i.e.
-            # `Sources` will be extracted and created from the dict Everything
-            # that remains afterwards should be okay to just store to this
-            # `Entry`
-            self._convert_odict_to_classes(
-                data,
-                clean=clean,
-                merge=merge,
-                pop_schema=pop_schema,
-                compare_to_existing=compare_to_existing)
-            if len(data):
-                err_str = ("Remaining entries in `data` after "
-                           "`_convert_odict_to_classes`.")
-                err_str += "\n{}".format(dict_to_pretty_string(data))
-                self._log.error(err_str)
-                raise RuntimeError(err_str)
+        data = json.load(jfil, object_pairs_hook=OrderedDict)
+        name = list(data.keys())
+        if len(name) != 1:
+            err = "json file '{}' has multiple keys: {}".format(fhand,
+                                                                list(name))
+            self._log.error(err)
+            raise ValueError(err)
+        name = name[0]
+        # Remove the outmost dict level
+        data = data[name]
+        self._log.debug("Name: {}".format(name))
+
+        # Delete ignored keys
+        for key in ignore_keys:
+            if key in data:
+                del data[key]
+
+        # Convert the OrderedDict data from json into class structure i.e.
+        # `Sources` will be extracted and created from the dict Everything
+        # that remains afterwards should be okay to just store to this
+        # `Entry`
+        self._convert_odict_to_classes(
+            data,
+            clean=clean,
+            merge=merge,
+            pop_schema=pop_schema,
+            compare_to_existing=compare_to_existing)
+        if len(data):
+            err_str = ("Remaining entries in `data` after "
+                       "`_convert_odict_to_classes`.")
+            err_str += "\n{}".format(dict_to_pretty_string(data))
+            self._log.error(err_str)
+            raise RuntimeError(err_str)
+
+        jfil.close()
 
         # If object doesnt have a name yet, but json does, store it
         self_name = self[ENTRY.NAME]
@@ -569,7 +578,8 @@ class Entry(OrderedDict):
                        merge=True,
                        pop_schema=True,
                        ignore_keys=[],
-                       compare_to_existing=True):
+                       compare_to_existing=True,
+                       try_gzip=False):
         """Construct a new `Entry` instance from an input file.
 
         The input file can be given explicitly by `path`, or a path will
@@ -626,6 +636,11 @@ class Entry(OrderedDict):
 
         # Create a new `Entry` instance
         new_entry = cls(catalog, name)
+
+        # Check if .gz file
+        if try_gzip and not load_path.endswith('.gz'):
+            try_gzip = False
+
         # Fill it with data from json file
         new_entry._load_data_from_json(
             load_path,
@@ -633,7 +648,8 @@ class Entry(OrderedDict):
             merge=merge,
             pop_schema=pop_schema,
             ignore_keys=ignore_keys,
-            compare_to_existing=compare_to_existing)
+            compare_to_existing=compare_to_existing,
+            gzip=try_gzip)
 
         return new_entry
 
@@ -830,9 +846,8 @@ class Entry(OrderedDict):
 
     def get_entry_text(self, fname):
         """Retrieve the raw text from a file."""
-        import gzip
         if fname.split('.')[-1] == 'gz':
-            with gzip.open(fname, 'rt') as f:
+            with gz.open(fname, 'rt') as f:
                 filetext = f.read()
         else:
             with open(fname, 'r') as f:
