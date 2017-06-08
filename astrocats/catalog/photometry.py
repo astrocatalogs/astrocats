@@ -134,7 +134,8 @@ class Photometry(CatDict):
         # Convert dates to MJD
         timestrs = [str(x) for x in listify(self.get(self._KEYS.TIME, ''))]
         for ti, timestr in enumerate(timestrs):
-            if any(x in timestr for x in ['-', '/']):
+            if (any(x in timestr for x in ['-', '/'])
+                    and not timestr.startswith('-')):
                 timestrs[ti] = timestr.replace('/', '-')
                 try:
                     timestrs[ti] = str(
