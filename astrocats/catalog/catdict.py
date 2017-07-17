@@ -4,7 +4,7 @@ from collections import OrderedDict
 from copy import deepcopy
 
 from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
-from astrocats.catalog.utils import uniq_cdl
+from astrocats.catalog.utils import listify, uniq_cdl
 
 try:
     basestring
@@ -240,27 +240,25 @@ class CatDict(OrderedDict):
                                    format(value, key.pretty()))
 
             single = False
-        else:
-            single = True
-            value = [value]
 
         # Store booleans as booleans, make sure each element of list is bool
         if key.type == KEY_TYPES.BOOL:
-            if not all(isinstance(val, bool) for val in value):
+            if not all(isinstance(val, bool) for val in listify(value)):
                 raise CatDictError("`value` '{}' for '{}' should be boolean".
                                    format(value, key.pretty()))
         # Strings and numeric types should be stored as strings
         elif key.type in [KEY_TYPES.STRING, KEY_TYPES.NUMERIC, KEY_TYPES.TIME]:
             # Clean leading/trailing whitespace
-            value = [
-                val.strip() if isinstance(val, (str, basestring)) else str(val)
-                for val in value
-            ]
-            # Only keep values that are not empty
-            value = [val for val in value if len(val)]
-
-        # Convert back to single value, if thats how it started
-        if single and len(value):
-            value = value[0]
+            if single:
+                value = value.strip() if isinstance(
+                    value, (str, basestring)) else str(value)
+            else:
+                value = [
+                    val.strip() if isinstance(
+                        val, (str, basestring)) else str(val)
+                    for val in value
+                ]
+                # Only keep values that are not empty
+                value = list(filter(None, value))
 
         return value
