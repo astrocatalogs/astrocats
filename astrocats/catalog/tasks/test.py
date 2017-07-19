@@ -347,9 +347,6 @@ def check_stub(catalog, name):
     if ENTRY.ALIAS not in catalog.entries[name]:
         raise RuntimeError("Remaining entry is missing '{}'.".format(
             ENTRY.ALIAS))
-    if ENTRY.SOURCES in catalog.entries[name]:
-        raise RuntimeError("Remaining still has '{}'.".format(
-            ENTRY.SOURCES))
     return
 
 
