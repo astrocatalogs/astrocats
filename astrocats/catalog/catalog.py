@@ -812,6 +812,16 @@ class Catalog(object):
                 if proto._KEYS.DISTINCT_FROM in data:
                     stub[proto._KEYS.DISTINCT_FROM] = data[
                         proto._KEYS.DISTINCT_FROM]
+                if proto._KEYS.RA in data:
+                    stub[proto._KEYS.RA] = data[proto._KEYS.RA]
+                if proto._KEYS.DEC in data:
+                    stub[proto._KEYS.RA] = data[proto._KEYS.DEC]
+                if proto._KEYS.DISCOVER_DATE in data:
+                    stub[proto._KEYS.DISCOVER_DATE] = data[
+                        proto._KEYS.DISCOVER_DATE]
+                if proto._KEYS.SOURCES in data:
+                    stub[proto._KEYS.SOURCES] = data[
+                        proto._KEYS.SOURCES]
 
             # Store the stub
             self.entries[stub_name] = stub

@@ -899,6 +899,14 @@ class Entry(OrderedDict):
             stub[self._KEYS.ALIAS] = self[self._KEYS.ALIAS]
         if self._KEYS.DISTINCT_FROM in self:
             stub[self._KEYS.DISTINCT_FROM] = self[self._KEYS.DISTINCT_FROM]
+        if self._KEYS.RA in self:
+            stub[self._KEYS.RA] = self[self._KEYS.RA]
+        if self._KEYS.DEC in self:
+            stub[self._KEYS.DEC] = self[self._KEYS.DEC]
+        if self._KEYS.DISCOVER_DATE in self:
+            stub[self._KEYS.DISCOVER_DATE] = self[self._KEYS.DISCOVER_DATE]
+        if self._KEYS.SOURCES in self:
+            stub[self._KEYS.SOURCES] = self[self._KEYS.SOURCES]
         return stub
 
     def is_erroneous(self, field, sources):
