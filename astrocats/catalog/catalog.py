@@ -815,7 +815,7 @@ class Catalog(object):
                 if proto._KEYS.RA in data:
                     stub[proto._KEYS.RA] = data[proto._KEYS.RA]
                 if proto._KEYS.DEC in data:
-                    stub[proto._KEYS.RA] = data[proto._KEYS.DEC]
+                    stub[proto._KEYS.DEC] = data[proto._KEYS.DEC]
                 if proto._KEYS.DISCOVER_DATE in data:
                     stub[proto._KEYS.DISCOVER_DATE] = data[
                         proto._KEYS.DISCOVER_DATE]
