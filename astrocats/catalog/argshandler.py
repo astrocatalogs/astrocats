@@ -104,6 +104,10 @@ class ArgsHandler:
             default=False, action='store_true',
             help='Only update catalog using live sources.')
         import_pars.add_argument(
+            '--load-stubs', dest='load_stubs',
+            default=False, action='store_true',
+            help='Load stubs before running.')
+        import_pars.add_argument(
             '--archived', '-a', dest='archived',
             default=False, action='store_true',
             help='Always use task caches.')

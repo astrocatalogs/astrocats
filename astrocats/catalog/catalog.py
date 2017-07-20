@@ -238,7 +238,7 @@ class Catalog(object):
             self.delete_old_entry_files()
 
         # In update mode, load all entry stubs.
-        if self.args.update:
+        if self.args.load_stubs or self.args.update:
             self.load_stubs()
 
         if self.args.travis:
