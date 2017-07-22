@@ -120,6 +120,13 @@ parser.add_argument(
     help='Select which catalog to generate',
     default='sne',
     type=str)
+parser.add_argument(
+    '--verbose',
+    '-v',
+    dest='verbose',
+    help='Print more info',
+    default=False,
+    action='store_true')
 args = parser.parse_args()
 
 infl = inflect.engine()
@@ -355,6 +362,9 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
     if args.eventlist and eventname not in args.eventlist:
         continue
 
+    if args.verbose:
+        print(eventname)
+
     # tprint(eventfile + ' [' + checksum + ']')
 
     repfolder = get_rep_folder(catalog[entry], repofolders)
@@ -402,7 +412,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
     # to phot count.
     numphoto = len([
         x for x in catalog[entry]['photometry']
-        if 'upperlimit' not in x and 'magnitude' in x and
+        if 'upperlimit' not in x and 'magnitude' in x and 'realization' not in x and
         (not hostmag or 'includeshost' not in x or float(x['magnitude']) <= (
             hostmag - 2.0 * hosterr))
     ]) if photoavail else 0
@@ -718,14 +728,14 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         if len(list(filter(None, photoinstru))):
             tt += [("Instrument", "@instr")]
 
-        min_y_range = 0.5 + max([
+        min_y_range = 0.5 + (max([
             (x + y) if not z else x
             for x, y, z in list(zip(photoAB, photoABuppererrs, phototype))
-        ])
-        max_y_range = -0.5 + min([
+        ]) if len(photoAB) else 25.0)
+        max_y_range = -0.5 + (min([
             (x - y) if not z else x
             for x, y, z in list(zip(photoAB, photoABlowererrs, phototype))
-        ])
+        ]) if len(photoAB) else 10.0)
 
         p1 = Figure(
             title='Photometry for ' + eventname,
@@ -837,32 +847,41 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 ]
 
                 realizbandset = list(set(realizband))
+                realizinstset = list(set(realizinstru))
                 for rz in range(nrealiz):
                     for rzb in realizbandset:
-                        pdata = list(zip(*[[x, y, z, s] for x, y, z, s, i in
-                                           zip(realiztime, realizAB, realizband, realizsource, realiznum) if i == rz and z == rzb]))
-                        if len(pdata):
-                            data = dict(
-                                x=pdata[0],
-                                y=pdata[1],
-                                desc=pdata[2],
-                                src=pdata[3])
-                            if 'maxabsmag' in catalog[
-                                    entry] and 'maxappmag' in catalog[entry]:
-                                data['yabs'] = [
-                                    x - distancemod for x in pdata[1]
-                                ]
-                            rsources.append(ColumnDataSource(data))
-                            rglyphs.append(p1.line(
-                                'x', 'y', source=rsources[-1], line_width=1, color=bandcolorf(rzb), line_alpha=0.5))
-                            if mi != 0:
-                                rglyphs[-1].visible = False
-                            msources.append(ColumnDataSource({'id': [mi]}))
+                        for rzi in realizinstset:
+                            pdata = list(zip(*[[x, y, z, s, n, i] for x, y, z, s, n, i in
+                                               zip(realiztime, realizAB, realizband,
+                                                   realizsource, realiznum, realizinstru)
+                                               if n == rz and z == rzb and i == rzi]))
+                            if len(pdata):
+                                data = dict(
+                                    x=pdata[0],
+                                    y=pdata[1],
+                                    desc=pdata[2],
+                                    src=pdata[3],
+                                    realiz=pdata[4])
+                                if 'maxabsmag' in catalog[
+                                        entry] and 'maxappmag' in catalog[entry]:
+                                    data['yabs'] = [
+                                        x - distancemod for x in pdata[1]
+                                    ]
+                                rsources.append(ColumnDataSource(data))
+                                rglyphs.append(p1.line(
+                                    'x', 'y', source=rsources[-1], line_width=1, color=bandcolorf(rzb), line_alpha=0.5))
+                                if mi != 0:
+                                    rglyphs[-1].visible = False
+                                msources.append(ColumnDataSource({'id': [mi]}))
+
+                                # Only display the first instrument for a given band.
+                                break
 
         if len(models) > 0:
             rtt = [("Source ID(s)", "@src"),
-                   ("Epoch (" + photoutime + ")",
-                    "@x{1.11}"), ("Apparent Magnitude", "@y{1.111}")]
+                   ("Realization #", "@realiz"),
+                   ("Epoch (" + photoutime + ")", "@x{1.11}"),
+                   ("Apparent Magnitude", "@y{1.111}")]
             if 'maxabsmag' in catalog[entry] and 'maxappmag' in catalog[entry]:
                 rtt += [("Absolute Magnitude", "@yabs{1.111}")]
             rtt += [("Band", "@desc")]
@@ -1206,7 +1225,8 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         prunedscaled = deepcopy(prunedflux)
         for f, flux in enumerate(prunedscaled):
             std = np.std(flux)
-            prunedscaled[f] = [x / std for x in flux]
+            if std and std > 0:
+                prunedscaled[f] = [x / std for x in flux]
 
         y_height = 0.
         y_offsets = [0. for x in range(nspec)]
