@@ -1,13 +1,14 @@
 """Definitions related to the `Entry` class for catalog entries."""
 import codecs
+import gzip as gz
 import hashlib
 import json
 import logging
 import os
 import sys
-import gzip as gz
 from collections import OrderedDict
 from copy import deepcopy
+from decimal import Decimal
 
 from astrocats.catalog.catdict import CatDict, CatDictError
 from astrocats.catalog.error import ERROR, Error
@@ -19,8 +20,8 @@ from astrocats.catalog.source import SOURCE, Source
 from astrocats.catalog.spectrum import SPECTRUM, Spectrum
 from astrocats.catalog.utils import (alias_priority, dict_to_pretty_string,
                                      is_integer, is_number, listify)
-from decimal import Decimal
 from past.builtins import basestring
+from six import string_types
 
 
 class ENTRY(KeyCollection):
@@ -239,7 +240,12 @@ class Entry(OrderedDict):
         value = quantity.get(QUANTITY.VALUE, '').strip()
         error = quantity.get(QUANTITY.E_VALUE, '').strip()
         unit = quantity.get(QUANTITY.U_VALUE, '').strip()
-        kind = quantity.get(QUANTITY.KIND, '').strip()
+        kind = quantity.get(QUANTITY.KIND, '')
+
+        if isinstance(kind, list) and not isinstance(kind, string_types):
+            kind = [x.strip() for x in kind]
+        else:
+            kind = kind.strip()
 
         if not value:
             return False
