@@ -11,8 +11,11 @@ __all__ = [
 ]
 
 
-def get_sig_digits(x):
-    return len((''.join(x.split('.'))).strip('0'))
+def get_sig_digits(x, strip_zeroes=True):
+    tstr = ''.join(x.split('.'))
+    if strip_zeroes:
+        tstr = tstr.strip('0')
+    return len(tstr)
 
 
 def is_integer(s):
