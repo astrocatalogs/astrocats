@@ -428,7 +428,7 @@ def set_pd_mag_from_counts(photodict,
             uec = ec
         prec = max(
             get_sig_digits(str(c)),
-            get_sig_digits(str(lec)), get_sig_digits(str(uec)))
+            get_sig_digits(str(lec)), get_sig_digits(str(uec))) + 1
         ctx.prec = prec
         dlec = Decimal(str(lec))
         duec = Decimal(str(uec))
