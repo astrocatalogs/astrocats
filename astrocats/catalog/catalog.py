@@ -175,7 +175,7 @@ class Catalog(object):
         HASH = ''
         URL = ''
 
-    def __init__(self, args, log):
+    def __init__(self, args={}, log=logging.Logger("INFO"), git_clone=False):
         # Store runtime arguments
         self.args = args
         self.log = log
@@ -187,8 +187,9 @@ class Catalog(object):
         # Load repos dictionary (required)
         self.repos_dict = read_json_dict(self.PATHS.REPOS_LIST)
         # self.clone_repos()
-        log.debug("Cloning all repos")
-        gitter.git_clone_all_repos(self)
+        if git_clone:
+            log.debug("Cloning all repos")
+            gitter.git_clone_all_repos(self)
 
         # Create empty `entries` collection
         self.entries = OrderedDict()

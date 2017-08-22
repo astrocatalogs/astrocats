@@ -18,7 +18,7 @@ def main(args, clargs, log):
 
     # Create the appropriate type of catalog
     log.info("Creating `Catalog`")
-    catalog = Catalog(args, log)
+    catalog = Catalog(args, log, git_clone=True)
 
     # Run the subcommand given in `args`
     log.info("Running subcommand")
