@@ -69,6 +69,7 @@ class PHOTOMETRY(KeyCollection):
     SURVEY = Key('survey', KEY_TYPES.STRING, compare=False)
     BAND_SET = Key('bandset', KEY_TYPES.STRING)
     SYSTEM = Key('system', KEY_TYPES.STRING)
+    EFFECTIVE_WAVELENGTH = Key('effectivewavelength', KEY_TYPES.STRING)
 
     DESCRIPTION = Key('description', KEY_TYPES.STRING, compare=False)
 
