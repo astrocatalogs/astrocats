@@ -1,14 +1,13 @@
 """Class for representing photometric data."""
 from collections import OrderedDict
+from decimal import Decimal, localcontext
 from random import seed, shuffle
-
-from astropy.time import Time as astrotime
-from palettable import colorbrewer, cubehelix, wesanderson
 
 from astrocats.catalog.catdict import CatDict, CatDictError
 from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
 from astrocats.catalog.utils import get_sig_digits, listify
-from decimal import Decimal, localcontext
+from astropy.time import Time as astrotime
+from palettable import colorbrewer, cubehelix, wesanderson
 
 DEFAULT_UL_SIGMA = 3.0
 DEFAULT_ZP = 30.0
@@ -69,7 +68,6 @@ class PHOTOMETRY(KeyCollection):
     SURVEY = Key('survey', KEY_TYPES.STRING, compare=False)
     BAND_SET = Key('bandset', KEY_TYPES.STRING)
     SYSTEM = Key('system', KEY_TYPES.STRING)
-    EFFECTIVE_WAVELENGTH = Key('effectivewavelength', KEY_TYPES.STRING)
 
     DESCRIPTION = Key('description', KEY_TYPES.STRING, compare=False)
 
@@ -423,6 +421,7 @@ def set_pd_mag_from_counts(photodict,
                            uec='',
                            zp=DEFAULT_ZP,
                            sig=DEFAULT_UL_SIGMA):
+    """Set photometry dictionary from a counts measurement."""
     with localcontext() as ctx:
         if lec == '' or uec == '':
             lec = ec
@@ -443,7 +442,7 @@ def set_pd_mag_from_counts(photodict,
             photodict[PHOTOMETRY.UPPER_LIMIT_SIGMA] = str(sig)
             photodict[PHOTOMETRY.MAGNITUDE] = str(dzp - (D25 * (dsig * duec
                                                                 ).log10()))
-            dnec = Decimal('10.0')**(
+            dnec = Decimal('10.0') ** (
                 (dzp - Decimal(photodict[PHOTOMETRY.MAGNITUDE])) / D25)
             photodict[PHOTOMETRY.E_UPPER_MAGNITUDE] = str(D25 * (
                 (dnec + duec).log10() - dnec.log10()))
@@ -453,3 +452,41 @@ def set_pd_mag_from_counts(photodict,
                 (dc + duec).log10() - dc.log10()))
             photodict[PHOTOMETRY.E_LOWER_MAGNITUDE] = str(D25 * (
                 dc.log10() - (dc - dlec).log10()))
+
+
+def set_pd_mag_from_flux_density(photodict,
+                                 fd,
+                                 ew,
+                                 efd='',
+                                 lefd='',
+                                 uefd='',
+                                 sig=DEFAULT_UL_SIGMA):
+    """Set photometry dictionary from a flux density measurement."""
+    with localcontext() as ctx:
+        if lefd == '' or uefd == '':
+            lefd = efd
+            uefd = efd
+        prec = max(
+            get_sig_digits(str(fd), strip_zeroes=False),
+            get_sig_digits(str(lefd), strip_zeroes=False),
+            get_sig_digits(str(uefd), strip_zeroes=False)) + 1
+        ctx.prec = prec
+        dlefd = Decimal(str(lefd))
+        duefd = Decimal(str(uefd))
+        dc = Decimal(str(fd))
+        dsig = Decimal(str(sig))
+        if float(fd) < DEFAULT_UL_SIGMA * float(uefd):
+            photodict[PHOTOMETRY.UPPER_LIMIT] = True
+            photodict[PHOTOMETRY.UPPER_LIMIT_SIGMA] = str(sig)
+            photodict[PHOTOMETRY.MAGNITUDE] = str(dzp - (D25 * (dsig * duefd
+                                                                ).log10()))
+            dnec = Decimal('10.0') ** (
+                (dzp - Decimal(photodict[PHOTOMETRY.MAGNITUDE])) / D25)
+            photodict[PHOTOMETRY.E_UPPER_MAGNITUDE] = str(D25 * (
+                (dnec + duefd).log10() - dnec.log10()))
+        else:
+            photodict[PHOTOMETRY.MAGNITUDE] = str(dzp - D25 * dc.log10())
+            photodict[PHOTOMETRY.E_UPPER_MAGNITUDE] = str(D25 * (
+                (dc + duefd).log10() - dc.log10()))
+            photodict[PHOTOMETRY.E_LOWER_MAGNITUDE] = str(D25 * (
+                dc.log10() - (dc - dlefd).log10()))
