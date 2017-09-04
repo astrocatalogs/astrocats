@@ -460,7 +460,10 @@ def set_pd_mag_from_flux_density(photodict,
                                  lefd='',
                                  uefd='',
                                  sig=DEFAULT_UL_SIGMA):
-    """Set photometry dictionary from a flux density measurement."""
+    """Set photometry dictionary from a flux density measurement.
+
+    `fd` is assumed to be in microjanskys.
+    """
     with localcontext() as ctx:
         if lefd == '' or uefd == '':
             lefd = efd
