@@ -415,7 +415,7 @@ def get_ul_mag(ec, zp=DEFAULT_ZP, sig=DEFAULT_UL_SIGMA):
 
 
 def set_pd_mag_from_counts(photodict,
-                           c,
+                           c='',
                            ec='',
                            lec='',
                            uec='',
@@ -433,11 +433,12 @@ def set_pd_mag_from_counts(photodict,
         ctx.prec = prec
         dlec = Decimal(str(lec))
         duec = Decimal(str(uec))
-        dc = Decimal(str(c))
+        if c != '':
+            dc = Decimal(str(c))
         dzp = Decimal(str(zp))
         dsig = Decimal(str(sig))
         photodict[PHOTOMETRY.ZERO_POINT] = str(zp)
-        if float(c) < DEFAULT_UL_SIGMA * float(uec):
+        if c == '' or float(c) < DEFAULT_UL_SIGMA * float(uec):
             photodict[PHOTOMETRY.UPPER_LIMIT] = True
             photodict[PHOTOMETRY.UPPER_LIMIT_SIGMA] = str(sig)
             photodict[PHOTOMETRY.MAGNITUDE] = str(dzp - (D25 * (dsig * duec
@@ -455,7 +456,7 @@ def set_pd_mag_from_counts(photodict,
 
 
 def set_pd_mag_from_flux_density(photodict,
-                                 fd,
+                                 fd='',
                                  efd='',
                                  lefd='',
                                  uefd='',
@@ -475,15 +476,17 @@ def set_pd_mag_from_flux_density(photodict,
         ctx.prec = prec
         dlefd = Decimal(str(lefd))
         duefd = Decimal(str(uefd))
-        dfd = Decimal(str(fd))
+        if fd != '':
+            dfd = Decimal(str(fd))
         dsig = Decimal(str(sig))
-        if float(fd) < DEFAULT_UL_SIGMA * float(uefd):
+        if fd == '' or float(fd) < DEFAULT_UL_SIGMA * float(uefd):
             photodict[PHOTOMETRY.UPPER_LIMIT] = True
             photodict[PHOTOMETRY.UPPER_LIMIT_SIGMA] = str(sig)
             photodict[PHOTOMETRY.MAGNITUDE] = str(Decimal('23.9') - D25 * (
                 dsig * duefd).log10())
-            photodict[PHOTOMETRY.E_UPPER_MAGNITUDE] = str(D25 * (
-                (dfd + duefd).log10() - dfd.log10()))
+            if fd:
+                photodict[PHOTOMETRY.E_UPPER_MAGNITUDE] = str(D25 * (
+                    (dfd + duefd).log10() - dfd.log10()))
         else:
             photodict[PHOTOMETRY.MAGNITUDE] = str(Decimal('23.9') - D25 *
                                                   dfd.log10())
