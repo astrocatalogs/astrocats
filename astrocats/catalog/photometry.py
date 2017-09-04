@@ -456,7 +456,6 @@ def set_pd_mag_from_counts(photodict,
 
 def set_pd_mag_from_flux_density(photodict,
                                  fd,
-                                 ew,
                                  efd='',
                                  lefd='',
                                  uefd='',
@@ -473,20 +472,19 @@ def set_pd_mag_from_flux_density(photodict,
         ctx.prec = prec
         dlefd = Decimal(str(lefd))
         duefd = Decimal(str(uefd))
-        dc = Decimal(str(fd))
+        dfd = Decimal(str(fd))
         dsig = Decimal(str(sig))
         if float(fd) < DEFAULT_UL_SIGMA * float(uefd):
             photodict[PHOTOMETRY.UPPER_LIMIT] = True
             photodict[PHOTOMETRY.UPPER_LIMIT_SIGMA] = str(sig)
-            photodict[PHOTOMETRY.MAGNITUDE] = str(dzp - (D25 * (dsig * duefd
-                                                                ).log10()))
-            dnec = Decimal('10.0') ** (
-                (dzp - Decimal(photodict[PHOTOMETRY.MAGNITUDE])) / D25)
+            photodict[PHOTOMETRY.MAGNITUDE] = str(Decimal('23.9') - D25 * (
+                dsig * duefd).log10())
             photodict[PHOTOMETRY.E_UPPER_MAGNITUDE] = str(D25 * (
-                (dnec + duefd).log10() - dnec.log10()))
+                (dfd + duefd).log10() - dfd.log10()))
         else:
-            photodict[PHOTOMETRY.MAGNITUDE] = str(dzp - D25 * dc.log10())
+            photodict[PHOTOMETRY.MAGNITUDE] = str(Decimal('23.9') - D25 *
+                                                  dfd.log10())
             photodict[PHOTOMETRY.E_UPPER_MAGNITUDE] = str(D25 * (
-                (dc + duefd).log10() - dc.log10()))
+                (dfd + duefd).log10() - dfd.log10()))
             photodict[PHOTOMETRY.E_LOWER_MAGNITUDE] = str(D25 * (
-                dc.log10() - (dc - dlefd).log10()))
+                dfd.log10() - (dfd - dlefd).log10()))
