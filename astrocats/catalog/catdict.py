@@ -3,6 +3,7 @@
 from collections import OrderedDict
 from copy import deepcopy
 
+import jsl
 from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
 from astrocats.catalog.utils import listify, uniq_cdl
 
@@ -208,6 +209,17 @@ class CatDict(OrderedDict):
         # Store alias to `self`
         self[self._KEYS.SOURCE] = uniq_cdl(self_aliases + other_aliases)
 
+        return
+
+    def jsl(self):
+        """Return JSL representation of class."""
+        jkeys = []
+        for key in self._KEYS:
+            if key.type in [KEY_TYPES.STRING, KEY_TYPES.NUMERIC]:
+                new_jkey = jsl.StringField()
+            elif key.type == KEY_TYPES.BOOL:
+                new_jkey = jsl.BooleanField()
+            jkeys.append()
         return
 
     def _check(self):
