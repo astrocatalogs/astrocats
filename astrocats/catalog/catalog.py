@@ -10,7 +10,7 @@ from collections import OrderedDict
 from glob import glob
 
 import psutil
-from past.builtins import basestring
+import six
 from tqdm import tqdm
 
 from astrocats import __version__
@@ -39,6 +39,9 @@ class Catalog(object):
     OSC_BIBCODE = '2017ApJ...835...64G'
     OSC_NAME = 'The Open Supernova Catalog'
     OSC_URL = 'https://sne.space'
+
+    # NOTE: this needs to be reset by subclasses for `HTML_Pro`
+    MODULE_NAME = None
 
     ADS_BIB_URL = ("http://cdsads.u-strasbg.fr/cgi-bin/nph-abs_connect?"
                    "db_key=ALL&version=1&bibcode=")
@@ -293,8 +296,6 @@ class Catalog(object):
         self.log = log
         self.proto = Entry
         self.Director = director.Director
-        # NOTE: this needs to be reset by subclasses for `HTML_Pro`
-        self.module_name = "ac"
 
         # Instantiate PATHS
         self.PATHS = self.PATHS(self)
@@ -1215,20 +1216,9 @@ class Catalog(object):
 
         return url_data
 
-    def load_url(self,
-                 url,
-                 fname,
-                 repo=None,
-                 timeout=120,
-                 post=None,
-                 fail=False,
-                 write=True,
-                 json_sort=None,
-                 cache_only=False,
-                 archived_mode=None,
-                 archived_task=None,
-                 update_mode=None,
-                 verify=False):
+    def load_url(self, url, fname, repo=None, timeout=120, post=None, fail=False, write=True,
+                 json_sort=None, cache_only=False, archived_mode=None, archived_task=None,
+                 update_mode=None, verify=False):
         """Load the given URL, or a cached-version.
 
         Load page from url or cached file, depending on the current settings.
@@ -1458,11 +1448,7 @@ class Catalog(object):
             }
             if post:
                 response = session.post(
-                    url,
-                    timeout=timeout,
-                    headers=headers,
-                    data=post,
-                    verify=verify)
+                    url, timeout=timeout, headers=headers, data=post, verify=verify)
             else:
                 response = session.get(
                     url, timeout=timeout, headers=headers, verify=verify)
@@ -1509,7 +1495,7 @@ def _get_task_priority(tasks, task_priority):
         return None
     if utils.is_integer(task_priority):
         return task_priority
-    if isinstance(task_priority, basestring):
+    if isinstance(task_priority, six.string_types):
         if task_priority in tasks:
             return tasks[task_priority].priority
 

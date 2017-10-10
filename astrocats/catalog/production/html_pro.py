@@ -77,7 +77,7 @@ class HTML_Pro(producer.Producer_Base):
         log.debug("HTML_Pro.__init__()")
 
         # self.module_name = 'bh'
-        self.module_name = catalog.module_name
+        self.module_name = catalog.MODULE_NAME
         log.warning("`self.module_name` = '{}', is that right?".format(self.module_name))
 
         # Load specifications for columns to include in HTML pages from `catalog`
@@ -329,7 +329,7 @@ class HTML_Pro(producer.Producer_Base):
         return
 
     def update(self, fname, event_name, event_data, host_image_info=None):
-        self.log.debug("HTML_Pro.produce()")
+        self.log.debug("HTML_Pro.update()")
 
         # Prepare quantities
         # ------------------
@@ -361,10 +361,10 @@ class HTML_Pro(producer.Producer_Base):
         # Save to file(s)
         # ---------------
         fname_out = os.path.join(self.HTML_OUT_DIR, event_name + ".html")
-        if self.args.test or self.args.travis:
-            self._save(fname_out, event_page, lvl=self.log.INFO)
-        else:
-            self.touch(fname_out)
+        # if self.args.test or self.args.travis:
+        self._save(fname_out, event_page, lvl=self.log.INFO)
+        # else:
+        #     self.touch(fname_out)
         self._save_gzip(fname_out, event_page.encode(), lvl=self.log.INFO)
 
         return

@@ -1,9 +1,9 @@
 """
 """
 
-from math import floor, log10
+import six
+import numpy as np
 
-from past.builtins import basestring
 
 __all__ = [
     'get_sig_digits', 'is_integer', 'is_number', 'pretty_num', 'round_sig',
@@ -19,7 +19,7 @@ def get_sig_digits(x, strip_zeroes=True):
 
 
 def is_integer(s):
-    if isinstance(s, list) and not isinstance(s, basestring):
+    if isinstance(s, list) and not isinstance(s, six.string_types):
         try:
             [int(x) for x in s]
             return True
@@ -34,10 +34,10 @@ def is_integer(s):
 
 
 def is_number(s):
-    if isinstance(s, list) and not isinstance(s, basestring):
+    if isinstance(s, list) and not isinstance(s, six.string_types):
         try:
             for x in s:
-                if isinstance(x, basestring) and ' ' in x:
+                if isinstance(x, six.string_types) and ' ' in x:
                     raise ValueError
             [float(x) for x in s]
             return True
@@ -45,7 +45,7 @@ def is_number(s):
             return False
     else:
         try:
-            if isinstance(s, basestring) and ' ' in s:
+            if isinstance(s, six.string_types) and ' ' in s:
                 raise ValueError
             float(s)
             return True
@@ -60,7 +60,7 @@ def pretty_num(x, sig=4):
 def round_sig(x, sig=4):
     if x == 0.0:
         return 0.0
-    return round(x, sig - int(floor(log10(abs(x)))) - 1)
+    return round(x, sig - int(np.floor(np.log10(abs(x)))) - 1)
 
 
 def zpad(val, n=2):

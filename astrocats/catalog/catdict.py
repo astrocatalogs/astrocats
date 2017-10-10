@@ -97,55 +97,55 @@ class CatDict(OrderedDict):
         # stored 'values' are the `Key` objects, referred to here with the name
         # 'key'.
         vals = self._KEYS.vals()
-        for key in kwargs.copy():
+        for key_iter in kwargs.copy():
             # If we allow unknown keys, or key is in list of known keys,
             # process and store it.
-            kiv = key in vals
+            kiv = key_iter in vals
             if self._ALLOW_UNKNOWN_KEYS or kiv:
                 # Load associated Key object if it exists, otherwise construct
                 # a default Key object.
                 if kiv:
-                    key_obj = vals[vals.index(key)]
+                    key_obj = vals[vals.index(key_iter)]
                 else:
                     self._log.info('[{}] `{}` not in list of keys for `{}`, '
                                    'adding anyway as allow unknown keys is '
                                    '`{}`.'.format(parent[
-                                       parent._KEYS.NAME], key,
+                                       parent._KEYS.NAME], key_iter,
                                        type(self).__name__,
                                        self._ALLOW_UNKNOWN_KEYS))
-                    key_obj = Key(key)
+                    key_obj = Key(key_iter)
 
                 # Handle Special Cases
                 # --------------------
                 # Only keep booleans and strings if they evaluate true.
                 if ((key_obj.type == KEY_TYPES.BOOL or
-                     key_obj.type == KEY_TYPES.STRING) and not kwargs[key]):
-                    del kwargs[key]
+                     key_obj.type == KEY_TYPES.STRING) and not kwargs[key_iter]):
+                    del kwargs[key_iter]
                     continue
 
                 # Make sure value is compatible with the 'Key' specification.
                 check_fail = False
-                if not key_obj.check(kwargs[key]):
+                if not key_obj.check(kwargs[key_iter]):
                     check_fail = True
                     self._log.info("Value for '{}' is invalid "
-                                   "'{}':'{}'".format(key_obj.pretty(), key,
-                                                      kwargs[key]))
+                                   "'{}':'{}'".format(key_obj.pretty(), key_iter,
+                                                      kwargs[key_iter]))
                     # Have the parent log a warning if this is a required key
-                    if key in self._req_keys:
+                    if key_iter in self._req_keys:
                         raise CatDictError(
                             "Value for required key '{}' is invalid "
-                            "'{}:{}'".format(key_obj.pretty(), key,
-                                             kwargs[key]),
+                            "'{}:{}'".format(key_obj.pretty(), key_iter,
+                                             kwargs[key_iter]),
                             warn=True)
 
                 # Check and store values
                 # ----------------------
                 # Remove key-value pair from `kwargs` dictionary.
-                value = kwargs.pop(key)
+                value = kwargs.pop(key_iter)
                 value = self._clean_value_for_key(key_obj, value)
                 # only store values that are not empty
                 if value and not check_fail:
-                    self[key] = value
+                    self[key_iter] = value
 
         # If we require all parameters to be a key in `PHOTOMETRY`, then all
         # elements should have been removed from `kwargs`.

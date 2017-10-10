@@ -213,7 +213,7 @@ class Host_Image_Pro(Producer_Base):
         except (KeyboardInterrupt, SystemExit):
             raise
         except Exception as err:
-            self.log.warning("Event '{}' query '{}' failed: '{}'".format(
+            self.log.info("Event '{}' query '{}' failed: '{}'".format(
                 event_name, query_url, str(err)))
             return
 
@@ -283,11 +283,11 @@ class Host_Image_Pro(Producer_Base):
                     event_name, query_url, str(err)))
                 return host_image_entry
 
-        host_image_entry = {
-            HOST_IMAGE_KEYS.SOURCE: SRC,
-            HOST_IMAGE_KEYS.QUERY_URL: query_url,
-            HOST_IMAGE_KEYS.LINK_URL: query_url,
-            HOST_IMAGE_KEYS.IMAGE_PATH: event_image_path,
-        }
+            host_image_entry = {
+                HOST_IMAGE_KEYS.SOURCE: SRC,
+                HOST_IMAGE_KEYS.QUERY_URL: query_url,
+                HOST_IMAGE_KEYS.LINK_URL: query_url,
+                HOST_IMAGE_KEYS.IMAGE_PATH: event_image_path,
+            }
 
         return host_image_entry

@@ -2,7 +2,7 @@
 """
 import numpy as np
 
-__all__ = ["convert_lin_to_log", "str_sig_figs"]
+__all__ = ["convert_lin_to_log", "str_sig_figs", "round_to_str"]
 
 
 def convert_lin_to_log(val, errors=None, error_interval=False):

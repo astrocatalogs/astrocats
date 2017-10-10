@@ -21,3 +21,10 @@ git clone git@github.com:astrocatalogs/supernovae.git
 ```
 
 Astrocats will soon be listed on PyPi, at which point the install instructions will involve pip and a setup script, for now the install must be performed manually.
+
+
+# To Do
+- Introduce SCHEMA (with validation) for existing schema structure
+- Enhancements to existing SCHEMA structure (in particular, lists of values instead of only individuals)
+- Producer class integration.
+- Speed.  SNe import takes ~13 hours.  Also memory issues.

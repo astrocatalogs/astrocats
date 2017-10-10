@@ -2,7 +2,7 @@
 """
 from astrocats.catalog.utils import is_number, is_integer
 
-from past.builtins import basestring
+import six
 
 
 class KeyCollection(object):
@@ -243,10 +243,10 @@ class Key(str):
         elif self.type == KEY_TYPES.STRING:
             # If its a list, check first element
             if is_list:
-                if not isinstance(val[0], basestring):
+                if not isinstance(val[0], six.string_types):
                     return False
             # Otherwise, check it
-            elif not isinstance(val, basestring):
+            elif not isinstance(val, six.string_types):
                 return False
 
         elif self.type == KEY_TYPES.BOOL:
