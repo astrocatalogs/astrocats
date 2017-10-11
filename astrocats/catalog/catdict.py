@@ -3,7 +3,6 @@
 from collections import OrderedDict
 from copy import deepcopy
 
-import jsl
 from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
 from astrocats.catalog.utils import listify, uniq_cdl
 
@@ -170,6 +169,31 @@ class CatDict(OrderedDict):
         return self.__class__(self._parent, key=self._key,
                               **dict_copy)
 
+    @classmethod
+    def jsl(cls):
+        """Return JSL representation of class."""
+        import jsl
+        # key_names = cls._KEYS.keys()[:4]
+        # key_vals = cls._KEYS.vals()[:4]
+        key_names = cls._KEYS.keys()
+        key_vals = cls._KEYS.vals()
+
+        # jsl_content = {vv: getattr(cls._KEYS, kk).jsl()
+        #                for kk, vv in zip(key_names, key_vals)}
+        jsl_content = {}
+        for kk, vv in zip(key_names, key_vals):
+            jsl_type = getattr(cls._KEYS, kk).jsl()
+            try:
+                if issubclass(jsl_type, jsl.Document):
+                    jsl_type = jsl.DocumentField(jsl_type, as_ref=False)
+            except:
+                pass
+            jsl_content[vv] = jsl_type
+
+        name = 'JSL_Doc_' + type(cls).__name__
+        jsl_doc = type(name, (jsl.Document,), jsl_content)
+        return jsl_doc
+
     def sort_func(self, key):
         return key
 
@@ -209,17 +233,6 @@ class CatDict(OrderedDict):
         # Store alias to `self`
         self[self._KEYS.SOURCE] = uniq_cdl(self_aliases + other_aliases)
 
-        return
-
-    def jsl(self):
-        """Return JSL representation of class."""
-        jkeys = []
-        for key in self._KEYS:
-            if key.type in [KEY_TYPES.STRING, KEY_TYPES.NUMERIC]:
-                new_jkey = jsl.StringField()
-            elif key.type == KEY_TYPES.BOOL:
-                new_jkey = jsl.BooleanField()
-            jkeys.append()
         return
 
     def _check(self):

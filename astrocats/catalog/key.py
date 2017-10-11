@@ -199,6 +199,7 @@ class Key(str):
                  priority=0,
                  kind_preference=[],
                  replace_better=False,
+                 cat_class=None,
                  **kwargs):
         super(Key, self).__init__()
         # Make sure type is allowed
@@ -208,13 +209,45 @@ class Key(str):
         self.name = str(name)
         self.type = type
         self.listable = listable
-        self.compare = compare
         self.no_source = no_source
+
+        if cat_class is None:
+            from astrocats.catalog import catdict
+            cat_class = catdict.CatDict
+
+        self.cat_class = cat_class
+
+        self.compare = compare
         self.priority = priority
         self.kind_preference = kind_preference
         self.replace_better = replace_better
         for key, val in kwargs.items():
             setattr(self, key, val)
+
+    def jsl(self):
+        """Return JSL representation of class."""
+        import jsl
+
+        if self.type in [KEY_TYPES.STRING, KEY_TYPES.NUMERIC, KEY_TYPES.TIME]:
+            jsl_type = jsl.StringField()
+        elif self.type == KEY_TYPES.BOOL:
+            jsl_type = jsl.BooleanField()
+        else:
+            jsl_type = self.cat_class.jsl()
+            # jsl_type = (jsl.DocumentField(jsl_type, as_ref=False)
+            #             if issubclass(jsl_type, jsl.Document) else jsl_type)
+
+        if self.listable:
+            jsl_type = jsl.OneOfField([jsl_type, jsl.ArrayField(jsl_type)])
+            # jsl_type = jsl.OneOfField([jsl.ArrayField(jsl.StringField()),
+            #                            jsl.BooleanField()])
+
+        return jsl_type
+
+        jsl_content = {self.name: jsl_type}
+        name = 'JSL_Doc_' + self.name  # self.__class__.__name__
+        jsl_doc = type(name, (jsl.Document,), jsl_content)
+        return jsl_doc
 
     def pretty(self):
         """Return a 'pretty' string representation of this `Key`.

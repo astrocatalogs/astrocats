@@ -81,7 +81,9 @@ class ENTRY(KeyCollection):
     MAX_DATE = Key('maxdate', KEY_TYPES.STRING, replace_better=True)
     MODELS = Key('models')
     NAME = Key('name', KEY_TYPES.STRING, no_source=True)
-    PHOTOMETRY = Key('photometry')
+
+    PHOTOMETRY = Key('photometry', cat_class=Photometry)
+
     RA = Key('ra', KEY_TYPES.STRING)
     REDSHIFT = Key('redshift',
                    KEY_TYPES.NUMERIC,
@@ -162,6 +164,29 @@ class Entry(OrderedDict):
         """Return JSON representation of self."""
         jsonstring = dict_to_pretty_string({ENTRY.NAME: self})
         return jsonstring
+
+    def jsl(self):
+        """Return JSL representation of class."""
+        import jsl
+        # key_names = self._KEYS.keys()[:4]
+        # key_vals = self._KEYS.vals()[:4]
+        # key_names += ['PHOTOMETRY']
+        # key_vals += ['photometry']
+        key_names = self._KEYS.keys()
+        key_vals = self._KEYS.vals()
+
+        jsl_content = {}
+        for kk, vv in zip(key_names, key_vals):
+            jsl_type = getattr(self._KEYS, kk).jsl()
+            try:
+                if issubclass(jsl_type, jsl.Document):
+                    jsl_type = jsl.DocumentField(jsl_type, as_ref=False)
+            except:
+                pass
+            jsl_content[vv] = jsl_type
+
+        jsl_doc = type('JSL_Doc_Entry', (jsl.Document,), jsl_content)
+        return jsl_doc
 
     def _append_additional_tags(self, quantity, source, cat_dict):
         """Append additional bits of data to an existing quantity.
