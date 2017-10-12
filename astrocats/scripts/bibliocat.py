@@ -26,6 +26,8 @@ if args.catalog == 'tde':
     moduledir = 'tidaldisruptions'
 elif args.catalog == 'sne':
     moduledir = 'supernovae'
+elif args.catalog == 'kne':
+    moduledir = 'kilonovae'
 else:
     raise ValueError('Unknown catalog!')
 

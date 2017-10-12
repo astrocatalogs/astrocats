@@ -142,6 +142,11 @@ elif args.catalog == 'sne':
     modulename = 'sne'
     moduleurl = 'sne.space'
     moduletitle = 'Supernova'
+elif args.catalog == 'kne':
+    moduledir = 'kilonovae'
+    modulename = 'kne'
+    moduleurl = 'kilonova.space'
+    moduletitle = 'Kilonova'
 else:
     raise ValueError('Unknown catalog!')
 
