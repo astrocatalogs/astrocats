@@ -281,7 +281,8 @@ class Entry(OrderedDict):
                              pop_schema=True,
                              ignore_keys=[],
                              compare_to_existing=True,
-                             gzip=False):
+                             gzip=False,
+                             filter_on={}):
         # FIX: check for overwrite??"""
         self._log.debug("_load_data_from_json(): {}\n\t{}".format(self.name(),
                                                                   fhand))
@@ -319,7 +320,8 @@ class Entry(OrderedDict):
             clean=clean,
             merge=merge,
             pop_schema=pop_schema,
-            compare_to_existing=compare_to_existing)
+            compare_to_existing=compare_to_existing,
+            filter_on=filter_on)
         if len(data):
             err_str = ("Remaining entries in `data` after "
                        "`_convert_odict_to_classes`.")
@@ -346,10 +348,14 @@ class Entry(OrderedDict):
                                   clean=False,
                                   merge=True,
                                   pop_schema=True,
-                                  compare_to_existing=True):
+                                  compare_to_existing=True,
+                                  filter_on={}):
         """Convert `OrderedDict` into `Entry` or its derivative classes."""
         self._log.debug("_convert_odict_to_classes(): {}".format(self.name()))
         self._log.debug("This should be a temporary fix.  Dont be lazy.")
+
+        # Setup filters. Currently only used for photometry.
+        fkeys = list(filter_on.keys())
 
         # Handle 'name'
         name_key = self._KEYS.NAME
@@ -393,12 +399,22 @@ class Entry(OrderedDict):
             photoms = data.pop(photo_key)
             self._log.debug("Found {} '{}' entries".format(
                 len(photoms), photo_key))
+            phcount = 0
             for photo in photoms:
+                skip = False
+                for fkey in fkeys:
+                    if fkey in photo and photo[fkey] not in filter_on[fkey]:
+                        skip = True
+                if skip:
+                    continue
                 self._add_cat_dict(
                     Photometry,
                     self._KEYS.PHOTOMETRY,
                     compare_to_existing=compare_to_existing,
                     **photo)
+                phcount += 1
+            self._log.debug("Added {} '{}' entries".format(
+                phcount, photo_key))
 
         # Handle `spectra`
         # ---------------
@@ -585,7 +601,8 @@ class Entry(OrderedDict):
                        pop_schema=True,
                        ignore_keys=[],
                        compare_to_existing=True,
-                       try_gzip=False):
+                       try_gzip=False,
+                       filter_on={}):
         """Construct a new `Entry` instance from an input file.
 
         The input file can be given explicitly by `path`, or a path will
@@ -655,7 +672,8 @@ class Entry(OrderedDict):
             pop_schema=pop_schema,
             ignore_keys=ignore_keys,
             compare_to_existing=compare_to_existing,
-            gzip=try_gzip)
+            gzip=try_gzip,
+            filter_on=filter_on)
 
         return new_entry
 
