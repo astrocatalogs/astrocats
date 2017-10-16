@@ -43,6 +43,8 @@ class PHOTOMETRY(KeyCollection):
     E_MAGNITUDE = Key('e_magnitude', KEY_TYPES.NUMERIC, priority=7)
     E_TIME = Key('e_time', KEY_TYPES.NUMERIC)
     E_UNABSORBED_FLUX = Key('e_unabsorbedflux', KEY_TYPES.NUMERIC)
+    E_LOWER_UNABSORBED_FLUX = Key('e_lower_unabsorbedflux', KEY_TYPES.NUMERIC)
+    E_UPPER_UNABSORBED_FLUX = Key('e_upper_unabsorbedflux', KEY_TYPES.NUMERIC)
     E_LOWER_COUNT_RATE = Key('e_lower_countrate', KEY_TYPES.NUMERIC)
     E_UPPER_COUNT_RATE = Key('e_upper_countrate', KEY_TYPES.NUMERIC)
     E_LOWER_MAGNITUDE = Key('e_lower_magnitude', KEY_TYPES.NUMERIC)
