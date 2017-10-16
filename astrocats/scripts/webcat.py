@@ -172,7 +172,7 @@ mycolors = cubehelix.perceptual_rainbow_16.hex_colors[:14]
 
 columnkey = [
     "check", "name", "alias", "discoverdate", "maxdate", "maxappmag",
-    "maxabsmag", "host", "ra", "dec", "hostra", "hostdec", "hostoffsetang",
+    "maxabsmag", "masses", "host", "ra", "dec", "hostra", "hostdec", "hostoffsetang",
     "hostoffsetdist", "altitude", "azimuth", "airmass", "skybrightness", "instruments", "redshift", "velocity", "lumdist",
     "claimedtype", "ebv", "photolink", "spectralink", "radiolink", "xraylink",
     "references", "download", "responsive"
@@ -182,7 +182,7 @@ eventignorekey = ["download"]
 
 header = [
     "", "Name", "Aliases", "Disc. Date", "Max Date",
-    r"<em>m</em><sub>max</sub>", r"<em>M</em><sub>max</sub>", "Host Name",
+    r"<em>m</em><sub>max</sub>", r"<em>M</em><sub>max</sub>", "Masses", "Host Name",
     "R.A.", "Dec.", "Host R.A.", "Host Dec.", "Host Offset (\")",
     "Host Offset (kpc)", "Alt. (°)", "Azi. (°)", "Airmass", "V<sub>sky</sub>", "Instruments/Bands", r"<em>z</em>",
     r"<em>v</em><sub>&#9737;</sub> (km/s)", r"<em>d</em><sub>L</sub> (Mpc)",
@@ -192,7 +192,7 @@ header = [
 
 eventpageheader = [
     "", "Name", "Aliases", "Discovery Date", "Maximum Date [band]",
-    r"<em>m</em><sub>max</sub> [band]", r"<em>M</em><sub>max</sub> [band]",
+    r"<em>m</em><sub>max</sub> [band]", r"<em>M</em><sub>max</sub> [band]", "Masses",
     "Host Name", "R.A.", "Dec.", "Host R.A.", "Host Dec.", "Host Offset (\")",
     "Host Offset (kpc)", "Alt. (°)", "Azi. (°)", "Airmass", "V<sub>sky</sub>", "Instruments/Bands", r"<em>z</em>",
     r"<em>v</em><sub>&#9737;</sub> (km/s)", r"<em>d</em><sub>L</sub> (Mpc)",
@@ -204,6 +204,7 @@ titles = [
     "", "Name (IAU name preferred)", "Aliases",
     "Discovey Date (year-month-day)", "Date of Maximum (year-month-day)",
     "Maximum apparent AB magnitude", "Maximum absolute AB magnitude",
+    "Masses (solar masses)",
     "Host Name", moduletitle + " J2000 Right Ascension (h:m:s)",
     moduletitle + " J2000 Declination (d:m:s)",
     "Host J2000 Right Ascension (h:m:s)", "Host J2000 Declination (d:m:s)",
@@ -385,6 +386,12 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             catalog[entry]['maxdate'][d]['value'] = catalog[entry]['maxdate'][
                 d]['value'].split('.')[0]
 
+    if 'primarymass' in catalog[entry] and 'secondarymass' in catalog[entry]:
+        catalog[entry]['masses'] = catalog[entry]['primarymass'][0][
+            'value'] + ' + ' + catalog[entry]['secondarymass'][0]['value']
+    else:
+        catalog[entry]['masses'] = ''
+
     hostmag = ''
     hosterr = ''
     if 'photometry' in catalog[entry]:
@@ -407,7 +414,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         for x in catalog[entry]['photometry']
     ])
     xrayavail = 'photometry' in catalog[entry] and any(
-        [('countrate' in x or 'flux' in x) and 'magnitude' not in x
+        [('countrate' in x or 'flux' in x or 'unabsorbedflux' in x) and 'magnitude' not in x
          for x in catalog[entry]['photometry']])
     spectraavail = 'spectra' in catalog[entry]
 
@@ -431,7 +438,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
     ]) if photoavail else 0
     numxray = len([
         x for x in catalog[entry]['photometry']
-        if 'upperlimit' not in x and ('countrate' in x or 'flux' in x
+        if 'upperlimit' not in x and ('countrate' in x or 'flux' in x or 'unabsorbedflux' in x
                                       ) and 'magnitude' not in x and
         (not hostmag or 'includeshost' not in x or float(x['magnitude']) <= (
             hostmag - 2.0 * hosterr))
@@ -592,7 +599,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
              if isinstance(x['time'], list) else float(x['time']))
             for x in catalog[entry]['photometry']
             if any([y in x for y in [
-                'fluxdensity', 'magnitude', 'flux', 'countrate']])
+                'fluxdensity', 'magnitude', 'flux', 'unabsorbedflux', 'countrate']])
         ]
         phototimelowererrs = [
             float(x['e_lower_time'])
@@ -600,7 +607,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             (float(x['e_time']) if 'e_time' in x else 0.)
             for x in catalog[entry]['photometry']
             if any([y in x for y in [
-                'fluxdensity', 'magnitude', 'flux', 'countrate']])
+                'fluxdensity', 'magnitude', 'flux', 'unabsorbedflux', 'countrate']])
         ]
         phototimeuppererrs = [
             float(x['e_upper_time'])
@@ -608,14 +615,14 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             (float(x['e_time']) if 'e_time' in x else 0.)
             for x in catalog[entry]['photometry']
             if any([y in x for y in [
-                'fluxdensity', 'magnitude', 'flux', 'countrate']])
+                'fluxdensity', 'magnitude', 'flux', 'unabsorbedflux', 'countrate']])
         ]
         mmphototime = [
             (mean([float(y) for y in x['time']])
              if isinstance(x['time'], list) else float(x['time']))
             for x in catalog[entry]['photometry']
             if (any([y in x for y in [
-                'fluxdensity', 'magnitude', 'flux', 'countrate']]) and
+                'fluxdensity', 'magnitude', 'flux', 'unabsorbedflux', 'countrate']]) and
                 'upperlimit' not in x and 'includeshost' not in x)
         ]
         mmphototimelowererrs = [
@@ -624,7 +631,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             (float(x['e_time']) if 'e_time' in x else 0.)
             for x in catalog[entry]['photometry']
             if (any([y in x for y in [
-                'fluxdensity', 'magnitude', 'flux', 'countrate']]) and
+                'fluxdensity', 'magnitude', 'flux', 'unabsorbedflux', 'countrate']]) and
                 'upperlimit' not in x and 'includeshost' not in x)
         ]
         mmphototimeuppererrs = [
@@ -633,7 +640,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             (float(x['e_time']) if 'e_time' in x else 0.)
             for x in catalog[entry]['photometry']
             if (any([y in x for y in [
-                'fluxdensity', 'magnitude', 'flux', 'countrate']]) and
+                'fluxdensity', 'magnitude', 'flux', 'unabsorbedflux', 'countrate']]) and
                 'upperlimit' not in x and 'includeshost' not in x)
         ]
 
@@ -1239,8 +1246,8 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             y_offsets[i] = y_height
             if (i - 1 >= 0 and 'time' in catalog[entry]['spectra'][i] and
                     'time' in catalog[entry]['spectra'][i - 1] and
-                    catalog[entry]['spectra'][i]['time'] ==
-                    catalog[entry]['spectra'][i - 1]['time']):
+                    (float(catalog[entry]['spectra'][i]['time']) -
+                     float(catalog[entry]['spectra'][i - 1]['time'])) <= 0.1):
                 ydiff = 0
             else:
                 ydiff = 0.8 * (max(prunedscaled[i]) - min(prunedscaled[i]))
@@ -1774,59 +1781,59 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
     if xrayavail and dohtml and args.writehtml:
         phototime = [(mean([float(y) for y in x['time']])
                       if isinstance(x['time'], list) else float(x['time']))
-                     for x in catalog[entry]['photometry'] if 'flux' in x and float(x['flux']) > 0]
+                     for x in catalog[entry]['photometry'] if x.get('flux', x.get('unabsorbedflux', 0)) > 0]
         phototimelowererrs = [
             float(x['e_lower_time'])
             if ('e_lower_time' in x and 'e_upper_time' in x) else
             (float(x['e_time']) if 'e_time' in x else 0.)
-            for x in catalog[entry]['photometry'] if 'flux' in x and float(x['flux']) > 0
+            for x in catalog[entry]['photometry'] if x.get('flux', x.get('unabsorbedflux', 0)) > 0
         ]
         phototimeuppererrs = [
             float(x['e_upper_time'])
             if ('e_lower_time' in x and 'e_upper_time' in x) in x else
             (float(x['e_time']) if 'e_time' in x else 0.)
-            for x in catalog[entry]['photometry'] if 'flux' in x and float(x['flux']) > 0
+            for x in catalog[entry]['photometry'] if x.get('flux', x.get('unabsorbedflux', 0)) > 0
         ]
         photofl = [
-            np.log10(float(x['flux'])) for x in catalog[entry]['photometry']
-            if 'flux' in x and float(x['flux']) > 0
+            np.log10(float(x.get('flux', x['unabsorbedflux'])) for x in catalog[entry]['photometry']
+            if x.get('flux', x.get('unabsorbedflux', 0)) > 0
         ]
         photofllowererrs = [
-            (np.log10(float(x['flux'])) -
-             np.log10(float(x['flux']) - float(x['e_lower_flux'])))
-            if ('e_lower_flux' in x and float(x['flux']) - float(x['e_lower_flux']) > 0) else
-            ((np.log10(float(x['flux'])) -
-              np.log10(float(x['flux']) - float(x['e_flux'])))
-             if ('e_flux' in x and float(x['flux']) - float(x['e_flux']) > 0) else 0.) for x in catalog[entry]['photometry']
-            if 'flux' in x and float(x['flux']) > 0
+            (np.log10(float(x.get('flux', x['unabsorbedflux']))) -
+             np.log10(float(x.get('flux', x['unabsorbedflux'])) - float(x.get('e_lower_flux', x['e_lower_unabsorbedflux']))))
+            if (('e_lower_flux' in x or 'e_lower_unabsorbedflux' in x) and float(x.get('flux', x['unabsorbedflux'])) - float(x.get('e_lower_flux', x['e_lower_unabsorbedflux'])) > 0) else
+            ((np.log10(float(x.get('flux', x['unabsorbedflux']))) -
+              np.log10(float(x.get('flux', x['unabsorbedflux'])) - float(x.get('e_flux', x['e_unabsorbedflux']))))
+             if (('e_flux' in x or 'e_unabsorbed_flux' in x) and float(x.get('flux', x['unabsorbedflux'])) - float(x.get('e_flux', x['e_unabsorbedflux'])) > 0) else 0.) for x in catalog[entry]['photometry']
+            if x.get('flux', 0) > 0 or x.get('unabsorbedflux', 0) > 0
         ]
         photofluppererrs = [
-            (np.log10(float(x['flux']) + float(x['e_upper_flux'])) -
-             np.log10(float(x['flux']))) if ('e_upper_flux' in x) else
-            ((np.log10(float(x['flux']) + float(x['e_flux'])) -
-              np.log10(float(x['flux']))) if 'e_flux' in x else 0.)
-            for x in catalog[entry]['photometry'] if 'flux' in x and float(x['flux']) > 0
+            (np.log10(float(x.get('flux', x['unabsorbedflux'])) + float(x.get('e_upper_flux', x['e_upper_unabsorbedflux']))) -
+             np.log10(float(x.get('flux', x['unabsorbedflux'])))) if ('e_upper_flux' in x) else
+            ((np.log10(float(x.get('flux', x['unabsorbedflux'])) + float(x.get('e_flux', x['e_unabsorbedflux']))) -
+              np.log10(float(x.get('flux', x['unabsorbedflux'])))) if 'e_flux' in x else 0.)
+            for x in catalog[entry]['photometry'] if float(x.get('flux', x['unabsorbedflux'])) > 0
         ]
-        photoufl = [(x['u_flux'] if 'flux' in x else '')
-                    for x in catalog[entry]['photometry'] if 'flux' in x and float(x['flux']) > 0]
+        photoufl = [(x['u_flux'] if 'flux' in x or 'unabsorbedflux' in x else '')
+                    for x in catalog[entry]['photometry'] if float(x.get('flux', x['unabsorbedflux'])) > 0]
         photoener = [((' - '.join([y.rstrip('.') for y in x['energy']])
                        if isinstance(x['energy'], list) else x['energy'])
                       if 'flux' in x else '')
-                     for x in catalog[entry]['photometry'] if 'flux' in x and float(x['flux']) > 0]
+                     for x in catalog[entry]['photometry'] if float(x.get('flux', x['unabsorbedflux'])) > 0]
         photouener = [(x['u_energy'] if 'flux' in x else '')
-                      for x in catalog[entry]['photometry'] if 'flux' in x and float(x['flux']) > 0]
+                      for x in catalog[entry]['photometry'] if float(x.get('flux', x['unabsorbedflux'])) > 0]
         photoinstru = [(x['instrument'] if 'instrument' in x else '')
-                       for x in catalog[entry]['photometry'] if 'flux' in x and float(x['flux']) > 0]
+                       for x in catalog[entry]['photometry'] if float(x.get('flux', x['unabsorbedflux'])) > 0]
         photosource = [
             ', '.join(
                 str(j)
                 for j in sorted(
                     int(i) for i in catalog[entry]['photometry'][x]['source']
                     .split(',')))
-            for x, y in enumerate(catalog[entry]['photometry']) if 'flux' in y and float(y['flux']) > 0
+            for x, y in enumerate(catalog[entry]['photometry']) if float(y.get('flux', y['unabsorbedflux'])) > 0
         ]
         phototype = [(True if 'upperlimit' in x else False)
-                     for x in catalog[entry]['photometry'] if 'flux' in x and float(x['flux']) > 0]
+                     for x in catalog[entry]['photometry'] if float(x.get('flux', x['unabsorbedflux'])) > 0]
 
         photoutime = catalog[entry]['photometry'][0][
             'u_time'] if 'u_time' in catalog[entry]['photometry'][0] else 'MJD'
