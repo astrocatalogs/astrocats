@@ -114,6 +114,7 @@ class Photometry(CatDict):
         self._REQ_KEY_SETS = [[PHOTOMETRY.SOURCE, PHOTOMETRY.MODEL],
                               [PHOTOMETRY.TIME, PHOTOMETRY.HOST], [
                                   PHOTOMETRY.MAGNITUDE, PHOTOMETRY.FLUX,
+                                  PHOTOMETRY.UNABSORBED_FLUX,
                                   PHOTOMETRY.FLUX_DENSITY, PHOTOMETRY.COUNT_RATE,
                                   PHOTOMETRY.LUMINOSITY]]
         # Note: `_check()` is called at end of `super().__init__`
