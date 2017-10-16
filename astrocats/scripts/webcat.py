@@ -1416,7 +1416,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
         binslider = Slider(
             start=0,
-            end=20,
+            end=50,
             value=1,
             step=0.5,
             width=230,
@@ -1781,22 +1781,22 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
     if xrayavail and dohtml and args.writehtml:
         phototime = [(mean([float(y) for y in x['time']])
                       if isinstance(x['time'], list) else float(x['time']))
-                     for x in catalog[entry]['photometry'] if x.get('flux', x.get('unabsorbedflux', 0)) > 0]
+                     for x in catalog[entry]['photometry'] if float(x.get('flux', x.get('unabsorbedflux', 0))) > 0]
         phototimelowererrs = [
             float(x['e_lower_time'])
             if ('e_lower_time' in x and 'e_upper_time' in x) else
             (float(x['e_time']) if 'e_time' in x else 0.)
-            for x in catalog[entry]['photometry'] if x.get('flux', x.get('unabsorbedflux', 0)) > 0
+            for x in catalog[entry]['photometry'] if float(x.get('flux', x.get('unabsorbedflux', 0))) > 0
         ]
         phototimeuppererrs = [
             float(x['e_upper_time'])
             if ('e_lower_time' in x and 'e_upper_time' in x) in x else
             (float(x['e_time']) if 'e_time' in x else 0.)
-            for x in catalog[entry]['photometry'] if x.get('flux', x.get('unabsorbedflux', 0)) > 0
+            for x in catalog[entry]['photometry'] if float(x.get('flux', x.get('unabsorbedflux', 0))) > 0
         ]
         photofl = [
             np.log10(float(x.get('flux', x['unabsorbedflux']))) for x in catalog[entry]['photometry']
-            if x.get('flux', x.get('unabsorbedflux', 0)) > 0
+            if float(x.get('flux', x.get('unabsorbedflux', 0))) > 0
         ]
         photofllowererrs = [
             (np.log10(float(x.get('flux', x['unabsorbedflux']))) -
@@ -1805,35 +1805,35 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             ((np.log10(float(x.get('flux', x['unabsorbedflux']))) -
               np.log10(float(x.get('flux', x['unabsorbedflux'])) - float(x.get('e_flux', x['e_unabsorbedflux']))))
              if (('e_flux' in x or 'e_unabsorbed_flux' in x) and float(x.get('flux', x['unabsorbedflux'])) - float(x.get('e_flux', x['e_unabsorbedflux'])) > 0) else 0.) for x in catalog[entry]['photometry']
-            if x.get('flux', 0) > 0 or x.get('unabsorbedflux', 0) > 0
+            if float(x.get('flux', x.get('unabsorbedflux', 0))) > 0
         ]
         photofluppererrs = [
             (np.log10(float(x.get('flux', x['unabsorbedflux'])) + float(x.get('e_upper_flux', x['e_upper_unabsorbedflux']))) -
-             np.log10(float(x.get('flux', x['unabsorbedflux'])))) if ('e_upper_flux' in x) else
+             np.log10(float(x.get('flux', x['unabsorbedflux'])))) if ('e_upper_flux' in x or 'e_upper_unabsorbedflux' in x) else
             ((np.log10(float(x.get('flux', x['unabsorbedflux'])) + float(x.get('e_flux', x['e_unabsorbedflux']))) -
-              np.log10(float(x.get('flux', x['unabsorbedflux'])))) if 'e_flux' in x else 0.)
-            for x in catalog[entry]['photometry'] if float(x.get('flux', x['unabsorbedflux'])) > 0
+              np.log10(float(x.get('flux', x['unabsorbedflux'])))) if ('e_flux' in x or 'e_upper_unabsorbedflux' in x) else 0.)
+            for x in catalog[entry]['photometry'] if float(x.get('flux', x.get('unabsorbedflux', 0))) > 0
         ]
         photoufl = [(x['u_flux'] if 'flux' in x or 'unabsorbedflux' in x else '')
-                    for x in catalog[entry]['photometry'] if float(x.get('flux', x['unabsorbedflux'])) > 0]
+                    for x in catalog[entry]['photometry'] if float(x.get('flux', x.get('unabsorbedflux', 0))) > 0]
         photoener = [((' - '.join([y.rstrip('.') for y in x['energy']])
                        if isinstance(x['energy'], list) else x['energy'])
-                      if 'flux' in x else '')
-                     for x in catalog[entry]['photometry'] if float(x.get('flux', x['unabsorbedflux'])) > 0]
-        photouener = [(x['u_energy'] if 'flux' in x else '')
-                      for x in catalog[entry]['photometry'] if float(x.get('flux', x['unabsorbedflux'])) > 0]
+                      if 'flux' in x or 'unabsorbedflux' in x else '')
+                     for x in catalog[entry]['photometry'] if float(x.get('flux', x.get('unabsorbedflux', 0))) > 0]
+        photouener = [(x['u_energy'] if 'flux' in x or 'unabsorbedflux' in x else '')
+                      for x in catalog[entry]['photometry'] if float(x.get('flux', x.get('unabsorbedflux', 0))) > 0]
         photoinstru = [(x['instrument'] if 'instrument' in x else '')
-                       for x in catalog[entry]['photometry'] if float(x.get('flux', x['unabsorbedflux'])) > 0]
+                       for x in catalog[entry]['photometry'] if float(x.get('flux', x.get('unabsorbedflux', 0))) > 0]
         photosource = [
             ', '.join(
                 str(j)
                 for j in sorted(
                     int(i) for i in catalog[entry]['photometry'][x]['source']
                     .split(',')))
-            for x, y in enumerate(catalog[entry]['photometry']) if float(y.get('flux', y['unabsorbedflux'])) > 0
+            for x, y in enumerate(catalog[entry]['photometry']) if float(y.get('flux', y.get('unabsorbedflux', 0))) > 0
         ]
         phototype = [(True if 'upperlimit' in x else False)
-                     for x in catalog[entry]['photometry'] if float(x.get('flux', x['unabsorbedflux'])) > 0]
+                     for x in catalog[entry]['photometry'] if float(x.get('flux', x.get('unabsorbedflux', 0))) > 0]
 
         photoutime = catalog[entry]['photometry'][0][
             'u_time'] if 'u_time' in catalog[entry]['photometry'][0] else 'MJD'
