@@ -1795,7 +1795,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             for x in catalog[entry]['photometry'] if x.get('flux', x.get('unabsorbedflux', 0)) > 0
         ]
         photofl = [
-            np.log10(float(x.get('flux', x['unabsorbedflux'])) for x in catalog[entry]['photometry']
+            np.log10(float(x.get('flux', x['unabsorbedflux']))) for x in catalog[entry]['photometry']
             if x.get('flux', x.get('unabsorbedflux', 0)) > 0
         ]
         photofllowererrs = [
