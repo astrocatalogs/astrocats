@@ -29,7 +29,16 @@ bandmeta = {
     'W1':     {'telescope': 'Swift', 'instrument': 'UVOT'},
     'W2':     {'telescope': 'Swift', 'instrument': 'UVOT'},
     'F110W':  {'telescope': 'Hubble', 'instrument': 'WFC3'},
+    'F160W':  {'telescope': 'Hubble', 'instrument': 'WFC3'},
+    'F225W':  {'telescope': 'Hubble', 'instrument': 'WFC3'},
+    'F275W':  {'telescope': 'Hubble', 'instrument': 'WFC3'},
+    'F336W':  {'telescope': 'Hubble', 'instrument': 'WFC3'},
+    'F475W':  {'telescope': 'Hubble', 'instrument': 'WFC3'},
+    'F606W':  {'telescope': 'Hubble', 'instrument': 'WFC3'},
+    'F625W':  {'telescope': 'Hubble', 'instrument': 'WFC3'},
     'F775W':  {'telescope': 'Hubble', 'instrument': 'WFC3'},
+    'F814W':  {'telescope': 'Hubble', 'instrument': 'WFC3'},
+    'F850W':  {'telescope': 'Hubble', 'instrument': 'WFC3'},
     'F850LP': {'telescope': 'Hubble', 'instrument': 'WFC3'}
 }
 
@@ -71,7 +80,16 @@ bandcodes = [
     "y",
     "Z",
     "F110W",
+    "F160W",
+    "F225W",
+    "F275W",
+    "F336W",
+    "F475W",
+    "F606W",
+    "F625W",
     "F775W",
+    "F814W",
+    "F850W",
     "F850LP",
     "VM",
     "RM",
@@ -126,7 +144,8 @@ bandwavelengths = {
 bandgroups = {
     "SDSS": ["u'", "g'", "r'", "i'", "z'"],
     "UVOT": ["W2", "M2", "W1"],
-    "HST": ['F110W', 'F775W', 'F850LP'],
+    "HST": ['F110W', 'F160W', 'F225W', 'F275W', 'F336W', 'F475W', 'F606W', 'F625W', 'F775W', 'F814W', 'F850W', 'F850LP'],
+    
     "Johnson": ['U', 'B', 'V', 'R', 'I', 'Y', 'J', 'H', 'K']
 }
 
@@ -147,7 +166,9 @@ bandcolors = (cubehelix.cubehelix1_16.hex_colors[2:13] +
 shuffle(bandcolors)
 bandcolors2 = cubehelix.perceptual_rainbow_16.hex_colors
 shuffle(bandcolors2)
-bandcolors = bandcolors + bandcolors2
+bandcolors3 = cubehelix.jim_special_16.hex_colors
+shuffle(bandcolors3)
+bandcolors = bandcolors + bandcolors2 + bandcolors3
 bandcolordict = dict(list(zip(bandcodes, bandcolors)))
 
 radiocolors = wesanderson.Zissou_5.hex_colors
