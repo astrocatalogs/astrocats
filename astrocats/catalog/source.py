@@ -26,6 +26,7 @@ class SOURCE(KeyCollection):
     NAME = Key('name', KEY_TYPES.STRING)
     BIBCODE = Key('bibcode', KEY_TYPES.STRING)
     ARXIVID = Key('arxivid', KEY_TYPES.STRING)
+    DOI = Key('doi', KEY_TYPES.STRING)
     URL = Key('url', KEY_TYPES.STRING, compare=False)
     ACKNOWLEDGMENT = Key('acknowledgment', KEY_TYPES.STRING, compare=False)
     REFERENCE = Key('reference', KEY_TYPES.STRING, compare=False)
@@ -37,15 +38,16 @@ class SOURCE(KeyCollection):
 
 
 class Source(CatDict):
-    """Representation for the source/attribution of a data element.
-    """
+    """Representation for the source/attribution of a data element."""
 
     _KEYS = SOURCE
 
     def __init__(self, parent, **kwargs):
+        """Initialize `Source`."""
         self._REQ_KEY_SETS = [
             [SOURCE.ALIAS],
-            [SOURCE.BIBCODE, SOURCE.ARXIVID, SOURCE.URL, SOURCE.NAME]
+            [SOURCE.BIBCODE, SOURCE.ARXIVID, SOURCE.DOI, SOURCE.URL,
+             SOURCE.NAME]
         ]
         super(Source, self).__init__(parent, **kwargs)
         return
@@ -57,6 +59,8 @@ class Source(CatDict):
             return 'aab'
         if key == self._KEYS.ARXIVID:
             return 'aac'
+        if key == self._KEYS.DOI:
+            return 'aad'
         if key == self._KEYS.ALIAS:
             return 'zzz'
         return key
