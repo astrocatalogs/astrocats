@@ -9,6 +9,7 @@ import os
 import re
 import shutil
 import sys
+import traceback
 import urllib.parse
 import urllib.request
 import warnings
@@ -160,6 +161,9 @@ htmldir = "html/"
 travislimit = 100
 
 radiosigma = 3.0
+
+legh = 20
+legy = 30
 
 googlepingurl = "http://www.google.com/webmasters/tools/ping?sitemap=https%3A%2F%2F" + \
     moduleurl + "%2Fsitemap.xml"
@@ -344,2270 +348,2291 @@ else:
     md5dict = {}
 
 for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
-    fileeventname = os.path.splitext(os.path.basename(eventfile))[0].replace(
-        '.json', '')
-    if args.eventlist and fileeventname not in args.eventlist:
-        continue
+    try:
+        fileeventname = os.path.splitext(os.path.basename(eventfile))[0].replace(
+            '.json', '')
+        if args.eventlist and fileeventname not in args.eventlist:
+            continue
 
-    if args.travis and fcnt >= travislimit:
-        break
+        if args.travis and fcnt >= travislimit:
+            break
 
-    entry_changed = False
-    checksum = md5file(eventfile)
-    if eventfile not in md5dict or md5dict[eventfile] != checksum:
-        entry_changed = True
-        md5dict[eventfile] = checksum
+        entry_changed = False
+        checksum = md5file(eventfile)
+        if eventfile not in md5dict or md5dict[eventfile] != checksum:
+            entry_changed = True
+            md5dict[eventfile] = checksum
 
-    filetext = get_event_text(eventfile)
+        filetext = get_event_text(eventfile)
 
-    catalog.update(json.loads(filetext, object_pairs_hook=OrderedDict))
-    entry = next(reversed(catalog))
+        catalog.update(json.loads(filetext, object_pairs_hook=OrderedDict))
+        entry = next(reversed(catalog))
 
-    eventname = entry
+        eventname = entry
 
-    if args.eventlist and eventname not in args.eventlist:
-        continue
+        if args.eventlist and eventname not in args.eventlist:
+            continue
 
-    if args.verbose:
-        print(eventname)
+        if args.verbose:
+            print(eventname)
 
-    # tprint(eventfile + ' [' + checksum + ']')
+        # tprint(eventfile + ' [' + checksum + ']')
 
-    repfolder = get_rep_folder(catalog[entry], repofolders)
-    if os.path.isfile("astrocats/" + moduledir + "/input/" + modulename +
-                      "-internal/" + fileeventname + ".json"):
-        catalog[entry]['download'] = 'e'
-    if 'discoverdate' in catalog[entry]:
-        for d, date in enumerate(catalog[entry]['discoverdate']):
-            catalog[entry]['discoverdate'][d]['value'] = catalog[entry][
-                'discoverdate'][d]['value'].split('.')[0]
-    if 'maxdate' in catalog[entry]:
-        for d, date in enumerate(catalog[entry]['maxdate']):
-            catalog[entry]['maxdate'][d]['value'] = catalog[entry]['maxdate'][
-                d]['value'].split('.')[0]
+        repfolder = get_rep_folder(catalog[entry], repofolders)
+        if os.path.isfile("astrocats/" + moduledir + "/input/" + modulename +
+                          "-internal/" + fileeventname + ".json"):
+            catalog[entry]['download'] = 'e'
+        if 'discoverdate' in catalog[entry]:
+            for d, date in enumerate(catalog[entry]['discoverdate']):
+                catalog[entry]['discoverdate'][d]['value'] = catalog[entry][
+                    'discoverdate'][d]['value'].split('.')[0]
+        if 'maxdate' in catalog[entry]:
+            for d, date in enumerate(catalog[entry]['maxdate']):
+                catalog[entry]['maxdate'][d]['value'] = catalog[entry]['maxdate'][
+                    d]['value'].split('.')[0]
 
-    if 'primarymass' in catalog[entry] and 'secondarymass' in catalog[entry]:
-        catalog[entry]['masses'] = catalog[entry]['primarymass'][0][
-            'value'] + ' + ' + catalog[entry]['secondarymass'][0]['value']
-    else:
-        catalog[entry]['masses'] = ''
+        if 'primarymass' in catalog[entry] and 'secondarymass' in catalog[entry]:
+            catalog[entry]['masses'] = catalog[entry]['primarymass'][0][
+                'value'] + ' + ' + catalog[entry]['secondarymass'][0]['value']
+        else:
+            catalog[entry]['masses'] = ''
 
-    hostmag = ''
-    hosterr = ''
-    if 'photometry' in catalog[entry]:
-        for photo in catalog[entry]['photometry']:
-            if 'host' in photo and ('upperlimit' not in photo or
-                                    not photo['upperlimit']):
-                hostmag = float(photo['magnitude'])
-                hosterr = float(photo[
-                    'e_magnitude']) if 'e_magnitude' in photo else 0.0
+        hostmag = ''
+        hosterr = ''
+        if 'photometry' in catalog[entry]:
+            for photo in catalog[entry]['photometry']:
+                if 'host' in photo and ('upperlimit' not in photo or
+                                        not photo['upperlimit']):
+                    hostmag = float(photo['magnitude'])
+                    hosterr = float(photo[
+                        'e_magnitude']) if 'e_magnitude' in photo else 0.0
 
-        # Delete the host magnitudes so they are not plotted as points
-        catalog[entry]['photometry'][:] = [
-            x for x in catalog[entry]['photometry'] if 'host' not in x
-        ]
+            # Delete the host magnitudes so they are not plotted as points
+            catalog[entry]['photometry'][:] = [
+                x for x in catalog[entry]['photometry'] if 'host' not in x
+            ]
 
-    photoavail = 'photometry' in catalog[entry] and any(
-        ['magnitude' in x for x in catalog[entry]['photometry']])
-    radioavail = 'photometry' in catalog[entry] and any([
-        'fluxdensity' in x and 'magnitude' not in x
-        for x in catalog[entry]['photometry']
-    ])
-    xrayavail = 'photometry' in catalog[entry] and any(
-        [('countrate' in x or 'flux' in x or 'unabsorbedflux' in x) and 'magnitude' not in x
-         for x in catalog[entry]['photometry']])
-    spectraavail = 'spectra' in catalog[entry]
+        photoavail = 'photometry' in catalog[entry] and any(
+            ['magnitude' in x for x in catalog[entry]['photometry']])
+        radioavail = 'photometry' in catalog[entry] and any([
+            'fluxdensity' in x and 'magnitude' not in x
+            for x in catalog[entry]['photometry']
+        ])
+        xrayavail = 'photometry' in catalog[entry] and any(
+            [('countrate' in x or 'flux' in x or 'unabsorbedflux' in x) and 'magnitude' not in x
+             for x in catalog[entry]['photometry']])
+        spectraavail = 'spectra' in catalog[entry]
 
-    realizchecks = ''
+        realizchecks = ''
 
-    # Must be two sigma above host magnitude, if host magnitude known, to add
-    # to phot count.
-    numphoto = len([
-        x for x in catalog[entry]['photometry']
-        if 'upperlimit' not in x and 'magnitude' in x and 'realization' not in x and
-        (not hostmag or 'includeshost' not in x or float(x['magnitude']) <= (
-            hostmag - 2.0 * hosterr))
-    ]) if photoavail else 0
-    numradio = len([
-        x for x in catalog[entry]['photometry']
-        if 'upperlimit' not in x and 'fluxdensity' in x and 'magnitude' not in
-        x and (not x['e_fluxdensity'] or float(x[
-            'fluxdensity']) > radiosigma * float(x['e_fluxdensity'])
-        ) and (not hostmag or 'includeshost' not in x or float(x[
-            'magnitude']) <= (hostmag - 2.0 * hosterr))
-    ]) if photoavail else 0
-    numxray = len([
-        x for x in catalog[entry]['photometry']
-        if 'upperlimit' not in x and ('countrate' in x or 'flux' in x or 'unabsorbedflux' in x
-                                      ) and 'magnitude' not in x and
-        (not hostmag or 'includeshost' not in x or float(x['magnitude']) <= (
-            hostmag - 2.0 * hosterr))
-    ]) if photoavail else 0
-    numspectra = len(catalog[entry]['spectra']) if spectraavail else 0
+        # Must be two sigma above host magnitude, if host magnitude known, to add
+        # to phot count.
+        numphoto = len([
+            x for x in catalog[entry]['photometry']
+            if 'upperlimit' not in x and 'magnitude' in x and 'realization' not in x and
+            (not hostmag or 'includeshost' not in x or float(x['magnitude']) <= (
+                hostmag - 2.0 * hosterr))
+        ]) if photoavail else 0
+        numradio = len([
+            x for x in catalog[entry]['photometry']
+            if 'upperlimit' not in x and 'fluxdensity' in x and 'magnitude' not in
+            x and (not x['e_fluxdensity'] or float(x[
+                'fluxdensity']) > radiosigma * float(x['e_fluxdensity'])
+            ) and (not hostmag or 'includeshost' not in x or float(x[
+                'magnitude']) <= (hostmag - 2.0 * hosterr))
+        ]) if photoavail else 0
+        numxray = len([
+            x for x in catalog[entry]['photometry']
+            if 'upperlimit' not in x and ('countrate' in x or 'flux' in x or 'unabsorbedflux' in x
+                                          ) and 'magnitude' not in x and
+            (not hostmag or 'includeshost' not in x or float(x['magnitude']) <= (
+                hostmag - 2.0 * hosterr))
+        ]) if photoavail else 0
+        numspectra = len(catalog[entry]['spectra']) if spectraavail else 0
 
-    redshiftfactor = (1.0 / (
-        1.0 + float(catalog[entry]['redshift'][0]['value']))) if (
-            'redshift' in catalog[entry]) else 1.0
-    dayframe = 'Rest frame days' if 'redshift' in catalog[
-        entry] else 'Observer frame days'
+        redshiftfactor = (1.0 / (
+            1.0 + float(catalog[entry]['redshift'][0]['value']))) if (
+                'redshift' in catalog[entry]) else 1.0
+        dayframe = 'Rest frame days' if 'redshift' in catalog[
+            entry] else 'Observer frame days'
 
-    mjdmax = ''
-    if 'maxdate' in catalog[entry]:
-        datestr = catalog[entry]['maxdate'][0]['value']
-        datesplit = datestr.split('/')
-        if len(datesplit) < 2:
-            datestr += "/01"
-        if len(datesplit) < 3:
-            datestr += "/01"
-        try:
-            mjdmax = astrotime(datestr.replace('/', '-')).mjd
-        except (KeyboardInterrupt, SystemExit):
-            raise
-        except Exception:
-            pass
+        mjdmax = ''
+        if 'maxdate' in catalog[entry]:
+            datestr = catalog[entry]['maxdate'][0]['value']
+            datesplit = datestr.split('/')
+            if len(datesplit) < 2:
+                datestr += "/01"
+            if len(datesplit) < 3:
+                datestr += "/01"
+            try:
+                mjdmax = astrotime(datestr.replace('/', '-')).mjd
+            except (KeyboardInterrupt, SystemExit):
+                raise
+            except Exception:
+                pass
 
-    minphotoep = ''
-    maxphotoep = ''
-    if mjdmax:
-        photoeps = [(Decimal(x['time']) - Decimal(mjdmax + 0.5)) *
-                    Decimal(redshiftfactor)
-                    for x in catalog[entry]['photometry']
-                    if 'upperlimit' not in x and 'includeshost' not in x and
-                    'magnitude' in x and 'time' in x] if photoavail else []
-        if photoeps:
-            minphotoep = pretty_num(float(min(photoeps)), sig=3)
-            maxphotoep = pretty_num(float(max(photoeps)), sig=3)
+        minphotoep = ''
+        maxphotoep = ''
+        if mjdmax:
+            photoeps = [(Decimal(x['time']) - Decimal(mjdmax + 0.5)) *
+                        Decimal(redshiftfactor)
+                        for x in catalog[entry]['photometry']
+                        if 'upperlimit' not in x and 'includeshost' not in x and
+                        'magnitude' in x and 'time' in x] if photoavail else []
+            if photoeps:
+                minphotoep = pretty_num(float(min(photoeps)), sig=3)
+                maxphotoep = pretty_num(float(max(photoeps)), sig=3)
 
-    minspectraep = ''
-    maxspectraep = ''
-    if mjdmax:
-        spectraeps = ([(Decimal(x['time']) - Decimal(mjdmax + 0.5)) *
-                       Decimal(redshiftfactor)
-                       for x in catalog[entry]['spectra'] if 'time' in x]
-                      if spectraavail else [])
-        if spectraeps:
-            minspectraep = pretty_num(float(min(spectraeps)), sig=3)
-            maxspectraep = pretty_num(float(max(spectraeps)), sig=3)
+        minspectraep = ''
+        maxspectraep = ''
+        if mjdmax:
+            spectraeps = ([(Decimal(x['time']) - Decimal(mjdmax + 0.5)) *
+                           Decimal(redshiftfactor)
+                           for x in catalog[entry]['spectra'] if 'time' in x]
+                          if spectraavail else [])
+            if spectraeps:
+                minspectraep = pretty_num(float(min(spectraeps)), sig=3)
+                maxspectraep = pretty_num(float(max(spectraeps)), sig=3)
 
-    catalog[entry]['numphoto'] = numphoto
-    catalog[entry]['numradio'] = numradio
-    catalog[entry]['numxray'] = numxray
-    catalog[entry]['numspectra'] = numspectra
+        catalog[entry]['numphoto'] = numphoto
+        catalog[entry]['numradio'] = numradio
+        catalog[entry]['numxray'] = numxray
+        catalog[entry]['numspectra'] = numspectra
 
-    distancemod = 0.0
-    if 'maxabsmag' in catalog[entry] and 'maxappmag' in catalog[entry]:
-        distancemod = float(get_first_value(entry, 'maxappmag')) - \
-            float(get_first_value(entry, 'maxabsmag'))
+        distancemod = 0.0
+        if 'maxabsmag' in catalog[entry] and 'maxappmag' in catalog[entry]:
+            distancemod = float(get_first_value(entry, 'maxappmag')) - \
+                float(get_first_value(entry, 'maxabsmag'))
 
-    plotlink = modulename + "/" + fileeventname + "/"
-    if photoavail:
-        catalog[entry]['photolink'] = (str(numphoto) + (
-            (',' + minphotoep + ',' + maxphotoep) if
-            (minphotoep and maxphotoep and minphotoep != maxphotoep
-             ) else ((',' + minphotoep) if minphotoep and maxphotoep else '')))
-    if radioavail:
-        catalog[entry]['radiolink'] = str(numradio)
-    if xrayavail:
-        catalog[entry]['xraylink'] = str(numxray)
-    if spectraavail:
-        catalog[entry]['spectralink'] = (str(numspectra) + (
-            (',' + minspectraep + ',' + maxspectraep)
-            if (minspectraep and maxspectraep and minspectraep != maxspectraep
-                ) else ((',' + minspectraep) if minspectraep and maxspectraep else '')))
+        plotlink = modulename + "/" + fileeventname + "/"
+        if photoavail:
+            catalog[entry]['photolink'] = (str(numphoto) + (
+                (',' + minphotoep + ',' + maxphotoep) if
+                (minphotoep and maxphotoep and minphotoep != maxphotoep
+                 ) else ((',' + minphotoep) if minphotoep and maxphotoep else '')))
+        if radioavail:
+            catalog[entry]['radiolink'] = str(numradio)
+        if xrayavail:
+            catalog[entry]['xraylink'] = str(numxray)
+        if spectraavail:
+            catalog[entry]['spectralink'] = (str(numspectra) + (
+                (',' + minspectraep + ',' + maxspectraep)
+                if (minspectraep and maxspectraep and minspectraep != maxspectraep
+                    ) else ((',' + minspectraep) if minspectraep and maxspectraep else '')))
 
-    prange = list(range(len(catalog[entry][
-        'photometry']))) if 'photometry' in catalog[entry] else []
+        prange = list(range(len(catalog[entry][
+            'photometry']))) if 'photometry' in catalog[entry] else []
 
-    instrulist = sorted([
-        _f
-        for _f in list({
-            catalog[entry]['photometry'][x]['instrument']
-            if 'instrument' in catalog[entry]['photometry'][x] else None
-            for x in prange
-        }) if _f
-    ])
-    if len(instrulist) > 0:
-        instruments = ''
-        for i, instru in enumerate(instrulist):
-            instruments += instru
-            bandlist = sorted(
+        instrulist = sorted([
+            _f
+            for _f in list({
+                catalog[entry]['photometry'][x]['instrument']
+                if 'instrument' in catalog[entry]['photometry'][x] and 'realization' not in catalog[entry]['photometry'][x] else None
+                for x in prange
+            }) if _f
+        ])
+        if len(instrulist) > 0:
+            instruments = ''
+            for i, instru in enumerate(instrulist):
+                instruments += instru
+                bandlist = sorted(
+                    [
+                        _f
+                        for _f in list({
+                            bandshortaliasf(catalog[entry]['photometry'][x][
+                                'band'] if 'band' in catalog[entry]['photometry'][
+                                    x] else '') if 'instrument' in catalog[entry]
+                            ['photometry'][x] and catalog[entry]['photometry'][x][
+                                'instrument'] == instru else ""
+                            for x in prange
+                        }) if _f
+                    ],
+                    key=lambda y: (bandwavef(y), y))
+                if bandlist:
+                    instruments += ' (' + ", ".join(bandlist) + ')'
+                if i < len(instrulist) - 1:
+                    instruments += ', '
+
+            # Now add bands without attached instrument
+            obandlist = sorted(
                 [
                     _f
                     for _f in list({
-                        bandshortaliasf(catalog[entry]['photometry'][x][
-                            'band'] if 'band' in catalog[entry]['photometry'][
-                                x] else '') if 'instrument' in catalog[entry]
-                        ['photometry'][x] and catalog[entry]['photometry'][x][
-                            'instrument'] == instru else ""
+                        bandshortaliasf(catalog[entry]['photometry'][x]['band']
+                                        if 'band' in catalog[entry]['photometry'][
+                                            x] else '') if 'instrument' not in
+                        catalog[entry]['photometry'][x] else ""
                         for x in prange
                     }) if _f
                 ],
                 key=lambda y: (bandwavef(y), y))
-            if bandlist:
-                instruments += ' (' + ", ".join(bandlist) + ')'
-            if i < len(instrulist) - 1:
-                instruments += ', '
+            if obandlist:
+                instruments += ", " + ", ".join(obandlist)
+            catalog[entry]['instruments'] = instruments
+        else:
+            bandlist = sorted(
+                [
+                    _f
+                    for _f in list({
+                        bandshortaliasf(catalog[entry]['photometry'][x]['band']
+                                        if 'band' in catalog[entry]['photometry'][
+                                            x] else '')
+                        for x in prange
+                    }) if _f
+                ],
+                key=lambda y: (bandwavef(y), y))
+            if len(bandlist) > 0:
+                catalog[entry]['instruments'] = ", ".join(bandlist)
 
-        # Now add bands without attached instrument
-        obandlist = sorted(
-            [
-                _f
-                for _f in list({
-                    bandshortaliasf(catalog[entry]['photometry'][x]['band']
-                                    if 'band' in catalog[entry]['photometry'][
-                                        x] else '') if 'instrument' not in
-                    catalog[entry]['photometry'][x] else ""
-                    for x in prange
-                }) if _f
-            ],
-            key=lambda y: (bandwavef(y), y))
-        if obandlist:
-            instruments += ", " + ", ".join(obandlist)
-        catalog[entry]['instruments'] = instruments
-    else:
-        bandlist = sorted(
-            [
-                _f
-                for _f in list({
-                    bandshortaliasf(catalog[entry]['photometry'][x]['band']
-                                    if 'band' in catalog[entry]['photometry'][
-                                        x] else '')
-                    for x in prange
-                }) if _f
-            ],
-            key=lambda y: (bandwavef(y), y))
-        if len(bandlist) > 0:
-            catalog[entry]['instruments'] = ", ".join(bandlist)
+        tools = "pan,wheel_zoom,box_zoom,save,crosshair,reset,resize"
 
-    tools = "pan,wheel_zoom,box_zoom,save,crosshair,reset,resize"
+        # Check file modification times before constructing .html files, which is
+        # expensive
+        dohtml = True
+        if not args.forcehtml:
+            if os.path.isfile(outdir + htmldir + fileeventname + ".html"):
+                if not entry_changed:
+                    dohtml = False
 
-    # Check file modification times before constructing .html files, which is
-    # expensive
-    dohtml = True
-    if not args.forcehtml:
-        if os.path.isfile(outdir + htmldir + fileeventname + ".html"):
-            if not entry_changed:
-                dohtml = False
+        # Copy JSON files up a directory if they've changed
+        if dohtml:
+            shutil.copy2(eventfile, outdir + jsondir + os.path.basename(eventfile))
 
-    # Copy JSON files up a directory if they've changed
-    if dohtml:
-        shutil.copy2(eventfile, outdir + jsondir + os.path.basename(eventfile))
+        if (photoavail or radioavail or xrayavail) and dohtml and args.writehtml:
+            phototime = [
+                (mean([float(y) for y in x['time']])
+                 if isinstance(x['time'], list) else float(x['time']))
+                for x in catalog[entry]['photometry']
+                if any([y in x for y in [
+                    'fluxdensity', 'magnitude', 'flux', 'unabsorbedflux', 'countrate']])
+            ]
+            phototimelowererrs = [
+                float(x['e_lower_time'])
+                if ('e_lower_time' in x and 'e_upper_time' in x) else
+                (float(x['e_time']) if 'e_time' in x else 0.)
+                for x in catalog[entry]['photometry']
+                if any([y in x for y in [
+                    'fluxdensity', 'magnitude', 'flux', 'unabsorbedflux', 'countrate']])
+            ]
+            phototimeuppererrs = [
+                float(x['e_upper_time'])
+                if ('e_lower_time' in x and 'e_upper_time' in x) in x else
+                (float(x['e_time']) if 'e_time' in x else 0.)
+                for x in catalog[entry]['photometry']
+                if any([y in x for y in [
+                    'fluxdensity', 'magnitude', 'flux', 'unabsorbedflux', 'countrate']])
+            ]
+            mmphototime = [
+                (mean([float(y) for y in x['time']])
+                 if isinstance(x['time'], list) else float(x['time']))
+                for x in catalog[entry]['photometry']
+                if (any([y in x for y in [
+                    'fluxdensity', 'magnitude', 'flux', 'unabsorbedflux', 'countrate']]) and
+                    'upperlimit' not in x and 'includeshost' not in x)
+            ]
+            mmphototimelowererrs = [
+                float(x['e_lower_time'])
+                if ('e_lower_time' in x and 'e_upper_time' in x) else
+                (float(x['e_time']) if 'e_time' in x else 0.)
+                for x in catalog[entry]['photometry']
+                if (any([y in x for y in [
+                    'fluxdensity', 'magnitude', 'flux', 'unabsorbedflux', 'countrate']]) and
+                    'upperlimit' not in x and 'includeshost' not in x)
+            ]
+            mmphototimeuppererrs = [
+                float(x['e_upper_time'])
+                if ('e_lower_time' in x and 'e_upper_time' in x) in x else
+                (float(x['e_time']) if 'e_time' in x else 0.)
+                for x in catalog[entry]['photometry']
+                if (any([y in x for y in [
+                    'fluxdensity', 'magnitude', 'flux', 'unabsorbedflux', 'countrate']]) and
+                    'upperlimit' not in x and 'includeshost' not in x)
+            ]
 
-    if (photoavail or radioavail or xrayavail) and dohtml and args.writehtml:
-        phototime = [
-            (mean([float(y) for y in x['time']])
-             if isinstance(x['time'], list) else float(x['time']))
-            for x in catalog[entry]['photometry']
-            if any([y in x for y in [
-                'fluxdensity', 'magnitude', 'flux', 'unabsorbedflux', 'countrate']])
-        ]
-        phototimelowererrs = [
-            float(x['e_lower_time'])
-            if ('e_lower_time' in x and 'e_upper_time' in x) else
-            (float(x['e_time']) if 'e_time' in x else 0.)
-            for x in catalog[entry]['photometry']
-            if any([y in x for y in [
-                'fluxdensity', 'magnitude', 'flux', 'unabsorbedflux', 'countrate']])
-        ]
-        phototimeuppererrs = [
-            float(x['e_upper_time'])
-            if ('e_lower_time' in x and 'e_upper_time' in x) in x else
-            (float(x['e_time']) if 'e_time' in x else 0.)
-            for x in catalog[entry]['photometry']
-            if any([y in x for y in [
-                'fluxdensity', 'magnitude', 'flux', 'unabsorbedflux', 'countrate']])
-        ]
-        mmphototime = [
-            (mean([float(y) for y in x['time']])
-             if isinstance(x['time'], list) else float(x['time']))
-            for x in catalog[entry]['photometry']
-            if (any([y in x for y in [
-                'fluxdensity', 'magnitude', 'flux', 'unabsorbedflux', 'countrate']]) and
-                'upperlimit' not in x and 'includeshost' not in x)
-        ]
-        mmphototimelowererrs = [
-            float(x['e_lower_time'])
-            if ('e_lower_time' in x and 'e_upper_time' in x) else
-            (float(x['e_time']) if 'e_time' in x else 0.)
-            for x in catalog[entry]['photometry']
-            if (any([y in x for y in [
-                'fluxdensity', 'magnitude', 'flux', 'unabsorbedflux', 'countrate']]) and
-                'upperlimit' not in x and 'includeshost' not in x)
-        ]
-        mmphototimeuppererrs = [
-            float(x['e_upper_time'])
-            if ('e_lower_time' in x and 'e_upper_time' in x) in x else
-            (float(x['e_time']) if 'e_time' in x else 0.)
-            for x in catalog[entry]['photometry']
-            if (any([y in x for y in [
-                'fluxdensity', 'magnitude', 'flux', 'unabsorbedflux', 'countrate']]) and
-                'upperlimit' not in x and 'includeshost' not in x)
-        ]
+            if not len(mmphototime):
+                mmphototime = phototime
+                mmphototimelowererrs = phototimelowererrs
+                mmphototimeuppererrs = phototimeuppererrs
 
-        if not len(mmphototime):
-            mmphototime = phototime
-            mmphototimelowererrs = phototimelowererrs
-            mmphototimeuppererrs = phototimeuppererrs
+            max_photo_time = max(mmphototime)
+            min_photo_time = min(mmphototime)
+            x_buffer = (0.1 * (max_photo_time - min_photo_time)
+                        if max_photo_time != min_photo_time else 1.0)
 
-        max_photo_time = max(mmphototime)
-        min_photo_time = min(mmphototime)
-        x_buffer = (0.1 * (max_photo_time - min_photo_time)
-                    if max_photo_time != min_photo_time else 1.0)
+            min_x_range = -0.5 * x_buffer + \
+                min([x - y for x, y in list(zip(
+                    mmphototime, mmphototimeuppererrs))])
+            max_x_range = 2.0 * x_buffer + \
+                max([x + y for x, y in list(zip(
+                    mmphototime, mmphototimelowererrs))])
 
-        min_x_range = -0.5 * x_buffer + \
-            min([x - y for x, y in list(zip(
-                mmphototime, mmphototimeuppererrs))])
-        max_x_range = 2.0 * x_buffer + \
-            max([x + y for x, y in list(zip(
-                mmphototime, mmphototimelowererrs))])
+        if photoavail and dohtml and args.writehtml:
+            phototime = [
+                float(x['time']) for x in catalog[entry]['photometry']
+                if 'magnitude' in x and 'realization' not in x
+            ]
+            phototimelowererrs = [
+                float(x['e_lower_time'])
+                if ('e_lower_time' in x and 'e_upper_time' in x) else
+                (float(x['e_time']) if 'e_time' in x else 0.)
+                for x in catalog[entry]['photometry'] if 'magnitude' in x
+                and 'realization' not in x
+            ]
+            phototimeuppererrs = [
+                float(x['e_upper_time'])
+                if ('e_lower_time' in x and 'e_upper_time' in x) else
+                (float(x['e_time']) if 'e_time' in x else 0.)
+                for x in catalog[entry]['photometry'] if 'magnitude' in x
+                and 'realization' not in x
+            ]
+            photoAB = [
+                float(x['magnitude']) for x in catalog[entry]['photometry']
+                if 'magnitude' in x and 'realization' not in x
+            ]
+            photoABlowererrs = [
+                float(x['e_lower_magnitude'])
+                if ('e_lower_magnitude' in x) else (float(x['e_magnitude'])
+                                                    if 'e_magnitude' in x else 0.)
+                for x in catalog[entry]['photometry'] if 'magnitude' in x
+                and 'realization' not in x
+            ]
+            photoABuppererrs = [
+                float(x['e_upper_magnitude'])
+                if ('e_upper_magnitude' in x) else (float(x['e_magnitude'])
+                                                    if 'e_magnitude' in x else 0.)
+                for x in catalog[entry]['photometry'] if 'magnitude' in x
+                and 'realization' not in x
+            ]
+            photoband = [(bandaliasf(x['band']) if 'band' in x else '?')
+                         for x in catalog[entry]['photometry'] if 'magnitude' in x
+                         and 'realization' not in x]
+            photoinstru = [(x['instrument'] if 'instrument' in x else '')
+                           for x in catalog[entry]['photometry']
+                           if 'magnitude' in x and 'realization' not in x]
+            photosource = [
+                ', '.join(
+                    str(j)
+                    for j in sorted(int(i) for i in x['source'].split(',')))
+                for x in catalog[entry]['photometry'] if 'magnitude' in x
+                and 'realization' not in x
+            ]
+            phototype = [(x['upperlimit'] if 'upperlimit' in x else False)
+                         for x in catalog[entry]['photometry'] if 'magnitude' in x
+                         and 'realization' not in x]
+            photocorr = [('kcorr' if 'kcorrected' in x else 'scorr' if 'scorrected' in x else 'raw')
+                         for x in catalog[entry]['photometry'] if 'magnitude' in x
+                         and 'realization' not in x]
 
-    if photoavail and dohtml and args.writehtml:
-        phototime = [
-            float(x['time']) for x in catalog[entry]['photometry']
-            if 'magnitude' in x and 'realization' not in x
-        ]
-        phototimelowererrs = [
-            float(x['e_lower_time'])
-            if ('e_lower_time' in x and 'e_upper_time' in x) else
-            (float(x['e_time']) if 'e_time' in x else 0.)
-            for x in catalog[entry]['photometry'] if 'magnitude' in x
-            and 'realization' not in x
-        ]
-        phototimeuppererrs = [
-            float(x['e_upper_time'])
-            if ('e_lower_time' in x and 'e_upper_time' in x) else
-            (float(x['e_time']) if 'e_time' in x else 0.)
-            for x in catalog[entry]['photometry'] if 'magnitude' in x
-            and 'realization' not in x
-        ]
-        photoAB = [
-            float(x['magnitude']) for x in catalog[entry]['photometry']
-            if 'magnitude' in x and 'realization' not in x
-        ]
-        photoABlowererrs = [
-            float(x['e_lower_magnitude'])
-            if ('e_lower_magnitude' in x) else (float(x['e_magnitude'])
-                                                if 'e_magnitude' in x else 0.)
-            for x in catalog[entry]['photometry'] if 'magnitude' in x
-            and 'realization' not in x
-        ]
-        photoABuppererrs = [
-            float(x['e_upper_magnitude'])
-            if ('e_upper_magnitude' in x) else (float(x['e_magnitude'])
-                                                if 'e_magnitude' in x else 0.)
-            for x in catalog[entry]['photometry'] if 'magnitude' in x
-            and 'realization' not in x
-        ]
-        photoband = [(bandaliasf(x['band']) if 'band' in x else '?')
-                     for x in catalog[entry]['photometry'] if 'magnitude' in x
-                     and 'realization' not in x]
-        photoinstru = [(x['instrument'] if 'instrument' in x else '')
-                       for x in catalog[entry]['photometry']
-                       if 'magnitude' in x and 'realization' not in x]
-        photosource = [
-            ', '.join(
-                str(j)
-                for j in sorted(int(i) for i in x['source'].split(',')))
-            for x in catalog[entry]['photometry'] if 'magnitude' in x
-            and 'realization' not in x
-        ]
-        phototype = [(x['upperlimit'] if 'upperlimit' in x else False)
-                     for x in catalog[entry]['photometry'] if 'magnitude' in x
-                     and 'realization' not in x]
-        photocorr = [('kcorr' if 'kcorrected' in x else 'scorr' if 'scorrected' in x else 'raw')
-                     for x in catalog[entry]['photometry'] if 'magnitude' in x
-                     and 'realization' not in x]
+            isdetection = phototype.count(False)
 
-        photoutime = catalog[entry]['photometry'][0][
-            'u_time'] if 'u_time' in catalog[entry]['photometry'][0] else 'MJD'
-        hastimeerrs = (len(list(filter(None, phototimelowererrs))) and
-                       len(list(filter(None, phototimeuppererrs))))
-        hasABerrs = (len(list(filter(None, photoABlowererrs))) and
-                     len(list(filter(None, photoABuppererrs))))
-        tt = [("Source ID(s)", "@src"),
-              ("Epoch (" + photoutime + ")",
-               "@x{1.11}" + ("<sub>-@xle{1}</sub><sup>+@xue{1}</sup>"
-                             if hastimeerrs else ""))]
-        tt += [("Apparent Magnitude",
-                "@y{1.111}" + ("<sub>-@uerr{1.11}</sub><sup>+@lerr{1.11}</sup>"
-                               if hasABerrs else ""))]
-        if 'maxabsmag' in catalog[entry] and 'maxappmag' in catalog[entry]:
-            tt += [("Absolute Magnitude", "@yabs{1.111}" +
-                    ("<sub>-@uerr{1.11}</sub><sup>+@lerr{1.11}</sup>"
-                     if hasABerrs else ""))]
-        if len(list(filter(None, photoband))):
-            tt += [("Band", "@desc")]
-        if len(list(filter(None, photoinstru))):
-            tt += [("Instrument", "@instr")]
+            photoutime = catalog[entry]['photometry'][0][
+                'u_time'] if 'u_time' in catalog[entry]['photometry'][0] else 'MJD'
+            hastimeerrs = (len(list(filter(None, phototimelowererrs))) and
+                           len(list(filter(None, phototimeuppererrs))))
+            hasABerrs = (len(list(filter(None, photoABlowererrs))) and
+                         len(list(filter(None, photoABuppererrs))))
+            tt = [("Source ID(s)", "@src"),
+                  ("Epoch (" + photoutime + ")",
+                   "@x{1.11}" + ("<sub>-@xle{1}</sub><sup>+@xue{1}</sup>"
+                                 if hastimeerrs else ""))]
+            tt += [("Apparent Magnitude",
+                    "@y{1.111}" + ("<sub>-@uerr{1.11}</sub><sup>+@lerr{1.11}</sup>"
+                                   if hasABerrs else ""))]
+            if 'maxabsmag' in catalog[entry] and 'maxappmag' in catalog[entry]:
+                tt += [("Absolute Magnitude", "@yabs{1.111}" +
+                        ("<sub>-@uerr{1.11}</sub><sup>+@lerr{1.11}</sup>"
+                         if hasABerrs else ""))]
+            if len(list(filter(None, photoband))):
+                tt += [("Band", "@desc")]
+            if len(list(filter(None, photoinstru))):
+                tt += [("Instrument", "@instr")]
 
-        min_y_range = 0.5 + (max([
-            (x + y) if not z else x
-            for x, y, z in list(zip(photoAB, photoABuppererrs, phototype))
-        ]) if len(photoAB) else 25.0)
-        max_y_range = -0.5 + (min([
-            (x - y) if not z else x
-            for x, y, z in list(zip(photoAB, photoABlowererrs, phototype))
-        ]) if len(photoAB) else 10.0)
+            min_y_range = 0.5 + (max(list(filter(None, [
+                (x + y) if not z else (None if isdetection else x)
+                for x, y, z in list(zip(photoAB, photoABuppererrs, phototype))
+            ]))) if len(photoAB) else 25.0)
+            max_y_range = -0.5 + (min(list(filter(None, [
+                (x - y) if not z else (None if isdetection else x)
+                for x, y, z in list(zip(photoAB, photoABlowererrs, phototype))
+            ]))) if len(photoAB) else 10.0)
 
-        p1 = Figure(
-            title='Photometry for ' + eventname,
-            active_drag='box_zoom',
-            # sizing_mode = "scale_width",
-            y_axis_label='Apparent Magnitude',
-            tools=tools,
-            plot_width=485,
-            plot_height=485,
-            x_range=(min_x_range, max_x_range),
-            y_range=(min_y_range, max_y_range),
-            toolbar_location='above',
-            toolbar_sticky=False)
-        p1.xaxis.axis_label_text_font = 'futura'
-        p1.yaxis.axis_label_text_font = 'futura'
-        p1.xaxis.major_label_text_font = 'futura'
-        p1.yaxis.major_label_text_font = 'futura'
-        p1.xaxis.axis_label_text_font_size = '11pt'
-        p1.yaxis.axis_label_text_font_size = '11pt'
-        p1.xaxis.major_label_text_font_size = '8pt'
-        p1.yaxis.major_label_text_font_size = '8pt'
-        p1.title.align = 'center'
-        p1.title.text_font_size = '16pt'
-        p1.title.text_font = 'futura'
+            bandset = list(set(photoband))
+            bandsortlists = sorted(
+                list(
+                    zip(
+                        list(map(bandgroupf, bandset)),
+                        list(map(bandwavef, bandset)), bandset)))
+            bandset = [i for (k, j, i) in bandsortlists]
 
-        min_x_date = astrotime(min_x_range, format='mjd').datetime
-        max_x_date = astrotime(max_x_range, format='mjd').datetime
+            p1 = Figure(
+                title='Photometry for ' + eventname,
+                active_drag='box_zoom',
+                # sizing_mode = "scale_width",
+                y_axis_label='Apparent Magnitude',
+                tools=tools,
+                plot_width=485,
+                plot_height=max(485, legy + len(bandset)*legh),
+                x_range=(min_x_range, max_x_range),
+                y_range=(min_y_range, max_y_range),
+                toolbar_location='above',
+                toolbar_sticky=False)
+            p1.xaxis.axis_label_text_font = 'futura'
+            p1.yaxis.axis_label_text_font = 'futura'
+            p1.xaxis.major_label_text_font = 'futura'
+            p1.yaxis.major_label_text_font = 'futura'
+            p1.xaxis.axis_label_text_font_size = '11pt'
+            p1.yaxis.axis_label_text_font_size = '11pt'
+            p1.xaxis.major_label_text_font_size = '8pt'
+            p1.yaxis.major_label_text_font_size = '8pt'
+            p1.title.align = 'center'
+            p1.title.text_font_size = '16pt'
+            p1.title.text_font = 'futura'
 
-        p1.extra_x_ranges = {
-            "gregorian date": Range1d(
-                start=min_x_date, end=max_x_date)
-        }
-        p1.add_layout(
-            DatetimeAxis(
-                major_label_text_font_size='8pt',
-                axis_label='Time (' + photoutime + '/Gregorian)',
-                major_label_text_font='futura',
-                axis_label_text_font='futura',
-                major_tick_in=0,
-                x_range_name="gregorian date",
-                axis_label_text_font_size='11pt'),
-            'below')
+            min_x_date = astrotime(min_x_range, format='mjd').datetime
+            max_x_date = astrotime(max_x_range, format='mjd').datetime
 
-        if mjdmax:
-            min_xm_range = (min_x_range - mjdmax) * redshiftfactor
-            max_xm_range = (max_x_range - mjdmax) * redshiftfactor
-            p1.extra_x_ranges["time since max"] = Range1d(
-                start=min_xm_range, end=max_xm_range)
-            p1.add_layout(
-                LinearAxis(
-                    axis_label="Time since max (" + dayframe + ")",
-                    major_label_text_font_size='8pt',
-                    major_label_text_font='futura',
-                    axis_label_text_font='futura',
-                    x_range_name="time since max",
-                    axis_label_text_font_size='11pt'),
-                'above')
-
-        if 'maxabsmag' in catalog[entry] and 'maxappmag' in catalog[entry]:
-            min_y_absmag = min_y_range - distancemod
-            max_y_absmag = max_y_range - distancemod
-            p1.extra_y_ranges = {
-                "abs mag": Range1d(
-                    start=min_y_absmag, end=max_y_absmag)
+            p1.extra_x_ranges = {
+                "gregorian date": Range1d(
+                    start=min_x_date, end=max_x_date)
             }
             p1.add_layout(
-                LinearAxis(
-                    axis_label="Absolute Magnitude*",
+                DatetimeAxis(
                     major_label_text_font_size='8pt',
+                    axis_label='Time (' + photoutime + '/Gregorian)',
                     major_label_text_font='futura',
                     axis_label_text_font='futura',
-                    y_range_name="abs mag",
+                    major_tick_in=0,
+                    x_range_name="gregorian date",
                     axis_label_text_font_size='11pt'),
-                'right')
+                'below')
 
-        # Realizations
-        models = catalog[entry].get('models', [])
-        modelnames = [x.get('name', str(mi)) for mi, x in enumerate(models)]
-        rglyphs = []
-        rsources = []
-        msources = []
-        for mi, model in enumerate(models):
-            nrealiz = min(10, len(model.get('realizations', [])))
-            if nrealiz > 0:
-                realiztime = [
-                    float(x['time']) for x in catalog[entry]['photometry']
-                    if 'magnitude' in x and 'realization' in x
-                ]
-                realizAB = [
-                    float(x['magnitude']) for x in catalog[entry]['photometry']
-                    if 'magnitude' in x and 'realization' in x
-                ]
-                realizband = [(bandaliasf(x['band']) if 'band' in x else '?')
-                              for x in catalog[entry]['photometry'] if 'magnitude' in x
-                              and 'realization' in x]
-                realizinstru = [(x['instrument'] if 'instrument' in x else '')
-                                for x in catalog[entry]['photometry']
-                                if 'magnitude' in x and 'realization' in x]
-                realizsource = [
-                    ', '.join(
-                        str(j)
-                        for j in sorted(int(i) for i in x['source'].split(',')))
-                    for x in catalog[entry]['photometry'] if 'magnitude' in x
-                    and 'realization' in x
-                ]
-                realiznum = [
-                    int(x['realization']) for x in catalog[entry]['photometry']
-                    if 'magnitude' in x and 'realization' in x
-                ]
+            if mjdmax:
+                min_xm_range = (min_x_range - mjdmax) * redshiftfactor
+                max_xm_range = (max_x_range - mjdmax) * redshiftfactor
+                p1.extra_x_ranges["time since max"] = Range1d(
+                    start=min_xm_range, end=max_xm_range)
+                p1.add_layout(
+                    LinearAxis(
+                        axis_label="Time since max (" + dayframe + ")",
+                        major_label_text_font_size='8pt',
+                        major_label_text_font='futura',
+                        axis_label_text_font='futura',
+                        x_range_name="time since max",
+                        axis_label_text_font_size='11pt'),
+                    'above')
 
-                realizbandset = list(set(realizband))
-                realizinstset = list(set(realizinstru))
-                for rz in range(nrealiz):
-                    for rzb in realizbandset:
-                        for rzi in realizinstset:
-                            pdata = list(zip(*[[x, y, z, s, n, i] for x, y, z, s, n, i in
-                                               zip(realiztime, realizAB, realizband,
-                                                   realizsource, realiznum, realizinstru)
-                                               if n == rz and z == rzb and i == rzi]))
-                            if len(pdata):
-                                data = dict(
-                                    x=pdata[0],
-                                    y=pdata[1],
-                                    desc=pdata[2],
-                                    src=pdata[3],
-                                    realiz=pdata[4])
-                                if 'maxabsmag' in catalog[
-                                        entry] and 'maxappmag' in catalog[entry]:
-                                    data['yabs'] = [
-                                        x - distancemod for x in pdata[1]
-                                    ]
-                                rsources.append(ColumnDataSource(data))
-                                rglyphs.append(p1.line(
-                                    'x', 'y', source=rsources[-1], line_width=1, color=bandcolorf(rzb), line_alpha=0.5))
-                                if mi != 0:
-                                    rglyphs[-1].visible = False
-                                msources.append(ColumnDataSource({'id': [mi]}))
-
-                                # Only display the first instrument for a given band.
-                                break
-
-        if len(models) > 0:
-            rtt = [("Source ID(s)", "@src"),
-                   ("Realization #", "@realiz"),
-                   ("Epoch (" + photoutime + ")", "@x{1.11}"),
-                   ("Apparent Magnitude", "@y{1.111}")]
             if 'maxabsmag' in catalog[entry] and 'maxappmag' in catalog[entry]:
-                rtt += [("Absolute Magnitude", "@yabs{1.111}")]
-            rtt += [("Band", "@desc")]
+                min_y_absmag = min_y_range - distancemod
+                max_y_absmag = max_y_range - distancemod
+                p1.extra_y_ranges = {
+                    "abs mag": Range1d(
+                        start=min_y_absmag, end=max_y_absmag)
+                }
+                p1.add_layout(
+                    LinearAxis(
+                        axis_label="Absolute Magnitude*",
+                        major_label_text_font_size='8pt',
+                        major_label_text_font='futura',
+                        axis_label_text_font='futura',
+                        y_range_name="abs mag",
+                        axis_label_text_font_size='11pt'),
+                    'right')
 
-            realizdicts = {}
-            mdicts = {}
-            for rgi, rg in enumerate(rglyphs):
-                realizdicts['rg' + str(rgi)] = rg
-                mdicts['m' + str(rgi)] = msources[rgi]
+            # Realizations
+            models = catalog[entry].get('models', [])
+            modelnames = [x.get('name', str(mi)) for mi, x in enumerate(models)]
+            rglyphs = []
+            rsources = []
+            msources = []
+            for mi, model in enumerate(models):
+                nrealiz = min(10, len(model.get('realizations', [])))
+                if nrealiz > 0:
+                    realiztime = [
+                        float(x['time']) for x in catalog[entry]['photometry']
+                        if 'magnitude' in x and 'realization' in x
+                    ]
+                    realizAB = [
+                        float(x['magnitude']) for x in catalog[entry]['photometry']
+                        if 'magnitude' in x and 'realization' in x
+                    ]
+                    realizband = [(bandaliasf(x['band']) if 'band' in x else '?')
+                                  for x in catalog[entry]['photometry'] if 'magnitude' in x
+                                  and 'realization' in x]
+                    realizinstru = [(x['instrument'] if 'instrument' in x else '')
+                                    for x in catalog[entry]['photometry']
+                                    if 'magnitude' in x and 'realization' in x]
+                    realizsource = [
+                        ', '.join(
+                            str(j)
+                            for j in sorted(int(i) for i in x['source'].split(',')))
+                        for x in catalog[entry]['photometry'] if 'magnitude' in x
+                        and 'realization' in x
+                    ]
+                    realiznum = [
+                        int(x['realization']) for x in catalog[entry]['photometry']
+                        if 'magnitude' in x and 'realization' in x
+                    ]
+
+                    realizbandset = list(set(realizband))
+                    realizinstset = list(set(realizinstru))
+                    for rz in range(nrealiz):
+                        for rzb in realizbandset:
+                            for rzi in realizinstset:
+                                pdata = list(zip(*[[x, y, z, s, n, i] for x, y, z, s, n, i in
+                                                   zip(realiztime, realizAB, realizband,
+                                                       realizsource, realiznum, realizinstru)
+                                                   if n == rz and z == rzb and i == rzi]))
+                                if len(pdata):
+                                    data = dict(
+                                        x=pdata[0],
+                                        y=pdata[1],
+                                        desc=pdata[2],
+                                        src=pdata[3],
+                                        realiz=pdata[4])
+                                    if 'maxabsmag' in catalog[
+                                            entry] and 'maxappmag' in catalog[entry]:
+                                        data['yabs'] = [
+                                            x - distancemod for x in pdata[1]
+                                        ]
+                                    rsources.append(ColumnDataSource(data))
+                                    rglyphs.append(p1.line(
+                                        'x', 'y', source=rsources[-1], line_width=1, color=bandcolorf(rzb), line_alpha=0.5))
+                                    if mi != 0:
+                                        rglyphs[-1].visible = False
+                                    msources.append(ColumnDataSource({'id': [mi]}))
+
+                                    # Only display the first instrument for a given band.
+                                    break
+
+            if len(models) > 0:
+                rtt = [("Source ID(s)", "@src"),
+                       ("Realization #", "@realiz"),
+                       ("Epoch (" + photoutime + ")", "@x{1.11}"),
+                       ("Apparent Magnitude", "@y{1.111}")]
+                if 'maxabsmag' in catalog[entry] and 'maxappmag' in catalog[entry]:
+                    rtt += [("Absolute Magnitude", "@yabs{1.111}")]
+                rtt += [("Band", "@desc")]
+
+                realizdicts = {}
+                mdicts = {}
+                for rgi, rg in enumerate(rglyphs):
+                    realizdicts['rg' + str(rgi)] = rg
+                    mdicts['m' + str(rgi)] = msources[rgi]
+                sdicts = dict(
+                    zip(['s' + str(x) for x in range(len(rsources))], rsources))
+                realizdicts.update(sdicts)
+                realizdicts.update(mdicts)
+                realizcallback = CustomJS(
+                    args=realizdicts,
+                    code="""
+                    var mis = parseInt(cb_obj.get('value'));
+                    console.log(mis);
+                    for (g = 0; g < """ + str(len(rglyphs)) + """; g++) {
+                        var m = eval('m'+g).data['id'][0];
+                        eval('rg' + g).visible = (m == mis);
+                    }
+                """)
+                realizchecks = Select(
+                    title="Model to compare to data:",
+                    value="0",
+                    options=[(str(i), x)
+                             for i, x in enumerate(modelnames)] + [("-1", "None")],
+                    callback=realizcallback)
+            # End realizations
+
+            xs = []
+            ys = []
+            err_xs = []
+            err_ys = []
+
+            for x, y, xlowerr, xupperr, ylowerr, yupperr in list(
+                    zip(phototime, photoAB, phototimelowererrs, phototimeuppererrs,
+                        photoABlowererrs, photoABuppererrs)):
+                xs.append(x)
+                ys.append(y)
+                err_xs.append((x - xlowerr, x + xupperr))
+                err_ys.append((y - yupperr, y + ylowerr))
+
+            sources = []
+            corrects = ['raw', 'kcorr', 'scorr']
+            glyphs = [[] for x in range(len(corrects))]
+            ttglyphs = [[] for x in range(len(corrects))]
+            for ci, corr in enumerate(corrects):
+                for band in bandset:
+                    bandname = bandaliasf(band)
+                    indb = [i for i, j in enumerate(photoband) if j == band]
+                    indt = [i for i, j in enumerate(phototype) if not j]
+                    indnex = [
+                        i for i, j in enumerate(phototimelowererrs) if j == 0.
+                    ]
+                    indyex = [
+                        i for i, j in enumerate(phototimelowererrs) if j > 0.
+                    ]
+                    indney = [i for i, j in enumerate(photoABuppererrs) if j == 0.]
+                    indyey = [i for i, j in enumerate(photoABuppererrs) if j > 0.]
+                    indc = [i for i, j in enumerate(photocorr) if j == corr]
+                    indne = set(indb).intersection(indt).intersection(
+                        indc).intersection(indney).intersection(indnex)
+                    indye = set(indb).intersection(indt).intersection(
+                        indc).intersection(set(indyey).union(indyex))
+
+                    indt = [i for i, j in enumerate(phototype) if j]
+                    ind = set(indb).intersection(indt).intersection(indc)
+                    if ind:
+                        data = dict(
+                            x=[phototime[i] for i in ind],
+                            y=[photoAB[i] for i in ind],
+                            lerr=[photoABlowererrs[i] for i in ind],
+                            uerr=[photoABuppererrs[i] for i in ind],
+                            desc=[photoband[i] for i in ind],
+                            instr=[photoinstru[i] for i in ind],
+                            src=[photosource[i] for i in ind])
+                        if 'maxabsmag' in catalog[
+                                entry] and 'maxappmag' in catalog[entry]:
+                            data['yabs'] = [photoAB[i] - distancemod for i in ind]
+                        if hastimeerrs:
+                            data['xle'] = [phototimelowererrs[i] for i in ind]
+                            data['xue'] = [phototimeuppererrs[i] for i in ind]
+
+                        sources.append(ColumnDataSource(data))
+                        # Currently Bokeh doesn't support tooltips for
+                        # inverted_triangle, so hide an invisible circle behind for the
+                        # tooltip
+                        glyphs[ci].append(
+                            p1.circle(
+                                'x', 'y', source=sources[-1], alpha=0.0, size=7))
+                        ttglyphs[ci].append(glyphs[ci][-1])
+                        uppdict = {
+                            'source': sources[-1],
+                            'color': bandcolorf(band),
+                            'size': 7
+                        }
+                        uppdict['legend'] = value(bandname) if bandname else ''
+                        glyphs[ci].append(
+                            p1.inverted_triangle('x', 'y', **uppdict))
+                        uppdict['color'] = 'white'
+                        uppdict['size'] = 10
+                        del(uppdict['source'])
+                        glyphs[ci].append(
+                            p1.inverted_triangle([None], [None], **uppdict))
+                        ttglyphs[ci].append(glyphs[ci][-1])
+
+                    if indne:
+                        noerrorlegend = value(bandname)
+
+                        data = dict(
+                            x=[phototime[i] for i in indne],
+                            y=[photoAB[i] for i in indne],
+                            lerr=[photoABlowererrs[i] for i in indne],
+                            uerr=[photoABuppererrs[i] for i in indne],
+                            desc=[photoband[i] for i in indne],
+                            instr=[photoinstru[i] for i in indne],
+                            src=[photosource[i] for i in indne])
+                        if 'maxabsmag' in catalog[
+                                entry] and 'maxappmag' in catalog[entry]:
+                            data['yabs'] = [
+                                photoAB[i] - distancemod for i in indne
+                            ]
+                        if hastimeerrs:
+                            data['xle'] = [phototimelowererrs[i] for i in indne]
+                            data['xue'] = [phototimeuppererrs[i] for i in indne]
+
+                        sources.append(ColumnDataSource(data))
+                        glyphs[ci].append(
+                            p1.circle(
+                                'x',
+                                'y',
+                                source=sources[-1],
+                                color=bandcolorf(band),
+                                fill_color="white",
+                                legend=noerrorlegend,
+                                size=4))
+                        ttglyphs[ci].append(glyphs[ci][-1])
+
+                    if indye:
+                        data = dict(
+                            x=[phototime[i] for i in indye],
+                            y=[photoAB[i] for i in indye],
+                            lerr=[photoABlowererrs[i] for i in indye],
+                            uerr=[photoABuppererrs[i] for i in indye],
+                            desc=[photoband[i] for i in indye],
+                            instr=[photoinstru[i] for i in indye],
+                            src=[photosource[i] for i in indye])
+                        if 'maxabsmag' in catalog[
+                                entry] and 'maxappmag' in catalog[entry]:
+                            data['yabs'] = [
+                                photoAB[i] - distancemod for i in indye
+                            ]
+                        if hastimeerrs:
+                            data['xle'] = [phototimelowererrs[i] for i in indye]
+                            data['xue'] = [phototimeuppererrs[i] for i in indye]
+
+                        sources.append(ColumnDataSource(data))
+                        glyphs[ci].append(
+                            p1.multi_line(
+                                [err_xs[x] for x in indye], [[ys[x], ys[x]]
+                                                             for x in indye],
+                                color=bandcolorf(band),
+                                legend=value(bandname) if bandname else ''))
+                        glyphs[ci].append(
+                            p1.multi_line(
+                                [[xs[x], xs[x]]
+                                 for x in indye], [err_ys[x] for x in indye],
+                                color=bandcolorf(band),
+                                legend=value(bandname) if bandname else ''))
+                        # To hide the extra legend glyph
+                        glyphs[ci].append(
+                            p1.multi_line(
+                                [[]], [[]],
+                                color='white',
+                                line_width=2,
+                                line_cap='square',
+                                legend=value(bandname) if bandname else ''))
+                        glyphs[ci].append(
+                            p1.circle(
+                                'x',
+                                'y',
+                                source=sources[-1],
+                                color=bandcolorf(band),
+                                legend=value(bandname) if bandname else '',
+                                size=4))
+                        ttglyphs[ci].append(glyphs[ci][-1])
+
+                for gi, gly in enumerate(glyphs[ci]):
+                    if corr != 'raw':
+                        glyphs[ci][gi].visible = False
+
+            p1.legend.label_text_font = 'futura'
+            p1.legend.label_text_font_size = '8pt'
+            p1.legend.label_width = 20
+            p1.legend.label_height = 12
+            p1.legend.glyph_height = 12
+            p1.legend.spacing = 0
+            p1.legend.click_policy = "hide"
+
+            hover = HoverTool(
+                tooltips=tt, renderers=[x for y in ttglyphs for x in y])
+            p1.add_tools(hover)
+            if len(rglyphs) > 0:
+                hover2 = HoverTool(
+                    tooltips=rtt, renderers=rglyphs, line_policy='interp')
+                p1.add_tools(hover2)
+
+            if any([x != 'raw' for x in photocorr]):
+                photodicts = {}
+                for ci, corr in enumerate(corrects):
+                    for gi, gly in enumerate(glyphs[ci]):
+                        photodicts[corr + str(gi)] = gly
+                sdicts = dict(
+                    zip(['source' + str(x) for x in range(len(sources))], sources))
+                photodicts.update(sdicts)
+                photocallback = CustomJS(
+                    args=photodicts,
+                    code="""
+                    var show = 'all';
+                    if (cb_obj.get('value') == 'Raw') {
+                        show = 'raw';
+                    } else if (cb_obj.get('value') == 'K-Corrected') {
+                        show = 'kcorr';
+                    } else if (cb_obj.get('value') == 'S-Corrected') {
+                        show = 'scorr';
+                    }
+                    var corrects = ["raw", "kcorr", "scorr"];
+                    for (c = 0; c < """ + str(len(corrects)) + """; c++) {
+                        for (g = 0; g < """ + str(max([len(x) for x in glyphs])) + """; g++) {
+                            try {
+                                eval(corrects[c] + g);
+                            } catch(e) {
+                                continue;
+                            }
+                            if (show == 'all' || corrects[c] == show) {
+                                eval(corrects[c] + g).visible = true;
+                            } else {
+                                eval(corrects[c] + g).visible = false;
+                            }
+                        }
+                    }
+                """)
+                photoopts = ["Raw"]
+                if 'kcorr' in photocorr:
+                    photoopts.append("K-Corrected")
+                if 'scorr' in photocorr:
+                    photoopts.append("S-Corrected")
+                photoopts.append("All")
+                photochecks = Select(
+                    title="Photometry to show:",
+                    value="Raw",
+                    options=photoopts,
+                    callback=photocallback)
+            else:
+                photochecks = ''
+
+        if spectraavail and dohtml and args.writehtml:
+            spectrumwave = []
+            spectrumflux = []
+            spectrumerrs = []
+            spectrummjdmax = []
+            hasepoch = True
+            if 'redshift' in catalog[entry]:
+                z = float(catalog[entry]['redshift'][0]['value'])
+            catalog[entry]['spectra'] = list(
+                filter(None, [
+                    x if 'data' in x else None for x in catalog[entry]['spectra']
+                ]))
+            for spectrum in catalog[entry]['spectra']:
+                spectrumdata = deepcopy(spectrum['data'])
+                oldlen = len(spectrumdata)
+                specslice = ceil(float(len(spectrumdata)) / 10000)
+                spectrumdata = spectrumdata[::specslice]
+                spectrumdata = [
+                    x for x in spectrumdata
+                    if is_number(x[1]) and not isnan(float(x[1]))
+                ]
+                specrange = range(len(spectrumdata))
+
+                if 'deredshifted' in spectrum and spectrum[
+                        'deredshifted'] and 'redshift' in catalog[entry]:
+                    spectrumwave.append([
+                        float(spectrumdata[x][0]) * (1.0 + z) for x in specrange
+                    ])
+                else:
+                    spectrumwave.append(
+                        [float(spectrumdata[x][0]) for x in specrange])
+
+                spectrumflux.append([float(spectrumdata[x][1]) for x in specrange])
+                if 'errorunit' in spectrum:
+                    spectrumerrs.append(
+                        [float(spectrumdata[x][2]) for x in specrange])
+                    spectrumerrs[-1] = [
+                        x if is_number(x) and not isnan(float(x)) else 0.
+                        for x in spectrumerrs[-1]
+                    ]
+
+                if 'u_time' not in spectrum or 'time' not in spectrum:
+                    hasepoch = False
+
+                if 'u_time' in spectrum and 'time' in spectrum and spectrum[
+                        'u_time'] == 'MJD' and 'redshift' in catalog[
+                            entry] and mjdmax:
+                    specmjd = (float(spectrum['time']) - mjdmax) * redshiftfactor
+                    spectrummjdmax.append(specmjd)
+
+            nspec = len(catalog[entry]['spectra'])
+
+            prunedwave = []
+            prunedflux = []
+            for i in reversed(range(nspec)):
+                ri = nspec - i - 1
+                prunedwave.append([])
+                prunedflux.append([])
+                for wi, wave in enumerate(spectrumwave[i]):
+                    exclude = False
+                    if 'exclude' in catalog[entry]['spectra'][i]:
+                        for exclusion in catalog[entry]['spectra'][i]['exclude']:
+                            if 'below' in exclusion:
+                                if wave <= float(exclusion['below']):
+                                    exclude = True
+                            elif 'above' in exclusion:
+                                if wave >= float(exclusion['above']):
+                                    exclude = True
+                    if not exclude:
+                        prunedwave[ri].append(wave)
+                        prunedflux[ri].append(spectrumflux[i][wi])
+
+            prunedwave = list(reversed(prunedwave))
+            prunedflux = list(reversed(prunedflux))
+
+            prunedscaled = deepcopy(prunedflux)
+            for f, flux in enumerate(prunedscaled):
+                std = np.std(flux)
+                if std and std > 0:
+                    prunedscaled[f] = [x / std for x in flux]
+
+            y_height = 0.
+            y_offsets = [0. for x in range(nspec)]
+            for i in reversed(range(nspec)):
+                y_offsets[i] = y_height
+                if (i - 1 >= 0 and 'time' in catalog[entry]['spectra'][i] and
+                        'time' in catalog[entry]['spectra'][i - 1] and
+                        (float(catalog[entry]['spectra'][i]['time']) -
+                         float(catalog[entry]['spectra'][i - 1]['time'])) <= 0.05):
+                    ydiff = 0
+                else:
+                    ydiff = 0.8 * (max(prunedscaled[i]) - min(prunedscaled[i]))
+                prunedscaled[i] = [j + y_height for j in prunedscaled[i]]
+                y_height += ydiff
+
+            maxsw = max(list(map(max, prunedwave)))
+            minsw = min(list(map(min, prunedwave)))
+            maxfl = max(list(map(max, prunedscaled)))
+            minfl = min(list(map(min, prunedscaled)))
+            maxfldiff = max(
+                map(operator.sub,
+                    list(map(max, prunedscaled)), list(map(min, prunedscaled))))
+            x_buffer = 0.0  # 0.1*(maxsw - minsw)
+            x_range = [-x_buffer + minsw, x_buffer + maxsw]
+            y_buffer = 0.1 * maxfldiff
+            y_range = [-y_buffer + minfl, y_buffer + maxfl]
+
+            for f, flux in enumerate(prunedscaled):
+                prunedscaled[f] = [x - y_offsets[f] for x in flux]
+
+            tt2 = [("Source ID(s)", "@src")]
+            if 'redshift' in catalog[entry]:
+                tt2 += [("λ (rest)", "@xrest{1.1} Å")]
+            tt2 += [("λ (obs)", "@x{1.1} Å"), ("Flux", "@yorig"),
+                    ("Flux unit", "@fluxunit")]
+
+            if hasepoch:
+                tt2 += [("Epoch (" + spectrum['u_time'] + ")", "@epoch{1.11}")]
+
+            if mjdmax:
+                tt2 += [("Rest days to max", "@mjdmax{1.11}")]
+
+            hover = HoverTool(tooltips=tt2)
+
+            p2 = Figure(
+                title='Spectra for ' + eventname,
+                x_axis_label=label_format('Observed Wavelength (Å)'),
+                active_drag='box_zoom',
+                y_axis_label=label_format('Flux (scaled)' + (' + offset' if (
+                    nspec > 1) else '')),
+                x_range=x_range,
+                tools=tools,  # sizing_mode = "scale_width",
+                plot_width=485,
+                plot_height=485,
+                y_range=y_range,
+                toolbar_location='above',
+                toolbar_sticky=False)
+            p2.xaxis.axis_label_text_font = 'futura'
+            p2.yaxis.axis_label_text_font = 'futura'
+            p2.xaxis.major_label_text_font = 'futura'
+            p2.yaxis.major_label_text_font = 'futura'
+            p2.xaxis.axis_label_text_font_size = '11pt'
+            p2.yaxis.axis_label_text_font_size = '11pt'
+            p2.xaxis.major_label_text_font_size = '8pt'
+            p2.yaxis.major_label_text_font_size = '8pt'
+            p2.title.align = 'center'
+            p2.title.text_font_size = '16pt'
+            p2.title.text_font = 'futura'
+            p2.add_tools(hover)
+
+            sources = []
+            for i in range(len(prunedwave)):
+                sl = len(prunedscaled[i])
+                fluxunit = catalog[entry]['spectra'][i][
+                    'u_fluxes'] if 'u_fluxes' in catalog[entry]['spectra'][
+                        i] else ''
+
+                data = dict(
+                    x0=prunedwave[i],
+                    y0=prunedscaled[i],
+                    yorig=prunedflux[i],
+                    fluxunit=[label_format(fluxunit)] * sl,
+                    x=prunedwave[i],
+                    y=[y_offsets[i] + j for j in prunedscaled[i]],
+                    src=[catalog[entry]['spectra'][i]['source']] * sl)
+                if 'redshift' in catalog[entry]:
+                    data['xrest'] = [x / (1.0 + z) for x in prunedwave[i]]
+                if hasepoch:
+                    data['epoch'] = [
+                        catalog[entry]['spectra'][i]['time']
+                        for j in prunedscaled[i]
+                    ]
+                    if mjdmax and spectrummjdmax:
+                        data['mjdmax'] = [
+                            spectrummjdmax[i] for j in prunedscaled[i]
+                        ]
+                sources.append(ColumnDataSource(data))
+                p2.line(
+                    'x',
+                    'y',
+                    source=sources[i],
+                    color=mycolors[i % len(mycolors)],
+                    line_width=2,
+                    line_join='round')
+
+            if 'redshift' in catalog[entry]:
+                minredw = minsw / (1.0 + z)
+                maxredw = maxsw / (1.0 + z)
+                p2.extra_x_ranges = {
+                    "other wavelength": Range1d(
+                        start=minredw, end=maxredw)
+                }
+                p2.add_layout(
+                    LinearAxis(
+                        axis_label="Restframe Wavelength (Å)",
+                        x_range_name="other wavelength",
+                        axis_label_text_font_size='11pt',
+                        axis_label_text_font='futura',
+                        major_label_text_font_size='8pt',
+                        major_label_text_font='futura'),
+                    'above')
+
             sdicts = dict(
-                zip(['s' + str(x) for x in range(len(rsources))], rsources))
-            realizdicts.update(sdicts)
-            realizdicts.update(mdicts)
-            realizcallback = CustomJS(
-                args=realizdicts,
+                zip(['s' + str(x) for x in range(len(sources))], sources))
+            callback = CustomJS(
+                args=sdicts,
                 code="""
-                var mis = parseInt(cb_obj.get('value'));
-                console.log(mis);
-                for (g = 0; g < """ + str(len(rglyphs)) + """; g++) {
-                    var m = eval('m'+g).data['id'][0];
-                    eval('rg' + g).visible = (m == mis);
+                var yoffs = [""" + ','.join([str(x) for x in y_offsets]) + """];
+                for (s = 0; s < """ + str(len(sources)) + """; s++) {
+                    var data = eval('s'+s).get('data');
+                    var redshift = """ +
+                str(z if 'redshift' in catalog[entry] else 0.) + """;
+                    if (!('binsize' in data)) {
+                        data['binsize'] = 1.0
+                    }
+                    if (!('spacing' in data)) {
+                        data['spacing'] = 1.0
+                    }
+                    if (cb_obj.get('title') == 'Spacing') {
+                        data['spacing'] = cb_obj.get('value');
+                    } else {
+                        data['binsize'] = cb_obj.get('value');
+                    }
+                    var f = data['binsize']
+                    var space = data['spacing']
+                    var x0 = data['x0'];
+                    var y0 = data['y0'];
+                    var dx0 = x0[1] - x0[0];
+                    var yoff = space*yoffs[s];
+                    data['x'] = [x0[0] - 0.5*Math.max(0., f - dx0)];
+                    data['xrest'] = [(x0[0] - 0.5*Math.max(0., f - dx0))/(1.0 + redshift)];
+                    data['y'] = [y0[0] + yoff];
+                    var xaccum = 0.;
+                    var yaccum = 0.;
+                    for (i = 0; i < x0.length; i++) {
+                        var dx;
+                        if (i == 0) {
+                            dx = x0[i+1] - x0[i];
+                        } else {
+                            dx = x0[i] - x0[i-1];
+                        }
+                        xaccum += dx;
+                        yaccum += y0[i]*dx;
+                        if (xaccum >= f) {
+                            data['x'].push(data['x'][data['x'].length-1] + xaccum);
+                            data['xrest'].push(data['x'][data['x'].length-1]/(1.0 + redshift));
+                            data['y'].push(yaccum/xaccum + yoff);
+                            xaccum = 0.;
+                            yaccum = 0.;
+                        }
+                    }
+                    eval('s'+s).trigger('change');
                 }
             """)
-            realizchecks = Select(
-                title="Model to compare to data:",
-                value="0",
-                options=[(str(i), x)
-                         for i, x in enumerate(modelnames)] + [("-1", "None")],
-                callback=realizcallback)
-        # End realizations
 
-        xs = []
-        ys = []
-        err_xs = []
-        err_ys = []
+            binslider = Slider(
+                start=0,
+                end=50,
+                value=1,
+                step=0.5,
+                width=230,
+                title=label_format("Bin size (Angstrom)"),
+                callback=callback)
+            spacingslider = Slider(
+                start=0,
+                end=2,
+                value=1,
+                step=0.02,
+                width=230,
+                title=label_format("Spacing"),
+                callback=callback)
 
-        for x, y, xlowerr, xupperr, ylowerr, yupperr in list(
-                zip(phototime, photoAB, phototimelowererrs, phototimeuppererrs,
-                    photoABlowererrs, photoABuppererrs)):
-            xs.append(x)
-            ys.append(y)
-            err_xs.append((x - xlowerr, x + xupperr))
-            err_ys.append((y - yupperr, y + ylowerr))
+        if radioavail and dohtml and args.writehtml:
+            phototime = [(mean([float(y) for y in x['time']])
+                          if isinstance(x['time'], list) else float(x['time']))
+                         for x in catalog[entry]['photometry']
+                         if 'fluxdensity' in x and 'magnitude' not in x]
+            phototimelowererrs = [
+                float(x['e_lower_time'])
+                if ('e_lower_time' in x and 'e_upper_time' in x) else
+                (float(x['e_time']) if 'e_time' in x else 0.)
+                for x in catalog[entry]['photometry']
+                if 'fluxdensity' in x and 'magnitude' not in x
+            ]
+            phototimeuppererrs = [
+                float(x['e_upper_time'])
+                if ('e_lower_time' in x and 'e_upper_time' in x) in x else
+                (float(x['e_time']) if 'e_time' in x else 0.)
+                for x in catalog[entry]['photometry']
+                if 'fluxdensity' in x and 'magnitude' not in x
+            ]
+            photofd = [
+                float(x['fluxdensity']) if 'e_fluxdensity' not in x else
+                (float(x['fluxdensity']) if
+                 (float(x['fluxdensity']) > radiosigma * float(x['e_fluxdensity']))
+                 else round_sig(
+                     radiosigma * float(x['e_fluxdensity']),
+                     sig=get_sig_digits(x['e_fluxdensity'])))
+                for x in catalog[entry]['photometry']
+                if 'fluxdensity' in x and 'magnitude' not in x
+            ]
+            photofderrs = [(float(x['e_fluxdensity'])
+                            if 'e_fluxdensity' in x else 0.)
+                           for x in catalog[entry]['photometry']
+                           if 'fluxdensity' in x and 'magnitude' not in x]
+            photoufd = [(x['u_fluxdensity'] if 'fluxdensity' in x else '')
+                        for x in catalog[entry]['photometry']
+                        if 'fluxdensity' in x and 'magnitude' not in x]
+            photofreq = [(x['frequency'].rstrip('.') if 'fluxdensity' in x else '')
+                         for x in catalog[entry]['photometry']
+                         if 'fluxdensity' in x and 'magnitude' not in x]
+            photoufreq = [(x['u_frequency'] if 'fluxdensity' in x else '')
+                          for x in catalog[entry]['photometry']
+                          if 'fluxdensity' in x and 'magnitude' not in x]
+            photoinstru = [(x['instrument'] if 'instrument' in x else '')
+                           for x in catalog[entry]['photometry']
+                           if 'fluxdensity' in x and 'magnitude' not in x]
+            photosource = [
+                ', '.join(
+                    str(j)
+                    for j in sorted(
+                        int(i) for i in catalog[entry]['photometry'][x]['source']
+                        .split(',')))
+                for x, y in enumerate(catalog[entry]['photometry'])
+                if 'fluxdensity' in y and 'magnitude' not in y
+            ]
+            phototype = [(
+                True if 'upperlimit' in x or
+                radiosigma * float(x['e_fluxdensity']) >= float(x['fluxdensity'])
+                else False) for x in catalog[entry]['photometry']
+                if 'fluxdensity' in x and 'magnitude' not in x]
+            isdetection = phototype.count(False)
 
-        bandset = list(set(photoband))
-        bandsortlists = sorted(
-            list(
-                zip(
-                    list(map(bandgroupf, bandset)),
-                    list(map(bandwavef, bandset)), bandset)))
-        bandset = [i for (k, j, i) in bandsortlists]
+            photoutime = catalog[entry]['photometry'][0][
+                'u_time'] if 'u_time' in catalog[entry]['photometry'][0] else 'MJD'
+            if distancemod:
+                dist = (10.0**(1.0 + 0.2 * distancemod) * un.pc).cgs.value
+                areacorr = 4.0 * pi * dist**2.0 * ((1.0e-6 * un.jansky).cgs.value)
 
-        sources = []
-        corrects = ['raw', 'kcorr', 'scorr']
-        glyphs = [[] for x in range(len(corrects))]
-        ttglyphs = [[] for x in range(len(corrects))]
-        for ci, corr in enumerate(corrects):
-            for band in bandset:
-                bandname = bandaliasf(band)
-                indb = [i for i, j in enumerate(photoband) if j == band]
+            x_buffer = 0.1 * (
+                max(phototime) - min(phototime)) if len(phototime) > 1 else 1.0
+
+            hastimeerrs = (len(list(filter(None, phototimelowererrs))) and
+                           len(list(filter(None, phototimeuppererrs))))
+            hasfderrs = len(list(filter(None, photofderrs)))
+            tt = [("Source ID(s)", "@src"),
+                  ("Epoch (" + photoutime + ")",
+                   "@x{1.11}" + ("<sub>-@xle{1}</sub><sup>+@xue{1}</sup>"
+                                 if hastimeerrs else ""))]
+            tt += [("Flux Density (" + photoufd[0] + ")",
+                    "@y{1.11}" + ("&nbsp;±&nbsp;@err{1.11}" if hasfderrs else ""))]
+            if 'maxabsmag' in catalog[entry] and 'maxappmag' in catalog[entry]:
+                tt += [("Iso. Lum. (ergs s⁻¹)", "@yabs" + ("&nbsp;±&nbsp;@abserr"
+                                                           if hasfderrs else ""))]
+            if len(list(filter(None, photofreq))):
+                tt += [("Frequency (" + photoufreq[0] + ")", "@desc")]
+            if len(list(filter(None, photoinstru))):
+                tt += [("Instrument", "@instr")]
+
+            if photoavail:
+                x_range = p1.x_range
+            else:
+                x_range = (min_x_range, max_x_range)
+            min_y_range = min(list(filter(None, [x - y if not z else (None if isdetection else x) for x, y, z in list(zip(photofd, photofderrs, phototype))])))
+            max_y_range = max(list(filter(None, [x + y if not z else (None if isdetection else x) for x, y, z in list(zip(photofd, photofderrs, phototype))])))
+            [min_y_range, max_y_range] = [
+                min_y_range - 0.1 * max(max_y_range - min_y_range, 1.0),
+                max_y_range + 0.1 * max(max_y_range - min_y_range, 1.0)
+            ]
+
+            freqset = [
+                str(y[1]) for y in sorted([(float(x), x) for x in set(photofreq)])
+            ]
+            frequnit = photoufreq[0] if photoufreq else ''
+
+            ttglyphs = []
+            p3 = Figure(
+                title='Radio Observations of ' + eventname,
+                active_drag='box_zoom',
+                # sizing_mode = "scale_width",
+                y_axis_label='Flux Density (µJy)',
+                tools=tools,
+                plot_width=485,
+                plot_height=max(485, legy + len(freqset)*legh),
+                x_range=x_range,
+                y_range=(min_y_range, max_y_range),
+                toolbar_location='above',
+                toolbar_sticky=False)
+            p3.xaxis.axis_label_text_font = 'futura'
+            p3.yaxis.axis_label_text_font = 'futura'
+            p3.xaxis.major_label_text_font = 'futura'
+            p3.yaxis.major_label_text_font = 'futura'
+            p3.xaxis.axis_label_text_font_size = '11pt'
+            p3.yaxis.axis_label_text_font_size = '11pt'
+            p3.xaxis.major_label_text_font_size = '8pt'
+            p3.yaxis.major_label_text_font_size = '8pt'
+            p3.title.align = 'center'
+            p3.title.text_font_size = '16pt'
+            p3.title.text_font = 'futura'
+
+            min_x_date = astrotime(min_x_range, format='mjd').datetime
+            max_x_date = astrotime(max_x_range, format='mjd').datetime
+
+            p3.extra_x_ranges = {
+                "gregorian date": Range1d(
+                    start=min_x_date, end=max_x_date)
+            }
+            p3.add_layout(
+                DatetimeAxis(
+                    major_label_text_font_size='8pt',
+                    axis_label='Time (' + photoutime + '/Gregorian)',
+                    major_label_text_font='futura',
+                    axis_label_text_font='futura',
+                    major_tick_in=0,
+                    x_range_name="gregorian date",
+                    axis_label_text_font_size='11pt'),
+                'below')
+
+            if mjdmax:
+                min_xm_range = (min_x_range - mjdmax) * redshiftfactor
+                max_xm_range = (max_x_range - mjdmax) * redshiftfactor
+                p3.extra_x_ranges["time since max"] = Range1d(
+                    start=min_xm_range, end=max_xm_range)
+                p3.add_layout(
+                    LinearAxis(
+                        axis_label="Time since max (" + dayframe + ")",
+                        major_label_text_font_size='8pt',
+                        major_label_text_font='futura',
+                        axis_label_text_font='futura',
+                        x_range_name="time since max",
+                        axis_label_text_font_size='11pt'),
+                    'above')
+
+            if distancemod:
+                min_y_absmag = min_y_range * areacorr * (1.0 * un.GHz).cgs.value
+                max_y_absmag = max_y_range * areacorr * (1.0 * un.GHz).cgs.value
+                # [min_y_absmag, max_y_absmag] = [min_y_absmag - 0.1 *
+                #                                 (max_y_absmag - min_y_absmag), max_y_absmag + 0.1 * (max_y_absmag - min_y_absmag)]
+                p3.extra_y_ranges = {
+                    "abs mag": Range1d(
+                        start=min_y_absmag, end=max_y_absmag)
+                }
+                p3.add_layout(
+                    LinearAxis(
+                        axis_label="Isotropic Luminosity at 1 GHz (ergs s⁻¹)",
+                        major_label_text_font_size='8pt',
+                        major_label_text_font='futura',
+                        axis_label_text_font='futura',
+                        y_range_name="abs mag",
+                        axis_label_text_font_size='11pt'),
+                    'right')
+                p3.yaxis[1].formatter.precision = 1
+
+            xs = []
+            ys = []
+            err_xs = []
+            err_ys = []
+
+            for x, y, xlowerr, xupperr, yerr in list(
+                    zip(phototime, photofd, phototimelowererrs, phototimeuppererrs,
+                        photofderrs)):
+                xs.append(x)
+                ys.append(y)
+                err_xs.append((x - xlowerr, x + xupperr))
+                err_ys.append((y - yerr, y + yerr))
+
+            for freq in freqset:
+                indb = [i for i, j in enumerate(photofreq) if j == freq]
                 indt = [i for i, j in enumerate(phototype) if not j]
-                indnex = [
-                    i for i, j in enumerate(phototimelowererrs) if j == 0.
-                ]
-                indyex = [
-                    i for i, j in enumerate(phototimelowererrs) if j > 0.
-                ]
-                indney = [i for i, j in enumerate(photoABuppererrs) if j == 0.]
-                indyey = [i for i, j in enumerate(photoABuppererrs) if j > 0.]
-                indc = [i for i, j in enumerate(photocorr) if j == corr]
+                # Should always have upper error if have lower error.
+                indnex = [i for i, j in enumerate(phototimelowererrs) if j == 0.]
+                indyex = [i for i, j in enumerate(phototimelowererrs) if j > 0.]
+                indney = [i for i, j in enumerate(photofderrs) if j == 0.]
+                indyey = [i for i, j in enumerate(photofderrs) if j > 0.]
                 indne = set(indb).intersection(indt).intersection(
-                    indc).intersection(indney).intersection(indnex)
+                    indney).intersection(indnex)
                 indye = set(indb).intersection(indt).intersection(
-                    indc).intersection(set(indyey).union(indyex))
+                    set(indyey).union(indyex))
+
+                freqlabel = str(freq) + " " + frequnit
+
+                noerrorlegend = value(freqlabel) if len(indye) == 0 and len(
+                    indne) > 0 else ''
+
+                data = dict(
+                    x=[phototime[i] for i in indne],
+                    y=[photofd[i] for i in indne],
+                    err=[photofderrs[i] for i in indne],
+                    desc=[photofreq[i] for i in indne],
+                    instr=[photoinstru[i] for i in indne],
+                    src=[photosource[i] for i in indne])
+                if distancemod:
+                    data['yabs'] = [
+                        str(
+                            round_sig(
+                                photofd[i] * (areacorr * float(freq) * ((
+                                    1.0 * un.GHz).cgs.value)),
+                                sig=3)) for i in indne
+                    ]
+                    data['abserr'] = [
+                        str(
+                            round_sig(
+                                photofderrs[i] * (areacorr * float(freq) * ((
+                                    1.0 * un.GHz).cgs.value)),
+                                sig=3)) for i in indne
+                    ]
+                if hastimeerrs:
+                    data['xle'] = [phototimelowererrs[i] for i in indne]
+                    data['xue'] = [phototimeuppererrs[i] for i in indne]
+
+                source = ColumnDataSource(data)
+                p3.circle(
+                    'x',
+                    'y',
+                    source=source,
+                    color=radiocolorf(freq),
+                    fill_color="white",
+                    legend=noerrorlegend,
+                    size=4)
+
+                yeserrorlegend = value(freqlabel) if len(indye) > 0 else ''
+
+                data = dict(
+                    x=[phototime[i] for i in indye],
+                    y=[photofd[i] for i in indye],
+                    err=[photofderrs[i] for i in indye],
+                    desc=[photofreq[i] for i in indye],
+                    instr=[photoinstru[i] for i in indye],
+                    src=[photosource[i] for i in indye])
+                if distancemod:
+                    data['yabs'] = [
+                        str(
+                            round_sig(
+                                photofd[i] * (areacorr * float(freq) * ((
+                                    1.0 * un.GHz).cgs.value)),
+                                sig=3)) for i in indye
+                    ]
+                    data['abserr'] = [
+                        str(
+                            round_sig(
+                                photofderrs[i] * (areacorr * float(freq) * ((
+                                    1.0 * un.GHz).cgs.value)),
+                                sig=3)) for i in indye
+                    ]
+                if hastimeerrs:
+                    data['xle'] = [phototimelowererrs[i] for i in indye]
+                    data['xue'] = [phototimeuppererrs[i] for i in indye]
+
+                source = ColumnDataSource(data)
+                p3.multi_line(
+                    [err_xs[x] for x in indye], [[ys[x], ys[x]] for x in indye],
+                    color=radiocolorf(freq))
+                p3.multi_line(
+                    [[xs[x], xs[x]] for x in indye], [err_ys[x] for x in indye],
+                    color=radiocolorf(freq))
+                ttglyphs.append(
+                    p3.circle(
+                        'x',
+                        'y',
+                        source=source,
+                        color=radiocolorf(freq),
+                        legend=yeserrorlegend,
+                        size=4))
+
+                upplimlegend = value(freqlabel) if len(indye) == 0 and len(
+                    indne) == 0 else ''
 
                 indt = [i for i, j in enumerate(phototype) if j]
-                ind = set(indb).intersection(indt).intersection(indc)
-                if ind:
-                    data = dict(
-                        x=[phototime[i] for i in ind],
-                        y=[photoAB[i] for i in ind],
-                        lerr=[photoABlowererrs[i] for i in ind],
-                        uerr=[photoABuppererrs[i] for i in ind],
-                        desc=[photoband[i] for i in ind],
-                        instr=[photoinstru[i] for i in ind],
-                        src=[photosource[i] for i in ind])
-                    if 'maxabsmag' in catalog[
-                            entry] and 'maxappmag' in catalog[entry]:
-                        data['yabs'] = [photoAB[i] - distancemod for i in ind]
-                    if hastimeerrs:
-                        data['xle'] = [phototimelowererrs[i] for i in ind]
-                        data['xue'] = [phototimeuppererrs[i] for i in ind]
-
-                    sources.append(ColumnDataSource(data))
-                    # Currently Bokeh doesn't support tooltips for
-                    # inverted_triangle, so hide an invisible circle behind for the
-                    # tooltip
-                    glyphs[ci].append(
-                        p1.circle(
-                            'x', 'y', source=sources[-1], alpha=0.0, size=7))
-                    ttglyphs[ci].append(glyphs[ci][-1])
-                    uppdict = {
-                        'source': sources[-1],
-                        'color': bandcolorf(band),
-                        'size': 7
-                    }
-                    uppdict['legend'] = value(bandname) if bandname else ''
-                    glyphs[ci].append(
-                        p1.inverted_triangle('x', 'y', **uppdict))
-                    uppdict['color'] = 'white'
-                    uppdict['size'] = 10
-                    del(uppdict['source'])
-                    glyphs[ci].append(
-                        p1.inverted_triangle([None], [None], **uppdict))
-                    ttglyphs[ci].append(glyphs[ci][-1])
-
-                if indne:
-                    noerrorlegend = value(bandname)
-
-                    data = dict(
-                        x=[phototime[i] for i in indne],
-                        y=[photoAB[i] for i in indne],
-                        lerr=[photoABlowererrs[i] for i in indne],
-                        uerr=[photoABuppererrs[i] for i in indne],
-                        desc=[photoband[i] for i in indne],
-                        instr=[photoinstru[i] for i in indne],
-                        src=[photosource[i] for i in indne])
-                    if 'maxabsmag' in catalog[
-                            entry] and 'maxappmag' in catalog[entry]:
-                        data['yabs'] = [
-                            photoAB[i] - distancemod for i in indne
-                        ]
-                    if hastimeerrs:
-                        data['xle'] = [phototimelowererrs[i] for i in indne]
-                        data['xue'] = [phototimeuppererrs[i] for i in indne]
-
-                    sources.append(ColumnDataSource(data))
-                    glyphs[ci].append(
-                        p1.circle(
-                            'x',
-                            'y',
-                            source=sources[-1],
-                            color=bandcolorf(band),
-                            fill_color="white",
-                            legend=noerrorlegend,
-                            size=4))
-                    ttglyphs[ci].append(glyphs[ci][-1])
-
-                if indye:
-                    data = dict(
-                        x=[phototime[i] for i in indye],
-                        y=[photoAB[i] for i in indye],
-                        lerr=[photoABlowererrs[i] for i in indye],
-                        uerr=[photoABuppererrs[i] for i in indye],
-                        desc=[photoband[i] for i in indye],
-                        instr=[photoinstru[i] for i in indye],
-                        src=[photosource[i] for i in indye])
-                    if 'maxabsmag' in catalog[
-                            entry] and 'maxappmag' in catalog[entry]:
-                        data['yabs'] = [
-                            photoAB[i] - distancemod for i in indye
-                        ]
-                    if hastimeerrs:
-                        data['xle'] = [phototimelowererrs[i] for i in indye]
-                        data['xue'] = [phototimeuppererrs[i] for i in indye]
-
-                    sources.append(ColumnDataSource(data))
-                    glyphs[ci].append(
-                        p1.multi_line(
-                            [err_xs[x] for x in indye], [[ys[x], ys[x]]
-                                                         for x in indye],
-                            color=bandcolorf(band),
-                            legend=value(bandname) if bandname else ''))
-                    glyphs[ci].append(
-                        p1.multi_line(
-                            [[xs[x], xs[x]]
-                             for x in indye], [err_ys[x] for x in indye],
-                            color=bandcolorf(band),
-                            legend=value(bandname) if bandname else ''))
-                    # To hide the extra legend glyph
-                    glyphs[ci].append(
-                        p1.multi_line(
-                            [[]], [[]],
-                            color='white',
-                            line_width=2,
-                            line_cap='square',
-                            legend=value(bandname) if bandname else ''))
-                    glyphs[ci].append(
-                        p1.circle(
-                            'x',
-                            'y',
-                            source=sources[-1],
-                            color=bandcolorf(band),
-                            legend=value(bandname) if bandname else '',
-                            size=4))
-                    ttglyphs[ci].append(glyphs[ci][-1])
-
-            for gi, gly in enumerate(glyphs[ci]):
-                if corr != 'raw':
-                    glyphs[ci][gi].visible = False
-
-        p1.legend.label_text_font = 'futura'
-        p1.legend.label_text_font_size = '8pt'
-        p1.legend.label_width = 20
-        p1.legend.label_height = 14
-        p1.legend.glyph_height = 14
-        p1.legend.click_policy = "hide"
-
-        hover = HoverTool(
-            tooltips=tt, renderers=[x for y in ttglyphs for x in y])
-        p1.add_tools(hover)
-        if len(rglyphs) > 0:
-            hover2 = HoverTool(
-                tooltips=rtt, renderers=rglyphs, line_policy='interp')
-            p1.add_tools(hover2)
-
-        if any([x != 'raw' for x in photocorr]):
-            photodicts = {}
-            for ci, corr in enumerate(corrects):
-                for gi, gly in enumerate(glyphs[ci]):
-                    photodicts[corr + str(gi)] = gly
-            sdicts = dict(
-                zip(['source' + str(x) for x in range(len(sources))], sources))
-            photodicts.update(sdicts)
-            photocallback = CustomJS(
-                args=photodicts,
-                code="""
-                var show = 'all';
-                if (cb_obj.get('value') == 'Raw') {
-                    show = 'raw';
-                } else if (cb_obj.get('value') == 'K-Corrected') {
-                    show = 'kcorr';
-                } else if (cb_obj.get('value') == 'S-Corrected') {
-                    show = 'scorr';
-                }
-                var corrects = ["raw", "kcorr", "scorr"];
-                for (c = 0; c < """ + str(len(corrects)) + """; c++) {
-                    for (g = 0; g < """ + str(max([len(x) for x in glyphs])) + """; g++) {
-                        try {
-                            eval(corrects[c] + g);
-                        } catch(e) {
-                            continue;
-                        }
-                        if (show == 'all' || corrects[c] == show) {
-                            eval(corrects[c] + g).visible = true;
-                        } else {
-                            eval(corrects[c] + g).visible = false;
-                        }
-                    }
-                }
-            """)
-            photoopts = ["Raw"]
-            if 'kcorr' in photocorr:
-                photoopts.append("K-Corrected")
-            if 'scorr' in photocorr:
-                photoopts.append("S-Corrected")
-            photoopts.append("All")
-            photochecks = Select(
-                title="Photometry to show:",
-                value="Raw",
-                options=photoopts,
-                callback=photocallback)
-        else:
-            photochecks = ''
-
-    if spectraavail and dohtml and args.writehtml:
-        spectrumwave = []
-        spectrumflux = []
-        spectrumerrs = []
-        spectrummjdmax = []
-        hasepoch = True
-        if 'redshift' in catalog[entry]:
-            z = float(catalog[entry]['redshift'][0]['value'])
-        catalog[entry]['spectra'] = list(
-            filter(None, [
-                x if 'data' in x else None for x in catalog[entry]['spectra']
-            ]))
-        for spectrum in catalog[entry]['spectra']:
-            spectrumdata = deepcopy(spectrum['data'])
-            oldlen = len(spectrumdata)
-            specslice = ceil(float(len(spectrumdata)) / 10000)
-            spectrumdata = spectrumdata[::specslice]
-            spectrumdata = [
-                x for x in spectrumdata
-                if is_number(x[1]) and not isnan(float(x[1]))
-            ]
-            specrange = range(len(spectrumdata))
-
-            if 'deredshifted' in spectrum and spectrum[
-                    'deredshifted'] and 'redshift' in catalog[entry]:
-                spectrumwave.append([
-                    float(spectrumdata[x][0]) * (1.0 + z) for x in specrange
-                ])
-            else:
-                spectrumwave.append(
-                    [float(spectrumdata[x][0]) for x in specrange])
-
-            spectrumflux.append([float(spectrumdata[x][1]) for x in specrange])
-            if 'errorunit' in spectrum:
-                spectrumerrs.append(
-                    [float(spectrumdata[x][2]) for x in specrange])
-                spectrumerrs[-1] = [
-                    x if is_number(x) and not isnan(float(x)) else 0.
-                    for x in spectrumerrs[-1]
-                ]
-
-            if 'u_time' not in spectrum or 'time' not in spectrum:
-                hasepoch = False
-
-            if 'u_time' in spectrum and 'time' in spectrum and spectrum[
-                    'u_time'] == 'MJD' and 'redshift' in catalog[
-                        entry] and mjdmax:
-                specmjd = (float(spectrum['time']) - mjdmax) * redshiftfactor
-                spectrummjdmax.append(specmjd)
-
-        nspec = len(catalog[entry]['spectra'])
-
-        prunedwave = []
-        prunedflux = []
-        for i in reversed(range(nspec)):
-            ri = nspec - i - 1
-            prunedwave.append([])
-            prunedflux.append([])
-            for wi, wave in enumerate(spectrumwave[i]):
-                exclude = False
-                if 'exclude' in catalog[entry]['spectra'][i]:
-                    for exclusion in catalog[entry]['spectra'][i]['exclude']:
-                        if 'below' in exclusion:
-                            if wave <= float(exclusion['below']):
-                                exclude = True
-                        elif 'above' in exclusion:
-                            if wave >= float(exclusion['above']):
-                                exclude = True
-                if not exclude:
-                    prunedwave[ri].append(wave)
-                    prunedflux[ri].append(spectrumflux[i][wi])
-
-        prunedwave = list(reversed(prunedwave))
-        prunedflux = list(reversed(prunedflux))
-
-        prunedscaled = deepcopy(prunedflux)
-        for f, flux in enumerate(prunedscaled):
-            std = np.std(flux)
-            if std and std > 0:
-                prunedscaled[f] = [x / std for x in flux]
-
-        y_height = 0.
-        y_offsets = [0. for x in range(nspec)]
-        for i in reversed(range(nspec)):
-            y_offsets[i] = y_height
-            if (i - 1 >= 0 and 'time' in catalog[entry]['spectra'][i] and
-                    'time' in catalog[entry]['spectra'][i - 1] and
-                    (float(catalog[entry]['spectra'][i]['time']) -
-                     float(catalog[entry]['spectra'][i - 1]['time'])) <= 0.1):
-                ydiff = 0
-            else:
-                ydiff = 0.8 * (max(prunedscaled[i]) - min(prunedscaled[i]))
-            prunedscaled[i] = [j + y_height for j in prunedscaled[i]]
-            y_height += ydiff
-
-        maxsw = max(list(map(max, prunedwave)))
-        minsw = min(list(map(min, prunedwave)))
-        maxfl = max(list(map(max, prunedscaled)))
-        minfl = min(list(map(min, prunedscaled)))
-        maxfldiff = max(
-            map(operator.sub,
-                list(map(max, prunedscaled)), list(map(min, prunedscaled))))
-        x_buffer = 0.0  # 0.1*(maxsw - minsw)
-        x_range = [-x_buffer + minsw, x_buffer + maxsw]
-        y_buffer = 0.1 * maxfldiff
-        y_range = [-y_buffer + minfl, y_buffer + maxfl]
-
-        for f, flux in enumerate(prunedscaled):
-            prunedscaled[f] = [x - y_offsets[f] for x in flux]
-
-        tt2 = [("Source ID(s)", "@src")]
-        if 'redshift' in catalog[entry]:
-            tt2 += [("λ (rest)", "@xrest{1.1} Å")]
-        tt2 += [("λ (obs)", "@x{1.1} Å"), ("Flux", "@yorig"),
-                ("Flux unit", "@fluxunit")]
-
-        if hasepoch:
-            tt2 += [("Epoch (" + spectrum['u_time'] + ")", "@epoch{1.11}")]
-
-        if mjdmax:
-            tt2 += [("Rest days to max", "@mjdmax{1.11}")]
-
-        hover = HoverTool(tooltips=tt2)
-
-        p2 = Figure(
-            title='Spectra for ' + eventname,
-            x_axis_label=label_format('Observed Wavelength (Å)'),
-            active_drag='box_zoom',
-            y_axis_label=label_format('Flux (scaled)' + (' + offset' if (
-                nspec > 1) else '')),
-            x_range=x_range,
-            tools=tools,  # sizing_mode = "scale_width",
-            plot_width=485,
-            plot_height=485,
-            y_range=y_range,
-            toolbar_location='above',
-            toolbar_sticky=False)
-        p2.xaxis.axis_label_text_font = 'futura'
-        p2.yaxis.axis_label_text_font = 'futura'
-        p2.xaxis.major_label_text_font = 'futura'
-        p2.yaxis.major_label_text_font = 'futura'
-        p2.xaxis.axis_label_text_font_size = '11pt'
-        p2.yaxis.axis_label_text_font_size = '11pt'
-        p2.xaxis.major_label_text_font_size = '8pt'
-        p2.yaxis.major_label_text_font_size = '8pt'
-        p2.title.align = 'center'
-        p2.title.text_font_size = '16pt'
-        p2.title.text_font = 'futura'
-        p2.add_tools(hover)
-
-        sources = []
-        for i in range(len(prunedwave)):
-            sl = len(prunedscaled[i])
-            fluxunit = catalog[entry]['spectra'][i][
-                'u_fluxes'] if 'u_fluxes' in catalog[entry]['spectra'][
-                    i] else ''
-
-            data = dict(
-                x0=prunedwave[i],
-                y0=prunedscaled[i],
-                yorig=spectrumflux[i],
-                fluxunit=[label_format(fluxunit)] * sl,
-                x=prunedwave[i],
-                y=[y_offsets[i] + j for j in prunedscaled[i]],
-                src=[catalog[entry]['spectra'][i]['source']] * sl)
-            if 'redshift' in catalog[entry]:
-                data['xrest'] = [x / (1.0 + z) for x in prunedwave[i]]
-            if hasepoch:
-                data['epoch'] = [
-                    catalog[entry]['spectra'][i]['time']
-                    for j in prunedscaled[i]
-                ]
-                if mjdmax and spectrummjdmax:
-                    data['mjdmax'] = [
-                        spectrummjdmax[i] for j in prunedscaled[i]
+                ind = set(indb).intersection(indt)
+                data = dict(
+                    x=[phototime[i] for i in ind],
+                    y=[photofd[i] for i in ind],
+                    err=[photofderrs[i] for i in ind],
+                    desc=[photofreq[i] for i in ind],
+                    instr=[photoinstru[i] for i in ind],
+                    src=[photosource[i] for i in ind])
+                if distancemod:
+                    data['yabs'] = [
+                        str(
+                            round_sig(
+                                photofd[i] * (areacorr * float(freq) * ((
+                                    1.0 * un.GHz).cgs.value)),
+                                sig=3)) for i in ind
                     ]
-            sources.append(ColumnDataSource(data))
-            p2.line(
-                'x',
-                'y',
-                source=sources[i],
-                color=mycolors[i % len(mycolors)],
-                line_width=2,
-                line_join='round')
+                    data['abserr'] = [
+                        str(
+                            round_sig(
+                                photofderrs[i] * (areacorr * float(freq) * ((
+                                    1.0 * un.GHz).cgs.value)),
+                                sig=3)) for i in ind
+                    ]
+                if hastimeerrs:
+                    data['xle'] = [phototimelowererrs[i] for i in ind]
+                    data['xue'] = [phototimeuppererrs[i] for i in ind]
 
-        if 'redshift' in catalog[entry]:
-            minredw = minsw / (1.0 + z)
-            maxredw = maxsw / (1.0 + z)
-            p2.extra_x_ranges = {
-                "other wavelength": Range1d(
-                    start=minredw, end=maxredw)
-            }
-            p2.add_layout(
-                LinearAxis(
-                    axis_label="Restframe Wavelength (Å)",
-                    x_range_name="other wavelength",
-                    axis_label_text_font_size='11pt',
-                    axis_label_text_font='futura',
-                    major_label_text_font_size='8pt',
-                    major_label_text_font='futura'),
-                'above')
+                source = ColumnDataSource(data)
+                # Currently Bokeh doesn't support tooltips for inverted_triangle,
+                # so hide an invisible circle behind for the tooltip
+                ttglyphs.append(
+                    p3.circle(
+                        'x', 'y', source=source, alpha=0.0, size=7))
+                ttglyphs.append(
+                    p3.inverted_triangle(
+                        'x',
+                        'y',
+                        source=source,
+                        color=radiocolorf(freq),
+                        legend=upplimlegend,
+                        size=7))
 
-        sdicts = dict(
-            zip(['s' + str(x) for x in range(len(sources))], sources))
-        callback = CustomJS(
-            args=sdicts,
-            code="""
-            var yoffs = [""" + ','.join([str(x) for x in y_offsets]) + """];
-            for (s = 0; s < """ + str(len(sources)) + """; s++) {
-                var data = eval('s'+s).get('data');
-                var redshift = """ +
-            str(z if 'redshift' in catalog[entry] else 0.) + """;
-                if (!('binsize' in data)) {
-                    data['binsize'] = 1.0
-                }
-                if (!('spacing' in data)) {
-                    data['spacing'] = 1.0
-                }
-                if (cb_obj.get('title') == 'Spacing') {
-                    data['spacing'] = cb_obj.get('value');
-                } else {
-                    data['binsize'] = cb_obj.get('value');
-                }
-                var f = data['binsize']
-                var space = data['spacing']
-                var x0 = data['x0'];
-                var y0 = data['y0'];
-                var dx0 = x0[1] - x0[0];
-                var yoff = space*yoffs[s];
-                data['x'] = [x0[0] - 0.5*Math.max(0., f - dx0)];
-                data['xrest'] = [(x0[0] - 0.5*Math.max(0., f - dx0))/(1.0 + redshift)];
-                data['y'] = [y0[0] + yoff];
-                var xaccum = 0.;
-                var yaccum = 0.;
-                for (i = 0; i < x0.length; i++) {
-                    var dx;
-                    if (i == 0) {
-                        dx = x0[i+1] - x0[i];
-                    } else {
-                        dx = x0[i] - x0[i-1];
-                    }
-                    xaccum += dx;
-                    yaccum += y0[i]*dx;
-                    if (xaccum >= f) {
-                        data['x'].push(data['x'][data['x'].length-1] + xaccum);
-                        data['xrest'].push(data['x'][data['x'].length-1]/(1.0 + redshift));
-                        data['y'].push(yaccum/xaccum + yoff);
-                        xaccum = 0.;
-                        yaccum = 0.;
-                    }
-                }
-                eval('s'+s).trigger('change');
-            }
-        """)
+            p3.legend.label_text_font = 'futura'
+            p3.legend.label_text_font_size = '8pt'
+            p3.legend.label_width = 20
+            p3.legend.label_height = 12
+            p3.legend.glyph_height = 12
+            p3.legend.spacing = 0
+            p3.legend.click_policy = "hide"
 
-        binslider = Slider(
-            start=0,
-            end=20,
-            value=1,
-            step=0.5,
-            width=230,
-            title=label_format("Bin size (Angstrom)"),
-            callback=callback)
-        spacingslider = Slider(
-            start=0,
-            end=2,
-            value=1,
-            step=0.02,
-            width=230,
-            title=label_format("Spacing"),
-            callback=callback)
+            hover = HoverTool(tooltips=tt, renderers=ttglyphs)
+            p3.add_tools(hover)
 
-    if radioavail and dohtml and args.writehtml:
-        phototime = [(mean([float(y) for y in x['time']])
-                      if isinstance(x['time'], list) else float(x['time']))
-                     for x in catalog[entry]['photometry']
-                     if 'fluxdensity' in x and 'magnitude' not in x]
-        phototimelowererrs = [
-            float(x['e_lower_time'])
-            if ('e_lower_time' in x and 'e_upper_time' in x) else
-            (float(x['e_time']) if 'e_time' in x else 0.)
-            for x in catalog[entry]['photometry']
-            if 'fluxdensity' in x and 'magnitude' not in x
-        ]
-        phototimeuppererrs = [
-            float(x['e_upper_time'])
-            if ('e_lower_time' in x and 'e_upper_time' in x) in x else
-            (float(x['e_time']) if 'e_time' in x else 0.)
-            for x in catalog[entry]['photometry']
-            if 'fluxdensity' in x and 'magnitude' not in x
-        ]
-        photofd = [
-            float(x['fluxdensity']) if 'e_fluxdensity' not in x else
-            (float(x['fluxdensity']) if
-             (float(x['fluxdensity']) > radiosigma * float(x['e_fluxdensity']))
-             else round_sig(
-                 radiosigma * float(x['e_fluxdensity']),
-                 sig=get_sig_digits(x['e_fluxdensity'])))
-            for x in catalog[entry]['photometry']
-            if 'fluxdensity' in x and 'magnitude' not in x
-        ]
-        photofderrs = [(float(x['e_fluxdensity'])
-                        if 'e_fluxdensity' in x else 0.)
-                       for x in catalog[entry]['photometry']
-                       if 'fluxdensity' in x and 'magnitude' not in x]
-        photoufd = [(x['u_fluxdensity'] if 'fluxdensity' in x else '')
-                    for x in catalog[entry]['photometry']
-                    if 'fluxdensity' in x and 'magnitude' not in x]
-        photofreq = [(x['frequency'] if 'fluxdensity' in x else '')
-                     for x in catalog[entry]['photometry']
-                     if 'fluxdensity' in x and 'magnitude' not in x]
-        photoufreq = [(x['u_frequency'] if 'fluxdensity' in x else '')
-                      for x in catalog[entry]['photometry']
-                      if 'fluxdensity' in x and 'magnitude' not in x]
-        photoinstru = [(x['instrument'] if 'instrument' in x else '')
-                       for x in catalog[entry]['photometry']
-                       if 'fluxdensity' in x and 'magnitude' not in x]
-        photosource = [
-            ', '.join(
-                str(j)
-                for j in sorted(
-                    int(i) for i in catalog[entry]['photometry'][x]['source']
-                    .split(',')))
-            for x, y in enumerate(catalog[entry]['photometry'])
-            if 'fluxdensity' in y and 'magnitude' not in y
-        ]
-        phototype = [(
-            True if 'upperlimit' in x or
-            radiosigma * float(x['e_fluxdensity']) >= float(x['fluxdensity'])
-            else False) for x in catalog[entry]['photometry']
-            if 'fluxdensity' in x and 'magnitude' not in x]
-
-        photoutime = catalog[entry]['photometry'][0][
-            'u_time'] if 'u_time' in catalog[entry]['photometry'][0] else 'MJD'
-        if distancemod:
-            dist = (10.0**(1.0 + 0.2 * distancemod) * un.pc).cgs.value
-            areacorr = 4.0 * pi * dist**2.0 * ((1.0e-6 * un.jansky).cgs.value)
-
-        x_buffer = 0.1 * (
-            max(phototime) - min(phototime)) if len(phototime) > 1 else 1.0
-
-        hastimeerrs = (len(list(filter(None, phototimelowererrs))) and
-                       len(list(filter(None, phototimeuppererrs))))
-        hasfderrs = len(list(filter(None, photofderrs)))
-        tt = [("Source ID(s)", "@src"),
-              ("Epoch (" + photoutime + ")",
-               "@x{1.11}" + ("<sub>-@xle{1}</sub><sup>+@xue{1}</sup>"
-                             if hastimeerrs else ""))]
-        tt += [("Flux Density (" + photoufd[0] + ")",
-                "@y{1.11}" + ("&nbsp;±&nbsp;@err{1.11}" if hasfderrs else ""))]
-        if 'maxabsmag' in catalog[entry] and 'maxappmag' in catalog[entry]:
-            tt += [("Iso. Lum. (ergs s⁻¹)", "@yabs" + ("&nbsp;±&nbsp;@abserr"
-                                                       if hasfderrs else ""))]
-        if len(list(filter(None, photofreq))):
-            tt += [("Frequency (" + photoufreq[0] + ")", "@desc")]
-        if len(list(filter(None, photoinstru))):
-            tt += [("Instrument", "@instr")]
-
-        if photoavail:
-            x_range = p1.x_range
-        else:
-            x_range = (min_x_range, max_x_range)
-        min_y_range = min([x - y for x, y in list(zip(photofd, photofderrs))])
-        max_y_range = max([x + y for x, y in list(zip(photofd, photofderrs))])
-        [min_y_range, max_y_range] = [
-            min_y_range - 0.1 * max(max_y_range - min_y_range, 1.0),
-            max_y_range + 0.1 * max(max_y_range - min_y_range, 1.0)
-        ]
-
-        ttglyphs = []
-        p3 = Figure(
-            title='Radio Observations of ' + eventname,
-            active_drag='box_zoom',
-            # sizing_mode = "scale_width",
-            y_axis_label='Flux Density (µJy)',
-            tools=tools,
-            plot_width=485,
-            plot_height=485,
-            x_range=x_range,
-            y_range=(min_y_range, max_y_range),
-            toolbar_location='above',
-            toolbar_sticky=False)
-        p3.xaxis.axis_label_text_font = 'futura'
-        p3.yaxis.axis_label_text_font = 'futura'
-        p3.xaxis.major_label_text_font = 'futura'
-        p3.yaxis.major_label_text_font = 'futura'
-        p3.xaxis.axis_label_text_font_size = '11pt'
-        p3.yaxis.axis_label_text_font_size = '11pt'
-        p3.xaxis.major_label_text_font_size = '8pt'
-        p3.yaxis.major_label_text_font_size = '8pt'
-        p3.title.align = 'center'
-        p3.title.text_font_size = '16pt'
-        p3.title.text_font = 'futura'
-
-        min_x_date = astrotime(min_x_range, format='mjd').datetime
-        max_x_date = astrotime(max_x_range, format='mjd').datetime
-
-        p3.extra_x_ranges = {
-            "gregorian date": Range1d(
-                start=min_x_date, end=max_x_date)
-        }
-        p3.add_layout(
-            DatetimeAxis(
-                major_label_text_font_size='8pt',
-                axis_label='Time (' + photoutime + '/Gregorian)',
-                major_label_text_font='futura',
-                axis_label_text_font='futura',
-                major_tick_in=0,
-                x_range_name="gregorian date",
-                axis_label_text_font_size='11pt'),
-            'below')
-
-        if mjdmax:
-            min_xm_range = (min_x_range - mjdmax) * redshiftfactor
-            max_xm_range = (max_x_range - mjdmax) * redshiftfactor
-            p3.extra_x_ranges["time since max"] = Range1d(
-                start=min_xm_range, end=max_xm_range)
-            p3.add_layout(
-                LinearAxis(
-                    axis_label="Time since max (" + dayframe + ")",
-                    major_label_text_font_size='8pt',
-                    major_label_text_font='futura',
-                    axis_label_text_font='futura',
-                    x_range_name="time since max",
-                    axis_label_text_font_size='11pt'),
-                'above')
-
-        if distancemod:
-            min_y_absmag = min_y_range * areacorr * (1.0 * un.GHz).cgs.value
-            max_y_absmag = max_y_range * areacorr * (1.0 * un.GHz).cgs.value
-            # [min_y_absmag, max_y_absmag] = [min_y_absmag - 0.1 *
-            #                                 (max_y_absmag - min_y_absmag), max_y_absmag + 0.1 * (max_y_absmag - min_y_absmag)]
-            p3.extra_y_ranges = {
-                "abs mag": Range1d(
-                    start=min_y_absmag, end=max_y_absmag)
-            }
-            p3.add_layout(
-                LinearAxis(
-                    axis_label="Isotropic Luminosity at 1 GHz (ergs s⁻¹)",
-                    major_label_text_font_size='8pt',
-                    major_label_text_font='futura',
-                    axis_label_text_font='futura',
-                    y_range_name="abs mag",
-                    axis_label_text_font_size='11pt'),
-                'right')
-            p3.yaxis[1].formatter.precision = 1
-
-        xs = []
-        ys = []
-        err_xs = []
-        err_ys = []
-
-        for x, y, xlowerr, xupperr, yerr in list(
-                zip(phototime, photofd, phototimelowererrs, phototimeuppererrs,
-                    photofderrs)):
-            xs.append(x)
-            ys.append(y)
-            err_xs.append((x - xlowerr, x + xupperr))
-            err_ys.append((y - yerr, y + yerr))
-
-        freqset = [
-            str(y[1]) for y in sorted([(float(x), x) for x in set(photofreq)])
-        ]
-        frequnit = photoufreq[0] if photoufreq else ''
-
-        for freq in freqset:
-            indb = [i for i, j in enumerate(photofreq) if j == freq]
-            indt = [i for i, j in enumerate(phototype) if not j]
-            # Should always have upper error if have lower error.
-            indnex = [i for i, j in enumerate(phototimelowererrs) if j == 0.]
-            indyex = [i for i, j in enumerate(phototimelowererrs) if j > 0.]
-            indney = [i for i, j in enumerate(photofderrs) if j == 0.]
-            indyey = [i for i, j in enumerate(photofderrs) if j > 0.]
-            indne = set(indb).intersection(indt).intersection(
-                indney).intersection(indnex)
-            indye = set(indb).intersection(indt).intersection(
-                set(indyey).union(indyex))
-
-            freqlabel = str(freq) + " " + frequnit
-
-            noerrorlegend = value(freqlabel) if len(indye) == 0 and len(
-                indne) > 0 else ''
-
-            data = dict(
-                x=[phototime[i] for i in indne],
-                y=[photofd[i] for i in indne],
-                err=[photofderrs[i] for i in indne],
-                desc=[photofreq[i] for i in indne],
-                instr=[photoinstru[i] for i in indne],
-                src=[photosource[i] for i in indne])
-            if distancemod:
-                data['yabs'] = [
-                    str(
-                        round_sig(
-                            photofd[i] * (areacorr * float(freq) * ((
-                                1.0 * un.GHz).cgs.value)),
-                            sig=3)) for i in indne
-                ]
-                data['abserr'] = [
-                    str(
-                        round_sig(
-                            photofderrs[i] * (areacorr * float(freq) * ((
-                                1.0 * un.GHz).cgs.value)),
-                            sig=3)) for i in indne
-                ]
-            if hastimeerrs:
-                data['xle'] = [phototimelowererrs[i] for i in indne]
-                data['xue'] = [phototimeuppererrs[i] for i in indne]
-
-            source = ColumnDataSource(data)
-            p3.circle(
-                'x',
-                'y',
-                source=source,
-                color=radiocolorf(freq),
-                fill_color="white",
-                legend=noerrorlegend,
-                size=4)
-
-            yeserrorlegend = value(freqlabel) if len(indye) > 0 else ''
-
-            data = dict(
-                x=[phototime[i] for i in indye],
-                y=[photofd[i] for i in indye],
-                err=[photofderrs[i] for i in indye],
-                desc=[photofreq[i] for i in indye],
-                instr=[photoinstru[i] for i in indye],
-                src=[photosource[i] for i in indye])
-            if distancemod:
-                data['yabs'] = [
-                    str(
-                        round_sig(
-                            photofd[i] * (areacorr * float(freq) * ((
-                                1.0 * un.GHz).cgs.value)),
-                            sig=3)) for i in indye
-                ]
-                data['abserr'] = [
-                    str(
-                        round_sig(
-                            photofderrs[i] * (areacorr * float(freq) * ((
-                                1.0 * un.GHz).cgs.value)),
-                            sig=3)) for i in indye
-                ]
-            if hastimeerrs:
-                data['xle'] = [phototimelowererrs[i] for i in indye]
-                data['xue'] = [phototimeuppererrs[i] for i in indye]
-
-            source = ColumnDataSource(data)
-            p3.multi_line(
-                [err_xs[x] for x in indye], [[ys[x], ys[x]] for x in indye],
-                color=radiocolorf(freq))
-            p3.multi_line(
-                [[xs[x], xs[x]] for x in indye], [err_ys[x] for x in indye],
-                color=radiocolorf(freq))
-            ttglyphs.append(
-                p3.circle(
-                    'x',
-                    'y',
-                    source=source,
-                    color=radiocolorf(freq),
-                    legend=yeserrorlegend,
-                    size=4))
-
-            upplimlegend = value(freqlabel) if len(indye) == 0 and len(
-                indne) == 0 else ''
-
-            indt = [i for i, j in enumerate(phototype) if j]
-            ind = set(indb).intersection(indt)
-            data = dict(
-                x=[phototime[i] for i in ind],
-                y=[photofd[i] for i in ind],
-                err=[photofderrs[i] for i in ind],
-                desc=[photofreq[i] for i in ind],
-                instr=[photoinstru[i] for i in ind],
-                src=[photosource[i] for i in ind])
-            if distancemod:
-                data['yabs'] = [
-                    str(
-                        round_sig(
-                            photofd[i] * (areacorr * float(freq) * ((
-                                1.0 * un.GHz).cgs.value)),
-                            sig=3)) for i in ind
-                ]
-                data['abserr'] = [
-                    str(
-                        round_sig(
-                            photofderrs[i] * (areacorr * float(freq) * ((
-                                1.0 * un.GHz).cgs.value)),
-                            sig=3)) for i in ind
-                ]
-            if hastimeerrs:
-                data['xle'] = [phototimelowererrs[i] for i in ind]
-                data['xue'] = [phototimeuppererrs[i] for i in ind]
-
-            source = ColumnDataSource(data)
-            # Currently Bokeh doesn't support tooltips for inverted_triangle,
-            # so hide an invisible circle behind for the tooltip
-            ttglyphs.append(
-                p3.circle(
-                    'x', 'y', source=source, alpha=0.0, size=7))
-            ttglyphs.append(
-                p3.inverted_triangle(
-                    'x',
-                    'y',
-                    source=source,
-                    color=radiocolorf(freq),
-                    legend=upplimlegend,
-                    size=7))
-
-        p3.legend.label_text_font = 'futura'
-        p3.legend.label_text_font_size = '8pt'
-        p3.legend.label_width = 20
-        p3.legend.label_height = 14
-        p3.legend.glyph_height = 14
-        p3.legend.click_policy = "hide"
-
-        hover = HoverTool(tooltips=tt, renderers=ttglyphs)
-        p3.add_tools(hover)
-
-    if xrayavail and dohtml and args.writehtml:
-        phototime = [(mean([float(y) for y in x['time']])
-                      if isinstance(x['time'], list) else float(x['time']))
-                     for x in catalog[entry]['photometry'] if x.get('flux', x.get('unabsorbedflux', 0)) > 0]
-        phototimelowererrs = [
-            float(x['e_lower_time'])
-            if ('e_lower_time' in x and 'e_upper_time' in x) else
-            (float(x['e_time']) if 'e_time' in x else 0.)
-            for x in catalog[entry]['photometry'] if x.get('flux', x.get('unabsorbedflux', 0)) > 0
-        ]
-        phototimeuppererrs = [
-            float(x['e_upper_time'])
-            if ('e_lower_time' in x and 'e_upper_time' in x) in x else
-            (float(x['e_time']) if 'e_time' in x else 0.)
-            for x in catalog[entry]['photometry'] if x.get('flux', x.get('unabsorbedflux', 0)) > 0
-        ]
-        photofl = [
-            np.log10(float(x.get('flux', x['unabsorbedflux']))) for x in catalog[entry]['photometry']
-            if x.get('flux', x.get('unabsorbedflux', 0)) > 0
-        ]
-        photofllowererrs = [
-            (np.log10(float(x.get('flux', x['unabsorbedflux']))) -
-             np.log10(float(x.get('flux', x['unabsorbedflux'])) - float(x.get('e_lower_flux', x['e_lower_unabsorbedflux']))))
-            if (('e_lower_flux' in x or 'e_lower_unabsorbedflux' in x) and float(x.get('flux', x['unabsorbedflux'])) - float(x.get('e_lower_flux', x['e_lower_unabsorbedflux'])) > 0) else
-            ((np.log10(float(x.get('flux', x['unabsorbedflux']))) -
-              np.log10(float(x.get('flux', x['unabsorbedflux'])) - float(x.get('e_flux', x['e_unabsorbedflux']))))
-             if (('e_flux' in x or 'e_unabsorbed_flux' in x) and float(x.get('flux', x['unabsorbedflux'])) - float(x.get('e_flux', x['e_unabsorbedflux'])) > 0) else 0.) for x in catalog[entry]['photometry']
-            if x.get('flux', 0) > 0 or x.get('unabsorbedflux', 0) > 0
-        ]
-        photofluppererrs = [
-            (np.log10(float(x.get('flux', x['unabsorbedflux'])) + float(x.get('e_upper_flux', x['e_upper_unabsorbedflux']))) -
-             np.log10(float(x.get('flux', x['unabsorbedflux'])))) if ('e_upper_flux' in x) else
-            ((np.log10(float(x.get('flux', x['unabsorbedflux'])) + float(x.get('e_flux', x['e_unabsorbedflux']))) -
-              np.log10(float(x.get('flux', x['unabsorbedflux'])))) if 'e_flux' in x else 0.)
-            for x in catalog[entry]['photometry'] if float(x.get('flux', x['unabsorbedflux'])) > 0
-        ]
-        photoufl = [(x['u_flux'] if 'flux' in x or 'unabsorbedflux' in x else '')
-                    for x in catalog[entry]['photometry'] if float(x.get('flux', x['unabsorbedflux'])) > 0]
-        photoener = [((' - '.join([y.rstrip('.') for y in x['energy']])
-                       if isinstance(x['energy'], list) else x['energy'])
-                      if 'flux' in x else '')
-                     for x in catalog[entry]['photometry'] if float(x.get('flux', x['unabsorbedflux'])) > 0]
-        photouener = [(x['u_energy'] if 'flux' in x else '')
-                      for x in catalog[entry]['photometry'] if float(x.get('flux', x['unabsorbedflux'])) > 0]
-        photoinstru = [(x['instrument'] if 'instrument' in x else '')
-                       for x in catalog[entry]['photometry'] if float(x.get('flux', x['unabsorbedflux'])) > 0]
-        photosource = [
-            ', '.join(
-                str(j)
-                for j in sorted(
-                    int(i) for i in catalog[entry]['photometry'][x]['source']
-                    .split(',')))
-            for x, y in enumerate(catalog[entry]['photometry']) if float(y.get('flux', y['unabsorbedflux'])) > 0
-        ]
-        phototype = [(True if 'upperlimit' in x else False)
-                     for x in catalog[entry]['photometry'] if float(x.get('flux', x['unabsorbedflux'])) > 0]
-
-        photoutime = catalog[entry]['photometry'][0][
-            'u_time'] if 'u_time' in catalog[entry]['photometry'][0] else 'MJD'
-        if distancemod:
-            dist = (10.0**(1.0 + 0.2 * distancemod) * un.pc).cgs.value
-            areacorr = 4.0 * pi * dist**2.0
-
-        x_buffer = 0.1 * (
-            max(phototime) - min(phototime)) if len(phototime) > 1 else 1.0
-
-        hastimeerrs = (len(list(filter(None, phototimelowererrs))) and
-                       len(list(filter(None, phototimeuppererrs))))
-        hasflerrs = (len(list(filter(None, photofllowererrs))) and
-                     len(list(filter(None, photofluppererrs))))
-        hasfl = len(list(filter(None, photofl)))
-        yaxis = 'Flux'
-        if not hasfl:
-            yaxis = 'Counts'
+        if xrayavail and dohtml and args.writehtml:
+            phototime = [(mean([float(y) for y in x['time']])
+                          if isinstance(x['time'], list) else float(x['time']))
+                         for x in catalog[entry]['photometry'] if float(x.get('flux', x.get('unabsorbedflux', 0))) > 0]
+            phototimelowererrs = [
+                float(x['e_lower_time'])
+                if ('e_lower_time' in x and 'e_upper_time' in x) else
+                (float(x['e_time']) if 'e_time' in x else 0.)
+                for x in catalog[entry]['photometry'] if float(x.get('flux', x.get('unabsorbedflux', 0))) > 0
+            ]
+            phototimeuppererrs = [
+                float(x['e_upper_time'])
+                if ('e_lower_time' in x and 'e_upper_time' in x) in x else
+                (float(x['e_time']) if 'e_time' in x else 0.)
+                for x in catalog[entry]['photometry'] if float(x.get('flux', x.get('unabsorbedflux', 0))) > 0
+            ]
             photofl = [
-                float(x['countrate'])
-                if ('e_countrate' not in x or
-                    float(x['countrate']) > radiosigma * float(x['e_countrate']))
-                else round_sig(
-                    radiosigma * float(x['e_countrate']),
-                    sig=get_sig_digits(x['e_countrate']))
-                for x in catalog[entry]['photometry']
-                if 'countrate' in x and 'magnitude' not in x
+                np.log10(float(x.get('flux', x.get('unabsorbedflux')))) for x in catalog[entry]['photometry']
+                if float(x.get('flux', x.get('unabsorbedflux', 0))) > 0
             ]
-            photofllowererrs = [(float(x['e_countrate'])
-                                 if 'e_countrate' in x else 0.)
-                                for x in catalog[entry]['photometry']
-                                if 'countrate' in x and 'magnitude' not in x]
-            photofluppererrs = [(float(x['e_countrate'])
-                                 if 'e_countrate' in x else 0.)
-                                for x in catalog[entry]['photometry']
-                                if 'countrate' in x and 'magnitude' not in x]
-            photoufl = ['' for x in photofl]
+            photofllowererrs = [
+                (np.log10(float(x.get('flux', x.get('unabsorbedflux')))) -
+                 np.log10(float(x.get('flux', x.get('unabsorbedflux'))) - float(x.get('e_lower_flux', x.get('e_lower_unabsorbedflux')))))
+                if (('e_lower_flux' in x or 'e_lower_unabsorbedflux' in x) and float(x.get('flux', x.get('unabsorbedflux'))) - float(x.get('e_lower_flux', x.get('e_lower_unabsorbedflux'))) > 0) else
+                ((np.log10(float(x.get('flux', x.get('unabsorbedflux')))) -
+                  np.log10(float(x.get('flux', x.get('unabsorbedflux'))) - float(x.get('e_flux', x['e_unabsorbedflux']))))
+                 if (('e_flux' in x or 'e_unabsorbed_flux' in x) and float(x.get('flux', x.get('unabsorbedflux'))) - float(x.get('e_flux', x['e_unabsorbedflux'])) > 0) else 0.) for x in catalog[entry]['photometry']
+                if float(x.get('flux', x.get('unabsorbedflux', 0))) > 0
+            ]
+            photofluppererrs = [
+                (np.log10(float(x.get('flux', x.get('unabsorbedflux'))) + float(x.get('e_upper_flux', x.get('e_upper_unabsorbedflux')))) -
+                 np.log10(float(x.get('flux', x.get('unabsorbedflux'))))) if ('e_upper_flux' in x or 'e_upper_unabsorbedflux' in x) else
+                ((np.log10(float(x.get('flux', x.get('unabsorbedflux'))) + float(x.get('e_flux', x['e_unabsorbedflux']))) -
+                  np.log10(float(x.get('flux', x.get('unabsorbedflux'))))) if ('e_flux' in x or 'e_upper_unabsorbedflux' in x) else 0.)
+                for x in catalog[entry]['photometry'] if float(x.get('flux', x.get('unabsorbedflux', 0))) > 0
+            ]
+            photoufl = [(x['u_flux'] if 'flux' in x or 'unabsorbedflux' in x else '')
+                        for x in catalog[entry]['photometry'] if float(x.get('flux', x.get('unabsorbedflux', 0))) > 0]
+            photoener = [((' - '.join([y.rstrip('.') for y in x['energy']])
+                           if isinstance(x['energy'], list) else x['energy'])
+                          if 'flux' in x or 'unabsorbedflux' in x else '')
+                         for x in catalog[entry]['photometry'] if float(x.get('flux', x.get('unabsorbedflux', 0))) > 0]
+            photouener = [(x['u_energy'] if 'flux' in x or 'unabsorbedflux' in x else '')
+                          for x in catalog[entry]['photometry'] if float(x.get('flux', x.get('unabsorbedflux', 0))) > 0]
+            photoinstru = [(x['instrument'] if 'instrument' in x else '')
+                           for x in catalog[entry]['photometry'] if float(x.get('flux', x.get('unabsorbedflux', 0))) > 0]
+            photosource = [
+                ', '.join(
+                    str(j)
+                    for j in sorted(
+                        int(i) for i in catalog[entry]['photometry'][x]['source']
+                        .split(',')))
+                for x, y in enumerate(catalog[entry]['photometry']) if float(y.get('flux', y.get('unabsorbedflux', 0))) > 0
+            ]
             phototype = [(True if 'upperlimit' in x else False)
-                         for x in catalog[entry]['photometry'] if 'countrate' in x]
+                         for x in catalog[entry]['photometry'] if float(x.get('flux', x.get('unabsorbedflux', 0))) > 0]
+
+            photoutime = catalog[entry]['photometry'][0][
+                'u_time'] if 'u_time' in catalog[entry]['photometry'][0] else 'MJD'
+            if distancemod:
+                dist = (10.0**(1.0 + 0.2 * distancemod) * un.pc).cgs.value
+                areacorr = 4.0 * pi * dist**2.0
+
+            x_buffer = 0.1 * (
+                max(phototime) - min(phototime)) if len(phototime) > 1 else 1.0
+
+            hastimeerrs = (len(list(filter(None, phototimelowererrs))) and
+                           len(list(filter(None, phototimeuppererrs))))
+            hasflerrs = (len(list(filter(None, photofllowererrs))) and
+                         len(list(filter(None, photofluppererrs))))
             hasfl = len(list(filter(None, photofl)))
-            hasflerrs = len(list(filter(None, photofluppererrs)))
-        tt = [("Source ID(s)", "@src"),
-              ("Epoch (" + photoutime + ")",
-               "@x{1.11}" + ("<sub>-@xle{1}</sub><sup>+@xue{1}</sup>"
-                             if hastimeerrs else ""))]
-        if hasfl:
-            # Need to show upper and lower errors here
-            tt += [(yaxis + " (" + photoufl[0].replace("ergs/s/cm^2",
-                                                       "ergs s⁻¹ cm⁻²") + ")",
-                    "@y" + ("&nbsp;±&nbsp;@uerr" if hasflerrs else ""))]
-            if 'maxabsmag' in catalog[entry] and 'maxappmag' in catalog[entry]:
-                tt += [("Iso. Lum. (ergs s⁻¹)",
-                        "@yabs" + ("&nbsp;±&nbsp;@abserr"
-                                   if hasflerrs else ""))]
-        if len(list(filter(None, photoener))):
-            tt += [("Frequency (" + photouener[0] + ")", "@desc")]
-        if len(list(filter(None, photoinstru))):
-            tt += [("Instrument", "@instr")]
+            yaxis = 'Flux'
+            if not hasfl:
+                yaxis = 'Counts'
+                photofl = [
+                    float(x['countrate'])
+                    if ('e_countrate' not in x or
+                        float(x['countrate']) > radiosigma * float(x['e_countrate']))
+                    else round_sig(
+                        radiosigma * float(x['e_countrate']),
+                        sig=get_sig_digits(x['e_countrate']))
+                    for x in catalog[entry]['photometry']
+                    if 'countrate' in x and 'magnitude' not in x
+                ]
+                photofllowererrs = [(float(x['e_countrate'])
+                                     if 'e_countrate' in x else 0.)
+                                    for x in catalog[entry]['photometry']
+                                    if 'countrate' in x and 'magnitude' not in x]
+                photofluppererrs = [(float(x['e_countrate'])
+                                     if 'e_countrate' in x else 0.)
+                                    for x in catalog[entry]['photometry']
+                                    if 'countrate' in x and 'magnitude' not in x]
+                photoufl = ['' for x in photofl]
+                phototype = [(True if 'upperlimit' in x else False)
+                             for x in catalog[entry]['photometry'] if 'countrate' in x]
+                hasfl = len(list(filter(None, photofl)))
+                hasflerrs = len(list(filter(None, photofluppererrs)))
+            tt = [("Source ID(s)", "@src"),
+                  ("Epoch (" + photoutime + ")",
+                   "@x{1.11}" + ("<sub>-@xle{1}</sub><sup>+@xue{1}</sup>"
+                                 if hastimeerrs else ""))]
+            if hasfl:
+                # Need to show upper and lower errors here
+                tt += [(yaxis + " (" + photoufl[0].replace("ergs/s/cm^2",
+                                                           "ergs s⁻¹ cm⁻²") + ")",
+                        "@y" + ("&nbsp;±&nbsp;@uerr" if hasflerrs else ""))]
+                if 'maxabsmag' in catalog[entry] and 'maxappmag' in catalog[entry]:
+                    tt += [("Iso. Lum. (ergs s⁻¹)",
+                            "@yabs" + ("&nbsp;±&nbsp;@abserr"
+                                       if hasflerrs else ""))]
+            if len(list(filter(None, photoener))):
+                tt += [("Frequency (" + photouener[0] + ")", "@desc")]
+            if len(list(filter(None, photoinstru))):
+                tt += [("Instrument", "@instr")]
 
-        if photoavail:
-            x_range = p1.x_range
-        else:
-            x_range = (min_x_range, max_x_range)
-        min_y_range = min(
-            [(x - y) if not z else x
-             for x, y, z in list(zip(photofl, photofluppererrs, phototype))])
-        max_y_range = max(
-            [(x + y) if not z else x
-             for x, y, z in list(zip(photofl, photofllowererrs, phototype))])
-        [min_y_range, max_y_range] = [
-            min_y_range - 0.1 * max(max_y_range - min_y_range, 1.0),
-            max_y_range + 0.1 * max(max_y_range - min_y_range, 1.0)
-        ]
-
-        ttglyphs = []
-        p4 = Figure(
-            title='X-ray Observations of ' + eventname,
-            active_drag='box_zoom',
-            # sizing_mode = "scale_width",
-            y_axis_label='Log Flux (ergs s⁻¹ cm⁻²)',
-            tools=tools,
-            plot_width=485,
-            plot_height=485,
-            x_range=x_range,
-            y_range=(min_y_range, max_y_range),
-            toolbar_location='above',
-            toolbar_sticky=False)
-        p4.xaxis.axis_label_text_font = 'futura'
-        p4.yaxis.axis_label_text_font = 'futura'
-        p4.xaxis.major_label_text_font = 'futura'
-        p4.yaxis.major_label_text_font = 'futura'
-        p4.xaxis.axis_label_text_font_size = '11pt'
-        p4.yaxis.axis_label_text_font_size = '11pt'
-        p4.xaxis.major_label_text_font_size = '8pt'
-        p4.yaxis.major_label_text_font_size = '8pt'
-        p4.yaxis[0].formatter.precision = 1
-        p4.title.align = 'center'
-        p4.title.text_font_size = '16pt'
-        p4.title.text_font = 'futura'
-
-        min_x_date = astrotime(min_x_range, format='mjd').datetime
-        max_x_date = astrotime(max_x_range, format='mjd').datetime
-
-        p4.extra_x_ranges = {
-            "gregorian date": Range1d(
-                start=min_x_date, end=max_x_date)
-        }
-        p4.add_layout(
-            DatetimeAxis(
-                major_label_text_font_size='8pt',
-                axis_label='Time (' + photoutime + '/Gregorian)',
-                major_label_text_font='futura',
-                axis_label_text_font='futura',
-                major_tick_in=0,
-                x_range_name="gregorian date",
-                axis_label_text_font_size='11pt'),
-            'below')
-
-        if mjdmax:
-            min_xm_range = (min_x_range - mjdmax) * redshiftfactor
-            max_xm_range = (max_x_range - mjdmax) * redshiftfactor
-            p4.extra_x_ranges["time since max"] = Range1d(
-                start=min_xm_range, end=max_xm_range)
-            p4.add_layout(
-                LinearAxis(
-                    axis_label="Time since max (" + dayframe + ")",
-                    major_label_text_font_size='8pt',
-                    major_label_text_font='futura',
-                    axis_label_text_font='futura',
-                    x_range_name="time since max",
-                    axis_label_text_font_size='11pt'),
-                'above')
-
-        if distancemod:
-            min_y_absmag = min(
-                [(x - y) + np.log10(areacorr)
-                 for x, y in list(zip(photofl, photofllowererrs))])
-            max_y_absmag = max(
-                [(x + y) + np.log10(areacorr)
-                 for x, y in list(zip(photofl, photofluppererrs))])
-            [min_y_absmag, max_y_absmag] = [
-                min_y_absmag - 0.1 * (max_y_absmag - min_y_absmag),
-                max_y_absmag + 0.1 * (max_y_absmag - min_y_absmag)
+            if photoavail:
+                x_range = p1.x_range
+            else:
+                x_range = (min_x_range, max_x_range)
+            min_y_range = min(
+                [(x - y) if not z else x
+                 for x, y, z in list(zip(photofl, photofluppererrs, phototype))])
+            max_y_range = max(
+                [(x + y) if not z else x
+                 for x, y, z in list(zip(photofl, photofllowererrs, phototype))])
+            [min_y_range, max_y_range] = [
+                min_y_range - 0.1 * max(max_y_range - min_y_range, 1.0),
+                max_y_range + 0.1 * max(max_y_range - min_y_range, 1.0)
             ]
-            p4.extra_y_ranges = {
-                "abs mag": Range1d(
-                    start=min_y_absmag, end=max_y_absmag)
+
+            ttglyphs = []
+
+            enerset = set(photoener)
+
+            p4 = Figure(
+                title='X-ray Observations of ' + eventname,
+                active_drag='box_zoom',
+                # sizing_mode = "scale_width",
+                y_axis_label='Log Flux (ergs s⁻¹ cm⁻²)',
+                tools=tools,
+                plot_width=485,
+                plot_height=max(485, legy + len(enerset)*legh),
+                x_range=x_range,
+                y_range=(min_y_range, max_y_range),
+                toolbar_location='above',
+                toolbar_sticky=False)
+            p4.xaxis.axis_label_text_font = 'futura'
+            p4.yaxis.axis_label_text_font = 'futura'
+            p4.xaxis.major_label_text_font = 'futura'
+            p4.yaxis.major_label_text_font = 'futura'
+            p4.xaxis.axis_label_text_font_size = '11pt'
+            p4.yaxis.axis_label_text_font_size = '11pt'
+            p4.xaxis.major_label_text_font_size = '8pt'
+            p4.yaxis.major_label_text_font_size = '8pt'
+            p4.yaxis[0].formatter.precision = 1
+            p4.title.align = 'center'
+            p4.title.text_font_size = '16pt'
+            p4.title.text_font = 'futura'
+
+            min_x_date = astrotime(min_x_range, format='mjd').datetime
+            max_x_date = astrotime(max_x_range, format='mjd').datetime
+
+            p4.extra_x_ranges = {
+                "gregorian date": Range1d(
+                    start=min_x_date, end=max_x_date)
             }
             p4.add_layout(
-                LinearAxis(
-                    axis_label="Log Luminosity in band (ergs s⁻¹)",
+                DatetimeAxis(
                     major_label_text_font_size='8pt',
+                    axis_label='Time (' + photoutime + '/Gregorian)',
                     major_label_text_font='futura',
                     axis_label_text_font='futura',
-                    y_range_name="abs mag",
+                    major_tick_in=0,
+                    x_range_name="gregorian date",
                     axis_label_text_font_size='11pt'),
-                'right')
-            p4.yaxis[1].formatter.precision = 1
+                'below')
 
-        xs = []
-        ys = []
-        err_xs = []
-        err_ys = []
+            if mjdmax:
+                min_xm_range = (min_x_range - mjdmax) * redshiftfactor
+                max_xm_range = (max_x_range - mjdmax) * redshiftfactor
+                p4.extra_x_ranges["time since max"] = Range1d(
+                    start=min_xm_range, end=max_xm_range)
+                p4.add_layout(
+                    LinearAxis(
+                        axis_label="Time since max (" + dayframe + ")",
+                        major_label_text_font_size='8pt',
+                        major_label_text_font='futura',
+                        axis_label_text_font='futura',
+                        x_range_name="time since max",
+                        axis_label_text_font_size='11pt'),
+                    'above')
 
-        for x, y, xlowerr, xupperr, ylowerr, yupperr in list(
-                zip(phototime, photofl, phototimelowererrs, phototimeuppererrs,
-                    photofllowererrs, photofluppererrs)):
-            xs.append(x)
-            ys.append(y)
-            err_xs.append((x - xlowerr, x + xupperr))
-            err_ys.append((y - ylowerr, y + yupperr))
-
-        enerset = set(photoener)
-        enerunit = photouener[0] if photouener else ''
-
-        for ener in enerset:
-            indb = [i for i, j in enumerate(photoener) if j == ener]
-            indt = [i for i, j in enumerate(phototype) if not j]
-            # Should always have upper error if have lower error.
-            indnex = [i for i, j in enumerate(phototimelowererrs) if j == 0.]
-            indyex = [i for i, j in enumerate(phototimelowererrs) if j > 0.]
-            indney = [i for i, j in enumerate(photofluppererrs) if j == 0.]
-            indyey = [i for i, j in enumerate(photofluppererrs) if j > 0.]
-            indne = set(indb).intersection(indt).intersection(
-                indney).intersection(indnex)
-            indye = set(indb).intersection(indt).intersection(
-                set(indyey).union(indyex))
-
-            enerlabel = str(ener) + " " + enerunit
-
-            noerrorlegend = value(enerlabel) if len(indye) == 0 and len(
-                indne) > 0 else ''
-
-            data = dict(
-                x=[phototime[i] for i in indne],
-                y=[photofl[i] for i in indne],
-                lerr=[photofllowererrs[i] for i in indne],
-                uerr=[photofluppererrs[i] for i in indne],
-                desc=[photoener[i] for i in indne],
-                instr=[photoinstru[i] for i in indne],
-                src=[photosource[i] for i in indne])
             if distancemod:
-                data['yabs'] = [
-                    str(round_sig(
-                        photofl[i] * areacorr, sig=3)) for i in indne
+                min_y_absmag = min(
+                    [(x - y) + np.log10(areacorr)
+                     for x, y in list(zip(photofl, photofllowererrs))])
+                max_y_absmag = max(
+                    [(x + y) + np.log10(areacorr)
+                     for x, y in list(zip(photofl, photofluppererrs))])
+                [min_y_absmag, max_y_absmag] = [
+                    min_y_absmag - 0.1 * (max_y_absmag - min_y_absmag),
+                    max_y_absmag + 0.1 * (max_y_absmag - min_y_absmag)
                 ]
-                # Need to do labserr and uabserr
-                data['abserr'] = [
-                    str(round_sig(
-                        photofluppererrs[i] * areacorr, sig=3)) for i in indne
-                ]
-            if hastimeerrs:
-                data['xle'] = [phototimelowererrs[i] for i in indne]
-                data['xue'] = [phototimeuppererrs[i] for i in indne]
+                p4.extra_y_ranges = {
+                    "abs mag": Range1d(
+                        start=min_y_absmag, end=max_y_absmag)
+                }
+                p4.add_layout(
+                    LinearAxis(
+                        axis_label="Log Luminosity in band (ergs s⁻¹)",
+                        major_label_text_font_size='8pt',
+                        major_label_text_font='futura',
+                        axis_label_text_font='futura',
+                        y_range_name="abs mag",
+                        axis_label_text_font_size='11pt'),
+                    'right')
+                p4.yaxis[1].formatter.precision = 1
 
-            source = ColumnDataSource(data)
-            p4.circle(
-                'x',
-                'y',
-                source=source,
-                color=xraycolorf(ener),
-                fill_color="white",
-                legend=noerrorlegend,
-                size=4)
+            xs = []
+            ys = []
+            err_xs = []
+            err_ys = []
 
-            yeserrorlegend = value(enerlabel) if len(indye) > 0 else ''
+            for x, y, xlowerr, xupperr, ylowerr, yupperr in list(
+                    zip(phototime, photofl, phototimelowererrs, phototimeuppererrs,
+                        photofllowererrs, photofluppererrs)):
+                xs.append(x)
+                ys.append(y)
+                err_xs.append((x - xlowerr, x + xupperr))
+                err_ys.append((y - ylowerr, y + yupperr))
 
-            data = dict(
-                x=[phototime[i] for i in indye],
-                y=[photofl[i] for i in indye],
-                lerr=[photofllowererrs[i] for i in indye],
-                uerr=[photofluppererrs[i] for i in indye],
-                desc=[photoener[i] for i in indye],
-                instr=[photoinstru[i] for i in indye],
-                src=[photosource[i] for i in indye])
-            if distancemod:
-                data['yabs'] = [
-                    str(round_sig(
-                        photofl[i] * areacorr, sig=3)) for i in indye
-                ]
-                data['abserr'] = [
-                    str(round_sig(
-                        photofluppererrs[i] * areacorr, sig=3)) for i in indye
-                ]
-            if hastimeerrs:
-                data['xle'] = [phototimelowererrs[i] for i in indye]
-                data['xue'] = [phototimeuppererrs[i] for i in indye]
+            enerunit = photouener[0] if photouener else ''
 
-            source = ColumnDataSource(data)
-            p4.multi_line(
-                [err_xs[x] for x in indye], [[ys[x], ys[x]] for x in indye],
-                color=xraycolorf(ener))
-            p4.multi_line(
-                [[xs[x], xs[x]] for x in indye], [err_ys[x] for x in indye],
-                color=xraycolorf(ener))
-            ttglyphs.append(
+            for ener in enerset:
+                indb = [i for i, j in enumerate(photoener) if j == ener]
+                indt = [i for i, j in enumerate(phototype) if not j]
+                # Should always have upper error if have lower error.
+                indnex = [i for i, j in enumerate(phototimelowererrs) if j == 0.]
+                indyex = [i for i, j in enumerate(phototimelowererrs) if j > 0.]
+                indney = [i for i, j in enumerate(photofluppererrs) if j == 0.]
+                indyey = [i for i, j in enumerate(photofluppererrs) if j > 0.]
+                indne = set(indb).intersection(indt).intersection(
+                    indney).intersection(indnex)
+                indye = set(indb).intersection(indt).intersection(
+                    set(indyey).union(indyex))
+
+                enerlabel = str(ener) + " " + enerunit
+
+                noerrorlegend = value(enerlabel) if len(indye) == 0 and len(
+                    indne) > 0 else ''
+
+                data = dict(
+                    x=[phototime[i] for i in indne],
+                    y=[photofl[i] for i in indne],
+                    lerr=[photofllowererrs[i] for i in indne],
+                    uerr=[photofluppererrs[i] for i in indne],
+                    desc=[photoener[i] for i in indne],
+                    instr=[photoinstru[i] for i in indne],
+                    src=[photosource[i] for i in indne])
+                if distancemod:
+                    data['yabs'] = [
+                        str(round_sig(
+                            photofl[i] * areacorr, sig=3)) for i in indne
+                    ]
+                    # Need to do labserr and uabserr
+                    data['abserr'] = [
+                        str(round_sig(
+                            photofluppererrs[i] * areacorr, sig=3)) for i in indne
+                    ]
+                if hastimeerrs:
+                    data['xle'] = [phototimelowererrs[i] for i in indne]
+                    data['xue'] = [phototimeuppererrs[i] for i in indne]
+
+                source = ColumnDataSource(data)
                 p4.circle(
                     'x',
                     'y',
                     source=source,
                     color=xraycolorf(ener),
-                    legend=yeserrorlegend,
-                    size=4))
+                    fill_color="white",
+                    legend=noerrorlegend,
+                    size=4)
 
-            upplimlegend = value(enerlabel) if len(indye) == 0 and len(
-                indne) == 0 else ''
+                yeserrorlegend = value(enerlabel) if len(indye) > 0 else ''
 
-            indt = [i for i, j in enumerate(phototype) if j]
-            ind = set(indb).intersection(indt)
-            data = dict(
-                x=[phototime[i] for i in ind],
-                y=[photofl[i] for i in ind],
-                lerr=[photofllowererrs[i] for i in ind],
-                uerr=[photofluppererrs[i] for i in ind],
-                desc=[photoener[i] for i in ind],
-                instr=[photoinstru[i] for i in ind],
-                src=[photosource[i] for i in ind])
-            if distancemod:
-                data['yabs'] = [
-                    str(round_sig(
-                        photofl[i] * areacorr, sig=3)) for i in ind
-                ]
-                data['abserr'] = [
-                    str(round_sig(
-                        photofluppererrs[i] * areacorr, sig=3)) for i in ind
-                ]
-            if hastimeerrs:
-                data['xle'] = [phototimelowererrs[i] for i in ind]
-                data['xue'] = [phototimeuppererrs[i] for i in ind]
+                data = dict(
+                    x=[phototime[i] for i in indye],
+                    y=[photofl[i] for i in indye],
+                    lerr=[photofllowererrs[i] for i in indye],
+                    uerr=[photofluppererrs[i] for i in indye],
+                    desc=[photoener[i] for i in indye],
+                    instr=[photoinstru[i] for i in indye],
+                    src=[photosource[i] for i in indye])
+                if distancemod:
+                    data['yabs'] = [
+                        str(round_sig(
+                            photofl[i] * areacorr, sig=3)) for i in indye
+                    ]
+                    data['abserr'] = [
+                        str(round_sig(
+                            photofluppererrs[i] * areacorr, sig=3)) for i in indye
+                    ]
+                if hastimeerrs:
+                    data['xle'] = [phototimelowererrs[i] for i in indye]
+                    data['xue'] = [phototimeuppererrs[i] for i in indye]
 
-            source = ColumnDataSource(data)
-            # Currently Bokeh doesn't support tooltips for inverted_triangle,
-            # so hide an invisible circle behind for the tooltip
-            ttglyphs.append(
-                p4.circle(
-                    'x', 'y', source=source, alpha=0.0, size=7))
-            ttglyphs.append(
-                p4.inverted_triangle(
-                    'x',
-                    'y',
-                    source=source,
-                    color=xraycolorf(ener),
-                    legend=upplimlegend,
-                    size=7))
+                source = ColumnDataSource(data)
+                p4.multi_line(
+                    [err_xs[x] for x in indye], [[ys[x], ys[x]] for x in indye],
+                    color=xraycolorf(ener))
+                p4.multi_line(
+                    [[xs[x], xs[x]] for x in indye], [err_ys[x] for x in indye],
+                    color=xraycolorf(ener))
+                ttglyphs.append(
+                    p4.circle(
+                        'x',
+                        'y',
+                        source=source,
+                        color=xraycolorf(ener),
+                        legend=yeserrorlegend,
+                        size=4))
 
-        p4.legend.label_text_font = 'futura'
-        p4.legend.label_text_font_size = '8pt'
-        p4.legend.label_width = 20
-        p4.legend.label_height = 14
-        p4.legend.glyph_height = 14
-        p4.legend.click_policy = "hide"
-        hover = HoverTool(tooltips=tt, renderers=ttglyphs)
-        p4.add_tools(hover)
+                upplimlegend = value(enerlabel) if len(indye) == 0 and len(
+                    indne) == 0 else ''
 
-    hasimage = False
-    skyhtml = ''
-    if 'ra' in catalog[entry] and 'dec' in catalog[
-            entry] and args.collecthosts:
-        snra = catalog[entry]['ra'][0]['value']
-        sndec = catalog[entry]['dec'][0]['value']
-        try:
-            c = coord(ra=snra, dec=sndec, unit=(un.hourangle, un.deg))
-        except (KeyboardInterrupt, SystemExit):
-            raise
-        except Exception:
-            warnings.warn('Malformed angle for event ' + entry + '.')
-        else:
-            # if 'lumdist' in catalog[entry] and float(catalog[entry]['lumdist'][0]['value']) > 0.:
-            #    if 'host' in catalog[entry] and catalog[entry]['host'][0]['value'] == 'Milky Way':
-            #        sdssimagescale = max(0.05,0.4125/float(catalog[entry]['lumdist'][0]['value']))
-            #    else:
-            #    sdssimagescale = max(0.5,20.6265/float(catalog[entry]['lumdist'][0]['value']))
-            # else:
-            #    if 'host' in catalog[entry] and catalog[entry]['host'][0]['value'] == 'Milky Way':
-            #        sdssimagescale = 0.006
-            #    else:
-            #    sdssimagescale = 0.5
-            #dssimagescale = 0.13889*sdssimagescale
-            # At the moment, no way to check if host is in SDSS footprint
-            # without comparing to empty image, which is only possible at fixed
-            # angular resolution.
-            sdssimagescale = 0.3
-            dssimagescale = 0.13889 * sdssimagescale
+                indt = [i for i, j in enumerate(phototype) if j]
+                ind = set(indb).intersection(indt)
+                data = dict(
+                    x=[phototime[i] for i in ind],
+                    y=[photofl[i] for i in ind],
+                    lerr=[photofllowererrs[i] for i in ind],
+                    uerr=[photofluppererrs[i] for i in ind],
+                    desc=[photoener[i] for i in ind],
+                    instr=[photoinstru[i] for i in ind],
+                    src=[photosource[i] for i in ind])
+                if distancemod:
+                    data['yabs'] = [
+                        str(round_sig(
+                            photofl[i] * areacorr, sig=3)) for i in ind
+                    ]
+                    data['abserr'] = [
+                        str(round_sig(
+                            photofluppererrs[i] * areacorr, sig=3)) for i in ind
+                    ]
+                if hastimeerrs:
+                    data['xle'] = [phototimelowererrs[i] for i in ind]
+                    data['xue'] = [phototimeuppererrs[i] for i in ind]
 
-            imgsrc = ''
-            hasimage = True
-            if eventname in hostimgdict:
-                imgsrc = hostimgdict[eventname]
-            elif args.collecthosts:
-                try:
-                    response = urllib.request.urlopen(
-                        'http://skyserver.sdss.org/dr13/SkyServerWS/ImgCutout/getjpeg?ra='
-                        + str(c.ra.deg) + '&dec=' + str(c.dec.deg) + '&scale='
-                        + str(sdssimagescale) + '&width=500&height=500&opt=G',
-                        timeout=60)
-                    resptxt = response.read()
-                except (KeyboardInterrupt, SystemExit):
-                    raise
-                except Exception:
-                    hasimage = False
-                else:
-                    with open(outdir + htmldir + fileeventname + '-host.jpg',
-                              'wb') as f:
-                        f.write(resptxt)
-                    imgsrc = 'SDSS'
+                source = ColumnDataSource(data)
+                # Currently Bokeh doesn't support tooltips for inverted_triangle,
+                # so hide an invisible circle behind for the tooltip
+                ttglyphs.append(
+                    p4.circle(
+                        'x', 'y', source=source, alpha=0.0, size=7))
+                ttglyphs.append(
+                    p4.inverted_triangle(
+                        'x',
+                        'y',
+                        source=source,
+                        color=xraycolorf(ener),
+                        legend=upplimlegend,
+                        size=7))
 
-                if hasimage and filecmp.cmp(
-                        outdir + htmldir + fileeventname + '-host.jpg',
-                        'astrocats/' + moduledir + '/input/missing.jpg'):
-                    hasimage = False
+            p4.legend.label_text_font = 'futura'
+            p4.legend.label_text_font_size = '8pt'
+            p4.legend.label_width = 20
+            p4.legend.label_height = 12
+            p4.legend.glyph_height = 12
+            p4.legend.spacing = 0
+            p4.legend.click_policy = "hide"
+            hover = HoverTool(tooltips=tt, renderers=ttglyphs)
+            p4.add_tools(hover)
 
-                if not hasimage:
-                    hasimage = True
-                    url = (
-                        "http://skyview.gsfc.nasa.gov/current/cgi/runquery.pl?Position="
-                        + str(urllib.parse.quote_plus(snra + " " + sndec)) +
-                        "&coordinates=J2000&coordinates=&projection=Tan&pixels=500&size="
-                        + str(dssimagescale) +
-                        "&float=on&scaling=Log&resolver=SIMBAD-NED" +
-                        "&Sampler=_skip_&Deedger=_skip_&rotation=&Smooth=&lut=colortables%2Fb-w-linear.bin&PlotColor=&grid=_skip_&gridlabels=1"
-                        +
-                        "&catalogurl=&CatalogIDs=on&RGB=1&survey=DSS2+IR&survey=DSS2+Red&survey=DSS2+Blue&IOSmooth=&contour=&contourSmooth=&ebins=null"
-                    )
+        hasimage = False
+        skyhtml = ''
+        if 'ra' in catalog[entry] and 'dec' in catalog[
+                entry] and args.collecthosts:
+            snra = catalog[entry]['ra'][0]['value']
+            sndec = catalog[entry]['dec'][0]['value']
+            try:
+                c = coord(ra=snra, dec=sndec, unit=(un.hourangle, un.deg))
+            except (KeyboardInterrupt, SystemExit):
+                raise
+            except Exception:
+                warnings.warn('Malformed angle for event ' + entry + '.')
+            else:
+                # if 'lumdist' in catalog[entry] and float(catalog[entry]['lumdist'][0]['value']) > 0.:
+                #    if 'host' in catalog[entry] and catalog[entry]['host'][0]['value'] == 'Milky Way':
+                #        sdssimagescale = max(0.05,0.4125/float(catalog[entry]['lumdist'][0]['value']))
+                #    else:
+                #    sdssimagescale = max(0.5,20.6265/float(catalog[entry]['lumdist'][0]['value']))
+                # else:
+                #    if 'host' in catalog[entry] and catalog[entry]['host'][0]['value'] == 'Milky Way':
+                #        sdssimagescale = 0.006
+                #    else:
+                #    sdssimagescale = 0.5
+                #dssimagescale = 0.13889*sdssimagescale
+                # At the moment, no way to check if host is in SDSS footprint
+                # without comparing to empty image, which is only possible at fixed
+                # angular resolution.
+                sdssimagescale = 0.3
+                dssimagescale = 0.13889 * sdssimagescale
 
+                imgsrc = ''
+                hasimage = True
+                if eventname in hostimgdict:
+                    imgsrc = hostimgdict[eventname]
+                elif args.collecthosts:
                     try:
-                        response = urllib.request.urlopen(url, timeout=60)
-                        bandsoup = BeautifulSoup(response, "html5lib")
+                        response = urllib.request.urlopen(
+                            'http://skyserver.sdss.org/dr13/SkyServerWS/ImgCutout/getjpeg?ra='
+                            + str(c.ra.deg) + '&dec=' + str(c.dec.deg) + '&scale='
+                            + str(sdssimagescale) + '&width=500&height=500&opt=G',
+                            timeout=60)
+                        resptxt = response.read()
                     except (KeyboardInterrupt, SystemExit):
                         raise
                     except Exception:
                         hasimage = False
                     else:
-                        images = bandsoup.findAll('img')
-                        imgname = ''
-                        for image in images:
-                            if "Quicklook RGB image" in image.get('alt', ''):
-                                imgname = image.get('src', '').split('/')[-1]
+                        with open(outdir + htmldir + fileeventname + '-host.jpg',
+                                  'wb') as f:
+                            f.write(resptxt)
+                        imgsrc = 'SDSS'
 
-                        if imgname:
-                            try:
-                                response = urllib.request.urlopen(
-                                    'http://skyview.gsfc.nasa.gov/tempspace/fits/'
-                                    + imgname)
-                                with open(outdir + htmldir + fileeventname +
-                                          '-host.jpg', 'wb') as f:
-                                    f.write(response.read())
-                                imgsrc = 'DSS'
-                            except (KeyboardInterrupt, SystemExit):
-                                raise
-                            except Exception:
-                                hasimage = False
-                        else:
+                    if hasimage and filecmp.cmp(
+                            outdir + htmldir + fileeventname + '-host.jpg',
+                            'astrocats/' + moduledir + '/input/missing.jpg'):
+                        hasimage = False
+
+                    if not hasimage:
+                        hasimage = True
+                        url = (
+                            "http://skyview.gsfc.nasa.gov/current/cgi/runquery.pl?Position="
+                            + str(urllib.parse.quote_plus(snra + " " + sndec)) +
+                            "&coordinates=J2000&coordinates=&projection=Tan&pixels=500&size="
+                            + str(dssimagescale) +
+                            "&float=on&scaling=Log&resolver=SIMBAD-NED" +
+                            "&Sampler=_skip_&Deedger=_skip_&rotation=&Smooth=&lut=colortables%2Fb-w-linear.bin&PlotColor=&grid=_skip_&gridlabels=1"
+                            +
+                            "&catalogurl=&CatalogIDs=on&RGB=1&survey=DSS2+IR&survey=DSS2+Red&survey=DSS2+Blue&IOSmooth=&contour=&contourSmooth=&ebins=null"
+                        )
+
+                        try:
+                            response = urllib.request.urlopen(url, timeout=60)
+                            bandsoup = BeautifulSoup(response, "html5lib")
+                        except (KeyboardInterrupt, SystemExit):
+                            raise
+                        except Exception:
                             hasimage = False
+                        else:
+                            images = bandsoup.findAll('img')
+                            imgname = ''
+                            for image in images:
+                                if "Quicklook RGB image" in image.get('alt', ''):
+                                    imgname = image.get('src', '').split('/')[-1]
 
-        if hasimage:
-            if imgsrc == 'SDSS':
-                hostimgdict[eventname] = 'SDSS'
-                skyhtml = (
-                    '<a href="http://skyserver.sdss.org/DR13/en/tools/chart/navi.aspx?opt=G&ra='
-                    + str(c.ra.deg) + '&dec=' + str(c.dec.deg) +
-                    '&scale=0.15"><img src="' + urllib.parse.quote(
-                        fileeventname) + '-host.jpg" width=250></a>')
-            elif imgsrc == 'DSS':
-                hostimgdict[eventname] = 'DSS'
-                url = (
-                    "http://skyview.gsfc.nasa.gov/current/cgi/runquery.pl?Position="
-                    + str(urllib.parse.quote_plus(snra + " " + sndec)) +
-                    "&coordinates=J2000&coordinates=&projection=Tan&pixels=500&size="
-                    + str(dssimagescale) +
-                    "float=on&scaling=Log&resolver=SIMBAD-NED" +
-                    "&Sampler=_skip_&Deedger=_skip_&rotation=&Smooth=&lut=colortables%2Fb-w-linear.bin&PlotColor=&grid=_skip_&gridlabels=1"
-                    +
-                    "&catalogurl=&CatalogIDs=on&RGB=1&survey=DSS2+IR&survey=DSS2+Red&survey=DSS2+Blue&IOSmooth=&contour=&contourSmooth=&ebins=null"
-                )
-                skyhtml = ('<a href="' + url + '"><img src="' +
-                           urllib.parse.quote(fileeventname) +
-                           '-host.jpg" width=250></a>')
-        else:
-            hostimgdict[eventname] = 'None'
-
-    if dohtml and args.writehtml:
-        # if (photoavail and spectraavail) and dohtml and args.writehtml:
-        plots = []
-        if photoavail:
-            photoitems = [p1]
-            if photochecks:
-                photoitems.append(photochecks)
-            if realizchecks:
-                photoitems.append(realizchecks)
-            p1box = column(*photoitems)
-            plots += [p1box]
-        if spectraavail:
-            plots += [column(p2, bokehrow(binslider, spacingslider))]
-        if radioavail:
-            plots += [p3]
-        if xrayavail:
-            plots += [p4]
-
-        p = layout(
-            [plots[i:i + 2] for i in range(0, len(plots), 2)],
-            ncols=2,
-            toolbar_location=None)
-
-        html = '<html><head><title>' + eventname + '</title>'
-        if photoavail or spectraavail or radioavail or xrayavail:
-            html = file_html(p, CDN, eventname)
-            # html = html + '''<link href="https://cdn.pydata.org/bokeh/release/bokeh-0.11.0.min.css" rel="stylesheet" type="text/css">
-            #    <script src="https://cdn.pydata.org/bokeh/release/bokeh-0.11.0.min.js"></script>''' + script + '</head><body>'
-        else:
-            html = '<html><title></title><body></body></html>'
-
-        # if photoavail and spectraavail:
-        #    html = html + div['p1'] + div['p2']# + div['binslider'] + div['spacingslider']
-        # elif photoavail:
-        #    html = html + div['p1']
-        # elif spectraavail:
-        #    html = html + div['p2'] + div['binslider'] + div['spacingslider']
-
-        #html = html + '</body></html>'
-
-        html = html.replace(
-            '<body>',
-            '''<body class='event-body'><div style="padding-bottom:8px;"><strong>Disclaimer:</strong> All data collected by the Open ''' + moduletitle +
-            ''' Catalog was originally generated by others, if you intend to use this data in a publication, we ask that you please cite the linked sources and/or contact the sources of the data directly. Data sources are revealed by hovering over the data with your cursor.</div>'''
-        )
-        html = re.sub(
-            r'(\<\/title\>)', r'''\1\n
-            <base target="_parent" />\n
-            <link rel="stylesheet" href="https://''' + moduleurl +
-            '''/wp-content/themes/astrocats-child-theme/event-iframe.css" type="text/css">\n
-            <script type="text/javascript" src="https://''' + moduleurl +
-            '''/wp-content/plugins/transient-table/transient-table.js" type="text/js"></script>\n
-            <script type="text/javascript">\n
-                if(top==self)\n
-                this.location="''' + eventname + '''"\n
-            </script>''', html)
-
-        repfolder = get_rep_folder(catalog[entry], repofolders)
-        html = re.sub(
-            r'(\<\/body\>)', '<div class="event-download">' + r'<a href="' +
-            r'../json/' + fileeventname + r'.json" download>' +
-            r'Download all data for ' + eventname + r'</a></div>\n\1', html)
-        issueargs = '?title=' + ('[' + eventname + '] <Descriptive issue title>').encode('ascii', 'xmlcharrefreplace').decode("utf-8") + '&body=' + \
-            ('Please describe the issue with ' + eventname + '\'s data here, be as descriptive as possible! ' +
-             'If you believe the issue appears in other events as well, please identify which other events the issue possibly extends to.').encode('ascii', 'xmlcharrefreplace').decode("utf-8")
-        html = re.sub(r'(\<\/body\>)', '<div class="event-issue">' +
-                      r'<a href="https://github.com/astrocatalogs/' + moduledir
-                      + '/issues/new' + issueargs + r'" target="_blank">' +
-                      r'Report an issue with ' + eventname + r'</a></div>\n\1',
-                      html)
-
-        newhtml = r'<div class="event-tab-div"><h3 class="event-tab-title">Event metadata</h3><table class="event-table"><tr><th width=100px class="event-cell">Quantity</th><th class="event-cell">Value<sup>Sources</sup> [Kind]</th></tr>\n'
-        edit = "true" if os.path.isfile(
-            'astrocats/' + moduledir + '/input/' + modulename + '-internal/' +
-            get_event_filename(entry) + '.json') else "false"
-        for key in columnkey:
-            if key in catalog[entry] and key not in eventignorekey and len(
-                    catalog[entry][key]) > 0:
-                keyhtml = ''
-                if isinstance(catalog[entry][key], basestring):
-                    if key in [
-                            'photolink', 'spectralink', 'radiolink', 'xraylink'
-                    ]:
-                        keysplit = catalog[entry][key].split(',')
-                        if keysplit:
-                            num = int(keysplit[0])
-                            keyhtml = keyhtml + keysplit[0] + ' ' + (
-                                infl.plural('spectrum', num)
-                                if key == 'spectralink' else infl.plural(
-                                    'detection', num))
-                            if len(keysplit) == 3:
-                                keyhtml = keyhtml + \
-                                    '<br>[' + keysplit[1] + ' – ' + \
-                                    keysplit[2] + ' days from max]'
-                    else:
-                        subentry = re.sub('<[^<]+?>', '', catalog[entry][key])
-                        keyhtml = keyhtml + subentry
-                else:
-                    for r, row in enumerate(catalog[entry][key]):
-                        if 'value' in row and 'source' in row:
-                            sources = [
-                                str(x)
-                                for x in sorted(
-                                    [
-                                        x.strip()
-                                        for x in row['source'].split(',')
-                                    ],
-                                    key=lambda x: float(x) if is_number(
-                                        x) else float("inf")
-                                )
-                            ]
-                            sourcehtml = ''
-                            sourcecsv = ','.join(sources)
-                            for s, source in enumerate(sources):
-                                sourcehtml = sourcehtml + \
-                                    (', ' if s > 0 else '') + r'<a href="#source' + \
-                                    source + r'" target="_self">' + source + r'</a>'
-                            keyhtml = keyhtml + (r'<br>' if r > 0 else '')
-                            keyhtml = keyhtml + "<div class='stt'>"
-                            if 'derived' in row and row['derived']:
-                                keyhtml = keyhtml + '<span class="derived">'
-                            keyhtml = keyhtml + row['value']
-                            if ((key == 'maxdate' or key == 'maxabsmag' or
-                                 key == 'maxappmag') and
-                                    'maxband' in catalog[entry] and
-                                    catalog[entry]['maxband']):
-                                keyhtml = keyhtml + \
-                                    r' [' + catalog[entry]['maxband'][0]['value'] + ']'
-                            if 'e_value' in row:
-                                keyhtml = keyhtml + r' ± ' + row['e_value']
-                            if 'derived' in row and row['derived']:
-                                keyhtml = keyhtml + '</span>'
-
-                            # Mark erroneous button
-                            sourceids = []
-                            idtypes = []
-                            for alias in row['source'].split(','):
-                                for source in catalog[entry]['sources']:
-                                    if source['alias'] == alias:
-                                        if 'bibcode' in source:
-                                            sourceids.append(source['bibcode'])
-                                            idtypes.append('bibcode')
-                                        elif 'arxivid' in source:
-                                            sourceids.append(source['arxivid'])
-                                            idtypes.append('arxivid')
-                                        else:
-                                            sourceids.append(source['name'])
-                                            idtypes.append('name')
-                            if not sourceids or not idtypes:
-                                raise (ValueError(
-                                    'Unable to find associated source by alias!'
-                                ))
-                            keyhtml = (
-                                keyhtml +
-                                "<span class='sttt'><button class='sme' type='button' onclick='markError(\""
-                                + entry + "\", \"" + key + "\", \"" +
-                                ','.join(idtypes) + "\", \"" +
-                                ','.join(sourceids) + "\", \"" + edit + "\", \"" + modulename +
-                                "\")'>Flag as erroneous</button></span>")
-                            keyhtml = keyhtml + r'</div><sup>' + sourcehtml + r'</sup>'
-                        elif isinstance(row, basestring):
-                            keyhtml = keyhtml + \
-                                (r'<br>' if r > 0 else '') + row.strip()
-
-                if keyhtml:
-                    newhtml = newhtml + r'<tr><td class="event-cell">'
-                    if key not in [
-                            'photolink', 'spectralink', 'radiolink',
-                            'xraylink', 'name'
-                    ]:
-                        newhtml = (
-                            newhtml + '<div class="stt">' +
-                            eventpageheader[key] +
-                            "<span class='sttright'><button class='saq' type='button' onclick='addQuantity(\""
-                            + entry + "\", \"" + key + "\", \"" + edit + "\", \"" + modulename +
-                            "\")'>Add new value</button></span></div>")
-                    else:
-                        newhtml = newhtml + eventpageheader[key]
-                    newhtml = newhtml + r'</td><td width=250px class="event-cell">' + keyhtml
-
-                newhtml = newhtml + r'</td></tr>\n'
-        newhtml = newhtml + r'</table><p><em>Values that are colored <span class="derived">purple</span> were computed by the Open ' + moduletitle + r' Catalog using values provided by the specified sources.</em></p>\n'
-        newhtml = newhtml + r'<p><em>*Absolute magnitudes take into account luminosity distance and redshift decrements but not SED shape, thus the K-corrections used to determine absolute magnitudes are approximate.</em></p></div>\n\1'
-        html = re.sub(r'(\<\/body\>)', newhtml, html)
-
-        if 'sources' in catalog[entry] and len(catalog[entry]['sources']):
-            newhtml = r'<div class="event-tab-div"><h3 class="event-tab-title">Sources of data</h3><table class="event-table"><tr><th width=30px class="event-cell">ID</th><th class="event-cell">Source Info</th></tr><tr><th colspan="2" class="event-cell">Primary Sources</th></tr>\n'
-            first_secondary = False
-            for source in catalog[entry]['sources']:
-                biburl = ''
-                if 'bibcode' in source:
-                    biburl = 'http://adsabs.harvard.edu/abs/' + \
-                        source['bibcode']
-
-                refurl = ''
-                if 'url' in source:
-                    refurl = source['url']
-
-                sourcename = source['name'] if 'name' in source else source[
-                    'bibcode'] if 'bibcode' in source else source['arxivid']
-                if not first_secondary and source.get('secondary', False):
-                    first_secondary = True
-                    newhtml += r'<tr><th colspan="2" class="event-cell">Secondary Sources</th></tr>\n'
-
-                sourcelines = []
-                if ('bibcode' not in source or
-                        sourcename != source['bibcode']):
-                    sourcelines.append(
-                        ((r'<a href="' + refurl + '">') if refurl else '') +
-                        sourcename.encode('ascii', 'xmlcharrefreplace').decode(
-                            "utf-8") + ((r'</a>\n') if refurl else ''))
-                if 'reference' in source:
-                    sourcelines.append(source['reference'])
-                if 'bibcode' in source:
-                    sourcelines.append(r'\n[' + (
-                        ('<a href="' + biburl + '">') if 'reference' in source
-                        else '') + source['bibcode'] + (
-                            r'</a>' if 'reference' in source else '') + ']')
-                if source.get('private', False):
-                    sourcelines.append(
-                        r'<span class="private-source">Data from source not yet public</span>\n'
-                    )
-
-                newhtml = (newhtml + r'<tr><td class="event-cell" id="source' +
-                           source['alias'] + '">' + source['alias'] +
-                           r'</td><td width=250px class="event-cell">' +
-                           r'<br>\n'.join(sourcelines) + r'</td></tr>\n')
-            newhtml = newhtml + r'</table><em>Sources are presented in order of importation, not in order of importance.</em></div>\n'
+                            if imgname:
+                                try:
+                                    response = urllib.request.urlopen(
+                                        'http://skyview.gsfc.nasa.gov/tempspace/fits/'
+                                        + imgname)
+                                    with open(outdir + htmldir + fileeventname +
+                                              '-host.jpg', 'wb') as f:
+                                        f.write(response.read())
+                                    imgsrc = 'DSS'
+                                except (KeyboardInterrupt, SystemExit):
+                                    raise
+                                except Exception:
+                                    hasimage = False
+                            else:
+                                hasimage = False
 
             if hasimage:
-                newhtml = newhtml + \
-                    '<div class="event-host-div"><h3 class="event-host-title">Host Image</h3>' + skyhtml
-                newhtml = newhtml + \
-                    r'</table><em>Host images are taken from SDSS if available; if not, DSS is used.</em></div>\n'
+                if imgsrc == 'SDSS':
+                    hostimgdict[eventname] = 'SDSS'
+                    skyhtml = (
+                        '<a href="http://skyserver.sdss.org/DR13/en/tools/chart/navi.aspx?opt=G&ra='
+                        + str(c.ra.deg) + '&dec=' + str(c.dec.deg) +
+                        '&scale=0.15"><img src="' + urllib.parse.quote(
+                            fileeventname) + '-host.jpg" width=250></a>')
+                elif imgsrc == 'DSS':
+                    hostimgdict[eventname] = 'DSS'
+                    url = (
+                        "http://skyview.gsfc.nasa.gov/current/cgi/runquery.pl?Position="
+                        + str(urllib.parse.quote_plus(snra + " " + sndec)) +
+                        "&coordinates=J2000&coordinates=&projection=Tan&pixels=500&size="
+                        + str(dssimagescale) +
+                        "float=on&scaling=Log&resolver=SIMBAD-NED" +
+                        "&Sampler=_skip_&Deedger=_skip_&rotation=&Smooth=&lut=colortables%2Fb-w-linear.bin&PlotColor=&grid=_skip_&gridlabels=1"
+                        +
+                        "&catalogurl=&CatalogIDs=on&RGB=1&survey=DSS2+IR&survey=DSS2+Red&survey=DSS2+Blue&IOSmooth=&contour=&contourSmooth=&ebins=null"
+                    )
+                    skyhtml = ('<a href="' + url + '"><img src="' +
+                               urllib.parse.quote(fileeventname) +
+                               '-host.jpg" width=250></a>')
+            else:
+                hostimgdict[eventname] = 'None'
 
-        newhtml = newhtml + r'\n\1'
+        if dohtml and args.writehtml:
+            # if (photoavail and spectraavail) and dohtml and args.writehtml:
+            plots = []
+            if photoavail:
+                photoitems = [p1]
+                if photochecks:
+                    photoitems.append(photochecks)
+                if realizchecks:
+                    photoitems.append(realizchecks)
+                p1box = column(*photoitems)
+                plots += [p1box]
+            if spectraavail:
+                plots += [column(p2, bokehrow(binslider, spacingslider))]
+            if radioavail:
+                plots += [p3]
+            if xrayavail:
+                plots += [p4]
 
-        html = re.sub(r'(\<\/body\>)', newhtml, html)
+            p = layout(
+                [plots[i:i + 2] for i in range(0, len(plots), 2)],
+                ncols=2,
+                toolbar_location=None)
 
-        with gzip.open(outdir + htmldir + fileeventname + ".html.gz",
-                       'wt') as fff:
-            touch(outdir + htmldir + fileeventname + ".html")
-            fff.write(html)
+            html = '<html><head><title>' + eventname + '</title>'
+            if photoavail or spectraavail or radioavail or xrayavail:
+                html = file_html(p, CDN, eventname)
+                # html = html + '''<link href="https://cdn.pydata.org/bokeh/release/bokeh-0.11.0.min.css" rel="stylesheet" type="text/css">
+                #    <script src="https://cdn.pydata.org/bokeh/release/bokeh-0.11.0.min.js"></script>''' + script + '</head><body>'
+            else:
+                html = '<html><title></title><body></body></html>'
 
-    # Necessary to clear Bokeh state
-    reset_output()
+            # if photoavail and spectraavail:
+            #    html = html + div['p1'] + div['p2']# + div['binslider'] + div['spacingslider']
+            # elif photoavail:
+            #    html = html + div['p1']
+            # elif spectraavail:
+            #    html = html + div['p2'] + div['binslider'] + div['spacingslider']
 
-    # if spectraavail and dohtml:
-    #    sys.exit()
+            #html = html + '</body></html>'
 
-    # if fcnt > 100:
-    #    sys.exit()
+            html = html.replace(
+                '<body>',
+                '''<body class='event-body'><div style="padding-bottom:8px;"><strong>Disclaimer:</strong> All data collected by the Open ''' + moduletitle +
+                ''' Catalog was originally generated by others, if you intend to use this data in a publication, we ask that you please cite the linked sources and/or contact the sources of the data directly. Data sources are revealed by hovering over the data with your cursor.</div>'''
+            )
+            html = re.sub(
+                r'(\<\/title\>)', r'''\1\n
+                <base target="_parent" />\n
+                <link rel="stylesheet" href="https://''' + moduleurl +
+                '''/wp-content/themes/astrocats-child-theme/event-iframe.css" type="text/css">\n
+                <script type="text/javascript" src="https://''' + moduleurl +
+                '''/wp-content/plugins/transient-table/transient-table.js" type="text/js"></script>\n
+                <script type="text/javascript">\n
+                    if(top==self)\n
+                    this.location="''' + eventname + '''"\n
+                </script>''', html)
 
-    # Save this stuff because next line will delete it.
-    if args.writecatalog:
-        # Construct array for Bishop's webpage
-        # Things David wants in this file: names (aliases), max mag, max mag
-        # date (gregorian), type, redshift (helio), redshift (host), r.a.,
-        # dec., # obs., link
-        csvpages.append([
-            entry, ",".join(
-                [x['value'] for x in catalog[entry].get('alias', [{'value': entry}])]),
-            get_first_value(entry, 'maxappmag'),
-            get_first_value(entry, 'maxdate'),
-            get_first_value(entry, 'claimedtype'), get_first_value(
-                entry, 'redshift'), get_first_kind(entry, 'redshift'),
-            get_first_value(entry, 'ra'), get_first_value(entry, 'dec'),
-            catalog[entry]['numphoto'], 'https://' + moduleurl + '/' + plotlink
-        ])
+            repfolder = get_rep_folder(catalog[entry], repofolders)
+            html = re.sub(
+                r'(\<\/body\>)', '<div class="event-download">' + r'<a href="' +
+                r'../json/' + fileeventname + r'.json" download>' +
+                r'Download all data for ' + eventname + r'</a></div>\n\1', html)
+            issueargs = '?title=' + ('[' + eventname + '] <Descriptive issue title>').encode('ascii', 'xmlcharrefreplace').decode("utf-8") + '&body=' + \
+                ('Please describe the issue with ' + eventname + '\'s data here, be as descriptive as possible! ' +
+                 'If you believe the issue appears in other events as well, please identify which other events the issue possibly extends to.').encode('ascii', 'xmlcharrefreplace').decode("utf-8")
+            html = re.sub(r'(\<\/body\>)', '<div class="event-issue">' +
+                          r'<a href="https://github.com/astrocatalogs/' + moduledir
+                          + '/issues/new' + issueargs + r'" target="_blank">' +
+                          r'Report an issue with ' + eventname + r'</a></div>\n\1',
+                          html)
 
-        if 'sources' in catalog[entry]:
-            lsourcedict = {}
-            for sourcerow in catalog[entry]['sources']:
-                if 'name' not in sourcerow:
-                    continue
-                strippedname = re.sub('<[^<]+?>', '', sourcerow['name'].encode(
-                    'ascii', 'xmlcharrefreplace').decode("utf-8"))
-                alias = sourcerow['alias']
-                if 'bibcode' in sourcerow and 'secondary' not in sourcerow:
-                    lsourcedict[alias] = {
-                        'bibcode': sourcerow['bibcode'],
-                        'count': 0
-                    }
-                if strippedname in sourcedict:
-                    sourcedict[strippedname] += 1
-                else:
-                    sourcedict[strippedname] = 1
+            newhtml = r'<div class="event-tab-div"><h3 class="event-tab-title">Event metadata</h3><table class="event-table"><tr><th width=100px class="event-cell">Quantity</th><th class="event-cell">Value<sup>Sources</sup> [Kind]</th></tr>\n'
+            edit = "true" if os.path.isfile(
+                'astrocats/' + moduledir + '/input/' + modulename + '-internal/' +
+                get_event_filename(entry) + '.json') else "false"
+            for key in columnkey:
+                if key in catalog[entry] and key not in eventignorekey and len(
+                        catalog[entry][key]) > 0:
+                    keyhtml = ''
+                    if isinstance(catalog[entry][key], basestring):
+                        if key in [
+                                'photolink', 'spectralink', 'radiolink', 'xraylink'
+                        ]:
+                            keysplit = catalog[entry][key].split(',')
+                            if keysplit:
+                                num = int(keysplit[0])
+                                keyhtml = keyhtml + keysplit[0] + ' ' + (
+                                    infl.plural('spectrum', num)
+                                    if key == 'spectralink' else infl.plural(
+                                        'detection', num))
+                                if len(keysplit) == 3:
+                                    keyhtml = keyhtml + \
+                                        '<br>[' + keysplit[1] + ' – ' + \
+                                        keysplit[2] + ' days from max]'
+                        else:
+                            subentry = re.sub('<[^<]+?>', '', catalog[entry][key])
+                            keyhtml = keyhtml + subentry
+                    else:
+                        for r, row in enumerate(catalog[entry][key]):
+                            if 'value' in row and 'source' in row:
+                                sources = [
+                                    str(x)
+                                    for x in sorted(
+                                        [
+                                            x.strip()
+                                            for x in row['source'].split(',')
+                                        ],
+                                        key=lambda x: float(x) if is_number(
+                                            x) else float("inf")
+                                    )
+                                ]
+                                sourcehtml = ''
+                                sourcecsv = ','.join(sources)
+                                for s, source in enumerate(sources):
+                                    sourcehtml = sourcehtml + \
+                                        (', ' if s > 0 else '') + r'<a href="#source' + \
+                                        source + r'" target="_self">' + source + r'</a>'
+                                keyhtml += (r'<br>' if r > 0 else '')
+                                keyhtml += "<div class='stt'>"
+                                if 'derived' in row and row['derived']:
+                                    keyhtml += '<span class="derived">'
+                                keyhtml += row['value']
+                                if ((key == 'maxdate' or key == 'maxabsmag' or
+                                     key == 'maxappmag') and
+                                        'maxband' in catalog[entry] and
+                                        catalog[entry]['maxband']):
+                                    keyhtml += r' [' + catalog[entry]['maxband'][0]['value'] + ']'
+                                if 'e_value' in row:
+                                    keyhtml += r' ± ' + row['e_value']
+                                if 'derived' in row and row['derived']:
+                                    keyhtml += '</span>'
 
-            for key in catalog[entry].keys():
-                if isinstance(catalog[entry][key], list):
-                    for row in catalog[entry][key]:
-                        if 'source' in row:
-                            for lsource in lsourcedict:
-                                if lsource in row['source'].split(','):
-                                    if key == 'spectra':
-                                        lsourcedict[lsource]['count'] += 10
-                                    else:
-                                        lsourcedict[lsource]['count'] += 1
+                                # Mark erroneous button
+                                sourceids = []
+                                idtypes = []
+                                for alias in row['source'].split(','):
+                                    for source in catalog[entry]['sources']:
+                                        if source['alias'] == alias:
+                                            if 'bibcode' in source:
+                                                sourceids.append(source['bibcode'])
+                                                idtypes.append('bibcode')
+                                            elif 'arxivid' in source:
+                                                sourceids.append(source['arxivid'])
+                                                idtypes.append('arxivid')
+                                            else:
+                                                sourceids.append(source['name'])
+                                                idtypes.append('name')
+                                if not sourceids or not idtypes:
+                                    raise (ValueError(
+                                        'Unable to find associated source by alias!'
+                                    ))
+                                keyhtml += (
+                                    " <span class='sttt'>Actions:<br>" +
+                                    "<button class='sme' type='button' onclick='markError(\""
+                                    + entry + "\", \"" + key + "\", \"" +
+                                    ','.join(idtypes) + "\", \"" +
+                                    ','.join(sourceids) + "\", \"" + edit + "\", \"" + modulename +
+                                    "\")'>Flag as erroneous</button>");
+                                if key in ['name', 'alias', 'host']:
+                                    keyhtml += (
+                                        "<br><button class='sls' type='button' onclick='lookupSimbad(\""
+                                        + row['value'] + "\", \"" + key + "\", \"" +
+                                        ','.join(idtypes) + "\", \"" +
+                                        ','.join(sourceids) + "\", \"" + edit + "\", \"" + modulename +
+                                        "\")'>Look Up on SIMBAD</button>");
+                                    if row['value'].startswith(('AT', 'SN')):
+                                        keyhtml += (
+                                            "<br><button class='slt' type='button' onclick='lookupTns(\""
+                                            + row['value'][2:] + "\", \"" + key + "\", \"" +
+                                            ','.join(idtypes) + "\", \"" +
+                                            ','.join(sourceids) + "\", \"" + edit + "\", \"" + modulename +
+                                            "\")'>Look Up on TNS</button>");
+                                if key not in [
+                                        'photolink', 'spectralink', 'radiolink',
+                                        'xraylink', 'name'
+                                ]:
+                                    keyhtml += (
+                                        "<br><button class='saq' type='button' onclick='addQuantity(\""
+                                        + entry + "\", \"" + key + "\", \"" + edit + "\", \"" + modulename +
+                                        "\")'>Add new value</button>")
+                                keyhtml += r'</span></div><sup>' + sourcehtml + r'</sup>'
+                            elif isinstance(row, basestring):
+                                keyhtml += (r'<br>' if r > 0 else '') + row.strip()
 
-            ssources = sorted(
-                list(lsourcedict.values()),
-                key=lambda x: x['count'],
-                reverse=True)
-            if ssources:
-                seemorelink = ''
-                catalog[entry]['references'] = ','.join(
-                    [y['bibcode'] for y in ssources[:5]])
+                    if keyhtml:
+                        newhtml += r'<tr><td class="event-cell">'
+                        newhtml += eventpageheader[key]
+                        newhtml += r'</td><td width=250px class="event-cell">' + keyhtml
 
-        lcspye.append(catalog[entry]['numphoto'] >= 5 and
-                      catalog[entry]['numspectra'] > 0)
-        lconly.append(catalog[entry]['numphoto'] >= 5 and
-                      catalog[entry]['numspectra'] == 0)
-        sponly.append(catalog[entry]['numphoto'] < 5 and
-                      catalog[entry]['numspectra'] > 0)
-        lcspno.append(catalog[entry]['numphoto'] < 5 and
-                      catalog[entry]['numspectra'] == 0)
+                    newhtml = newhtml + r'</td></tr>\n'
+            newhtml = newhtml + r'</table><p><em>Values that are colored <span class="derived">purple</span> were computed by the Open ' + moduletitle + r' Catalog using values provided by the specified sources.</em></p>\n'
+            newhtml = newhtml + r'<p><em>*Absolute magnitudes take into account luminosity distance and redshift decrements but not SED shape, thus the K-corrections used to determine absolute magnitudes are approximate.</em></p></div>\n\1'
+            html = re.sub(r'(\<\/body\>)', newhtml, html)
 
-        hasalc.append(catalog[entry]['numphoto'] >= 5)
-        hasasp.append(catalog[entry]['numspectra'] > 0)
+            if 'sources' in catalog[entry] and len(catalog[entry]['sources']):
+                newhtml = r'<div class="event-tab-div"><h3 class="event-tab-title">Sources of data</h3><table class="event-table"><tr><th width=30px class="event-cell">ID</th><th class="event-cell">Source Info</th></tr><tr><th colspan="2" class="event-cell">Primary Sources</th></tr>\n'
+                first_secondary = False
+                for source in catalog[entry]['sources']:
+                    biburl = ''
+                    if 'bibcode' in source:
+                        biburl = 'http://adsabs.harvard.edu/abs/' + \
+                            source['bibcode']
 
-        totalphoto += catalog[entry]['numphoto']
-        totalspectra += catalog[entry]['numspectra']
+                    refurl = ''
+                    if 'url' in source:
+                        refurl = source['url']
 
-        # Delete unneeded data from catalog, add blank entries when data
-        # missing.
-        catalogcopy[entry] = OrderedDict()
-        for col in columnkey:
-            if col in catalog[entry]:
-                catalogcopy[entry][col] = deepcopy(catalog[entry][col])
+                    sourcename = source['name'] if 'name' in source else source[
+                        'bibcode'] if 'bibcode' in source else source['arxivid']
+                    if not first_secondary and source.get('secondary', False):
+                        first_secondary = True
+                        newhtml += r'<tr><th colspan="2" class="event-cell">Secondary Sources</th></tr>\n'
 
-    del catalog[entry]
+                    sourcelines = []
+                    if ('bibcode' not in source or
+                            sourcename != source['bibcode']):
+                        sourcelines.append(
+                            ((r'<a href="' + refurl + '">') if refurl else '') +
+                            sourcename.encode('ascii', 'xmlcharrefreplace').decode(
+                                "utf-8") + ((r'</a>\n') if refurl else ''))
+                    if 'reference' in source:
+                        sourcelines.append(source['reference'])
+                    if 'bibcode' in source:
+                        sourcelines.append(r'\n[' + (
+                            ('<a href="' + biburl + '">') if 'reference' in source
+                            else '') + source['bibcode'] + (
+                                r'</a>' if 'reference' in source else '') + ']')
+                    if source.get('private', False):
+                        sourcelines.append(
+                            r'<span class="private-source">Data from source not yet public</span>\n'
+                        )
 
-    if args.test and spectraavail and photoavail:
-        break
+                    newhtml = (newhtml + r'<tr><td class="event-cell" id="source' +
+                               source['alias'] + '">' + source['alias'] +
+                               r'</td><td width=250px class="event-cell">' +
+                               r'<br>\n'.join(sourcelines) + r'</td></tr>\n')
+                newhtml = newhtml + r'</table><em>Sources are presented in order of importation, not in order of importance.</em></div>\n'
+
+                if hasimage:
+                    newhtml = newhtml + \
+                        '<div class="event-host-div"><h3 class="event-host-title">Host Image</h3>' + skyhtml
+                    newhtml = newhtml + \
+                        r'</table><em>Host images are taken from SDSS if available; if not, DSS is used.</em></div>\n'
+
+            newhtml = newhtml + r'\n\1'
+
+            html = re.sub(r'(\<\/body\>)', newhtml, html)
+
+            with gzip.open(outdir + htmldir + fileeventname + ".html.gz",
+                           'wt') as fff:
+                touch(outdir + htmldir + fileeventname + ".html")
+                fff.write(html)
+
+        # Necessary to clear Bokeh state
+        reset_output()
+
+        # if spectraavail and dohtml:
+        #    sys.exit()
+
+        # if fcnt > 100:
+        #    sys.exit()
+
+        # Save this stuff because next line will delete it.
+        if args.writecatalog:
+            # Construct array for Bishop's webpage
+            # Things David wants in this file: names (aliases), max mag, max mag
+            # date (gregorian), type, redshift (helio), redshift (host), r.a.,
+            # dec., # obs., link
+            csvpages.append([
+                entry, ",".join(
+                    [x['value'] for x in catalog[entry].get('alias', [{'value': entry}])]),
+                get_first_value(entry, 'maxappmag'),
+                get_first_value(entry, 'maxdate'),
+                get_first_value(entry, 'claimedtype'), get_first_value(
+                    entry, 'redshift'), get_first_kind(entry, 'redshift'),
+                get_first_value(entry, 'ra'), get_first_value(entry, 'dec'),
+                catalog[entry]['numphoto'], 'https://' + moduleurl + '/' + plotlink
+            ])
+
+            if 'sources' in catalog[entry]:
+                lsourcedict = {}
+                for sourcerow in catalog[entry]['sources']:
+                    if 'name' not in sourcerow:
+                        continue
+                    strippedname = re.sub('<[^<]+?>', '', sourcerow['name'].encode(
+                        'ascii', 'xmlcharrefreplace').decode("utf-8"))
+                    alias = sourcerow['alias']
+                    if 'bibcode' in sourcerow and 'secondary' not in sourcerow:
+                        lsourcedict[alias] = {
+                            'bibcode': sourcerow['bibcode'],
+                            'count': 0
+                        }
+                    if strippedname in sourcedict:
+                        sourcedict[strippedname] += 1
+                    else:
+                        sourcedict[strippedname] = 1
+
+                for key in catalog[entry].keys():
+                    if isinstance(catalog[entry][key], list):
+                        for row in catalog[entry][key]:
+                            if 'source' in row:
+                                for lsource in lsourcedict:
+                                    if lsource in row['source'].split(','):
+                                        if key == 'spectra':
+                                            lsourcedict[lsource]['count'] += 10
+                                        else:
+                                            lsourcedict[lsource]['count'] += 1
+
+                ssources = sorted(
+                    list(lsourcedict.values()),
+                    key=lambda x: x['count'],
+                    reverse=True)
+                if ssources:
+                    seemorelink = ''
+                    catalog[entry]['references'] = ','.join(
+                        [y['bibcode'] for y in ssources[:5]])
+
+            lcspye.append(catalog[entry]['numphoto'] >= 5 and
+                          catalog[entry]['numspectra'] > 0)
+            lconly.append(catalog[entry]['numphoto'] >= 5 and
+                          catalog[entry]['numspectra'] == 0)
+            sponly.append(catalog[entry]['numphoto'] < 5 and
+                          catalog[entry]['numspectra'] > 0)
+            lcspno.append(catalog[entry]['numphoto'] < 5 and
+                          catalog[entry]['numspectra'] == 0)
+
+            hasalc.append(catalog[entry]['numphoto'] >= 5)
+            hasasp.append(catalog[entry]['numspectra'] > 0)
+
+            totalphoto += catalog[entry]['numphoto']
+            totalspectra += catalog[entry]['numspectra']
+
+            # Delete unneeded data from catalog, add blank entries when data
+            # missing.
+            catalogcopy[entry] = OrderedDict()
+            for col in columnkey:
+                if col in catalog[entry]:
+                    catalogcopy[entry][col] = deepcopy(catalog[entry][col])
+
+        del catalog[entry]
+
+        if args.test and spectraavail and photoavail:
+            break
+    except Exception as ex:
+        print('"{}" failed to generate an HTML page.'.format(eventfile))
+        traceback.print_exc()
 
 # Write it all out at the end
 if args.writecatalog and not args.eventlist:
