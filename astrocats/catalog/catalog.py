@@ -1,5 +1,4 @@
-"""Overarching catalog object for all open catalogs.
-"""
+"""Overarching catalog object for all open catalogs."""
 import codecs
 import importlib
 import json
@@ -81,6 +80,7 @@ class Catalog(object):
         """
 
         def __init__(self, catalog):
+            """Initialize `Catalog`."""
             self.catalog = catalog
             this_file = os.path.abspath(sys.modules[self.__module__].__file__)
             self.catalog_dir = os.path.dirname(this_file)
@@ -98,7 +98,9 @@ class Catalog(object):
             return
 
         def _get_repo_file_list(self, repo_folders, normal=True, bones=True):
-            """Get filenames for files in each repository, `boneyard` optional.
+            """Get filenames for files in each repository.
+
+            `boneyard` optionally include with `bones=True`.
             """
             # repo_folders = get_repo_output_folders()
             files = []
@@ -115,8 +117,7 @@ class Catalog(object):
             return files
 
         def get_all_repo_folders(self, boneyard=True, private=False):
-            """Get the full paths of all data repositories.
-            """
+            """Get the full paths of all data repositories."""
             all_repos = self.get_repo_input_folders(private=private)
             all_repos.extend(self.get_repo_output_folders(bones=boneyard))
             return all_repos
@@ -131,8 +132,7 @@ class Catalog(object):
             return bone_path
 
         def get_repo_input_folders(self, private=False):
-            """Get the full paths of the input data repositories.
-            """
+            """Get the full paths of the input data repositories."""
             repo_folders = []
             repo_folders += self.repos_dict.get('external', [])
             repo_folders += self.repos_dict.get('internal', [])
@@ -155,8 +155,7 @@ class Catalog(object):
                 repo_folders, normal=normal, bones=bones)
 
         def get_repo_output_folders(self, bones=True):
-            """Get the full paths of the output data repositories.
-            """
+            """Get the full paths of the output data repositories."""
             repo_folders = []
             repo_folders += self.repos_dict.get('output', [])
             if bones:
@@ -412,7 +411,7 @@ class Catalog(object):
         def_task_list_filename = self.PATHS.TASK_LIST
         self.log.debug(
             "Loading task-list from '{}'".format(def_task_list_filename))
-        data = json.load(open(def_task_list_filename, 'r'))
+        data = json.load(codecs.open(def_task_list_filename, 'r'))
         # Create `Task` objects for each element in the tasks data file
         tasks = {}
         task_names = []
@@ -778,7 +777,7 @@ class Catalog(object):
 
             stub = None
             stub_name = None
-            with open(fname, 'r') as jfil:
+            with codecs.open(fname, 'r') as jfil:
                 # Load the full JSON file
                 data = json.load(jfil, object_pairs_hook=OrderedDict)
                 # Extract the top-level keys (should just be the name of the
