@@ -2380,27 +2380,26 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                                         '<br>[' + keysplit[1] + ' – ' + \
                                         keysplit[2] + ' days from max]'
                                 if key == 'photolink':
-                                    dlbutt = ('<a href="http://api.' + moduleurl +
+                                    dlbutt = ('<a href="https://api.' + moduleurl +
                                         '/' + entry + '/photometry/time+magnitude+e_magnitude+upperlimit+band+instrument+telescope+source?' +
                                         '{}time&magnitude" target="_blank"><input type="button" class="saq" value="{}"></a>')
                                 elif key == 'spectralink':
-                                    dlbutt = ('<a href="http://api.' + moduleurl +
+                                    dlbutt = ('<a href="https://api.' + moduleurl +
                                         '/' + entry + '/spectra/time+data+instrument+telescope+source' +
                                         '{}" target="_blank"><input type="button" class="saq" value="{}"></a>')
                                 elif key == 'radiolink':
-                                    dlbutt = ('<a href="http://api.' + moduleurl +
+                                    dlbutt = ('<a href="https://api.' + moduleurl +
                                         '/' + entry + '/photometry/time+fluxdensity+e_fluxdensity+upperlimit+frequency+instrument+telescope+source?' +
                                         '{}time&fluxdensity" target="_blank"><input type="button" class="saq" value="{}"></a>')
                                 elif key == 'xraylink':
-                                    dlbutt = ('<a href="http://api.' + moduleurl +
+                                    dlbutt = ('<a href="https://api.' + moduleurl +
                                         '/' + entry + '/photometry/time+flux+e_flux+upperlimit+energy+instrument+telescope+source?' +
                                         '{}time&flux" target="_blank"><input type="button" class="saq" value="{}"></a>')
                                 keyhtml += '<br>' + 'Download: ' + dlbutt.format('', 'JSON')
                                 if key in ['photolink', 'radiolink', 'xraylink']:
                                     keyhtml += ' ' + dlbutt.format('format=csv&', 'CSV')
                                 if key in ['spectralink']:
-                                    dldrop = ('<select style="width:60px;" onchange="if (this.value != \'\') window.open(this.value);">' +
-                                        '<option value="">{}</option>')
+                                    dldrop = ('<input type="button" class="saq" value="CSV" onclick="showSpecCSV();"><div id="speccsv" style="display:none;">')
                                     for si, spec in enumerate(catalog[entry]['spectra']):
                                         if 'time' in catalog[entry]['spectra'][si]:
                                             item_str = "{0:.2f}".format(float(catalog[entry]['spectra'][si]['time']))
@@ -2409,12 +2408,11 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                                                 item_str += ' (' + '{0:+.2f}'.format(diff) + ')'
                                         else:
                                             item_str = '#' + str(si + 1)
-                                        dldrop += ('<option value="http://api.' + moduleurl +
+                                        dldrop += ('Spectrum #' + str(si + 1) + ': <a href="https://api.' + moduleurl +
                                             '/' + entry + '/spectra/data?{}item=' + str(si) +
-                                            '">' + item_str +
-                                            '</option>')
-                                    dldrop += '</select>'
-                                    fsubs = ['CSV'] + ['format=csv&' for x in range(
+                                            '" target="_blank">' + item_str + '</a><br>')
+                                    dldrop += '</div>'
+                                    fsubs = ['format=csv&' for x in range(
                                         len(catalog[entry]['spectra']))]
                                     keyhtml += ' ' + dldrop.format(*fsubs)
                         else:
