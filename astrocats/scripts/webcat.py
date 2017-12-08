@@ -845,37 +845,37 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             rsources = []
             msources = []
             for mi, model in enumerate(models):
-                nrealiz = min(10, len(model.get('realizations', [])))
+                nrealiz = min(3, len(model.get('realizations', [])))
+                mi1 = mi + 1
                 if nrealiz > 0:
                     realiztime = [
                         float(x['time']) for x in catalog[entry]['photometry']
-                        if 'magnitude' in x and 'realization' in x
+                        if 'magnitude' in x and 'realization' in x and x.get('model') == str(mi1)
                     ]
                     realizAB = [
                         float(x['magnitude']) for x in catalog[entry]['photometry']
-                        if 'magnitude' in x and 'realization' in x
+                        if 'magnitude' in x and 'realization' in x and x.get('model') == str(mi1)
                     ]
                     realizband = [(bandaliasf(x['band']) if 'band' in x else '?')
                                   for x in catalog[entry]['photometry'] if 'magnitude' in x
-                                  and 'realization' in x]
-                    realizinstru = [(x['instrument'] if 'instrument' in x else '')
-                                    for x in catalog[entry]['photometry']
-                                    if 'magnitude' in x and 'realization' in x]
+                                  and 'realization' in x and x.get('model') == str(mi1)]
+                    realizinstru = [x.get('instrument', '') for x in catalog[entry]['photometry']
+                                    if 'magnitude' in x and 'realization' in x and x.get('model') == str(mi1)]
                     realizsource = [
                         ', '.join(
                             str(j)
                             for j in sorted(int(i) for i in x['source'].split(',')))
                         for x in catalog[entry]['photometry'] if 'magnitude' in x
-                        and 'realization' in x
+                        and 'realization' in x and x.get('model') == str(mi1)
                     ]
                     realiznum = [
                         int(x['realization']) for x in catalog[entry]['photometry']
-                        if 'magnitude' in x and 'realization' in x
+                        if 'magnitude' in x and 'realization' in x and x.get('model') == str(mi1)
                     ]
 
                     realizbandset = list(set(realizband))
                     realizinstset = list(set(realizinstru))
-                    for rz in range(nrealiz):
+                    for rz in range(1, nrealiz + 1):
                         for rzb in realizbandset:
                             for rzi in realizinstset:
                                 pdata = list(zip(*[[x, y, z, s, n, i] for x, y, z, s, n, i in
@@ -897,9 +897,8 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                                     rsources.append(ColumnDataSource(data))
                                     rglyphs.append(p1.line(
                                         'x', 'y', source=rsources[-1], line_width=1, color=bandcolorf(rzb), line_alpha=0.5))
-                                    if mi != 0:
-                                        rglyphs[-1].visible = False
-                                    msources.append(ColumnDataSource({'id': [mi]}))
+                                    rglyphs[-1].visible = (mi == 0)
+                                    msources.append(ColumnDataSource({'model': [mi]}))
 
                                     # Only display the first instrument for a given band.
                                     break
@@ -926,9 +925,8 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                     args=realizdicts,
                     code="""
                     var mis = parseInt(cb_obj.get('value'));
-                    console.log(mis);
                     for (g = 0; g < """ + str(len(rglyphs)) + """; g++) {
-                        var m = eval('m'+g).data['id'][0];
+                        var m = eval('m'+g).data['model'][0];
                         eval('rg' + g).visible = (m == mis);
                     }
                 """)
@@ -2346,19 +2344,19 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
             repfolder = get_rep_folder(catalog[entry], repofolders)
             html = re.sub(
-                r'(\<\/body\>)', '<div class="event-download">' + r'<a href="' +
+                r'(\<\/body\>)', r'<div class="event-buttons"><a href="' +
                 r'../json/' + fileeventname + r'.json" download>' +
-                r'Download all data for ' + eventname + r'</a></div>\n\1', html)
+                r'<input type="button" class="saq" value="Download all data"></a> \1', html)
             issueargs = '?title=' + ('[' + eventname + '] <Descriptive issue title>').encode('ascii', 'xmlcharrefreplace').decode("utf-8") + '&body=' + \
                 ('Please describe the issue with ' + eventname + '\'s data here, be as descriptive as possible! ' +
                  'If you believe the issue appears in other events as well, please identify which other events the issue possibly extends to.').encode('ascii', 'xmlcharrefreplace').decode("utf-8")
-            html = re.sub(r'(\<\/body\>)', '<div class="event-issue">' +
+            html = re.sub(r'(\<\/body\>)', '' +
                           r'<a href="https://github.com/astrocatalogs/' + moduledir
                           + '/issues/new' + issueargs + r'" target="_blank">' +
-                          r'Report an issue with ' + eventname + r'</a></div>\n\1',
+                          r'<input type="button" class="sme" value="Report an issue"></a></div>\n\1',
                           html)
 
-            newhtml = r'<div class="event-tab-div"><h3 class="event-tab-title">Event metadata</h3><table class="event-table"><tr><th width=100px class="event-cell">Quantity</th><th class="event-cell">Value<sup>Sources</sup> [Kind]</th></tr>\n'
+            newhtml = r'<div class="event-tab-div"><h3 class="event-tab-title">Data</h3><table class="event-table"><tr><th width=100px class="event-cell">Quantity</th><th class="event-cell">Value<sup>Sources</sup> [Kind]</th></tr>\n'
             edit = "true" if os.path.isfile(
                 'astrocats/' + moduledir + '/input/' + modulename + '-internal/' +
                 get_event_filename(entry) + '.json') else "false"
@@ -2373,14 +2371,52 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                             keysplit = catalog[entry][key].split(',')
                             if keysplit:
                                 num = int(keysplit[0])
-                                keyhtml = keyhtml + keysplit[0] + ' ' + (
+                                keyhtml += keysplit[0] + ' ' + (
                                     infl.plural('spectrum', num)
                                     if key == 'spectralink' else infl.plural(
                                         'detection', num))
                                 if len(keysplit) == 3:
-                                    keyhtml = keyhtml + \
+                                    keyhtml += \
                                         '<br>[' + keysplit[1] + ' – ' + \
                                         keysplit[2] + ' days from max]'
+                                if key == 'photolink':
+                                    dlbutt = ('<a href="http://api.' + moduleurl +
+                                        '/' + entry + '/photometry/time+magnitude+e_magnitude+upperlimit+band+instrument+telescope+source?' +
+                                        '{}time&magnitude" target="_blank"><input type="button" class="saq" value="{}"></a>')
+                                elif key == 'spectralink':
+                                    dlbutt = ('<a href="http://api.' + moduleurl +
+                                        '/' + entry + '/spectra/time+data+instrument+telescope+source' +
+                                        '{}" target="_blank"><input type="button" class="saq" value="{}"></a>')
+                                elif key == 'radiolink':
+                                    dlbutt = ('<a href="http://api.' + moduleurl +
+                                        '/' + entry + '/photometry/time+fluxdensity+e_fluxdensity+upperlimit+frequency+instrument+telescope+source?' +
+                                        '{}time&fluxdensity" target="_blank"><input type="button" class="saq" value="{}"></a>')
+                                elif key == 'xraylink':
+                                    dlbutt = ('<a href="http://api.' + moduleurl +
+                                        '/' + entry + '/photometry/time+flux+e_flux+upperlimit+energy+instrument+telescope+source?' +
+                                        '{}time&flux" target="_blank"><input type="button" class="saq" value="{}"></a>')
+                                keyhtml += '<br>' + 'Download: ' + dlbutt.format('', 'JSON')
+                                if key in ['photolink', 'radiolink', 'xraylink']:
+                                    keyhtml += ' ' + dlbutt.format('format=csv&', 'CSV')
+                                if key in ['spectralink']:
+                                    dldrop = ('<select style="width:60px;" onchange="if (this.value != \'\') window.open(this.value);">' +
+                                        '<option value="">{}</option>')
+                                    for si, spec in enumerate(catalog[entry]['spectra']):
+                                        if 'time' in catalog[entry]['spectra'][si]:
+                                            item_str = "{0:.2f}".format(float(catalog[entry]['spectra'][si]['time']))
+                                            if mjdmax:
+                                                diff = float(item_str) - mjdmax
+                                                item_str += ' (' + '{0:+.2f}'.format(diff) + ')'
+                                        else:
+                                            item_str = '#' + str(si + 1)
+                                        dldrop += ('<option value="http://api.' + moduleurl +
+                                            '/' + entry + '/spectra/data?{}item=' + str(si) +
+                                            '">' + item_str +
+                                            '</option>')
+                                    dldrop += '</select>'
+                                    fsubs = ['CSV'] + ['format=csv&' for x in range(
+                                        len(catalog[entry]['spectra']))]
+                                    keyhtml += ' ' + dldrop.format(*fsubs)
                         else:
                             subentry = re.sub('<[^<]+?>', '', catalog[entry][key])
                             keyhtml = keyhtml + subentry
@@ -2451,14 +2487,14 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                                         + row['value'] + "\", \"" + key + "\", \"" +
                                         ','.join(idtypes) + "\", \"" +
                                         ','.join(sourceids) + "\", \"" + edit + "\", \"" + modulename +
-                                        "\")'>Look Up on SIMBAD</button>");
+                                        "\")'>Look up on SIMBAD</button>");
                                     if row['value'].startswith(('AT', 'SN')):
                                         keyhtml += (
                                             "<br><button class='slt' type='button' onclick='lookupTns(\""
                                             + row['value'][2:] + "\", \"" + key + "\", \"" +
                                             ','.join(idtypes) + "\", \"" +
                                             ','.join(sourceids) + "\", \"" + edit + "\", \"" + modulename +
-                                            "\")'>Look Up on TNS</button>");
+                                            "\")'>Look up on TNS</button>");
                                 if key not in [
                                         'photolink', 'spectralink', 'radiolink',
                                         'xraylink', 'name'
