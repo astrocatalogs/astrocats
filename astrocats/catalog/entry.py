@@ -292,7 +292,7 @@ class Entry(OrderedDict):
         if gzip:
             jfil = gz.open(fhand, 'rb')
         else:
-            jfil = open(fhand, 'r')
+            jfil = codecs.open(fhand, 'r')
 
         data = json.load(jfil, object_pairs_hook=OrderedDict)
         name = list(data.keys())
@@ -874,7 +874,7 @@ class Entry(OrderedDict):
             with gz.open(fname, 'rt') as f:
                 filetext = f.read()
         else:
-            with open(fname, 'r') as f:
+            with codecs.open(fname, 'r') as f:
                 filetext = f.read()
         return filetext
 
