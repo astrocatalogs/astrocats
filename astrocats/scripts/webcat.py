@@ -128,6 +128,13 @@ parser.add_argument(
     help='Print more info',
     default=False,
     action='store_true')
+parser.add_argument(
+    '--in-place',
+    '-i',
+    dest='inplace',
+    help='Use copied JSON files when generating catalog',
+    default=False,
+    action='store_true')
 args = parser.parse_args()
 
 infl = inflect.engine()
@@ -337,8 +344,12 @@ if os.path.isfile(outdir + cachedir + 'hostimgs.json'):
 else:
     hostimgdict = {}
 
-files = repo_file_list(
-    moduledir, repofolders, normal=(not args.boneyard), bones=args.boneyard)
+if args.inplace:
+    files = repo_file_list(
+        moduledir, [jsondir], normal=(not args.boneyard), bones=args.boneyard)
+else:
+    files = repo_file_list(
+        moduledir, repofolders, normal=(not args.boneyard), bones=args.boneyard)
 
 if os.path.isfile(outdir + cachedir + 'md5s.json'):
     with open(outdir + cachedir + 'md5s.json', 'r') as f:
@@ -595,7 +606,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                     dohtml = False
 
         # Copy JSON files up a directory if they've changed
-        if dohtml:
+        if not args.inplace and dohtml:
             shutil.copy2(eventfile, outdir + jsondir + os.path.basename(eventfile))
 
         if (photoavail or radioavail or xrayavail) and dohtml and args.writehtml:
@@ -1811,14 +1822,14 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                  np.log10(float(x.get('flux', x.get('unabsorbedflux'))) - float(x.get('e_lower_flux', x.get('e_lower_unabsorbedflux')))))
                 if (('e_lower_flux' in x or 'e_lower_unabsorbedflux' in x) and float(x.get('flux', x.get('unabsorbedflux'))) - float(x.get('e_lower_flux', x.get('e_lower_unabsorbedflux'))) > 0) else
                 ((np.log10(float(x.get('flux', x.get('unabsorbedflux')))) -
-                  np.log10(float(x.get('flux', x.get('unabsorbedflux'))) - float(x.get('e_flux', x['e_unabsorbedflux']))))
-                 if (('e_flux' in x or 'e_unabsorbed_flux' in x) and float(x.get('flux', x.get('unabsorbedflux'))) - float(x.get('e_flux', x['e_unabsorbedflux'])) > 0) else 0.) for x in catalog[entry]['photometry']
+                  np.log10(float(x.get('flux', x.get('unabsorbedflux'))) - float(x.get('e_flux', x.get('e_unabsorbedflux', 0.0)))))
+                 if (('e_flux' in x or 'e_unabsorbed_flux' in x) and float(x.get('flux', x.get('unabsorbedflux'))) - float(x.get('e_flux', x.get('e_unabsorbedflux', 0.0))) > 0) else 0.) for x in catalog[entry]['photometry']
                 if float(x.get('flux', x.get('unabsorbedflux', 0))) > 0
             ]
             photofluppererrs = [
                 (np.log10(float(x.get('flux', x.get('unabsorbedflux'))) + float(x.get('e_upper_flux', x.get('e_upper_unabsorbedflux')))) -
                  np.log10(float(x.get('flux', x.get('unabsorbedflux'))))) if ('e_upper_flux' in x or 'e_upper_unabsorbedflux' in x) else
-                ((np.log10(float(x.get('flux', x.get('unabsorbedflux'))) + float(x.get('e_flux', x['e_unabsorbedflux']))) -
+                ((np.log10(float(x.get('flux', x.get('unabsorbedflux'))) + float(x.get('e_flux', x.get('e_unabsorbedflux', 0.0)))) -
                   np.log10(float(x.get('flux', x.get('unabsorbedflux'))))) if ('e_flux' in x or 'e_upper_unabsorbedflux' in x) else 0.)
                 for x in catalog[entry]['photometry'] if float(x.get('flux', x.get('unabsorbedflux', 0))) > 0
             ]
