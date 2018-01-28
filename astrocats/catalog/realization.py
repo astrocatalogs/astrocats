@@ -7,13 +7,13 @@ from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
 
 class REALIZATION(KeyCollection):
     SCORE = Key('score', KEY_TYPES.NUMERIC)
+    WEIGHT = Key('weight', KEY_TYPES.NUMERIC)
     PARAMETERS = Key('parameters', KEY_TYPES.DICT)
     ALIAS = Key('alias', KEY_TYPES.STRING)
 
 
 class Realization(CatDict):
-    """Container for a single model realization.
-    """
+    """Container for a single model realization."""
 
     _ALLOW_UNKNOWN_KEYS = True
     _KEYS = REALIZATION
