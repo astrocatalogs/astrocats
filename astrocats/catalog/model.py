@@ -8,6 +8,7 @@ from astrocats.catalog.realization import Realization
 
 
 class MODEL(KeyCollection):
+    """Collection of keys for models."""
     # Strings
     SOURCE = Key('source', KEY_TYPES.STRING, compare=False)
     CODE = Key('code', KEY_TYPES.STRING)
@@ -35,6 +36,7 @@ class Model(CatDict):
     _KEYS = MODEL
 
     def __init__(self, parent, **kwargs):
+        """Initialize `Model`."""
         self._REQ_KEY_SETS = [[MODEL.SOURCE], [MODEL.ALIAS],
                               [MODEL.NAME, MODEL.CODE]]
         # Note: `_check()` is called at end of `super().__init__`
