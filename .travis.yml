@@ -1,7 +1,7 @@
 language: python
 python:
     - "2.7"
-    - "3.4"
+    - "3.5"
     - "3.6"
 notifications:
     email:
@@ -14,9 +14,7 @@ git:
 # Setup anaconda
 before_install:
 # Install packages
-    - if [[ "$TRAVIS_PYTHON_VERSION" == "3.3" ]]; then
-          wget https://repo.continuum.io/miniconda/Miniconda3-4.0.5-Linux-x86_64.sh -O miniconda.sh;
-      elif [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
+    - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
           wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
       else
           wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
@@ -24,13 +22,12 @@ before_install:
     - bash miniconda.sh -b -p $HOME/miniconda
     - export PATH="$HOME/miniconda/bin:$PATH"
     - hash -r
+    - conda config --system --set auto_update_conda false
     - conda config --set always_yes yes --set changeps1 no
-    - if [[ "$TRAVIS_PYTHON_VERSION" != "3.3" ]];
-      then conda update -q conda;
-      fi
+    - conda update -q conda
 install:
     - conda config --add channels conda-forge
-    - conda install --yes python=$TRAVIS_PYTHON_VERSION scipy matplotlib  astropy beautifulsoup4 bokeh gitpython palettable psutil seaborn tqdm coveralls
+    - conda install --yes python=$TRAVIS_PYTHON_VERSION scipy matplotlib astropy beautifulsoup4 bokeh gitpython palettable psutil seaborn tqdm coveralls
     - xargs -L 1 pip install < requirements.txt
 
 # Run test
