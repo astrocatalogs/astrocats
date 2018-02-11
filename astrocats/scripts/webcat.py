@@ -27,7 +27,7 @@ from astrocats.catalog.utils import (bandaliasf, bandcodes, bandcolorf,
                                      bandgroupf, bandshortaliasf, bandwavef,
                                      bandwavelengths, get_sig_digits,
                                      is_number, pretty_num, radiocolorf,
-                                     round_sig, tq, xraycolorf)
+                                     round_sig, tq, xraycolorf, listify)
 from astrocats.scripts.events import get_event_filename, get_event_text
 from astrocats.scripts.repos import (get_rep_folder, get_rep_folders,
                                      repo_file_list)
@@ -485,7 +485,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         minphotoep = ''
         maxphotoep = ''
         if mjdmax:
-            photoeps = [(Decimal(x['time']) - Decimal(mjdmax + 0.5)) *
+            photoeps = [(mean([Decimal(y) for y in listify(x['time'])]) - Decimal(mjdmax + 0.5)) *
                         Decimal(redshiftfactor)
                         for x in catalog[entry]['photometry']
                         if 'upperlimit' not in x and 'includeshost' not in x and
@@ -679,7 +679,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
         if photoavail and dohtml and args.writehtml:
             phototime = [
-                float(x['time']) for x in catalog[entry]['photometry']
+                mean([float(y) for y in listify(x['time'])]) for x in catalog[entry]['photometry']
                 if 'magnitude' in x and 'realization' not in x
             ]
             phototimelowererrs = [
