@@ -230,23 +230,23 @@ class Photometry(CatDict):
 
 BAND_REPS = {
     'Ks': ['K_s'],
-    'M2': ['uvm2', 'UVM2', 'UVm2', 'Um2', 'm2', 'um2'],
-    'W1': ['uvw1', 'UVW1', 'UVw1', 'Uw1', 'w1', 'uw1'],
-    'W2': ['uvw2', 'UVW2', 'UVw2', 'Uw2', 'w2', 'uw2']
+    'UVM2': ['uvm2', 'UVM2', 'UVm2', 'Um2', 'um2'],
+    'UVW1': ['uvw1', 'UVW1', 'UVw1', 'Uw1', 'uw1'],
+    'UVW2': ['uvw2', 'UVW2', 'UVw2', 'Uw2', 'uw2']
 }
 
 # Some bands are uniquely tied to an instrument/telescope/system, add this
 # info here.
 BAND_META = {
-    'M2': {
+    'UVM2': {
         PHOTOMETRY.TELESCOPE: 'Swift',
         PHOTOMETRY.INSTRUMENT: 'UVOT'
     },
-    'W1': {
+    'UVW1': {
         PHOTOMETRY.TELESCOPE: 'Swift',
         PHOTOMETRY.INSTRUMENT: 'UVOT'
     },
-    'W2': {
+    'UVW2': {
         PHOTOMETRY.TELESCOPE: 'Swift',
         PHOTOMETRY.INSTRUMENT: 'UVOT'
     },
@@ -275,8 +275,8 @@ BAND_META = {
 BAND_CODES = [
     "u", "g", "r", "i", "z", "u'", "g'", "r'", "i'", "z'", "u_SDSS", "g_SDSS",
     "r_SDSS", "i_SDSS", "z_SDSS", "U", "B", "V", "R", "I", "G", "Y", "J", "H",
-    "K", "C", "CR", "CV", "M2", "W1", "W2", "pg", "Mp", "w", "y", "Z", "F110W",
-    "F775W", "F850LP", "VM", "RM", "Ks", "Ic", "Rc"
+    "K", "C", "CR", "CV", "M2", "UVW1", "UVW2", "pg", "Mp", "w", "y", "Z",
+    "F110W", "F775W", "F850LP", "VM", "RM", "Ks", "Ic", "Rc"
 ]
 
 BAND_ALIASES = OrderedDict([("u_SDSS", "u (SDSS)"), ("g_SDSS", "g (SDSS)"),
@@ -312,9 +312,9 @@ BAND_WAVELENGTHS = {
     "J": 1220.,
     "H": 1630.,
     "K": 2190.,
-    "M2": 260.,
-    "W1": 224.6,
-    "W2": 192.8,
+    "UVM2": 260.,
+    "UVW1": 224.6,
+    "UVW2": 192.8,
     "Ic": 786.5,
     "Rc": 647.
 }
