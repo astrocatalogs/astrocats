@@ -9,7 +9,7 @@ from astrocats.catalog.utils import get_sig_digits, listify
 from astropy.time import Time as astrotime
 from palettable import colorbrewer, cubehelix, wesanderson
 
-DEFAULT_UL_SIGMA = 3.0
+DEFAULT_UL_SIGMA = 5.0
 DEFAULT_ZP = 30.0
 D25 = Decimal('2.5')
 
