@@ -140,6 +140,7 @@ args = parser.parse_args()
 infl = inflect.engine()
 infl.defnoun("spectrum", "spectra")
 
+moduleignoreheader = []
 if args.catalog == 'tde':
     moduledir = 'tidaldisruptions'
     modulename = 'tde'
@@ -155,6 +156,12 @@ elif args.catalog == 'kne':
     modulename = 'kne'
     moduleurl = 'kilonova.space'
     moduletitle = 'Kilonova'
+elif args.catalog == 'hvs':
+    moduledir = 'faststars'
+    modulename = 'hvs'
+    moduleurl = 'faststars.space'
+    moduletitle = 'Fast Stars'
+    moduleignoreheader = ['masses', 'host', 'hostra', 'hostdec', 'hostoffsetang', 'hostoffsetdist']
 else:
     raise ValueError('Unknown catalog!')
 
@@ -254,6 +261,13 @@ if len(columnkey) != len(header):
 if len(columnkey) != len(eventpageheader):
     raise (ValueError('Event page header not same length as key list.'))
     sys.exit(0)
+
+# Remove columns that are not relevant for a given catalog.
+incl_cols = np.array([i for i, x in enumerate(columnkey) if x not in moduleignoreheader])
+
+header = list(np.array(header)[incl_cols])
+columnkey = list(np.array(columnkey)[incl_cols])
+titles = list(np.array(titles)[incl_cols])
 
 header = OrderedDict(list(zip(columnkey, header)))
 eventpageheader = OrderedDict(list(zip(columnkey, eventpageheader)))
