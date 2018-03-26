@@ -9,7 +9,7 @@ from astrocats.catalog.utils import get_sig_digits, listify
 from astropy.time import Time as astrotime
 from palettable import colorbrewer, cubehelix, wesanderson
 
-DEFAULT_UL_SIGMA = 3.0
+DEFAULT_UL_SIGMA = 5.0
 DEFAULT_ZP = 30.0
 D25 = Decimal('2.5')
 
@@ -441,7 +441,7 @@ def set_pd_mag_from_counts(photodict,
         dzp = Decimal(str(zp))
         dsig = Decimal(str(sig))
         photodict[PHOTOMETRY.ZERO_POINT] = str(zp)
-        if c == '' or float(c) < DEFAULT_UL_SIGMA * float(uec):
+        if c == '' or float(c) < float(sig) * float(uec):
             photodict[PHOTOMETRY.UPPER_LIMIT] = True
             photodict[PHOTOMETRY.UPPER_LIMIT_SIGMA] = str(sig)
             photodict[PHOTOMETRY.MAGNITUDE] = str(dzp - (D25 * (dsig * duec
