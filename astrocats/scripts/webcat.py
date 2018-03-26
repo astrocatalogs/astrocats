@@ -146,11 +146,13 @@ if args.catalog == 'tde':
     modulename = 'tde'
     moduleurl = 'tde.space'
     moduletitle = 'TDE'
+    moduleignoreheader = ['masses']
 elif args.catalog == 'sne':
     moduledir = 'supernovae'
     modulename = 'sne'
     moduleurl = 'sne.space'
     moduletitle = 'Supernova'
+    moduleignoreheader = ['masses']
 elif args.catalog == 'kne':
     moduledir = 'kilonovae'
     modulename = 'kne'
