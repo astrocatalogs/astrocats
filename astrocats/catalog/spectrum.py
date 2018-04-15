@@ -1,5 +1,4 @@
-"""Class for representing spectra.
-"""
+"""Class for representing spectra."""
 from astrocats.catalog.catdict import CatDict
 from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
 from astrocats.catalog.utils import trim_str_arr

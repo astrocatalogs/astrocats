@@ -1,5 +1,4 @@
-"""Class for representing sources of data.
-"""
+"""Class for representing sources of data."""
 from astrocats.catalog.catdict import CatDict
 from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
 
@@ -22,6 +21,7 @@ class SOURCE(KeyCollection):
         'Primary'-source, from which it actually originated
 
     """
+
     # Strings
     NAME = Key('name', KEY_TYPES.STRING)
     BIBCODE = Key('bibcode', KEY_TYPES.STRING)

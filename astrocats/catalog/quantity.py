@@ -1,5 +1,4 @@
-"""Class for representing spectra.
-"""
+"""Class for representing quantities."""
 from astrocats.catalog.catdict import CatDict, CatDictError
 from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
 from astrocats.catalog.utils import is_number
@@ -34,8 +33,10 @@ class QUANTITY(KeyCollection):
         e.g. ``Entry[QUANTITY.SOURCE] = '1, 4, 5'``.
 
     """
+
     # Any
     VALUE = Key('value', priority=10)
+    CORRELATIONS = Key('correlations')
     # Numeric
     E_VALUE = Key('e_value', KEY_TYPES.NUMERIC)
     E_LOWER_VALUE = Key('e_lower_value', KEY_TYPES.NUMERIC)
@@ -55,12 +56,12 @@ class QUANTITY(KeyCollection):
 
 
 class Quantity(CatDict):
-    """Class to store a single item of data associated with an `Entry`.
-    """
+    """Class to store a single item of data associated with an `Entry`."""
 
     _KEYS = QUANTITY
 
     def __init__(self, parent, **kwargs):
+        """Initialize `Quantity` object."""
         self._REQ_KEY_SETS = [[QUANTITY.VALUE], [QUANTITY.SOURCE]]
 
         super(Quantity, self).__init__(parent, **kwargs)
@@ -106,6 +107,7 @@ class Quantity(CatDict):
                     QUANTITY.VALUE], parent[parent._KEYS.NAME]))
 
     def sort_func(self, key):
+        """Sorting logic for `Quantity` objects."""
         if key == self._KEYS.VALUE:
             return 'aaa'
         if key == self._KEYS.SOURCE:

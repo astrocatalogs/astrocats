@@ -1,5 +1,4 @@
-"""Class for representing model realizations.
-"""
+"""Class for representing model realizations."""
 
 from astrocats.catalog.catdict import CatDict
 from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection

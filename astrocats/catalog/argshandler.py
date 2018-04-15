@@ -1,5 +1,4 @@
-"""Handle user arguments when running AstroCats
-"""
+"""Handle user arguments when running AstroCats."""
 import argparse
 import logging
 from . import gitter

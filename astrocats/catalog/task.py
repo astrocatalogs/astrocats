@@ -1,5 +1,4 @@
-"""Object for each 'task' needed to be carried out by the 'importer'.
-"""
+"""Object for each 'task' needed to be carried out by the 'importer'."""
 import os
 
 

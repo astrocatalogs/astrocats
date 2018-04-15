@@ -1,5 +1,4 @@
-"""Utilities for working with git.
-"""
+"""Utilities for working with git."""
 
 import os
 import subprocess

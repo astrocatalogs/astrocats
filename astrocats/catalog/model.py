@@ -1,5 +1,4 @@
-"""Class for representing models.
-"""
+"""Class for representing models."""
 
 from astrocats.catalog.catdict import CatDict, CatDictError
 from astrocats.catalog.error import Error

@@ -1,5 +1,4 @@
-"""Handle known errors in catalog data.
-"""
+"""Handle known errors in catalog data."""
 from astrocats.catalog.catdict import CatDict
 from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
 
