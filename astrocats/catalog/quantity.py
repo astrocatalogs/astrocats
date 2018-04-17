@@ -24,6 +24,9 @@ class QUANTITY(KeyCollection):
         Verbal description or notes on a quantity.
     U_VALUE : STRING
         Unit of measurement associated with this value.
+    U_E_VALUE : STRING
+        Unit of measurement associated with the error in the value (if
+        different from value).
     KIND : STRING
     SOURCE : STRING
         The alias number(s) of the 'source(s)' (reference) for this value.
@@ -49,6 +52,7 @@ class QUANTITY(KeyCollection):
     # Strings
     DESCRIPTION = Key('description', KEY_TYPES.STRING, compare=False)
     U_VALUE = Key('u_value', KEY_TYPES.STRING)
+    U_E_VALUE = Key('u_e_value', KEY_TYPES.STRING)
     KIND = Key('kind', KEY_TYPES.STRING, listable=True)
     SOURCE = Key('source', KEY_TYPES.STRING, compare=False)
     MODEL = Key('model', KEY_TYPES.STRING, compare=False)
