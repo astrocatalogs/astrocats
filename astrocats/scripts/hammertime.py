@@ -47,6 +47,11 @@ elif args.catalog == 'kne':
     modulename = 'kne'
     moduleurl = 'kilonova.space'
     moduletitle = 'Kilonova'
+elif args.catalog == 'hvs':
+    moduledir = 'faststars'
+    modulename = 'hvs'
+    moduleurl = 'faststars.space'
+    moduletitle = 'Fast Stars'
 else:
     raise ValueError('Unknown catalog!')
 
@@ -98,13 +103,13 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()),
                     continue
                 elif thistype in ('Other', 'not Ia', 'SN', 'unconf', 'Radio',
                                   'CC', 'CCSN', 'Candidate', 'nIa'):
-                    evtypes.append('Unknown')
+                    evtype = 'Unknown'
                     break
                 else:
-                    evtypes.append(thistype)
+                    evtype = thistype
                     break
         else:
-            evtypes.append('Unknown')
+            evtype = 'Unknown'
 
         tprint(thisevent['name'])
         try:
@@ -116,6 +121,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()),
             warnings.warn('Mangled coordinate, skipping')
             continue
         else:
+            evtypes.append(evtype)
             evnames.append(thisevent['name'])
             rarad = c.ra.radian - pi
             decrad = c.dec.radian

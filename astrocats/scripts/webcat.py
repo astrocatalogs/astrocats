@@ -141,29 +141,32 @@ infl = inflect.engine()
 infl.defnoun("spectrum", "spectra")
 
 moduleignoreheader = []
+distanceunit = 'Mpc'
 if args.catalog == 'tde':
     moduledir = 'tidaldisruptions'
     modulename = 'tde'
     moduleurl = 'tde.space'
     moduletitle = 'TDE'
-    moduleignoreheader = ['masses']
+    moduleignoreheader = ['masses', 'spectraltype', 'propermotionra', 'propermotiondec', 'color', 'escapevelocity', 'galactocentricvelocity']
 elif args.catalog == 'sne':
     moduledir = 'supernovae'
     modulename = 'sne'
     moduleurl = 'sne.space'
     moduletitle = 'Supernova'
-    moduleignoreheader = ['masses']
+    moduleignoreheader = ['masses', 'spectraltype', 'propermotionra', 'propermotiondec', 'color', 'escapevelocity', 'galactocentricvelocity']
 elif args.catalog == 'kne':
     moduledir = 'kilonovae'
     modulename = 'kne'
     moduleurl = 'kilonova.space'
     moduletitle = 'Kilonova'
+    moduleignoreheader = ['spectraltype', 'propermotionra', 'propermotiondec', 'color', 'escapevelocity', 'galactocentricvelocity']
 elif args.catalog == 'hvs':
     moduledir = 'faststars'
     modulename = 'hvs'
     moduleurl = 'faststars.space'
     moduletitle = 'Fast Stars'
     moduleignoreheader = ['masses', 'host', 'hostra', 'hostdec', 'hostoffsetang', 'hostoffsetdist']
+    distanceunit = 'kpc'
 else:
     raise ValueError('Unknown catalog!')
 
@@ -192,8 +195,10 @@ mycolors = cubehelix.perceptual_rainbow_16.hex_colors[:14]
 
 columnkey = [
     "check", "name", "alias", "discoverdate", "maxdate", "maxappmag",
-    "maxabsmag", "masses", "host", "ra", "dec", "hostra", "hostdec", "hostoffsetang",
-    "hostoffsetdist", "altitude", "azimuth", "airmass", "skybrightness", "instruments", "redshift", "velocity", "lumdist",
+    "maxabsmag", "color", "masses", "spectraltype", "host", "ra", "dec", "propermotionra", "propermotiondec", "hostra", "hostdec", "hostoffsetang",
+    "hostoffsetdist", "altitude", "azimuth", "airmass", "skybrightness", "instruments",
+    "redshift", "velocity", "escapevelocity", "galactocentricvelocity",
+    "boundprobability", "lumdist",
     "claimedtype", "ebv", "photolink", "spectralink", "radiolink", "xraylink",
     "references", "download", "responsive"
 ]
@@ -202,20 +207,22 @@ eventignorekey = ["download"]
 
 header = [
     "", "Name", "Aliases", "Disc. Date", "Max Date",
-    r"<em>m</em><sub>max</sub>", r"<em>M</em><sub>max</sub>", "Masses", "Host Name",
-    "R.A.", "Dec.", "Host R.A.", "Host Dec.", "Host Offset (\")",
+    r"<em>m</em><sub>max</sub>", r"<em>M</em><sub>max</sub>", "Color (g - r)", "Masses", "Spec. Type", "Host Name",
+    "R.A.", "Dec.", "R.A.'", "Dec.'", "Host R.A.", "Host Dec.", "Host Offset (\")",
     "Host Offset (kpc)", "Alt. (°)", "Azi. (°)", "Airmass", "V<sub>sky</sub>", "Instruments/Bands", r"<em>z</em>",
-    r"<em>v</em><sub>&#9737;</sub> (km/s)", r"<em>d</em><sub>L</sub> (Mpc)",
+    r"<em>v</em><sub>&#9737;</sub>", r"<em>v</em><sub>esc</sub>", r"<em>v</em><sub>gal</sub>",
+    r"<em>P</em><sub>bound</sub>", r"<em>d</em><sub>L</sub> (" + distanceunit + ")",
     "Type", "E(B-V)", "Phot.", "Spec.", "Radio", "X-ray", "References", "Data",
     ""
 ]
 
 eventpageheader = [
     "", "Name", "Aliases", "Discovery Date", "Maximum Date [band]",
-    r"<em>m</em><sub>max</sub> [band]", r"<em>M</em><sub>max</sub> [band]", "Masses",
-    "Host Name", "R.A.", "Dec.", "Host R.A.", "Host Dec.", "Host Offset (\")",
+    r"<em>m</em><sub>max</sub> [band]", r"<em>M</em><sub>max</sub> [band]", "Color (g - r)", "Masses", "Spectral Type",
+    "Host Name", "R.A.", "Dec.", "R.A.'", "Dec.'", "Host R.A.", "Host Dec.", "Host Offset (\")",
     "Host Offset (kpc)", "Alt. (°)", "Azi. (°)", "Airmass", "V<sub>sky</sub>", "Instruments/Bands", r"<em>z</em>",
-    r"<em>v</em><sub>&#9737;</sub> (km/s)", r"<em>d</em><sub>L</sub> (Mpc)",
+    r"<em>v</em><sub>&#9737;</sub> (km/s)", r"<em>v</em><sub>escape</sub> (km/s)", r"<em>v</em><sub>galactocentric</sub> (km/s)",
+    r"<em>P</em><sub>bound</sub>", r"<em>d</em><sub>L</sub> (" + distanceunit + ")",
     "Claimed Type", "E(B-V)", "Photometry", "Spectra", "Radio", "X-ray",
     "References", "Download", ""
 ]
@@ -224,14 +231,18 @@ titles = [
     "", "Name (IAU name preferred)", "Aliases",
     "Discovey Date (year-month-day)", "Date of Maximum (year-month-day)",
     "Maximum apparent AB magnitude", "Maximum absolute AB magnitude",
-    "Masses (solar masses)",
+    "Color (g - r, or similar)",
+    "Masses (solar masses)", "Spectral Type",
     "Host Name", moduletitle + " J2000 Right Ascension (h:m:s)",
     moduletitle + " J2000 Declination (d:m:s)",
+    moduletitle + " J2000 Right Ascension Proper Motion (mas/yr)",
+    moduletitle + " J2000 Declination Proper Motion (mas/yr)",
     "Host J2000 Right Ascension (h:m:s)", "Host J2000 Declination (d:m:s)",
     "Host Offset (Arcseconds)", "Host Offset (kpc)",
     "Altitude (Degrees)", "Azimuth (Degrees)", "Airmass", "Sky Brightness in V (Mags per arcsecond^2)",
     "List of Instruments and Bands", "Redshift",
-    "Heliocentric velocity (km/s)", "Luminosity distance (Mpc)",
+    "Heliocentric velocity (km/s)", "Escape velocity (km/s)", "Galactocentric velocity (km/s)",
+    "Bound probability (%)", "Luminosity distance (" + distanceunit + ")",
     "Claimed Type", "Milky Way Reddening", "Photometry", "pectra", "Radio",
     "X-rays", "Bibcodes of references with most data on event",
     "Download and edit data", ""
@@ -269,6 +280,7 @@ incl_cols = np.array([i for i, x in enumerate(columnkey) if x not in moduleignor
 
 header = list(np.array(header)[incl_cols])
 columnkey = list(np.array(columnkey)[incl_cols])
+eventpageheader = list(np.array(eventpageheader)[incl_cols])
 titles = list(np.array(titles)[incl_cols])
 
 header = OrderedDict(list(zip(columnkey, header)))
@@ -424,6 +436,14 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         else:
             catalog[entry]['masses'] = ''
 
+        if 'galactocentricvelocity' in columnkey:
+            catalog[entry]['galactocentricvelocity'] = [x for x in catalog[entry].get('velocity', []) if x.get('kind') == 'galactocentric']
+            catalog[entry]['velocity'] = [x for x in catalog[entry].get('velocity', []) if x.get('kind') != 'galactocentric']
+            if not len(catalog[entry]['galactocentricvelocity']):
+                del(catalog[entry]['galactocentricvelocity'])
+            if not len(catalog[entry]['velocity']):
+                del(catalog[entry]['velocity'])
+
         hostmag = ''
         hosterr = ''
         if 'photometry' in catalog[entry]:
@@ -438,6 +458,16 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             catalog[entry]['photometry'][:] = [
                 x for x in catalog[entry]['photometry'] if 'host' not in x
             ]
+
+            if 'color' in columnkey:
+                gmag = [x.get('magnitude') for x in catalog[entry]['photometry'] if x.get('band') == 'g']
+                if len(gmag):
+                    gmag = gmag[0]
+                rmag = [x.get('magnitude') for x in catalog[entry]['photometry'] if x.get('band') == 'r']
+                if len(rmag):
+                    rmag = rmag[0]
+                if gmag and rmag:
+                    catalog[entry]['color'] = str(Decimal(gmag) - Decimal(rmag))
 
         photoavail = 'photometry' in catalog[entry] and any(
             ['magnitude' in x for x in catalog[entry]['photometry']])
