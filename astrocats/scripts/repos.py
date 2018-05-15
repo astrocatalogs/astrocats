@@ -10,6 +10,7 @@ def get_rep_folders(module):
         return f.read().splitlines()
 
 def get_rep_years(repofolders):
+    print(repofolders)
     repoyears = [int(repofolders[x][-4:]) for x in range(len(repofolders) - 1)]
     repoyears[0] -= 1
     return repoyears
@@ -26,7 +27,9 @@ def repo_file_list(module, repofolders, normal=True, bones=True):
             glob(outdir + rep + "/*.json.gz")
     return files
 
-def get_rep_folder(entry, repofolders):
+def get_rep_folder(entry, repofolders, catalog=None):
+    if catalog == 'hvs':
+        return repofolders[0]
     if 'discoverdate' not in entry:
         return repofolders[0]
     if not is_number(entry['discoverdate'][0]['value'].split('/')[0]):
