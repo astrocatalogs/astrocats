@@ -3,6 +3,8 @@ include *.md
 include LICENSE
 exclude supernovae
 exclude tidaldisruptions
+exclude kilonovae
+exclude faststars
 exclude *.key
 global-exclude .DS_Store
 global-exclude *.prof
