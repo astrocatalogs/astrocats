@@ -5,6 +5,8 @@ from astrocats.catalog.utils import trim_str_arr
 
 
 class SPECTRUM(KeyCollection):
+    """Collection of attributes for the `Spectrum` class."""
+
     # Arrays
     DATA = Key('data', compare=False)
     ERRORS = Key('errors', compare=False)
@@ -41,16 +43,17 @@ class SPECTRUM(KeyCollection):
     DEREDSHIFTED = Key('deredshifted', KEY_TYPES.BOOL, compare=False)
     HOST = Key('host', KEY_TYPES.BOOL, compare=False)
     INCLUDES_HOST = Key('includeshost', KEY_TYPES.BOOL, compare=False)
+    VACUUM_WAVELENGTHS = Key('vacuumwavelengths', KEY_TYPES.BOOL,
+                             compare=False)
 
 
 class Spectrum(CatDict):
-    """Class for storing a single spectrum associated with an astrophysical
-    entity.
-    """
+    """Class for storing a single spectrum."""
 
     _KEYS = SPECTRUM
 
     def __init__(self, parent, **kwargs):
+        """Initialize spectrum."""
         self._REQ_KEY_SETS = [
             [SPECTRUM.SOURCE, SPECTRUM.FILENAME],
             [SPECTRUM.U_FLUXES, SPECTRUM.FILENAME],
@@ -107,9 +110,7 @@ class Spectrum(CatDict):
         return
 
     def _check(self):
-        """
-
-        """
+        """Check that spectrum has legal combination of attributes."""
         # Run the super method
         super(Spectrum, self)._check()
 
@@ -132,6 +133,7 @@ class Spectrum(CatDict):
         return
 
     def is_duplicate_of(self, other):
+        """Check if spectrum is duplicate of another."""
         if super(Spectrum, self).is_duplicate_of(other):
             return True
         row_matches = 0
@@ -156,6 +158,7 @@ class Spectrum(CatDict):
         return False
 
     def sort_func(self, key):
+        """Logic for sorting keys in a `Spectrum` relative to one another."""
         if key == self._KEYS.TIME:
             return 'aaa'
         if key == self._KEYS.DATA:
