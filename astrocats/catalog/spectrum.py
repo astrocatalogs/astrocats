@@ -41,6 +41,8 @@ class SPECTRUM(KeyCollection):
     DEREDSHIFTED = Key('deredshifted', KEY_TYPES.BOOL, compare=False)
     HOST = Key('host', KEY_TYPES.BOOL, compare=False)
     INCLUDES_HOST = Key('includeshost', KEY_TYPES.BOOL, compare=False)
+    VACUUM_WAVELENGTHS = Key('vacuumwavelengths', KEY_TYPES.BOOL,
+                             compare=False)
 
 
 class Spectrum(CatDict):
