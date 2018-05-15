@@ -44,8 +44,8 @@ class PostInstallCommand(install):
 
 setup(
     name="astrocats",
-    packages=find_packages(exclude=('*supernovae*', '*tidaldisruptions*',
-                                    '*novae*')),
+    packages=find_packages(exclude=('*tidaldisruptions*',
+                                    '*novae*', '*faststars*')),
     include_package_data=True,
     version=__version__,  # noqa
     description=("Package for downloading, analyzing, and constructing open "
