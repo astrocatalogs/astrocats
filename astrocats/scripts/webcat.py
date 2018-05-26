@@ -1282,6 +1282,10 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                     spectrumwave.append(
                         [float(spectrumdata[x][0]) for x in specrange])
 
+                # Convert microns to angstroms for both labeled and unlabeled spectra
+                if max(spectrumwave) < 10.0 or spectrum.get('u_wavelengths').lower() in ['micron', 'µm']:
+                    spectrumwave = [1.0e4 * x for x in spectrumwave]
+
                 spectrumflux.append([float(spectrumdata[x][1]) for x in specrange])
                 if 'errorunit' in spectrum:
                     spectrumerrs.append(
