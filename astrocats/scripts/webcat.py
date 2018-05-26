@@ -677,6 +677,11 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         # Copy JSON files up a directory if they've changed
         if not args.inplace and dohtml:
             shutil.copy2(eventfile, outdir + jsondir + os.path.basename(eventfile))
+            # Touch the .json file if event is stored in .gz so user is still served file.
+            if eventfile.endswith('.gz'):
+                stubfile = (outdir + jsondir + os.path.basename(eventfile)).replace('.gz', '')
+                if not os.path.exists(stubfile):
+                    open(stubfile, 'a').close()
 
         if (photoavail or radioavail or xrayavail) and dohtml and args.writehtml:
             phototime = [
