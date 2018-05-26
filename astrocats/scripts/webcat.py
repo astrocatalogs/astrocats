@@ -142,6 +142,7 @@ infl.defnoun("spectrum", "spectra")
 
 moduleignoreheader = []
 distanceunit = 'Mpc'
+imgtitle = 'Host Image'
 if args.catalog == 'tde':
     moduledir = 'tidaldisruptions'
     modulename = 'tde'
@@ -167,6 +168,7 @@ elif args.catalog == 'hvs':
     moduletitle = 'Fast Stars'
     moduleignoreheader = ['masses', 'host', 'hostra', 'hostdec', 'hostoffsetang', 'hostoffsetdist', 'claimedtype']
     distanceunit = 'kpc'
+    imgtitle = 'Star Image'
 else:
     raise ValueError('Unknown catalog!')
 
@@ -219,7 +221,7 @@ header = [
 eventpageheader = [
     "", "Name", "Aliases", "Discoverer", "Discovery Date", "Maximum Date [band]",
     r"<em>m</em><sub>max</sub> [band]", r"<em>M</em><sub>max</sub> [band]", "Color", "Masses", "Spectral Type", "Stellar Class",
-    "Host Name", "R.A.", "Dec.", "R.A.'", "Dec.'", "Host R.A.", "Host Dec.", "Host Offset (\")",
+    "Host Name", "R.A.", "Dec.", "R.A.' (mas/yr)", "Dec.' (mas/yr)", "Host R.A.", "Host Dec.", "Host Offset (\")",
     "Host Offset (kpc)", "Alt. (°)", "Azi. (°)", "Airmass", "V<sub>sky</sub>", "Instruments/Bands", r"<em>z</em>",
     r"<em>v</em><sub>&#9737;</sub> (km/s)", r"<em>v</em><sub>escape</sub> (km/s)", r"<em>v</em><sub>galactocentric</sub> (km/s)",
     r"<em>P</em><sub>bound</sub>", r"<em>d</em><sub>L</sub> (" + distanceunit + ")",
@@ -2650,7 +2652,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
                 if hasimage:
                     newhtml = newhtml + \
-                        '<div class="event-host-div"><h3 class="event-host-title">Host Image</h3>' + skyhtml
+                        '<div class="event-host-div"><h3 class="event-host-title">' + imgtitle + '</h3>' + skyhtml
                     newhtml = newhtml + \
                         r'</table><em>Host images are taken from SDSS if available; if not, DSS is used.</em></div>\n'
 
