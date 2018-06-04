@@ -94,7 +94,7 @@ else:
     untype = 'Unknown'
 
 repofolders = get_rep_folders(moduledir)
-files = repo_file_list(moduledir, repofolders, normal=True, bones=False)
+files = repo_file_list(moduledir, repofolders, normal=True, bones=True)
 
 with open('astrocats/' + moduledir + '/input/non-' + modulename + '-types.json', 'r') as f:
     nontypes = json.loads(f.read(), object_pairs_hook=OrderedDict)
@@ -109,6 +109,11 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()),
 
     thisevent = json.loads(filetext, object_pairs_hook=OrderedDict)
     thisevent = thisevent[list(thisevent.keys())[0]]
+
+    # Code for Boubert 2018.
+    # if 'discoverdate' in thisevent:
+    #     if int(thisevent['discoverdate'][0]['value']) >= 2018:
+    #         continue
 
     # if 'boundprobability' not in thisevent or float(thisevent['boundprobability'][0]['value']) > 0.5:
     #     continue
@@ -140,14 +145,13 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()),
         else:
             evtype = untype
 
-        tprint(thisevent['name'])
         try:
             c = coord(ra=thisevent['ra'][0]['value'], dec=thisevent[
                       'dec'][0]['value'], unit=(un.hourangle, un.deg))
         except (KeyboardInterrupt, SystemExit):
             raise
         except:
-            warnings.warn('Mangled coordinate, skipping')
+            warnings.warn('Mangled coordinate, skipping {}.'.format(thisevent['name']))
             continue
         else:
             evtypes.append(evtype)
@@ -303,13 +307,14 @@ p1.circle(mcx, mcy, color='#555555', size=10)
 p1.x(acx, acy, color='#555555', size=10, line_width=4)
 p1.circle(m31x, m31y, color='#999999', size=20, alpha=0.5)
 p1.circle(lmcx, lmcy, color='#999999', size=20, alpha=0.5)
-label = Label(x=m31x, y=m31y + 0.06, text='M31', text_color='#999999', text_align='center', text_font_size='20pt')
+label_size = '20pt'
+label = Label(x=m31x, y=m31y + 0.06, text='M31', text_color='#999999', text_align='center', text_font_size=label_size)
 p1.add_layout(label)
-label = Label(x=mcx + 0.06, y=mcy - 0.20, text='MW center', text_color='#555555', text_font_size='20pt')
+label = Label(x=mcx + 0.06, y=mcy - 0.20, text='MW center', text_color='#555555', text_font_size=label_size)
 p1.add_layout(label)
-label = Label(x=acx - 0.06, y=acy, text='MW anticenter', text_color='#555555', text_font_size='20pt', text_align='right')
+label = Label(x=acx - 0.06, y=acy, text='MW anticenter', text_color='#555555', text_font_size=label_size, text_align='right')
 p1.add_layout(label)
-label = Label(x=lmcx, y=lmcy + 0.06, text='LMC', text_color='#999999', text_align='center', text_font_size='20pt')
+label = Label(x=lmcx, y=lmcy + 0.06, text='LMC', text_color='#999999', text_align='center', text_font_size=label_size)
 p1.add_layout(label)
 
 if moduletype == 'spectraltype':

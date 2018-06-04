@@ -10,7 +10,6 @@ def get_rep_folders(module):
         return f.read().splitlines()
 
 def get_rep_years(repofolders):
-    print(repofolders)
     repoyears = [int(repofolders[x][-4:]) for x in range(len(repofolders) - 1)]
     repoyears[0] -= 1
     return repoyears
