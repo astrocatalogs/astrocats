@@ -141,29 +141,34 @@ infl = inflect.engine()
 infl.defnoun("spectrum", "spectra")
 
 moduleignoreheader = []
+distanceunit = 'Mpc'
+imgtitle = 'Host Image'
 if args.catalog == 'tde':
     moduledir = 'tidaldisruptions'
     modulename = 'tde'
     moduleurl = 'tde.space'
     moduletitle = 'TDE'
-    moduleignoreheader = ['masses']
+    moduleignoreheader = ['masses', 'spectraltype', 'stellarclass', 'propermotionra', 'propermotiondec', 'color', 'escapevelocity', 'galactocentricvelocity', 'boundprobability']
 elif args.catalog == 'sne':
     moduledir = 'supernovae'
     modulename = 'sne'
     moduleurl = 'sne.space'
     moduletitle = 'Supernova'
-    moduleignoreheader = ['masses']
+    moduleignoreheader = ['masses', 'spectraltype', 'stellarclass', 'propermotionra', 'propermotiondec', 'color', 'escapevelocity', 'galactocentricvelocity', 'boundprobability']
 elif args.catalog == 'kne':
     moduledir = 'kilonovae'
     modulename = 'kne'
     moduleurl = 'kilonova.space'
     moduletitle = 'Kilonova'
+    moduleignoreheader = ['spectraltype', 'stellarclass', 'propermotionra', 'propermotiondec', 'color', 'escapevelocity', 'galactocentricvelocity', 'boundprobability']
 elif args.catalog == 'hvs':
     moduledir = 'faststars'
     modulename = 'hvs'
     moduleurl = 'faststars.space'
     moduletitle = 'Fast Stars'
-    moduleignoreheader = ['masses', 'host', 'hostra', 'hostdec', 'hostoffsetang', 'hostoffsetdist']
+    moduleignoreheader = ['masses', 'host', 'hostra', 'hostdec', 'hostoffsetang', 'hostoffsetdist', 'claimedtype']
+    distanceunit = 'kpc'
+    imgtitle = 'Star Image'
 else:
     raise ValueError('Unknown catalog!')
 
@@ -191,9 +196,11 @@ testsuffix = '.test' if args.test else ''
 mycolors = cubehelix.perceptual_rainbow_16.hex_colors[:14]
 
 columnkey = [
-    "check", "name", "alias", "discoverdate", "maxdate", "maxappmag",
-    "maxabsmag", "masses", "host", "ra", "dec", "hostra", "hostdec", "hostoffsetang",
-    "hostoffsetdist", "altitude", "azimuth", "airmass", "skybrightness", "instruments", "redshift", "velocity", "lumdist",
+    "check", "name", "alias", "discoverer", "discoverdate", "maxdate", "maxappmag",
+    "maxabsmag", "color", "masses", "spectraltype", "stellarclass", "host", "ra", "dec", "propermotionra", "propermotiondec", "hostra", "hostdec", "hostoffsetang",
+    "hostoffsetdist", "altitude", "azimuth", "airmass", "skybrightness", "instruments",
+    "redshift", "velocity", "escapevelocity", "galactocentricvelocity",
+    "boundprobability", "lumdist",
     "claimedtype", "ebv", "photolink", "spectralink", "radiolink", "xraylink",
     "references", "download", "responsive"
 ]
@@ -201,38 +208,44 @@ columnkey = [
 eventignorekey = ["download"]
 
 header = [
-    "", "Name", "Aliases", "Disc. Date", "Max Date",
-    r"<em>m</em><sub>max</sub>", r"<em>M</em><sub>max</sub>", "Masses", "Host Name",
-    "R.A.", "Dec.", "Host R.A.", "Host Dec.", "Host Offset (\")",
+    "", "Name", "Aliases", "Discoverer", "Disc. Date", "Max Date",
+    r"<em>m</em><sub>max</sub>", r"<em>M</em><sub>max</sub>", "Color", "Masses", "Spec. Type", "Class", "Host Name",
+    "R.A.", "Dec.", "R.A.'", "Dec.'", "Host R.A.", "Host Dec.", "Host Offset (\")",
     "Host Offset (kpc)", "Alt. (°)", "Azi. (°)", "Airmass", "V<sub>sky</sub>", "Instruments/Bands", r"<em>z</em>",
-    r"<em>v</em><sub>&#9737;</sub> (km/s)", r"<em>d</em><sub>L</sub> (Mpc)",
+    r"<em>v</em><sub>&#9737;</sub>", r"<em>v</em><sub>esc</sub>", r"<em>v</em><sub>gal</sub>",
+    r"<em>P</em><sub>bound</sub>", r"<em>d</em><sub>L</sub> (" + distanceunit + ")",
     "Type", "E(B-V)", "Phot.", "Spec.", "Radio", "X-ray", "References", "Data",
     ""
 ]
 
 eventpageheader = [
-    "", "Name", "Aliases", "Discovery Date", "Maximum Date [band]",
-    r"<em>m</em><sub>max</sub> [band]", r"<em>M</em><sub>max</sub> [band]", "Masses",
-    "Host Name", "R.A.", "Dec.", "Host R.A.", "Host Dec.", "Host Offset (\")",
+    "", "Name", "Aliases", "Discoverer", "Discovery Date", "Maximum Date [band]",
+    r"<em>m</em><sub>max</sub> [band]", r"<em>M</em><sub>max</sub> [band]", "Color", "Masses", "Spectral Type", "Stellar Class",
+    "Host Name", "R.A.", "Dec.", "R.A.' (mas/yr)", "Dec.' (mas/yr)", "Host R.A.", "Host Dec.", "Host Offset (\")",
     "Host Offset (kpc)", "Alt. (°)", "Azi. (°)", "Airmass", "V<sub>sky</sub>", "Instruments/Bands", r"<em>z</em>",
-    r"<em>v</em><sub>&#9737;</sub> (km/s)", r"<em>d</em><sub>L</sub> (Mpc)",
+    r"<em>v</em><sub>&#9737;</sub> (km/s)", r"<em>v</em><sub>escape</sub> (km/s)", r"<em>v</em><sub>galactocentric</sub> (km/s)",
+    r"<em>P</em><sub>bound</sub>", r"<em>d</em><sub>L</sub> (" + distanceunit + ")",
     "Claimed Type", "E(B-V)", "Photometry", "Spectra", "Radio", "X-ray",
     "References", "Download", ""
 ]
 
 titles = [
     "", "Name (IAU name preferred)", "Aliases",
-    "Discovey Date (year-month-day)", "Date of Maximum (year-month-day)",
+    "Discoverer", "Discovey Date (year-month-day)", "Date of Maximum (year-month-day)",
     "Maximum apparent AB magnitude", "Maximum absolute AB magnitude",
-    "Masses (solar masses)",
+    "Color (g - r, or similar)",
+    "Masses (solar masses)", "Spectral Type", "Stellar Class",
     "Host Name", moduletitle + " J2000 Right Ascension (h:m:s)",
     moduletitle + " J2000 Declination (d:m:s)",
+    moduletitle + " J2000 Right Ascension Proper Motion (mas/yr)",
+    moduletitle + " J2000 Declination Proper Motion (mas/yr)",
     "Host J2000 Right Ascension (h:m:s)", "Host J2000 Declination (d:m:s)",
     "Host Offset (Arcseconds)", "Host Offset (kpc)",
     "Altitude (Degrees)", "Azimuth (Degrees)", "Airmass", "Sky Brightness in V (Mags per arcsecond^2)",
     "List of Instruments and Bands", "Redshift",
-    "Heliocentric velocity (km/s)", "Luminosity distance (Mpc)",
-    "Claimed Type", "Milky Way Reddening", "Photometry", "pectra", "Radio",
+    "Heliocentric velocity (km/s)", "Escape velocity (km/s)", "Galactocentric velocity (km/s)",
+    "Bound probability (%)", "Luminosity distance (" + distanceunit + ")",
+    "Claimed Type", "Milky Way Reddening", "Photometry", "Spectra", "Radio",
     "X-rays", "Bibcodes of references with most data on event",
     "Download and edit data", ""
 ]
@@ -269,6 +282,7 @@ incl_cols = np.array([i for i, x in enumerate(columnkey) if x not in moduleignor
 
 header = list(np.array(header)[incl_cols])
 columnkey = list(np.array(columnkey)[incl_cols])
+eventpageheader = list(np.array(eventpageheader)[incl_cols])
 titles = list(np.array(titles)[incl_cols])
 
 header = OrderedDict(list(zip(columnkey, header)))
@@ -405,7 +419,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
         # tprint(eventfile + ' [' + checksum + ']')
 
-        repfolder = get_rep_folder(catalog[entry], repofolders)
+        repfolder = get_rep_folder(catalog[entry], repofolders, catalog=args.catalog)
         if os.path.isfile("astrocats/" + moduledir + "/input/" + modulename +
                           "-internal/" + fileeventname + ".json"):
             catalog[entry]['download'] = 'e'
@@ -424,6 +438,27 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         else:
             catalog[entry]['masses'] = ''
 
+        if 'stellarclass' in columnkey and 'stellarclass' not in catalog[entry]:
+            catalog[entry]['stellarclass'] = []
+
+        if 'galactocentricvelocity' in columnkey:
+            catalog[entry]['galactocentricvelocity'] = [x for x in catalog[entry].get(
+                'velocity', []) if any([y == 'galactocentric' for y in listify(x.get('kind'))]) and
+                'escape' not in listify(x.get('kind'))]
+            if not len(catalog[entry]['galactocentricvelocity']):
+                del(catalog[entry]['galactocentricvelocity'])
+
+        if 'escapevelocity' in columnkey:
+            catalog[entry]['escapevelocity'] = [x for x in catalog[entry].get('velocity', []) if any(y == 'escape' for y in listify(x.get('kind')))]
+            if not len(catalog[entry]['escapevelocity']):
+                del(catalog[entry]['escapevelocity'])
+
+        if 'galactocentricvelocity' in columnkey or 'escapevelocity' in columnkey:
+            catalog[entry]['velocity'] = [x for x in catalog[entry].get(
+                'velocity', []) if not any([y in ['galactocentric', 'escape'] for y in listify(x.get('kind'))])]
+            if not len(catalog[entry]['velocity']):
+                del(catalog[entry]['velocity'])
+
         hostmag = ''
         hosterr = ''
         if 'photometry' in catalog[entry]:
@@ -438,6 +473,26 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
             catalog[entry]['photometry'][:] = [
                 x for x in catalog[entry]['photometry'] if 'host' not in x
             ]
+
+            if 'color' in columnkey:
+                catalog[entry]['color'] = []
+                bpmag = [x.get('magnitude') for x in catalog[entry]['photometry'] if x.get('band') == 'GBP']
+                if len(bpmag):
+                    bpmag = bpmag[0]
+                rpmag = [x.get('magnitude') for x in catalog[entry]['photometry'] if x.get('band') == 'GRP']
+                if len(rpmag):
+                    rpmag = rpmag[0]
+                if bpmag and rpmag:
+                    catalog[entry]['color'].append({'value': str(Decimal(bpmag) - Decimal(rpmag)), 'kind': 'BP - RP'})
+
+                gmag = [x.get('magnitude') for x in catalog[entry]['photometry'] if x.get('band') == 'g']
+                if len(gmag):
+                    gmag = gmag[0]
+                rmag = [x.get('magnitude') for x in catalog[entry]['photometry'] if x.get('band') == 'r']
+                if len(rmag):
+                    rmag = rmag[0]
+                if gmag and rmag:
+                    catalog[entry]['color'].append({'value': str(Decimal(gmag) - Decimal(rmag)), 'kind': 'g - r'})
 
         photoavail = 'photometry' in catalog[entry] and any(
             ['magnitude' in x for x in catalog[entry]['photometry']])
@@ -624,6 +679,11 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
         # Copy JSON files up a directory if they've changed
         if not args.inplace and dohtml:
             shutil.copy2(eventfile, outdir + jsondir + os.path.basename(eventfile))
+            # Touch the .json file if event is stored in .gz so user is still served file.
+            if eventfile.endswith('.gz'):
+                stubfile = (outdir + jsondir + os.path.basename(eventfile)).replace('.gz', '')
+                if not os.path.exists(stubfile):
+                    open(stubfile, 'a').close()
 
         if (photoavail or radioavail or xrayavail) and dohtml and args.writehtml:
             phototime = [
@@ -1223,6 +1283,10 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 else:
                     spectrumwave.append(
                         [float(spectrumdata[x][0]) for x in specrange])
+
+                # Convert microns to angstroms for both labeled and unlabeled spectra
+                if max(spectrumwave[-1]) < 10.0 or spectrum.get('u_wavelengths').lower() in ['micron', 'µm']:
+                    spectrumwave[-1] = [1.0e4 * x for x in spectrumwave[-1]]
 
                 spectrumflux.append([float(spectrumdata[x][1]) for x in specrange])
                 if 'errorunit' in spectrum:
@@ -2369,7 +2433,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                     this.location="''' + eventname + '''"\n
                 </script>''', html)
 
-            repfolder = get_rep_folder(catalog[entry], repofolders)
+            repfolder = get_rep_folder(catalog[entry], repofolders, catalog=args.catalog)
             html = re.sub(
                 r'(\<\/body\>)', r'<div class="event-buttons"><a href="' +
                 r'../json/' + fileeventname + r'.json" download>' +
@@ -2588,7 +2652,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
 
                 if hasimage:
                     newhtml = newhtml + \
-                        '<div class="event-host-div"><h3 class="event-host-title">Host Image</h3>' + skyhtml
+                        '<div class="event-host-div"><h3 class="event-host-title">' + imgtitle + '</h3>' + skyhtml
                     newhtml = newhtml + \
                         r'</table><em>Host images are taken from SDSS if available; if not, DSS is used.</em></div>\n'
 

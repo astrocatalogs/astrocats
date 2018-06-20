@@ -26,7 +26,9 @@ def repo_file_list(module, repofolders, normal=True, bones=True):
             glob(outdir + rep + "/*.json.gz")
     return files
 
-def get_rep_folder(entry, repofolders):
+def get_rep_folder(entry, repofolders, catalog=None):
+    if catalog == 'hvs':
+        return repofolders[0]
     if 'discoverdate' not in entry:
         return repofolders[0]
     if not is_number(entry['discoverdate'][0]['value'].split('/')[0]):

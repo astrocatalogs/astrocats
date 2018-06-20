@@ -28,6 +28,8 @@ elif args.catalog == 'sne':
     moduledir = 'supernovae'
 elif args.catalog == 'kne':
     moduledir = 'kilonovae'
+elif args.catalog == 'hvs':
+    moduledir = 'faststars'
 else:
     raise ValueError('Unknown catalog!')
 
