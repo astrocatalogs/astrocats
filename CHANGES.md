@@ -28,6 +28,10 @@ The ['change-log' (below)](#changelog) in this file should summarize **all API c
 
 ### Current ###
 
+
+<a name='v0.3.38'>
+### v0.3.38 - 2018/06/23 ###
+
 - Added a new `Analysis` class in [astrocats/catalog/analysis.py](https://github.com/astrocatalogs/astrocats/blob/master/astrocats/catalog/analysis.py).
     - Basic 'count' functionality to report the number of files and tasks in each catalog.
 - Added subcommands for git repositories in [astrocats/catalog/catalog.py](https://github.com/astrocatalogs/astrocats/blob/master/astrocats/catalog/catalog.py).
