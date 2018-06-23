@@ -174,7 +174,7 @@ class Catalog(object):
         HASH = ''
         URL = ''
 
-    def __init__(self, args={}, log=logging.Logger("INFO"), git_clone=False):
+    def __init__(self, args={}, log=logging.Logger("INFO"), git_clone=True):
         # Store runtime arguments
         self.args = args
         self.log = log
