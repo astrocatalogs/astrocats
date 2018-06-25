@@ -2,7 +2,7 @@
 """
 
 from . import (dates, digits, imports, logger, plotting, sorting, strings,
-               tq_funcs)
+               tq_funcs, lists)
 from .dates import *
 from .digits import *
 from .imports import *
