@@ -1,6 +1,7 @@
 """Import tasks for the Harvard Center for Astrophysics."""
 import csv
 import os
+import warnings
 from glob import glob
 from math import floor
 
@@ -8,6 +9,7 @@ from astrocats.catalog.photometry import PHOTOMETRY
 from astrocats.catalog.utils import (is_number, jd_to_mjd, pbar, pbar_strings,
                                      uniq_cdl)
 from astropy.time import Time as astrotime
+from astropy._erfa.core import ErfaWarning
 
 from decimal import Decimal
 
@@ -215,9 +217,7 @@ def do_cfa_spectra(catalog):
                 month = fileparts[2][4:6]
                 day = fileparts[2][6:]
                 instrument = fileparts[3].split('.')[0]
-            time = str(
-                astrotime(year + '-' + month + '-' + str(floor(float(day)))
-                          .zfill(2)).mjd + float(day) - floor(float(day)))
+            time = _get_time_str(year, month, day)
             f = open(fname, 'r')
             data = csv.reader(f, delimiter=' ', skipinitialspace=True)
             data = [list(i) for i in zip(*data)]
@@ -287,9 +287,7 @@ def do_cfa_spectra(catalog):
                 month = fileparts[2][4:6]
                 day = fileparts[2][6:]
                 instrument = fileparts[3].split('.')[0]
-            time = str(
-                astrotime(year + '-' + month + '-' + str(floor(float(day)))
-                          .zfill(2)).mjd + float(day) - floor(float(day)))
+            time = _get_time_str(year, month, day)
             f = open(fname, 'r')
             data = csv.reader(f, delimiter=' ', skipinitialspace=True)
             data = [list(i) for i in zip(*data)]
@@ -353,9 +351,7 @@ def do_cfa_spectra(catalog):
             day = fileparts[1][6:].split('.')[0]
             if len(fileparts) > 2:
                 instrument = fileparts[-1].split('.')[0]
-            time = str(
-                astrotime(year + '-' + month + '-' + str(floor(float(day)))
-                          .zfill(2)).mjd + float(day) - floor(float(day)))
+            time = _get_time_str(year, month, day)
             f = open(fname, 'r')
             data = csv.reader(f, delimiter=' ', skipinitialspace=True)
             data = [list(i) for i in zip(*data)]
@@ -424,10 +420,7 @@ def do_cfa_spectra(catalog):
                 if is_number(year) and is_number(month) and is_number(day):
                     if len(fileparts) > 2:
                         instrument = fileparts[-1]
-                    time = str(
-                        astrotime(year + '-' + month + '-' + str(
-                            floor(float(day))).zfill(2)).mjd + float(day) -
-                        floor(float(day)))
+                    time = _get_time_str(year, month, day)
             f = open(fname, 'r')
             data = csv.reader(f, delimiter=' ', skipinitialspace=True)
             data = [list(i) for i in zip(*data)]
@@ -450,3 +443,14 @@ def do_cfa_spectra(catalog):
 
     catalog.journal_entries()
     return
+
+
+def _get_time_str(year, month, day):
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", ErfaWarning)
+        _day = str(floor(float(day))).zfill(2)
+        time = astrotime(year + '-' + month + '-' + _day)
+        time = time.mjd + float(day) - floor(float(day))
+
+    time = str(time)
+    return time
