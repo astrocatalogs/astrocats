@@ -20,7 +20,7 @@ from astrocats.catalog.model import MODEL
 from astrocats.catalog.source import SOURCE
 from astrocats.catalog.task import Task
 from astrocats.catalog.utils import (compress_gz, is_integer, log_memory, pbar,
-                                     read_json_dict, repo_priority,
+                                     read_json_dict, repo_priority, log_raise,
                                      uncompress_gz, uniq_cdl)
 
 
@@ -91,11 +91,39 @@ class Catalog(object):
                                               self.catalog_dir, '')
             self.PATH_INPUT = os.path.join(self.PATH_BASE, 'input', '')
             self.PATH_OUTPUT = os.path.join(self.PATH_BASE, 'output', '')
+            # Output sub-paths
+            self.PATH_CACHE = os.path.join(self.PATH_OUTPUT, 'cache', '')
+            # Do not include `input`, as that really should be added externally...
+            self._check_path(self.PATH_INPUT, create=False, error=True)
+            _check_paths = [self.PATH_OUTPUT, self.PATH_CACHE]
+            for cp in _check_paths:
+                self._check_path(cp, create=True, error=False)
+
             # critical datafiles
             self.REPOS_LIST = os.path.join(self.PATH_INPUT, 'repos.json')
             self.TASK_LIST = os.path.join(self.PATH_INPUT, 'tasks.json')
             self.repos_dict = read_json_dict(self.REPOS_LIST)
             return
+
+        def _check_path(self, path, create=False, error=True):
+            """Create the given paths if they do not exist.
+            """
+            log = self.catalog.log
+            base = os.path.dirname(path)
+            if base != path:
+                log.debug("Checking path '{}' from '{}'".format(base, path))
+            exists = os.path.exists(base)
+            isdir = os.path.isdir(base)
+            if not exists or not isdir:
+                err = "Path '{}' exists: {}, isdir: {}!".format(base, exists, isdir)
+                # Raise an error is told to do so, or if name exists as file (cannot create)
+                if error or exists:
+                    log_raise(log, err, err_type=IOError)
+                if create:
+                    log.info(err)
+                    os.makedirs(base)
+
+            return base
 
         def _get_repo_file_list(self, repo_folders, normal=True, bones=True):
             """Get filenames for files in each repository.
