@@ -12,8 +12,8 @@ from astrocats.catalog.source import SOURCE
 from astrocats.catalog.utils import (bib_priority, get_sig_digits,
                                      get_source_year, is_integer, is_number,
                                      jd_to_mjd, listify, make_date_string,
-                                     pretty_num, uniq_cdl)
-from astropy.time import Time as astrotime
+                                     pretty_num, uniq_cdl, mjd_to_datetime)
+# from astropy.time import Time as astrotime
 from six import string_types
 
 from .constants import MAX_VISUAL_BANDS
@@ -696,7 +696,8 @@ class Testnova(Entry):
 
         if eventphoto[mlindex][0] == 'MJD':
             mlmjd = float(eventphoto[mlindex][1])
-            mlmjd = astrotime(mlmjd, format='mjd').datetime
+            # mlmjd = astrotime(mlmjd, format='mjd').datetime
+            mlmjd = mjd_to_datetime(mlmjd)
             return mlmjd, mlmag, mlband, mlsource
         else:
             return None, mlmag, mlband, mlsource
@@ -727,7 +728,9 @@ class Testnova(Entry):
             return None, None
         flmjd = min([x[0] for x in eventphoto])
         flindex = [x[0] for x in eventphoto].index(flmjd)
-        flmjd = astrotime(float(flmjd), format='mjd').datetime
+        # flmjd = astrotime(float(flmjd), format='mjd').datetime
+        flmjd = mjd_to_datetime(float(flmjd))
+
         flsource = eventphoto[flindex][1]
         return flmjd, flsource
 
@@ -804,7 +807,9 @@ class Testnova(Entry):
                         minspecsource = spectrum['source']
 
             if minspecmjd < float("+inf"):
-                fldt = astrotime(minspecmjd, format='mjd').datetime
+                # fldt = astrotime(minspecmjd, format='mjd').datetime
+                fldt = mjd_to_datetime(minspecmjd)
+
                 source = self.add_self_source()
                 disc_date = make_date_string(fldt.year, fldt.month, fldt.day)
                 self.add_quantity(
