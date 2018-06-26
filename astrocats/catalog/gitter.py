@@ -331,5 +331,5 @@ def _call_command_in_repo(comm, repo, log, fail=False, log_flag=True):
     # Raises an error if the command failed.
     if fail:
         if process.returncode:
-            raise subprocess.CalledProcessError
+            raise subprocess.CalledProcessError(process.returncode, comm)
     return
