@@ -29,6 +29,15 @@ The ['change-log' (below)](#changelog) in this file should summarize **all API c
 ### Current ###
 
 
+<a name='v0.3.39'>
+### v0.3.38 - 2018/06/27 ###
+- Introduced the `testcat` submodule which is a stripped-down version of the `supernovae` catalog for testing purposes.  Only the 'internal', 'radio', 'xray', 'cfa_photo', and 'cfa_spectra' tasks have been preserved.  A dedicated output repo was created, 'astrocatalogs/testcat-output' so that comparisons can be madel; currently the version (tag) for that repo is 'v0.0_init-ref'.
+- `astrocats/catalog/`
+    - `gitter.py`
+        - `git_add_commit_push_all_repos()`
+            - [BUG] this command was failing when too many files were being added, because the command line-length was too long.  If many files are being added, break them into separate chunks which are `git add`ed separately.
+
+
 <a name='v0.3.38'>
 ### v0.3.38 - 2018/06/23 ###
 
