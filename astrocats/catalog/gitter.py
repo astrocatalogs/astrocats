@@ -90,10 +90,36 @@ def git_add_commit_push_all_repos(cat):
             git_comm = ["git", "add"]
             if cat.args.travis:
                 git_comm.append("-f")
-            git_comm.extend(add_files)
-            _call_command_in_repo(
-                git_comm, repo, cat.log, fail=True, log_flag=False)
 
+            # If command string is too long, it will fail with an OSError... break into chunks
+            if len("".join(add_files)) < 1e5:
+                added = len(add_files)
+                git_comm.extend(add_files)
+                _call_command_in_repo(git_comm, repo, cat.log, fail=True, log_flag=False)
+            else:
+                count = 0
+                added = 0
+                batch_size = 400
+                start_size = len(add_files)
+                # Add files in batches
+                while len(add_files) > 0:
+                    count += 1
+                    temp_add = add_files[:batch_size]
+                    add_files = add_files[batch_size:]
+                    num_temp = len(temp_add)
+                    left = len(add_files)
+                    log.info("{}: Adding {} files ({} left)...".format(count, num_temp, left))
+                    use_comm = git_comm + temp_add
+                    _call_command_in_repo(use_comm, repo, cat.log, fail=True, log_flag=False)
+                    added += num_temp
+
+                    if count > 100:
+                        err = "Exceeded batch add limit!  "
+                        err += "{} batches, added {} files, {} left, started with {}".format(
+                            count, added, left, start_size)
+                        raise RuntimeError(err)
+
+            log.info("Added {} files".format(added))
             # Commit these files
             commit_msg = "'push' - adding all files."
             commit_msg = "{} : {}".format(cat._version_long, commit_msg)
@@ -297,7 +323,7 @@ def clone(repo, log, depth=1):
         log.warning("Cloning '{}' (only needs to be done ".format(repo) +
                     "once, may take few minutes per repo).")
         grepo = git.Repo.clone_from(repo_name, repo, **kwargs)
-    except:
+    except Exception:
         log.error("CLONING '{}' INTERRUPTED".format(repo))
         raise
 
@@ -319,6 +345,7 @@ def _call_command_in_repo(comm, repo, log, fail=False, log_flag=True):
         log.debug("Running '{}'.".format(" ".join(comm)))
     process = subprocess.Popen(
         comm, cwd=repo, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
     (stdout, stderr) = process.communicate()
     if stderr is not None:
         err_msg = stderr.decode('ascii').strip().splitlines()
