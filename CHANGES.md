@@ -15,6 +15,7 @@ The ['change-log' (below)](#changelog) in this file should summarize **all API c
 
 ### Future / To-Do ###
 
+* FIX THE DAMN ARGPARSE
 * Create a settings/arguments/parameters class which handles storing parameters (instead of just an `argparse.Namespace`) and has methods for running `argparse`. 
 * Create specific 'tasks' for cloning/pulling input/output repositories.
 * Add to the `test` task to include coverage of the basic types (e.g. `spectrum`, etc).
