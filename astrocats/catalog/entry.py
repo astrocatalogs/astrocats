@@ -271,7 +271,7 @@ class Entry(OrderedDict):
         new_entry = self.__class__(self.catalog)
         for key in self:
             if not key.startswith('__') and key != 'catalog':
-                new_entry[key] = deepcopy(self[key])
+                new_entry[key] = deepcopy(self[key], memo)
         return new_entry
 
     def _load_data_from_json(self,
