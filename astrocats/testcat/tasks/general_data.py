@@ -225,6 +225,7 @@ def do_internal(catalog):
         name = new_entry[TESTNOVA.NAME]
         old_name = None
 
+        # Look for an existing entry with one of the aliases
         for alias in new_entry.get_aliases():
             if catalog.entry_exists(alias):
                 old_name = catalog.get_preferred_name(alias)
