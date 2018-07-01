@@ -23,7 +23,7 @@ class Source(pas.source.Source):
         super(Source, self).__init__(extendable=True, **kwargs)
         self._key = key
         self._parent = parent
-        self._log = parent.catalog.log
+        # self._log = parent.catalog.log
         return
 
     def sort_func(self, key):
@@ -60,5 +60,5 @@ class Source(pas.source.Source):
             code = url.split('/abs/')
             code = code[1].strip()
             return code
-        except:
+        except Exception:
             return None
