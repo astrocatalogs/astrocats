@@ -200,7 +200,8 @@ class Entry(OrderedDict):
         """Convert the object into a plain OrderedDict."""
         ndict = OrderedDict()
 
-        if isinstance(odict, CatDict) or isinstance(odict, Entry):
+        # if isinstance(odict, CatDict) or isinstance(odict, Entry):
+        if hasattr(odict, "sort_func"):
             key = odict.sort_func
         else:
             key = None
@@ -759,8 +760,7 @@ class Entry(OrderedDict):
     def add_source(self, allow_alias=False, **kwargs):
         """Add a `Source` instance to this entry."""
         if not allow_alias and SOURCE.ALIAS in kwargs:
-            err_str = "`{}` passed in kwargs, this shouldn't happen!".format(
-                SOURCE.ALIAS)
+            err_str = "`{}` passed in kwargs, this shouldn't happen!".format(SOURCE.ALIAS)
             self._log.error(err_str)
             raise RuntimeError(err_str)
 
@@ -771,7 +771,7 @@ class Entry(OrderedDict):
         if source_obj is None:
             return None
 
-        for item in self.get(self._KEYS.SOURCES, ''):
+        for item in self.get(self._KEYS.SOURCES, []):
             if source_obj.is_duplicate_of(item):
                 return item[item._KEYS.ALIAS]
 
