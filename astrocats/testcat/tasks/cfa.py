@@ -26,8 +26,8 @@ def do_cfa_photo(catalog):
     from html import unescape
     import re
     task_str = catalog.get_current_task_str()
-    file_names = glob(
-        os.path.join(catalog.get_current_task_repo(), 'cfa-input/*.dat'))
+    file_names = glob(os.path.join(catalog.get_current_task_repo(), 'cfa-input/*.dat'))
+    ni = 0
     for fname in pbar_strings(file_names, task_str):
         f = open(fname, 'r')
         tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
@@ -49,19 +49,15 @@ def do_cfa_photo(catalog):
 
         name = clean_snname(eventparts[0])
         name = catalog.add_entry(name)
+
         secondaryname = 'CfA Supernova Archive'
         secondaryurl = 'https://www.cfa.harvard.edu/supernova/SNarchive.html'
         secondarysource = catalog.entries[name].add_source(
-            name=secondaryname,
-            url=secondaryurl,
-            secondary=True,
-            acknowledgment=ACKN_CFA)
-        catalog.entries[name].add_quantity(TESTNOVA.ALIAS, name,
-                                           secondarysource)
+            name=secondaryname, url=secondaryurl, secondary=True, acknowledgment=ACKN_CFA)
+        catalog.entries[name].add_quantity(TESTNOVA.ALIAS, name, secondarysource)
 
         year = re.findall(r'\d+', name)[0]
-        catalog.entries[name].add_quantity(TESTNOVA.DISCOVER_DATE, year,
-                                           secondarysource)
+        catalog.entries[name].add_quantity(TESTNOVA.DISCOVER_DATE, year, secondarysource)
 
         eventbands = list(eventparts[1])
 
@@ -114,7 +110,15 @@ def do_cfa_photo(catalog):
                                 PHOTOMETRY.SOURCE: src
                             }
                             catalog.entries[name].add_photometry(**photodict)
+
+            if catalog.args.travis and rc >= catalog.TRAVIS_QUERY_LIMIT:
+                break
+
         f.close()
+
+        ni += 1
+        if catalog.args.travis and ni >= catalog.TRAVIS_QUERY_LIMIT:
+            break
 
     # Hicken 2012
     with open(
@@ -148,12 +152,15 @@ def do_cfa_photo(catalog):
             }
             catalog.entries[name].add_photometry(**photodict)
 
+            if catalog.args.travis and r >= catalog.TRAVIS_QUERY_LIMIT:
+                break
+
     # Bianco 2014
     with open(
             os.path.join(catalog.get_current_task_repo(),
                          'bianco-2014-standard.dat'), 'r') as infile:
         tsvin = list(csv.reader(infile, delimiter=' ', skipinitialspace=True))
-        for row in pbar(tsvin, task_str):
+        for rr, row in enumerate(pbar(tsvin, task_str)):
             name = 'SN' + row[0]
             name = catalog.add_entry(name)
 
@@ -171,6 +178,9 @@ def do_cfa_photo(catalog):
                 PHOTOMETRY.SOURCE: source
             }
             catalog.entries[name].add_photometry(**photodict)
+
+            if catalog.args.travis and rr >= catalog.TRAVIS_QUERY_LIMIT:
+                break
 
     catalog.journal_entries()
     return
@@ -243,8 +253,10 @@ def do_cfa_spectra(catalog):
                 source=sources,
                 dereddened=False,
                 deredshifted=False)
+
         if catalog.args.travis and ni >= catalog.TRAVIS_QUERY_LIMIT:
             break
+
     catalog.journal_entries()
 
     # Ia spectra
@@ -314,8 +326,10 @@ def do_cfa_spectra(catalog):
                 source=sources,
                 dereddened=False,
                 deredshifted=False)
+
         if catalog.args.travis and ni >= catalog.TRAVIS_QUERY_LIMIT:
             break
+
     catalog.journal_entries()
 
     # Ibc spectra
@@ -373,8 +387,10 @@ def do_cfa_spectra(catalog):
                 source=sources,
                 dereddened=False,
                 deredshifted=False)
+
         if catalog.args.travis and ni >= catalog.TRAVIS_QUERY_LIMIT:
             break
+
     catalog.journal_entries()
 
     # Other spectra
@@ -438,6 +454,7 @@ def do_cfa_spectra(catalog):
                 source=source,
                 dereddened=False,
                 deredshifted=False)
+
         if catalog.args.travis and ni >= catalog.TRAVIS_QUERY_LIMIT:
             break
 

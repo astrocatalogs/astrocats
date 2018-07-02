@@ -19,6 +19,7 @@ from ..testnova import TESTNOVA, Testnova
 def do_external_radio(catalog):
     task_str = catalog.get_current_task_str()
     path_pattern = os.path.join(catalog.get_current_task_repo(), '*.txt')
+    ni = 0
     for datafile in pbar_strings(glob(path_pattern), task_str):
         oldname = os.path.basename(datafile).split('.')[0]
         name = catalog.add_entry(oldname)
@@ -29,8 +30,7 @@ def do_external_radio(catalog):
                 if line.startswith('(') and li <= len(radiosourcedict):
                     key = line.split()[0]
                     bibc = line.split()[-1]
-                    radiosourcedict[key] = catalog.entries[name].add_source(
-                        bibcode=bibc)
+                    radiosourcedict[key] = catalog.entries[name].add_source(bibcode=bibc)
                 elif li in [xx + len(radiosourcedict) for xx in range(3)]:
                     continue
                 else:
@@ -55,8 +55,11 @@ def do_external_radio(catalog):
                         PHOTOMETRY.SOURCE: source
                     }
                     catalog.entries[name].add_photometry(**photodict)
-                    catalog.entries[name].add_quantity(TESTNOVA.ALIAS,
-                                                       oldname, source)
+                    catalog.entries[name].add_quantity(TESTNOVA.ALIAS, oldname, source)
+
+        ni += 1
+        if catalog.args.travis and ni >= catalog.TRAVIS_QUERY_LIMIT:
+            break
 
     catalog.journal_entries()
     return
@@ -66,6 +69,7 @@ def do_external_xray(catalog):
     """Import testnova X-ray data."""
     task_str = catalog.get_current_task_str()
     path_pattern = os.path.join(catalog.get_current_task_repo(), '*.txt')
+    ni = 0
     for datafile in pbar_strings(glob(path_pattern), task_str):
         oldname = os.path.basename(datafile).split('.')[0]
         name = catalog.add_entry(oldname)
@@ -97,6 +101,10 @@ def do_external_xray(catalog):
                     catalog.entries[name].add_quantity(TESTNOVA.ALIAS,
                                                        oldname, source)
 
+        ni += 1
+        if catalog.args.travis and ni >= catalog.TRAVIS_QUERY_LIMIT:
+            break
+
     catalog.journal_entries()
     return
 
@@ -107,9 +115,10 @@ def do_external_fits_spectra(catalog):
         metadict = json.loads(f.read())
 
     fureps = {'erg/cm2/s/A': 'erg/s/cm^2/Angstrom'}
-    task_str = catalog.get_current_task_str()
+    # task_str = catalog.get_current_task_str()
     path_pattern = os.path.join(catalog.get_current_task_repo(), '*.fits')
     files = glob(path_pattern)
+    ni = 0
     for datafile in files:
         filename = datafile.split('/')[-1]
         if filename == 'meta.json':
@@ -207,7 +216,13 @@ def do_external_fits_spectra(catalog):
             specdict[SPECTRUM.OBSERVER] = hdulist[0].header['OBSERVER']
         catalog.entries[name].add_spectrum(**specdict)
         hdulist.close()
+
         catalog.journal_entries()
+
+        ni += 1
+        if catalog.args.travis and ni >= catalog.TRAVIS_QUERY_LIMIT:
+            break
+
     return
 
 
@@ -216,11 +231,10 @@ def do_internal(catalog):
     task_str = catalog.get_current_task_str()
     path_pattern = os.path.join(catalog.get_current_task_repo(), '*.json')
     files = glob(path_pattern)
-    catalog.log.debug("found {} files matching '{}'".format(
-        len(files), path_pattern))
+    catalog.log.debug("found {} files matching '{}'".format(len(files), path_pattern))
+    ni = 0
     for datafile in pbar_strings(files, task_str):
-        new_entry = Testnova.init_from_file(
-            catalog, path=datafile, clean=True, merge=True)
+        new_entry = Testnova.init_from_file(catalog, path=datafile, clean=True, merge=True)
 
         name = new_entry[TESTNOVA.NAME]
         old_name = None
@@ -241,5 +255,9 @@ def do_internal(catalog):
             catalog.entries[name] = new_entry
 
         catalog.journal_entries()
+
+        ni += 1
+        if catalog.args.travis and ni >= catalog.TRAVIS_QUERY_LIMIT:
+            break
 
     return
