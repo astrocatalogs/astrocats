@@ -914,12 +914,7 @@ class Catalog(object):
     def should_bury(self, name):
         return (False, True)
 
-    def journal_entries(self,
-                        clear=True,
-                        gz=False,
-                        bury=False,
-                        write_stubs=False,
-                        final=False):
+    def journal_entries(self, clear=True, gz=False, bury=False, write_stubs=False, final=False):
         """Write all entries in `entries` to files, and clear.  Depending on
         arguments and `tasks`.
 
@@ -928,10 +923,6 @@ class Catalog(object):
         -   If ``clear == True``, then each element of `entries` is deleted,
             and a `stubs` entry is added
         """
-
-        # if (self.current_task.priority >= 0 and
-        #        self.current_task.priority < self.min_journal_priority):
-        #    return
 
         # Write it all out!
         # NOTE: this needs to use a `list` wrapper to allow modification of
@@ -950,15 +941,11 @@ class Catalog(object):
                     (bury_entry, save_entry) = self.should_bury(name)
 
                 if save_entry:
-                    save_name = self.entries[name].save(
-                        bury=bury_entry, final=final)
-                    self.log.info(
-                        "Saved {} to '{}'.".format(name.ljust(20), save_name))
-                    if (gz and os.path.getsize(save_name) >
-                            self.COMPRESS_ABOVE_FILESIZE):
+                    save_name = self.entries[name].save(bury=bury_entry, final=final)
+                    self.log.info("Saved {} to '{}'.".format(name.ljust(20), save_name))
+                    if (gz and os.path.getsize(save_name) > self.COMPRESS_ABOVE_FILESIZE):
                         save_name = compress_gz(save_name)
-                        self.log.debug(
-                            "Compressed '{}' to '{}'".format(name, save_name))
+                        self.log.debug("Compressed '{}' to '{}'".format(name, save_name))
                         # FIX: use subprocess
                         outdir, filename = os.path.split(save_name)
                         filename = filename.split('.')[0]
