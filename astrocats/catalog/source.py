@@ -7,10 +7,10 @@ if _PAS_PATH not in sys.path:
 
 import pyastroschema as pas  # noqa
 
-SOURCE = pas.source.Source.get_keychain()
+SOURCE = pas.struct.Source.get_keychain()
 
 
-class Source(pas.source.Source):
+class Source(pas.struct.Source):
     """Representation for the source/attribution of a data element."""
 
     _KEYS = SOURCE
