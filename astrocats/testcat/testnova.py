@@ -332,10 +332,6 @@ class Testnova(Entry):
     def add_source(self, **kwargs):
         # Sanitize some fields before adding source
         # Replace reference names and URLs using dictionaries.
-
-        if SOURCE.NAME not in kwargs:
-            kwargs[SOURCE.NAME] = kwargs[SOURCE.BIBCODE]
-
         if SOURCE.NAME in kwargs:
             if (kwargs[SOURCE.NAME].upper().startswith('ATEL') and
                     SOURCE.BIBCODE not in kwargs):
