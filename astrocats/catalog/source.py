@@ -1,10 +1,6 @@
 """Class for representing sources of data."""
 import sys
 
-# from astrocats.catalog.catdict import CatDict
-# from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
-
-
 _PAS_PATH = "/Users/lzkelley/Research/catalogs/astroschema"
 if _PAS_PATH not in sys.path:
     sys.path.append(_PAS_PATH)

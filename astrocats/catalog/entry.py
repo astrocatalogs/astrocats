@@ -759,7 +759,7 @@ class Entry(OrderedDict):
 
     def add_source(self, allow_alias=False, **kwargs):
         """Add a `Source` instance to this entry."""
-        if not allow_alias and SOURCE.ALIAS in kwargs:
+        if (not allow_alias) and (SOURCE.ALIAS in kwargs):
             err_str = "`{}` passed in kwargs, this shouldn't happen!".format(SOURCE.ALIAS)
             self._log.error(err_str)
             raise RuntimeError(err_str)
