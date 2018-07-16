@@ -47,18 +47,6 @@ class TestnovaCatalog(Catalog):
             self.catalog.log.warning("Skipping all non-targeted repos...")
             return repos
 
-    '''
-    class SCHEMA(object):
-        """Define the HASH/URL associated with the present schema."""
-
-        HASH = (check_output(['git', '-C', 'astrocats/supernovae',
-                              'log', '-n', '1', '--format="%h"',
-                              '--', 'SCHEMA.md'])
-                .decode('ascii').strip().strip('"').strip())
-        URL = ('https://github.com/astrocatalogs/supernovae/blob/' + HASH +
-               '/SCHEMA.md')
-    '''
-
     def __init__(self, args, log):
         """Initialize catalog."""
         # Initialize super `astrocats.catalog.catalog.Catalog` object
