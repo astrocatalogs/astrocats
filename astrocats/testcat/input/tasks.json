@@ -1,4 +1,13 @@
 {
+    "test": {
+        "nice_name": "%pre TEST",
+        "active": true,
+        "update": false,
+        "module": "testcat.tasks.test",
+        "function": "do_test",
+        "repo": "input/sne-internal",
+        "priority": 1
+    },
     "internal": {
         "nice_name": "%pre metadata and photometry",
         "active": true,
