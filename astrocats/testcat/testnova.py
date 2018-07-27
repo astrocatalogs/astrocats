@@ -180,15 +180,20 @@ class Testnova(Entry):
 
         return True
 
-    def add_quantity(self,
-                     quantities,
-                     value,
-                     source,
-                     forcereplacebetter=False,
-                     **kwargs):
+    def add_quantity(self, quantities, value, source,
+                     forcereplacebetter=False, **kwargs):
         """Add `Quantity` to `Testnova`."""
-        success = super(Testnova, self).add_quantity(
-            quantities, value, source, **kwargs)
+        try:
+            success = super(Testnova, self).add_quantity(
+                quantities, value, source, **kwargs)
+        except Exception as err:
+            log = self._log
+            log.error("Failed to add quantity!  " + str(err))
+            log.info("`quantities` = '{}'".format(quantities))
+            log.info("`value` = '{}'".format(value))
+            log.info("`source` = '{}'".format(source))
+            log.info("`kwargs` = '{}'".format(kwargs))
+            raise
 
         if not success:
             return
