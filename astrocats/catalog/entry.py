@@ -513,6 +513,13 @@ class Entry(OrderedDict):
 
     def _init_cat_dict(self, cat_dict_class, key_in_self, **kwargs):
         """Initialize a CatDict object, checking for errors."""
+
+        # Remove empty string values
+        bad_keys = [kk for kk, vv in kwargs.items()
+                    if isinstance(vv, str) and len(vv) == 0]
+        for bk in bad_keys:
+            kwargs.pop(bk)
+
         # Catch errors associated with crappy, but not unexpected data
         try:
             new_entry = cat_dict_class(self, key=key_in_self, **kwargs)
@@ -521,14 +528,33 @@ class Entry(OrderedDict):
                 self._log.info("'{}' Not adding '{}': '{}'".format(self[
                     self._KEYS.NAME], key_in_self, str(err)))
             return None
+        except Exception as err:
+            print("ERROR in `Entry._init_cat_dict()`!")
+            print("name = ", self[self._KEYS.NAME])
+            print("\n\n\n")
+            print("`cat_dict_class` = '{}'".format(cat_dict_class))
+            print("`key_in_self` = '{}'".format(key_in_self))
+            print("`kwargs = '{}'".format(kwargs))
+            print("\n\n\n")
+            print(repr(self))
+            print("\n\n\n")
+            raise
+
+        # NOTE: LZK COMMENTED OUT for testing new `Quantity` astroschema
+        '''
+        try:
+            new_entry = cat_dict_class(self, key=key_in_self, **kwargs)
+        except CatDictError as err:
+            if err.warn:
+                self._log.info("'{}' Not adding '{}': '{}'".format(self[
+                    self._KEYS.NAME], key_in_self, str(err)))
+            return None
+        '''
+
         return new_entry
 
-    def _add_cat_dict(self,
-                      cat_dict_class,
-                      key_in_self,
-                      check_for_dupes=True,
-                      compare_to_existing=True,
-                      **kwargs):
+    def _add_cat_dict(self, cat_dict_class, key_in_self,
+                      check_for_dupes=True, compare_to_existing=True, **kwargs):
         """Add a `CatDict` to this `Entry`.
 
         CatDict only added if initialization succeeds and it
@@ -723,20 +749,14 @@ class Entry(OrderedDict):
                 del self.catalog.entries[dupe]
         self.dupe_of = []
 
-    def add_quantity(self,
-                     quantities,
-                     value,
-                     source,
-                     check_for_dupes=True,
-                     compare_to_existing=True,
-                     **kwargs):
+    def add_quantity(self, quantities, value, source,
+                     check_for_dupes=True, compare_to_existing=True, **kwargs):
         """Add an `Quantity` instance to this entry."""
         success = True
         for quantity in listify(quantities):
             kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: source})
             cat_dict = self._add_cat_dict(
-                Quantity,
-                quantity,
+                Quantity, quantity,
                 compare_to_existing=compare_to_existing,
                 check_for_dupes=check_for_dupes,
                 **kwargs)
