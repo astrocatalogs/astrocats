@@ -5,7 +5,8 @@ import sys
 
 from astrocats.catalog.catdict import CatDictError
 from astrocats.catalog.key import KEY_TYPES, Key
-from astrocats.catalog.utils import is_number, uniq_cdl
+from astrocats.catalog.utils import (astrotime, is_number, listify, uniq_cdl,
+                                     bandmetaf, bandrepf, instrumentrepf)
 
 _PAS_PATH = "/Users/lzkelley/Research/catalogs/astroschema"
 if _PAS_PATH not in sys.path:
@@ -136,6 +137,82 @@ class _Quantity(My_Meta_Struct):
         """Sorting logic for `Quantity` objects."""
         if key == self._KEYS.VALUE:
             return 'aaa'
+        if key == self._KEYS.SOURCE:
+            return 'zzz'
+        return key
+
+
+class _Photometry(My_Meta_Struct):
+    """Container for a single photometric point with associated metadata.
+
+    `Source` citation required.
+    Photometry can be given as [magnitude, flux, flux-density, counts, luminosity].
+
+    """
+
+    _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "photometry.json")
+
+    def __init__(self, parent, key=None, **kwargs):
+        super(_Photometry, self).__init__(parent, key=key, **kwargs)
+
+        # If `BAND` is given, but any of `bandmetaf_keys` is not, try to infer
+        if self._KEYS.BAND in self:
+            sband = self[self._KEYS.BAND]
+            bandmetaf_keys = [self._KEYS.INSTRUMENT, self._KEYS.TELESCOPE, self._KEYS.SYSTEM]
+
+            for bmf in bandmetaf_keys:
+                if bmf not in self:
+                    temp = bandmetaf(sband, bmf)
+                    if temp is not None:
+                        self[bmf] = temp
+
+        # Convert dates to MJD
+        timestrs = [str(x) for x in listify(self.get(self._KEYS.TIME, ''))]
+        for ti, timestr in enumerate(timestrs):
+            if (any(x in timestr for x in ['-', '/']) and not timestr.startswith('-')):
+                timestrs[ti] = timestr.replace('/', '-')
+                try:
+                    # timestrs[ti] = str(astrotime(timestrs[ti], format='isot').mjd)
+                    timestrs[ti] = str(astrotime(timestrs[ti], input='isot', output='mjd'))
+                except Exception:
+                    raise CatDictError('Unable to convert date to MJD.')
+            elif timestr:  # Make sure time is string
+                timestrs[ti] = timestr
+
+        if len(timestrs) > 0 and timestrs[0] != '':
+            self[self._KEYS.TIME] = timestrs if len(timestrs) > 1 else timestrs[0]
+
+        # Time unit is necessary for maximum time determination
+        if self._KEYS.U_TIME not in self and self._KEYS.TIME in self:
+            self._log.info('`{}` not found in photometry, assuming '
+                           ' MJD.'.format(self._KEYS.U_TIME))
+            self[self._KEYS.U_TIME] = 'MJD'
+
+        if (self._KEYS.U_COUNT_RATE not in self and
+                self._KEYS.COUNT_RATE in self):
+            self._log.info('`{}` not found in photometry, assuming '
+                           ' s^-1.'.format(self._KEYS.U_COUNT_RATE))
+            self[self._KEYS.U_COUNT_RATE] = 's^-1'
+
+        return
+
+    def _clean_value_for_key(self, key, value):
+        value = super(_Photometry, self)._clean_value_for_key(key, value)
+
+        # Do some basic homogenization
+        if key == self._KEYS.BAND:
+            return bandrepf(value)
+        elif key == self._KEYS.INSTRUMENT:
+            return instrumentrepf(value)
+
+        return value
+
+    def sort_func(self, key):
+        """Specify order for attributes."""
+        if key == self._KEYS.TIME:
+            return 'aaa'
+        if key == self._KEYS.MODEL:
+            return 'zzy'
         if key == self._KEYS.SOURCE:
             return 'zzz'
         return key
