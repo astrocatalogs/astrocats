@@ -8,7 +8,7 @@ import astropy as ap
 import astropy.time  # noqa
 from astropy._erfa.core import ErfaWarning
 
-__all__ = ['jd_to_mjd', 'make_date_string', 'get_source_year', 'mjd_to_datetime']
+__all__ = ['astrotime', 'jd_to_mjd', 'make_date_string', 'get_source_year', 'mjd_to_datetime']
 
 
 def jd_to_mjd(jd):
@@ -52,8 +52,36 @@ def mjd_to_datetime(mjd):
     dt : `datetime.datetime`
 
     """
+    '''
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", ErfaWarning)
         time = ap.time.Time(mjd, format='mjd').datetime
+    '''
+    time = astrotime(mjd, input='mjd', output='datetime')
+    return time
+
+
+def astrotime(datetime, input='mjd', output='datetime'):
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", ErfaWarning)
+        time = ap.time.Time(datetime, format=input)
+
+    # If `output` is None, return `astropy.time.Time` instance
+    if output is None:
+        pass
+    else:
+        try:
+            time = getattr(time, output)
+        except AttributeError as err:
+            add_err = "Unrecognized `output` type = '{}'!".format(output)
+            raise AttributeError(add_err + str(err)) from err
+
+    # elif output == 'datetime':
+    #     time = time.datetime
+    # elif output == 'mjd':
+    #     time = time.mjd
+    # else:
+    #     err = "Unrecognized `output` = '{}'!".format(output)
+    #     raise ValueError(err)
 
     return time
