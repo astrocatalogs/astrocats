@@ -29,9 +29,26 @@ The ['change-log' (below)](#changelog) in this file should summarize **all API c
 
 ### Current ###
 
+
+<a name='v0.3.42'>
+### v0.3.42 - 2018/07/29 ###
+
 - `utils.strings.get_entry_filename` ==> `utils.strings.get_filename`
 - `entry.get_filename` ==> `utils.strings.get_filename`
+- All usage of *astrocats* (specifically) 'schema' removed for the moment.
+- `Entry` changed to be a subclass of astroschema struct instead of `OrderedDict`, using `pyastroschema.Keychain` instead of `KeyCollection`.
+- Remove `check()` method, use `validate()` (inherited from pyastroschema) instead
+- `Photometry` and `Spectra` (and associated keys) updated to use astroschema
+    - Random methods that used to be in `photometry.py` moved to new utilities submodule `em_bands.py`
+- `utils.dates` new `astrotime` method to replace separate usaged of `astropy.time.Time`; this needs to be fully integrated still.
+- Updated keys for `Testnova` as temporary fixes for key-value incompatibility issues of whether or not underscores are included...
 
+<a name='v0.3.41'>
+### v0.3.41 - 2018/07/27 ###
+
+
+<a name='v0.3.40'>
+### v0.3.40 - 2018/07/16 ###
 
 
 <a name='v0.3.39'>
