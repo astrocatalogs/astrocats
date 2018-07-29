@@ -255,8 +255,7 @@ class Catalog(object):
         """
 
         tasks_list = self.load_task_list()
-        warnings.filterwarnings(
-            'ignore', r'Warning: converting a masked element to nan.')
+        warnings.filterwarnings('ignore', r'Warning: converting a masked element to nan.')
         # FIX
         warnings.filterwarnings('ignore', category=DeprecationWarning)
 
@@ -287,15 +286,15 @@ class Catalog(object):
 
             # Make sure things are running in the correct order
             if priority < prev_priority and priority > 0:
-                raise RuntimeError("Priority for '{}': '{}', less than prev,"
-                                   "'{}': '{}'.\n{}"
-                                   .format(task_name, priority, prev_task_name,
-                                           prev_priority, task_obj))
+                err = "Priority for '{}': '{}', less than prev, '{}': '{}'.\n{}".format(
+                    task_name, priority, prev_task_name, prev_priority, task_obj)
+                raise RuntimeError(err)
 
-            self.log.debug("\t{}, {}, {}, {}".format(nice_name, priority,
-                                                     mod_name, func_name))
+            self.log.debug("\t{}, {}, {}, {}".format(nice_name, priority, mod_name, func_name))
+            # Import appropriate submodule for this task
             mod = importlib.import_module('.' + mod_name, package='astrocats')
             self.current_task = task_obj
+            # Run this task from imported submodule
             getattr(mod, func_name)(self)
 
             num_events, num_stubs = self.count()
@@ -311,8 +310,7 @@ class Catalog(object):
 
         process = psutil.Process(os.getpid())
         memory = process.memory_info().rss
-        self.log.warning('Memory used (MBs): '
-                         '{:,}'.format(memory / 1024. / 1024.))
+        self.log.warning('Memory used (MBs): {:,}'.format(memory / 1024. / 1024.))
         return
 
     def load_task_list(self):
@@ -478,7 +476,7 @@ class Catalog(object):
         newname = self.clean_entry_name(name)
 
         if not newname:
-            raise (ValueError('Fatal: Attempted to add entry with no name.'))
+            raise ValueError('Fatal: Attempted to add entry with no name.')
 
         # If entry already exists, return
         if newname in self.entries:
@@ -495,9 +493,9 @@ class Catalog(object):
         # If entry is alias of another entry in `entries`, find and return that
         match_name = self.find_entry_name_of_alias(newname)
         if match_name is not None:
-            self.log.debug(
-                "`newname`: '{}' (name: '{}') already exists as alias for "
-                "'{}'.".format(newname, name, match_name))
+            msg = "`newname`: '{}' (name: '{}') already exists as alias for '{}'.".format(
+                newname, name, match_name)
+            self.log.debug(msg)
             newname = match_name
 
         # Load entry from file
@@ -513,8 +511,7 @@ class Catalog(object):
         # Create new entry
         new_entry = self.proto(catalog=self, name=newname)
         new_entry[self.proto._KEYS.SCHEMA] = self.SCHEMA.URL
-        self.log.log(self.log._LOADED,
-                     "Created new entry for '{}'".format(newname))
+        self.log.log(self.log._LOADED, "Created new entry for '{}'".format(newname))
         # Add entry to dictionary
         self.entries[newname] = new_entry
         return newname

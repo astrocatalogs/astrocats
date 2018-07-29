@@ -563,12 +563,13 @@ class Entry(OrderedDict):
         # Make sure that a source is given, and is valid (nor erroneous)
         if cat_dict_class != Error:
             try:
-                source = self._check_cat_dict_source(cat_dict_class,
-                                                     key_in_self, **kwargs)
+                source = self._check_cat_dict_source(
+                    cat_dict_class, key_in_self, **kwargs)
             except CatDictError as err:
                 if err.warn:
-                    self._log.info("'{}' Not adding '{}': '{}'".format(self[
-                        self._KEYS.NAME], key_in_self, str(err)))
+                    msg = "'{}' Not adding '{}': '{}'".format(
+                        self[self._KEYS.NAME], key_in_self, str(err))
+                    self._log.info(msg)
                 return False
 
             if source is None:
@@ -606,8 +607,7 @@ class Entry(OrderedDict):
 
         self.setdefault(key_in_self, []).append(new_entry)
 
-        if (key_in_self == self._KEYS.ALIAS and check_for_dupes and
-                self.dupe_of):
+        if (key_in_self == self._KEYS.ALIAS and check_for_dupes and self.dupe_of):
             self.merge_dupes()
 
         return True
@@ -1041,11 +1041,9 @@ class Entry(OrderedDict):
                 self.add_quantity(self._KEYS.ALIAS, name, source)
 
         if self._KEYS.ALIAS in self:
-            self[self._KEYS.ALIAS].sort(
-                key=lambda key: alias_priority(name, key[QUANTITY.VALUE]))
+            self[self._KEYS.ALIAS].sort(key=lambda key: alias_priority(name, key[QUANTITY.VALUE]))
         else:
-            self._log.error(
-                'There should be at least one alias for `{}`.'.format(name))
+            self._log.error('There should be at least one alias for `{}`.'.format(name))
 
         if self._KEYS.PHOTOMETRY in self:
             self[self._KEYS.PHOTOMETRY].sort(
@@ -1061,9 +1059,7 @@ class Entry(OrderedDict):
                                PHOTOMETRY.MAGNITUDE in x else ''))
 
         if (self._KEYS.SPECTRA in self and list(
-                filter(None, [
-                    SPECTRUM.TIME in x for x in self[self._KEYS.SPECTRA]
-                ]))):
+                filter(None, [SPECTRUM.TIME in x for x in self[self._KEYS.SPECTRA]]))):
             self[self._KEYS.SPECTRA].sort(
                 key=lambda x: (float(x[SPECTRUM.TIME]) if
                                SPECTRUM.TIME in x else 0.0,
@@ -1073,9 +1069,7 @@ class Entry(OrderedDict):
 
         if self._KEYS.SOURCES in self:
             # Remove orphan sources
-            source_aliases = [
-                x[SOURCE.ALIAS] for x in self[self._KEYS.SOURCES]
-            ]
+            source_aliases = [x[SOURCE.ALIAS] for x in self[self._KEYS.SOURCES]]
             # Sources with the `PRIVATE` attribute are always retained
             source_list = [
                 x[SOURCE.ALIAS] for x in self[self._KEYS.SOURCES]
@@ -1090,15 +1084,13 @@ class Entry(OrderedDict):
                     continue
                 for item in self[key]:
                     source_list += item[item._KEYS.SOURCE].split(',')
-            new_src_list = sorted(
-                list(set(source_aliases).intersection(source_list)))
+            new_src_list = sorted(list(set(source_aliases).intersection(source_list)))
             new_sources = []
             for source in self[self._KEYS.SOURCES]:
                 if source[SOURCE.ALIAS] in new_src_list:
                     new_sources.append(source)
                 else:
-                    self._log.info('Removing orphaned source from `{}`.'
-                                   .format(name))
+                    self._log.info('Removing orphaned source from `{}`.'.format(name))
 
             if not new_sources:
                 del self[self._KEYS.SOURCES]
