@@ -32,9 +32,8 @@ def do_cleanup(catalog):
         try:
             name = catalog.add_entry(oname)
         except Exception:
-            catalog.log.warning(
-                '"{}" was not found, suggests merge occurred in cleanup '
-                'process.'.format(oname))
+            err = '"{}" was not found, suggests merge occurred in cleanup process.'.format(oname)
+            catalog.log.warning(err)
             continue
 
         # Set the preferred name, switching to that name if name changed.
@@ -48,25 +47,22 @@ def do_cleanup(catalog):
             prefixes = ['MLS', 'SSS', 'CSS', 'GRB ']
             for alias in aliases:
                 for prefix in prefixes:
-                    if (alias.startswith(prefix) and
-                            is_number(alias.replace(prefix, '')[:2])):
-                        discoverdate = ('/'.join([
+                    if (alias.startswith(prefix) and is_number(alias.replace(prefix, '')[:2])):
+                        temp = [
                             '20' + alias.replace(prefix, '')[:2],
                             alias.replace(prefix, '')[2:4],
                             alias.replace(prefix, '')[4:6]
-                        ]))
+                        ]
+                        discoverdate = '/'.join(temp)
                         if catalog.args.verbose:
-                            tprint('Added discoverdate from name [' + alias +
-                                   ']: ' + discoverdate)
+                            tprint('Added discoverdate from name [' + alias + ']: ' + discoverdate)
                         source = catalog.entries[name].add_self_source()
                         catalog.entries[name].add_quantity(
-                            TESTNOVA.DISCOVER_DATE,
-                            discoverdate,
-                            source,
-                            derived=True)
+                            TESTNOVA.DISCOVER_DATE, discoverdate, source, derived=True)
                         break
                 if TESTNOVA.DISCOVER_DATE in catalog.entries[name]:
                     break
+
         if TESTNOVA.DISCOVER_DATE not in catalog.entries[name]:
             prefixes = [
                 'ASASSN-', 'PS1-', 'PS1', 'PS', 'iPTF', 'PTF', 'SCP-', 'SNLS-',
