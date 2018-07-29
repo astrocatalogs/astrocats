@@ -4,10 +4,6 @@ import os
 import sys
 
 import astrocats
-# from astrocats.catalog.catdict import CatDictError
-# from astrocats.catalog.key import KEY_TYPES, Key
-# from astrocats.catalog.utils import (astrotime, listify, uniq_cdl,
-#                                      bandmetaf, bandrepf, instrumentrepf)
 from astrocats.catalog import utils
 
 _PAS_PATH = "/Users/lzkelley/Research/catalogs/astroschema"
@@ -43,7 +39,6 @@ class My_Meta_Struct(pas.struct.Meta_Struct):
 class _Source(My_Meta_Struct):
 
     _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "source.json")
-    # _SCHEMA_NAME = "source"
 
     def sort_func(self, key):
         if key == self._KEYS.NAME:
@@ -86,7 +81,6 @@ class _Source(My_Meta_Struct):
 class _Quantity(My_Meta_Struct):
 
     _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "quantity.json")
-    # _SCHEMA_NAME = "quantity"
 
     def __init__(self, parent, key=None, **kwargs):
         super(_Quantity, self).__init__(parent, key=key, **kwargs)
@@ -134,7 +128,6 @@ class _Quantity(My_Meta_Struct):
                 raise astrocats.catalog.catdict.CatDictError(err)
         '''
 
-        # print("re-Validating...")
         self.validate()
         return
 
