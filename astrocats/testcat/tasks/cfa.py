@@ -121,9 +121,8 @@ def do_cfa_photo(catalog):
             break
 
     # Hicken 2012
-    with open(
-            os.path.join(catalog.get_current_task_repo(),
-                         'hicken-2012-standard.dat'), 'r') as infile:
+    this_path = os.path.join(catalog.get_current_task_repo(), 'hicken-2012-standard.dat')
+    with open(this_path, 'r') as infile:
         tsvin = list(csv.reader(infile, delimiter='|', skipinitialspace=True))
         for r, row in enumerate(pbar(tsvin, task_str)):
             if r <= 47:
@@ -136,11 +135,9 @@ def do_cfa_photo(catalog):
 
             name = catalog.add_entry(name)
 
-            source = catalog.entries[name].add_source(
-                bibcode='2012ApJS..200...12H')
+            source = catalog.entries[name].add_source(bibcode='2012ApJS..200...12H')
             catalog.entries[name].add_quantity(TESTNOVA.ALIAS, name, source)
-            catalog.entries[name].add_quantity(TESTNOVA.CLAIMED_TYPE, 'Ia',
-                                               source)
+            catalog.entries[name].add_quantity(TESTNOVA.CLAIMED_TYPE, 'Ia', source)
             photodict = {
                 PHOTOMETRY.U_TIME: 'MJD',
                 PHOTOMETRY.TIME: row[2].strip(),

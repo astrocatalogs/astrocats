@@ -132,6 +132,7 @@ def do_cleanup(catalog):
                         break
                 if TESTNOVA.DISCOVER_DATE in catalog.entries[name]:
                     break
+
         if TESTNOVA.DISCOVER_DATE not in catalog.entries[name]:
             prefixes = ['AT', 'SN', 'OGLE-', 'SM ', 'KSN']
             for alias in aliases:
@@ -144,24 +145,20 @@ def do_cleanup(catalog):
                             continue
                         if alias.replace(prefix, '').index(year) != 0:
                             continue
-                        if (year and is_number(year) and '.' not in year and
-                                len(year) <= 4):
+                        if (year and is_number(year) and '.' not in year and len(year) <= 4):
                             discoverdate = year
                             if catalog.args.verbose:
                                 tprint('Added discoverdate from name [' +
                                        alias + ']: ' + discoverdate)
                             source = catalog.entries[name].add_self_source()
                             catalog.entries[name].add_quantity(
-                                TESTNOVA.DISCOVER_DATE,
-                                discoverdate,
-                                source,
-                                derived=True)
+                                TESTNOVA.DISCOVER_DATE, discoverdate, source, derived=True)
                             break
+
                 if TESTNOVA.DISCOVER_DATE in catalog.entries[name]:
                     break
 
-        if (TESTNOVA.RA not in catalog.entries[name] or
-                TESTNOVA.DEC not in catalog.entries[name]):
+        if (TESTNOVA.RA not in catalog.entries[name] or TESTNOVA.DEC not in catalog.entries[name]):
             prefixes = [
                 'PSN J', 'MASJ', 'CSS', 'SSS', 'MASTER OT J', 'HST J', 'TCP J',
                 'MACS J', '2MASS J', 'EQ J', 'CRTS J', 'SMT J'

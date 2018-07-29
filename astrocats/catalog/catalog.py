@@ -837,15 +837,13 @@ class Catalog(object):
                 if proto._KEYS.ALIAS in data:
                     stub[proto._KEYS.ALIAS] = data[proto._KEYS.ALIAS]
                 if proto._KEYS.DISTINCT_FROM in data:
-                    stub[proto._KEYS.DISTINCT_FROM] = data[
-                        proto._KEYS.DISTINCT_FROM]
+                    stub[proto._KEYS.DISTINCT_FROM] = data[proto._KEYS.DISTINCT_FROM]
                 if proto._KEYS.RA in data:
                     stub[proto._KEYS.RA] = data[proto._KEYS.RA]
                 if proto._KEYS.DEC in data:
                     stub[proto._KEYS.DEC] = data[proto._KEYS.DEC]
                 if proto._KEYS.DISCOVER_DATE in data:
-                    stub[proto._KEYS.DISCOVER_DATE] = data[
-                        proto._KEYS.DISCOVER_DATE]
+                    stub[proto._KEYS.DISCOVER_DATE] = data[proto._KEYS.DISCOVER_DATE]
                 if proto._KEYS.SOURCES in data:
                     stub[proto._KEYS.SOURCES] = data[
                         proto._KEYS.SOURCES]
@@ -866,8 +864,7 @@ class Catalog(object):
             if log_mem:
                 rss = process.memory_info().rss / 1024 / 1024
                 if ii % LOG_MEMORY_INT == 0 or rss > MEMORY_LIMIT:
-                    log_memory(self.log, "\nLoaded stub {}".format(ii),
-                               logging.INFO)
+                    log_memory(self.log, "\nLoaded stub {}".format(ii), logging.INFO)
                     if rss > MEMORY_LIMIT:
                         err = (
                             "Memory usage {}, has exceeded {} on file {} '{}'".
