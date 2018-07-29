@@ -7,8 +7,11 @@ from decimal import Decimal, localcontext
 from random import seed, shuffle
 from palettable import colorbrewer, cubehelix, wesanderson
 
-from astrocats.catalog.utils import get_sig_digits
+from astrocats.catalog.utils.digits import get_sig_digits
 from astrocats.catalog.photometry import PHOTOMETRY
+
+__all__ = ["bandrepf", "bandcolorf", "radiocolorf", "xraycolorf", "bandshortaliasf",
+           "bandwavef", "bandmetaf", "set_pd_mag_from_counts"]
 
 
 DEFAULT_UL_SIGMA = 5.0
