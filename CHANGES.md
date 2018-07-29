@@ -29,6 +29,10 @@ The ['change-log' (below)](#changelog) in this file should summarize **all API c
 
 ### Current ###
 
+- `utils.strings.get_entry_filename` ==> `utils.strings.get_filename`
+- `entry.get_filename` ==> `utils.strings.get_filename`
+
+
 
 <a name='v0.3.39'>
 ### v0.3.38 - 2018/06/27 ###

@@ -5,7 +5,7 @@ import json
 from .digits import round_sig
 
 __all__ = [
-    'dict_to_pretty_string', 'rep_chars', 'get_entry_filename',
+    'dict_to_pretty_string', 'rep_chars', 'get_filename',
     'single_spaces', 'trim_str_arr', 'uniq_cdl', 'utf8'
 ]
 
@@ -52,5 +52,5 @@ def dict_to_pretty_string(odict):
     return jsonstring
 
 
-def get_entry_filename(name):
+def get_filename(name):
     return (name.replace('/', '_'))
