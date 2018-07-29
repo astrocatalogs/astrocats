@@ -12,155 +12,52 @@ from decimal import Decimal
 
 from astrocats.catalog.catdict import CatDict, CatDictError
 from astrocats.catalog.error import ERROR, Error
-from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
+# from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
 from astrocats.catalog.model import MODEL, Model
 from astrocats.catalog.photometry import PHOTOMETRY, Photometry
 from astrocats.catalog.quantity import QUANTITY, Quantity
 from astrocats.catalog.source import SOURCE, Source
 from astrocats.catalog.spectrum import SPECTRUM, Spectrum
-from astrocats.catalog.utils import (alias_priority, dict_to_pretty_string,
-                                     is_integer, is_number, listify)
+# from astrocats.catalog.utils import (alias_priority, dict_to_pretty_string,
+#                                      is_integer, is_number, listify)
+from astrocats.catalog import utils
 from past.builtins import basestring
 from six import string_types
 
+from . import struct
 
-class ENTRY(KeyCollection):
-    """General `CatDict` keys which should be relevant for all catalogs."""
-
-    # Constants for use in key definitions
-    _DIST_PREF_KINDS = [
-        'heliocentric', 'cmb', 'spectroscopic', 'photometric', 'host',
-        'cluster'
-    ]
-    _HOST_DIST_PREF_KINDS = [
-        'heliocentric', 'cmb', 'spectroscopic', 'photometric', 'host',
-        'cluster'
-    ]
-
-    # List of keys
-    ALIAS = Key('alias', KEY_TYPES.STRING)
-    COMOVING_DIST = Key('comovingdist',
-                        KEY_TYPES.NUMERIC,
-                        kind_preference=_DIST_PREF_KINDS,
-                        replace_better=True)
-    DEC = Key('dec', KEY_TYPES.STRING)
-    DISCOVER_DATE = Key('discoverdate', KEY_TYPES.STRING, replace_better=True)
-    DISCOVERER = Key('discoverer', KEY_TYPES.STRING)
-    DISTINCT_FROM = Key('distinctfrom', KEY_TYPES.STRING)
-    EBV = Key('ebv', KEY_TYPES.NUMERIC, replace_better=True)
-    AV_CIRCUM = Key('avcircum', KEY_TYPES.NUMERIC, replace_better=True)
-    ERRORS = Key('errors', no_source=True)
-    HOST = Key('host', KEY_TYPES.STRING)
-    HOST_DEC = Key('hostdec', KEY_TYPES.STRING)
-    HOST_OFFSET_ANG = Key('hostoffsetang', KEY_TYPES.NUMERIC)
-    HOST_OFFSET_DIST = Key('hostoffsetdist', KEY_TYPES.NUMERIC)
-    HOST_RA = Key('hostra', KEY_TYPES.STRING)
-    HOST_REDSHIFT = Key('hostredshift',
-                        KEY_TYPES.NUMERIC,
-                        kind_preference=_HOST_DIST_PREF_KINDS,
-                        replace_better=True)
-    HOST_VELOCITY = Key('hostvelocity',
-                        KEY_TYPES.NUMERIC,
-                        kind_preference=_HOST_DIST_PREF_KINDS,
-                        replace_better=True)
-    HOST_LUM_DIST = Key('hostlumdist',
-                        KEY_TYPES.NUMERIC,
-                        kind_preference=_HOST_DIST_PREF_KINDS,
-                        replace_better=True)
-    HOST_COMOVING_DIST = Key('hostcomovingdist',
-                             KEY_TYPES.NUMERIC,
-                             kind_preference=_HOST_DIST_PREF_KINDS,
-                             replace_better=True)
-    LUM_DIST = Key('lumdist',
-                   KEY_TYPES.NUMERIC,
-                   kind_preference=_DIST_PREF_KINDS,
-                   replace_better=True)
-    MAX_ABS_MAG = Key('maxabsmag', KEY_TYPES.NUMERIC)
-    MAX_APP_MAG = Key('maxappmag', KEY_TYPES.NUMERIC)
-    MAX_BAND = Key('maxband', KEY_TYPES.STRING)
-    MAX_DATE = Key('maxdate', KEY_TYPES.STRING, replace_better=True)
-    MODELS = Key('models')
-    NAME = Key('name', KEY_TYPES.STRING, no_source=True)
-    PHOTOMETRY = Key('photometry')
-    RA = Key('ra', KEY_TYPES.STRING)
-    REDSHIFT = Key('redshift',
-                   KEY_TYPES.NUMERIC,
-                   kind_preference=_DIST_PREF_KINDS,
-                   replace_better=True)
-    SCHEMA = Key('schema', no_source=True)
-    SOURCES = Key('sources', no_source=True)
-    SPECTRA = Key('spectra')
-    VELOCITY = Key('velocity',
-                   KEY_TYPES.NUMERIC,
-                   kind_preference=_DIST_PREF_KINDS,
-                   replace_better=True)
+SCHEMA_DIR = "/Users/lzkelley/Research/catalogs/astrocats/astrocats/schema/"
 
 
-class Entry(OrderedDict):
-    """Class representing an individual element of each Catalog.
+class _Entry(struct.My_Meta_Struct):
 
-    For example, a single supernova in the supernova catalog, this object
-    handles and manages the addition of data for this `Entry`, using different
-    `CatDict` instances (e.g. `Photometry`).
-
-    Notes
-    -----
-    -   Stubs: a stub is the most minimal entry, containing an entry's 'name'
-        and possible aliases.  These instances are used to represent entries
-        which are known to exist (e.g. have already been saved) for cross
-        referencing and duplicate removal.
-        +   The `Entry.get_stub` method returns the 'stub' corresponding to the
-            Entry instance.  i.e. it returns a *new object* with only the name
-            and aliases copied over.
-
-    Attributes
-    ----------
-    catalog : `astrocats.catalog.catalog.Catalog` object
-        Pointer to the parent catalog object of which this entry is a member.
-    filename : str or 'None'
-        If this entry is loaded from a file, its (full path and) filename.
-    _log : `logging.Logger` object
-        Pointer to the logger from the parent catalog.
-    _stub : bool
-        Whether this instance represents a 'stub' (see above).
-    _KEYS : `astrocats.catalog.key.KeyCollection` object
-        The associated object which contains the different dictionary keys
-        used in this type (e.g. `Supernova`) entry.
-
-    """
-
-    _KEYS = ENTRY
+    _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "entry.json")
 
     def __init__(self, catalog=None, name=None, stub=False):
-        """Create a new `Entry` object with the given `name`.
-
-        Arguments
-        ---------
-        catalog : `astrocats.catalog.catalog.Catalog` instance
-            The parent catalog object of which this entry belongs.
-        name : str
-            The name of this entry, e.g. `SN1987A` for a `Supernova` entry.
-        stub : bool
-            Whether or not this instance represents a 'stub' (see above).
-
-        """
-        super(Entry, self).__init__()
+        # super(Entry, self).__init__()
+        # NOTE: FIX: LZK: cannot validate until a valid `name` is set
+        super(_Entry, self).__init__(catalog, key=name, validate=False)
         self.catalog = catalog
         self.filename = None
         self.dupe_of = []
         self._stub = stub
-        if catalog:
+        if catalog is not None:
             self._log = catalog.log
         else:
             from astrocats.catalog.catalog import Catalog
             self._log = logging.getLogger()
+            self._log.error("WARNING: Entry created without a catalog... creating catalog!")
             self.catalog = Catalog(None, self._log)
+
         self[self._KEYS.NAME] = name
+
+        # NOTE: FIX: LZK: cannot validate until a valid `name` is set
+        # self.validate()
         return
 
     def __repr__(self):
         """Return JSON representation of self."""
-        jsonstring = dict_to_pretty_string({ENTRY.NAME: self})
+        jsonstring = utils.dict_to_pretty_string({ENTRY.NAME: self})
         return jsonstring
 
     def _append_additional_tags(self, quantity, source, cat_dict):
@@ -172,7 +69,7 @@ class Entry(OrderedDict):
 
     def _get_save_path(self, bury=False):
         """Return the path that this Entry should be saved to."""
-        filename = self.get_filename(self[self._KEYS.NAME])
+        filename = utils.get_filename(self[self._KEYS.NAME])
 
         # Put objects that shouldn't belong in this catalog in the boneyard
         if bury:
@@ -251,7 +148,7 @@ class Entry(OrderedDict):
         if not value:
             return False
 
-        if is_number(value):
+        if utils.is_number(value):
             value = '%g' % Decimal(value)
         if error:
             error = '%g' % Decimal(error)
@@ -275,18 +172,11 @@ class Entry(OrderedDict):
                 new_entry[key] = deepcopy(self[key], memo)
         return new_entry
 
-    def _load_data_from_json(self,
-                             fhand,
-                             clean=False,
-                             merge=True,
-                             pop_schema=True,
-                             ignore_keys=[],
-                             compare_to_existing=True,
-                             gzip=False,
-                             filter_on={}):
+    def _load_data_from_json(self, fhand,
+                             clean=False, merge=True, pop_schema=True, ignore_keys=[],
+                             compare_to_existing=True, gzip=False, filter_on={}):
         # FIX: check for overwrite??"""
-        self._log.debug("_load_data_from_json(): {}\n\t{}".format(self.name(),
-                                                                  fhand))
+        self._log.debug("_load_data_from_json(): {}\n\t{}".format(self.name(), fhand))
         # Store the filename this was loaded from
         self.filename = fhand
 
@@ -298,8 +188,7 @@ class Entry(OrderedDict):
         data = json.load(jfil, object_pairs_hook=OrderedDict)
         name = list(data.keys())
         if len(name) != 1:
-            err = "json file '{}' has multiple keys: {}".format(fhand,
-                                                                list(name))
+            err = "json file '{}' has multiple keys: {}".format(fhand, list(name))
             self._log.error(err)
             raise ValueError(err)
         name = name[0]
@@ -317,16 +206,11 @@ class Entry(OrderedDict):
         # that remains afterwards should be okay to just store to this
         # `Entry`
         self._convert_odict_to_classes(
-            data,
-            clean=clean,
-            merge=merge,
-            pop_schema=pop_schema,
-            compare_to_existing=compare_to_existing,
-            filter_on=filter_on)
+            data, clean=clean, merge=merge, pop_schema=pop_schema,
+            compare_to_existing=compare_to_existing, filter_on=filter_on)
         if len(data):
-            err_str = ("Remaining entries in `data` after "
-                       "`_convert_odict_to_classes`.")
-            err_str += "\n{}".format(dict_to_pretty_string(data))
+            err_str = "Remaining entries in `data` after `_convert_odict_to_classes`."
+            err_str += "\n{}".format(utils.dict_to_pretty_string(data))
             self._log.error(err_str)
             raise RuntimeError(err_str)
 
@@ -338,19 +222,14 @@ class Entry(OrderedDict):
             self[ENTRY.NAME] = name
         # Warn if there is a name mismatch
         elif self_name.lower().strip() != name.lower().strip():
-            self._log.warning("Object name '{}' does not match name in json:"
-                              "'{}'".format(self_name, name))
+            self._log.warning("Object name '{}' does not match name in json: '{}'".format(
+                self_name, name))
 
-        self.check()
+        self.validate()
         return
 
-    def _convert_odict_to_classes(self,
-                                  data,
-                                  clean=False,
-                                  merge=True,
-                                  pop_schema=True,
-                                  compare_to_existing=True,
-                                  filter_on={}):
+    def _convert_odict_to_classes(self, data, clean=False, merge=True, pop_schema=True,
+                                  compare_to_existing=True, filter_on={}):
         """Convert `OrderedDict` into `Entry` or its derivative classes."""
         self._log.debug("_convert_odict_to_classes(): {}".format(self.name()))
         self._log.debug("This should be a temporary fix.  Dont be lazy.")
@@ -364,6 +243,7 @@ class Entry(OrderedDict):
             self[name_key] = data.pop(name_key)
 
         # Handle 'schema'
+        '''
         schema_key = self._KEYS.SCHEMA
         if schema_key in data:
             # Schema should be re-added every execution (done elsewhere) so
@@ -372,6 +252,7 @@ class Entry(OrderedDict):
                 data.pop(schema_key)
             else:
                 self[schema_key] = data.pop(schema_key)
+        '''
 
         # Cleanup 'internal' repository stuff
         if clean:
@@ -495,7 +376,7 @@ class Entry(OrderedDict):
                 warn=True)
         # Check that source is a list of integers
         for x in source.split(','):
-            if not is_integer(x):
+            if not utils.is_integer(x):
                 raise CatDictError(
                     "{}: `source` is comma-delimited list of "
                     " integers!".format(self[self._KEYS.NAME]),
@@ -613,23 +494,7 @@ class Entry(OrderedDict):
         return True
 
     @classmethod
-    def get_filename(cls, name):
-        """Convert from an `Entry` name into an appropriate filename."""
-        fname = name.replace('/', '_')
-        return fname
-
-    @classmethod
-    def init_from_file(cls,
-                       catalog,
-                       name=None,
-                       path=None,
-                       clean=False,
-                       merge=True,
-                       pop_schema=True,
-                       ignore_keys=[],
-                       compare_to_existing=True,
-                       try_gzip=False,
-                       filter_on={}):
+    def init_from_file(cls, catalog, name=None, path=None, try_gzip=False, **kwargs):
         """Construct a new `Entry` instance from an input file.
 
         The input file can be given explicitly by `path`, or a path will
@@ -647,10 +512,6 @@ class Entry(OrderedDict):
         path : str or 'None'
             The absolutely path of the input file.
             note: either `name` or `path` must be provided.
-        clean : bool
-            Whether special sanitization processing should be done on the input
-            data.  This is mostly for input files from the 'internal'
-            repositories.
 
         """
         if not catalog:
@@ -660,8 +521,7 @@ class Entry(OrderedDict):
 
         catalog.log.debug("init_from_file()")
         if name is None and path is None:
-            err = ("Either entry `name` or `path` must be specified to load "
-                   "entry.")
+            err = ("Either entry `name` or `path` must be specified to load entry.")
             log.error(err)
             raise ValueError(err)
 
@@ -674,7 +534,7 @@ class Entry(OrderedDict):
         else:
             repo_paths = catalog.PATHS.get_repo_output_folders()
             for rep in repo_paths:
-                filename = cls.get_filename(name)
+                filename = utils.get_filename(name)
                 newpath = os.path.join(rep, filename + '.json')
                 if os.path.isfile(newpath):
                     load_path = newpath
@@ -692,15 +552,7 @@ class Entry(OrderedDict):
             try_gzip = False
 
         # Fill it with data from json file
-        new_entry._load_data_from_json(
-            load_path,
-            clean=clean,
-            merge=merge,
-            pop_schema=pop_schema,
-            ignore_keys=ignore_keys,
-            compare_to_existing=compare_to_existing,
-            gzip=try_gzip,
-            filter_on=filter_on)
+        new_entry._load_data_from_json(load_path, gzip=try_gzip, **kwargs)
 
         return new_entry
 
@@ -729,31 +581,15 @@ class Entry(OrderedDict):
 
     def add_photometry(self, compare_to_existing=True, **kwargs):
         """Add a `Photometry` instance to this entry."""
-        self._add_cat_dict(
-            Photometry,
-            self._KEYS.PHOTOMETRY,
-            compare_to_existing=compare_to_existing,
-            **kwargs)
+        self._add_cat_dict(Photometry, self._KEYS.PHOTOMETRY,
+                           compare_to_existing=compare_to_existing, **kwargs)
         return
-
-    def merge_dupes(self):
-        """Merge two entries that correspond to the same entry."""
-        for dupe in self.dupe_of:
-            if dupe in self.catalog.entries:
-                if self.catalog.entries[dupe]._stub:
-                    # merge = False to avoid infinite recursion
-                    self.catalog.load_entry_from_name(
-                        dupe, delete=True, merge=False)
-                self.catalog.copy_entry_to_entry(self.catalog.entries[dupe],
-                                                 self)
-                del self.catalog.entries[dupe]
-        self.dupe_of = []
 
     def add_quantity(self, quantities, value, source,
                      check_for_dupes=True, compare_to_existing=True, **kwargs):
         """Add an `Quantity` instance to this entry."""
         success = True
-        for quantity in listify(quantities):
+        for quantity in utils.listify(quantities):
             kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: source})
             cat_dict = self._add_cat_dict(
                 Quantity, quantity,
@@ -765,17 +601,6 @@ class Entry(OrderedDict):
                 success = False
 
         return success
-
-    def add_self_source(self):
-        """Add a source that refers to the catalog itself.
-
-        For now this points to the Open Supernova Catalog by default.
-        """
-        return self.add_source(
-            bibcode=self.catalog.OSC_BIBCODE,
-            name=self.catalog.OSC_NAME,
-            url=self.catalog.OSC_URL,
-            secondary=True)
 
     def add_source(self, allow_alias=False, **kwargs):
         """Add a `Source` instance to this entry."""
@@ -850,17 +675,27 @@ class Entry(OrderedDict):
             self.setdefault(spec_key, []).append(new_spectrum)
         return
 
-    def check(self):
-        """Check that the entry has the required fields."""
-        # Make sure there is a schema key in dict
-        if self._KEYS.SCHEMA not in self:
-            self[self._KEYS.SCHEMA] = self.catalog.SCHEMA.URL
-        # Make sure there is a name key in dict
-        if (self._KEYS.NAME not in self or len(self[self._KEYS.NAME]) == 0):
-            raise ValueError("Entry name is empty:\n\t{}".format(
-                json.dumps(
-                    self, indent=2)))
-        return
+    def merge_dupes(self):
+        """Merge two entries that correspond to the same entry."""
+        for dupe in self.dupe_of:
+            if dupe in self.catalog.entries:
+                if self.catalog.entries[dupe]._stub:
+                    # merge = False to avoid infinite recursion
+                    self.catalog.load_entry_from_name(dupe, delete=True, merge=False)
+                self.catalog.copy_entry_to_entry(self.catalog.entries[dupe], self)
+                del self.catalog.entries[dupe]
+        self.dupe_of = []
+
+    def add_self_source(self):
+        """Add a source that refers to the catalog itself.
+
+        For now this points to the Open Supernova Catalog by default.
+        """
+        return self.add_source(
+            bibcode=self.catalog.OSC_BIBCODE,
+            name=self.catalog.OSC_NAME,
+            url=self.catalog.OSC_URL,
+            secondary=True)
 
     def clean_internal(self, data=None):
         """Clean input from 'internal', human added data.
@@ -918,8 +753,7 @@ class Entry(OrderedDict):
         for source in self.get(self._KEYS.SOURCES, []):
             if source[self._KEYS.ALIAS] == alias:
                 return source
-        raise ValueError("Source '{}': alias '{}' not found!".format(self[
-            self._KEYS.NAME], alias))
+        raise ValueError("Source '{}': alias '{}' not found!".format(self[self._KEYS.NAME], alias))
 
     def get_stub(self):
         """Get a new `Entry` which contains the 'stub' of this one.
@@ -961,20 +795,16 @@ class Entry(OrderedDict):
                 source = self.get_source_by_alias(alias)
                 bib_err_values = [
                     err[ERROR.VALUE] for err in my_errors
-                    if err[ERROR.KIND] == SOURCE.BIBCODE and
-                    err[ERROR.EXTRA] == field
+                    if (err[ERROR.KIND] == SOURCE.BIBCODE) and (err[ERROR.EXTRA] == field)
                 ]
-                if (SOURCE.BIBCODE in source and
-                        source[SOURCE.BIBCODE] in bib_err_values):
+                if (SOURCE.BIBCODE in source and source[SOURCE.BIBCODE] in bib_err_values):
                     return True
 
                 name_err_values = [
                     err[ERROR.VALUE] for err in my_errors
-                    if err[ERROR.KIND] == SOURCE.NAME and err[ERROR.EXTRA] ==
-                    field
+                    if (err[ERROR.KIND] == SOURCE.NAME) and (err[ERROR.EXTRA] == field)
                 ]
-                if (SOURCE.NAME in source and
-                        source[SOURCE.NAME] in name_err_values):
+                if (SOURCE.NAME in source and source[SOURCE.NAME] in name_err_values):
                     return True
 
         return False
@@ -984,10 +814,8 @@ class Entry(OrderedDict):
         # aliases are always public.
         if key == ENTRY.ALIAS:
             return False
-        return all([
-            SOURCE.PRIVATE in self.get_source_by_alias(x)
-            for x in sources.split(',')
-        ])
+        return all([SOURCE.PRIVATE in self.get_source_by_alias(x)
+                    for x in sources.split(',')])
 
     def name(self):
         """Return own name."""
@@ -1041,7 +869,7 @@ class Entry(OrderedDict):
                 self.add_quantity(self._KEYS.ALIAS, name, source)
 
         if self._KEYS.ALIAS in self:
-            self[self._KEYS.ALIAS].sort(key=lambda key: alias_priority(name, key[QUANTITY.VALUE]))
+            self[self._KEYS.ALIAS].sort(key=lambda key: utils.alias_priority(name, key[QUANTITY.VALUE]))
         else:
             self._log.error('There should be at least one alias for `{}`.'.format(name))
 
@@ -1075,12 +903,12 @@ class Entry(OrderedDict):
                 x[SOURCE.ALIAS] for x in self[self._KEYS.SOURCES]
                 if SOURCE.PRIVATE in x
             ]
+            # _SOURCES_SKIP_KEYS = [
+            #     self._KEYS.NAME, self._KEYS.SCHEMA, self._KEYS.SOURCES, self._KEYS.ERRORS]
+            _SOURCES_SKIP_KEYS = [self._KEYS.NAME, self._KEYS.SOURCES, self._KEYS.ERRORS]
             for key in self:
                 # if self._KEYS.get_key_by_name(key).no_source:
-                if (key in [
-                        self._KEYS.NAME, self._KEYS.SCHEMA, self._KEYS.SOURCES,
-                        self._KEYS.ERRORS
-                ]):
+                if key in _SOURCES_SKIP_KEYS:
                     continue
                 for item in self[key]:
                     source_list += item[item._KEYS.SOURCE].split(',')
@@ -1116,16 +944,13 @@ class Entry(OrderedDict):
 
         # FIX: use 'dump' not 'dumps'
         jsonstring = json.dumps(
-            {
-                self[self._KEYS.NAME]: self._ordered(self)
-            },
+            {self[self._KEYS.NAME]: self._ordered(self)},
             indent='\t' if sys.version_info[0] >= 3 else 4,
             separators=(',', ':'),
             ensure_ascii=False)
         if not os.path.isdir(outdir):
             raise RuntimeError("Output directory '{}' for event '{}' does "
-                               "not exist.".format(outdir, self[
-                                   self._KEYS.NAME]))
+                               "not exist.".format(outdir, self[self._KEYS.NAME]))
         save_name = os.path.join(outdir, filename + '.json')
         with codecs.open(save_name, 'w', encoding='utf8') as sf:
             sf.write(jsonstring)
@@ -1144,8 +969,8 @@ class Entry(OrderedDict):
 
         Should be supplemented/overridden by inheriting classes.
         """
-        if key == self._KEYS.SCHEMA:
-            return 'aaa'
+        # if key == self._KEYS.SCHEMA:
+        #     return 'aaa'
         if key == self._KEYS.NAME:
             return 'aab'
         if key == self._KEYS.SOURCES:
@@ -1159,3 +984,8 @@ class Entry(OrderedDict):
         if key == self._KEYS.SPECTRA:
             return 'zzz'
         return key
+
+
+Entry = _Entry
+ENTRY = Entry.get_keychain(extendable=True)
+Entry._KEYS = ENTRY

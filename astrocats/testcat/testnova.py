@@ -4,7 +4,7 @@ from collections import OrderedDict
 from decimal import Decimal
 
 import numpy as np
-from astrocats.catalog.entry import ENTRY, Entry
+from astrocats.catalog.entry import Entry
 from astrocats.catalog.key import KEY_TYPES, Key
 from astrocats.catalog.photometry import PHOTOMETRY
 from astrocats.catalog.quantity import QUANTITY
@@ -20,24 +20,6 @@ from .constants import MAX_VISUAL_BANDS
 from .utils import frame_priority, host_clean, radec_clean
 
 
-class TESTNOVA(ENTRY):
-    """Testnova `Key` child class."""
-
-    CLAIMED_TYPE = Key('claimedtype',
-                       KEY_TYPES.STRING,
-                       kind_preference=['spectroscopic', 'photometric'],
-                       replace_better=True)
-    DISCOVERY_DATE = Key('discoverdate', KEY_TYPES.STRING)
-    EXPLOSION_DATE = Key('explosiondate', KEY_TYPES.STRING)
-    MAX_VISUAL_ABS_MAG = Key('maxvisualabsmag', KEY_TYPES.NUMERIC)
-    MAX_VISUAL_APP_MAG = Key('maxvisualappmag', KEY_TYPES.NUMERIC)
-    MAX_VISUAL_BAND = Key('maxvisualband', KEY_TYPES.STRING)
-    MAX_VISUAL_DATE = Key('maxvisualdate',
-                          KEY_TYPES.STRING,
-                          replace_better=True)
-    ERRORS = Key('errors')
-
-
 class Testnova(Entry):
     """Testnova `Entry` child class.
 
@@ -49,7 +31,7 @@ class Testnova(Entry):
          case?)
     """
 
-    _KEYS = TESTNOVA
+    # _KEYS = TESTNOVA
 
     def __init__(self, catalog, name=None, stub=False):
         """Initialize `Testnova`."""
@@ -401,39 +383,6 @@ class Testnova(Entry):
             return ['AT' + self[TESTNOVA.NAME][2:]]
         return []
 
-    '''
-    def _get_save_path(self, bury=False):
-        """Return the path that this Entry should be saved to.
-
-        Determines output repository based on the name (i.e. the year) of the
-        testnova.  If `bury` is true, then this entry is saved to the
-        'boneyard'.
-        """
-        self._log.debug("_get_save_path(): {}".format(self.name()))
-        filename = self.get_filename(self[self._KEYS.NAME])
-
-        # Put non-SNe in the boneyard
-        if bury:
-            outdir = self.catalog.PATHS.get_repo_boneyard()
-
-        # Get normal repository save directory
-        else:
-            repo_folders = self.catalog.PATHS.get_repo_output_folders()
-            repo_folders = sorted(repo_folders, key=lambda x: x.split('-')[-1])
-            outdir = repo_folders[0]
-
-            if self._KEYS.DISCOVERY_DATE in self.keys():
-                repo_years = self.catalog.PATHS.get_repo_years()
-                dyr = self[self._KEYS.DISCOVERY_DATE][0][QUANTITY.VALUE].split(
-                    '/')[0]
-                for r, year in enumerate(repo_years):
-                    if int(dyr) <= year:
-                        outdir = repo_folders[r]
-                        break
-
-        return outdir, filename
-    '''
-
     def sanitize(self):
         super(Testnova, self).sanitize()
 
@@ -537,28 +486,30 @@ class Testnova(Entry):
         # Renumber and reorder sources
         if self._KEYS.SOURCES in self:
             # Sort sources reverse-chronologically
-            self[self._KEYS.SOURCES] = sorted(
-                self[self._KEYS.SOURCES], key=lambda x: bib_priority(x))
+            self[self._KEYS.SOURCES] = sorted(self[self._KEYS.SOURCES],
+                                              key=lambda x: bib_priority(x))
 
             # Assign new aliases to match new order
             source_reps = OrderedDict(
                 [[x[SOURCE.ALIAS], str(i + 1)]
                  for i, x in enumerate(self[self._KEYS.SOURCES])])
             for i, source in enumerate(self[self._KEYS.SOURCES]):
-                self[self._KEYS.SOURCES][i][SOURCE.ALIAS] = source_reps[source[
-                    SOURCE.ALIAS]]
+                self[self._KEYS.SOURCES][i][SOURCE.ALIAS] = source_reps[source[SOURCE.ALIAS]]
 
             # Change sources to match new aliases
             for key in self.keys():
                 if self._KEYS.get_key_by_name(key).no_source:
                     continue
                 for item in self[key]:
-                    aliases = [
-                        str(y)
-                        for y in sorted(
-                            int(source_reps[x])
-                            for x in item[item._KEYS.SOURCE].split(','))
-                    ]
+                    try:
+                        temp = [int(source_reps[x]) for x in item[item._KEYS.SOURCE].split(',')]
+                    except AttributeError:
+                        print("Failed")
+                        print("key = '{}'".format(key), repr(key))
+                        print("item = '{}'".format(item), repr(item))
+                        raise
+
+                    aliases = [str(y) for y in sorted(temp)]
                     item[item._KEYS.SOURCE] = ','.join(aliases)
 
     def clean_internal(self, data):
@@ -577,7 +528,7 @@ class Testnova(Entry):
             def_source_dict = sources[0]
             allow_alias = False
             if SOURCE.ALIAS in def_source_dict:
-                del (def_source_dict[SOURCE.ALIAS])
+                del def_source_dict[SOURCE.ALIAS]
         else:
             # If there are no existing sources, add OSC as one
             self.add_self_source()
@@ -592,8 +543,7 @@ class Testnova(Entry):
             aliases = data.pop(alias_key)
             # Make sure this is a list
             if not isinstance(aliases, list):
-                raise ValueError("{}: aliases not a list '{}'".format(
-                    self.name(), aliases))
+                raise ValueError("{}: aliases not a list '{}'".format(self.name(), aliases))
             # Add OSC source entry
             source = self.add_self_source()
 
@@ -603,8 +553,7 @@ class Testnova(Entry):
         dist_key = 'distinctfrom'
         if dist_key in data:
             distincts = data.pop(dist_key)
-            if ((isinstance(distincts, list) and
-                 isinstance(distincts[0], string_types))):
+            if ((isinstance(distincts, list) and isinstance(distincts[0], string_types))):
                 source = self.add_self_source()
                 for df in distincts:
                     self.add_quantity(self._KEYS.DISTINCT_FROM, df, source)
@@ -621,26 +570,20 @@ class Testnova(Entry):
             elif key == self._KEYS.PHOTOMETRY:
                 for p, photo in enumerate(data[self._KEYS.PHOTOMETRY]):
                     if photo.get(PHOTOMETRY.U_TIME) == 'JD':
-                        data[self._KEYS.PHOTOMETRY][p][
-                            PHOTOMETRY.U_TIME] = 'MJD'
-                        data[self._KEYS.PHOTOMETRY][p][PHOTOMETRY.TIME] = str(
-                            jd_to_mjd(Decimal(photo['time'])))
+                        data[self._KEYS.PHOTOMETRY][p][PHOTOMETRY.U_TIME] = 'MJD'
+                        data[self._KEYS.PHOTOMETRY][p][PHOTOMETRY.TIME] = \
+                            str(jd_to_mjd(Decimal(photo['time'])))
                     if QUANTITY.SOURCE not in photo:
                         if not def_source_dict:
-                            raise ValueError("No sources found, can't add "
-                                             "photometry.")
-                        source = self.add_source(
-                            allow_alias=allow_alias, **def_source_dict)
-                        data[self._KEYS.PHOTOMETRY][p][
-                            QUANTITY.SOURCE] = source
+                            raise ValueError("No sources found, can't add photometry.")
+                        source = self.add_source(allow_alias=allow_alias, **def_source_dict)
+                        data[self._KEYS.PHOTOMETRY][p][QUANTITY.SOURCE] = source
             else:
                 for qi, quantity in enumerate(data[key]):
                     if QUANTITY.SOURCE not in quantity:
                         if not def_source_dict:
-                            raise ValueError("No sources found, can't add "
-                                             "quantity.")
-                        source = self.add_source(
-                            allow_alias=allow_alias, **def_source_dict)
+                            raise ValueError("No sources found, can't add quantity.")
+                        source = self.add_source(allow_alias=allow_alias, **def_source_dict)
                         data[key][qi][QUANTITY.SOURCE] = source
 
         return data
@@ -852,7 +795,9 @@ class Testnova(Entry):
         self[TESTNOVA.PHOTOMETRY] = newphotos
         return
 
-    def get_best_redshift(self, key=TESTNOVA.REDSHIFT):
+    def get_best_redshift(self, key=None):
+        if key is None:
+            key = self._KEYS.REDSHIFT
         bestsig = -1
         bestkind = None
         for z in self[key]:
@@ -1006,3 +951,18 @@ class Testnova(Entry):
                 if source_year > max_source_year:
                     max_source_year = source_year
         return -max_source_year
+
+
+TESTNOVA = Testnova.get_keychain(extendable=True)
+Testnova._KEYS = TESTNOVA
+
+TESTNOVA.DISCOVER_DATE = TESTNOVA.DISCOVERDATE
+
+TESTNOVA.MAX_VISUAL_BAND = TESTNOVA.MAXVISUALBAND
+TESTNOVA.MAX_VISUAL_DATE = TESTNOVA.MAXVISUALDATE
+TESTNOVA.MAX_VISUAL_APP_MAG = TESTNOVA.MAXVISUALAPPMAG
+TESTNOVA.MAX_VISUAL_ABS_MAG = TESTNOVA.MAXVISUALABSMAG
+TESTNOVA.MAX_DATE = TESTNOVA.MAXDATE
+TESTNOVA.MAX_BAND = TESTNOVA.MAXBAND
+TESTNOVA.MAX_APP_MAG = TESTNOVA.MAXAPPMAG
+TESTNOVA.MAX_ABS_MAG = TESTNOVA.MAXABSMAG
