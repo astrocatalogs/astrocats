@@ -198,9 +198,11 @@ class Catalog(object):
             ]
             return repo_folders
 
+    '''
     class SCHEMA:
         HASH = ''
         URL = ''
+    '''
 
     def __init__(self, args={}, log=logging.Logger("INFO"), git_clone=True):
         # Store runtime arguments
@@ -510,7 +512,7 @@ class Catalog(object):
 
         # Create new entry
         new_entry = self.proto(catalog=self, name=newname)
-        new_entry[self.proto._KEYS.SCHEMA] = self.SCHEMA.URL
+        # new_entry[self.proto._KEYS.SCHEMA] = self.SCHEMA.URL
         self.log.log(self.log._LOADED, "Created new entry for '{}'".format(newname))
         # Add entry to dictionary
         self.entries[newname] = new_entry
