@@ -29,6 +29,10 @@ The ['change-log' (below)](#changelog) in this file should summarize **all API c
 
 ### Current ###
 
+- Remove `utils.em_band.py` dependencies, should be moved to `supernovae`, causes circular import errors
+- Created `Error`, `Correlation`, `Model`, `Realization` subclasses of `pyastroschema.struct`
+- Move `CatDictError` to `struct.py`
+- 
 
 <a name='v0.3.42'>
 ### v0.3.42 - 2018/07/29 ###

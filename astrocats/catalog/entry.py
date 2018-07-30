@@ -10,21 +10,15 @@ from collections import OrderedDict
 from copy import deepcopy
 from decimal import Decimal
 
-from astrocats.catalog.catdict import CatDict, CatDictError
 from astrocats.catalog.error import ERROR, Error
-# from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
 from astrocats.catalog.model import MODEL, Model
 from astrocats.catalog.photometry import PHOTOMETRY, Photometry
 from astrocats.catalog.quantity import QUANTITY, Quantity
 from astrocats.catalog.source import SOURCE, Source
 from astrocats.catalog.spectrum import SPECTRUM, Spectrum
-# from astrocats.catalog.utils import (alias_priority, dict_to_pretty_string,
-#                                      is_integer, is_number, listify)
-from astrocats.catalog import utils
+from astrocats.catalog import utils, struct
 from past.builtins import basestring
 from six import string_types
-
-from . import struct
 
 SCHEMA_DIR = "/Users/lzkelley/Research/catalogs/astrocats/astrocats/schema/"
 
@@ -97,7 +91,6 @@ class _Entry(struct.My_Meta_Struct):
         """Convert the object into a plain OrderedDict."""
         ndict = OrderedDict()
 
-        # if isinstance(odict, CatDict) or isinstance(odict, Entry):
         if hasattr(odict, "sort_func"):
             key = odict.sort_func
         else:
@@ -371,16 +364,14 @@ class _Entry(struct.My_Meta_Struct):
         # Make sure that a source is given
         source = kwargs.get(cat_dict_class._KEYS.SOURCE, None)
         if source is None:
-            raise CatDictError(
-                "{}: `source` must be provided!".format(self[self._KEYS.NAME]),
-                warn=True)
+            err = "{}: `source` must be provided!".format(self[self._KEYS.NAME])
+            raise struct.CatDictError(err, warn=True)
         # Check that source is a list of integers
         for x in source.split(','):
             if not utils.is_integer(x):
-                raise CatDictError(
-                    "{}: `source` is comma-delimited list of "
-                    " integers!".format(self[self._KEYS.NAME]),
-                    warn=True)
+                err = "{}: `source` is comma-delimited list of integers!".format(
+                    self[self._KEYS.NAME])
+                raise struct.CatDictError(err, warn=True)
         # If this source/data is erroneous, skip it
         if self.is_erroneous(key_in_self, source):
             self._log.info("This source is erroneous, skipping")
@@ -404,7 +395,7 @@ class _Entry(struct.My_Meta_Struct):
         # Catch errors associated with crappy, but not unexpected data
         try:
             new_entry = cat_dict_class(self, key=key_in_self, **kwargs)
-        except CatDictError as err:
+        except struct.CatDictError as err:
             if err.warn:
                 self._log.info("'{}' Not adding '{}': '{}'".format(self[
                     self._KEYS.NAME], key_in_self, str(err)))
@@ -425,7 +416,7 @@ class _Entry(struct.My_Meta_Struct):
         '''
         try:
             new_entry = cat_dict_class(self, key=key_in_self, **kwargs)
-        except CatDictError as err:
+        except struct.CatDictError as err:
             if err.warn:
                 self._log.info("'{}' Not adding '{}': '{}'".format(self[
                     self._KEYS.NAME], key_in_self, str(err)))
@@ -444,9 +435,8 @@ class _Entry(struct.My_Meta_Struct):
         # Make sure that a source is given, and is valid (nor erroneous)
         if cat_dict_class != Error:
             try:
-                source = self._check_cat_dict_source(
-                    cat_dict_class, key_in_self, **kwargs)
-            except CatDictError as err:
+                source = self._check_cat_dict_source(cat_dict_class, key_in_self, **kwargs)
+            except struct.CatDictError as err:
                 if err.warn:
                     msg = "'{}' Not adding '{}': '{}'".format(
                         self[self._KEYS.NAME], key_in_self, str(err))
@@ -478,13 +468,12 @@ class _Entry(struct.My_Meta_Struct):
             if (check_for_dupes and 'aliases' in dir(self.catalog) and
                     new_entry[QUANTITY.VALUE] in self.catalog.aliases):
                 possible_dupe = self.catalog.aliases[new_entry[QUANTITY.VALUE]]
-                # print(possible_dupe)
-                if (possible_dupe != self[self._KEYS.NAME] and
-                        possible_dupe in self.catalog.entries):
+                if ((possible_dupe != self[self._KEYS.NAME]) and
+                        (possible_dupe in self.catalog.entries)):
                     self.dupe_of.append(possible_dupe)
+
             if 'aliases' in dir(self.catalog):
-                self.catalog.aliases[new_entry[QUANTITY.VALUE]] = self[
-                    self._KEYS.NAME]
+                self.catalog.aliases[new_entry[QUANTITY.VALUE]] = self[self._KEYS.NAME]
 
         self.setdefault(key_in_self, []).append(new_entry)
 
@@ -593,10 +582,9 @@ class _Entry(struct.My_Meta_Struct):
             kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: source})
             cat_dict = self._add_cat_dict(
                 Quantity, quantity,
-                compare_to_existing=compare_to_existing,
-                check_for_dupes=check_for_dupes,
+                compare_to_existing=compare_to_existing, check_for_dupes=check_for_dupes,
                 **kwargs)
-            if isinstance(cat_dict, CatDict):
+            if isinstance(cat_dict, struct.My_Meta_Struct):
                 self._append_additional_tags(quantity, source, cat_dict)
                 success = False
 
@@ -685,6 +673,7 @@ class _Entry(struct.My_Meta_Struct):
                 self.catalog.copy_entry_to_entry(self.catalog.entries[dupe], self)
                 del self.catalog.entries[dupe]
         self.dupe_of = []
+        return
 
     def add_self_source(self):
         """Add a source that refers to the catalog itself.
