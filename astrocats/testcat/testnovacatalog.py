@@ -4,10 +4,10 @@ import json
 import os
 from collections import OrderedDict
 from datetime import datetime
-from subprocess import check_output
+# from subprocess import check_output
 
 from astrocats.catalog.catalog import Catalog
-from astrocats.catalog.quantity import QUANTITY
+from astrocats.catalog.struct import QUANTITY
 from astrocats.catalog.utils import read_json_arr, read_json_dict
 
 from .testnova import TESTNOVA, Testnova

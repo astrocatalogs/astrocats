@@ -10,13 +10,10 @@ from collections import OrderedDict
 from copy import deepcopy
 from decimal import Decimal
 
-from astrocats.catalog.error import ERROR, Error
-from astrocats.catalog.model import MODEL, Model
-from astrocats.catalog.photometry import PHOTOMETRY, Photometry
-from astrocats.catalog.quantity import QUANTITY, Quantity
-from astrocats.catalog.source import SOURCE, Source
-from astrocats.catalog.spectrum import SPECTRUM, Spectrum
 from astrocats.catalog import utils, struct
+from astrocats.catalog.photometry import PHOTOMETRY, Photometry
+from astrocats.catalog.struct import (Error, Model, Quantity, Source, Spectrum)
+from astrocats.catalog.struct import (ERROR, MODEL, QUANTITY, SOURCE, SPECTRUM)
 from past.builtins import basestring
 from six import string_types
 

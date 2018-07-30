@@ -6,8 +6,9 @@ from decimal import Decimal
 import numpy as np
 from astrocats.catalog.entry import Entry
 from astrocats.catalog.photometry import PHOTOMETRY
-from astrocats.catalog.quantity import QUANTITY
-from astrocats.catalog.source import SOURCE
+# from astrocats.catalog.quantity import QUANTITY
+# from astrocats.catalog.source import SOURCE
+from astrocats.catalog.struct import (QUANTITY, SOURCE)
 from astrocats.catalog.utils import (bib_priority, get_sig_digits,
                                      get_source_year, is_number,
                                      jd_to_mjd, listify, make_date_string,

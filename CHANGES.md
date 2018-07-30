@@ -33,6 +33,8 @@ The ['change-log' (below)](#changelog) in this file should summarize **all API c
 - Created `Error`, `Correlation`, `Model`, `Realization` subclasses of `pyastroschema.struct`
 - Move `CatDictError` to `struct.py`
 - Added existing schema ('.json') files to repository
+- Moved most struct classes into `struct.py` (not `Photometry` and `Entry` which still have independent logic.
+
 
 <a name='v0.3.42'>
 ### v0.3.42 - 2018/07/29 ###

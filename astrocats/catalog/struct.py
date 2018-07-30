@@ -3,8 +3,7 @@
 import os
 import sys
 
-import astrocats
-from astrocats.catalog import utils, catdict
+from astrocats.catalog import utils
 
 _PAS_PATH = "/Users/lzkelley/Research/catalogs/astroschema"
 if _PAS_PATH not in sys.path:
@@ -115,7 +114,7 @@ class _Quantity(My_Meta_Struct):
                 if df[self._KEYS.VALUE] in aliases:
                     err = "Alias '{}' in '{}'\' '{}' list".format(
                         value, parent[parent._KEYS.NAME], parent._KEYS.DISTINCT_FROM)
-                    raise astrocats.catalog.catdict.CatDictError(err)
+                    raise CatDictError(err)
 
             if value in parent.catalog.entries:
                 for df in parent.catalog.entries[value].get(
@@ -123,19 +122,19 @@ class _Quantity(My_Meta_Struct):
                     if df[self._KEYS.VALUE] in parent.get_aliases():
                         err = "Alias '{}' in '{}'\' '{}' list".format(
                             value, parent[parent._KEYS.NAME], parent._KEYS.DISTINCT_FROM)
-                        raise astrocats.catalog.catdict.CatDictError(err)
+                        raise CatDictError(err)
 
         # Check that value exists
         if (not self[self._KEYS.VALUE] or self[self._KEYS.VALUE] == '--' or
                 self[self._KEYS.VALUE] == '-'):
             err = "Value '{}' is empty, not adding to '{}'".format(
                 self[self._KEYS.VALUE], parent[parent._KEYS.NAME])
-            raise astrocats.catalog.catdict.CatDictError(err)
+            raise CatDictError(err)
 
         if not parent._clean_quantity(self):
             err = "Value '{}' did not survive cleaning process, not adding to '{}'.".format(
                 self[self._KEYS.VALUE], parent[parent._KEYS.NAME])
-            raise astrocats.catalog.catdict.CatDictError(err)
+            raise CatDictError(err)
 
         # Check that quantity value matches type after cleaning
         '''
@@ -143,7 +142,7 @@ class _Quantity(My_Meta_Struct):
             if (self._key.type == KEY_TYPES.NUMERIC) and (not is_number(self[self._KEYS.VALUE])):
                 err = "Value '{}' is not numeric, not adding to '{}'".format(
                     self[self._KEYS.VALUE], parent[parent._KEYS.NAME])
-                raise astrocats.catalog.catdict.CatDictError(err)
+                raise CatDictError(err)
         '''
 
         self.validate()
@@ -193,7 +192,7 @@ class _Photometry(My_Meta_Struct):
                     # timestrs[ti] = str(utils.astrotime(timestrs[ti], format='isot').mjd)
                     timestrs[ti] = str(utils.astrotime(timestrs[ti], input='isot', output='mjd'))
                 except Exception:
-                    raise astrocats.catalog.catdict.CatDictError('Unable to convert date to MJD.')
+                    raise CatDictError('Unable to convert date to MJD.')
             elif timestr:  # Make sure time is string
                 timestrs[ti] = timestr
 
@@ -340,7 +339,7 @@ class _Model(My_Meta_Struct):
         # Catch errors associated with crappy, but not unexpected data
         try:
             new_entry = cat_dict_class(self, key=key_in_self, **kwargs)
-        except catdict.CatDictError as err:
+        except CatDictError as err:
             if err.warn:
                 self._parent._log.info("'{}' Not adding '{}': '{}'".format(
                     self[self._KEYS.NAME], key_in_self, str(err)))
@@ -402,3 +401,32 @@ class _Correlation(My_Meta_Struct):
             raise CatDictError(err)
 
         return
+
+
+Correlation = _Correlation
+CORRELATION = Correlation.get_keychain(extendable=True)
+Correlation._KEYS = CORRELATION
+
+Spectrum = _Spectrum
+SPECTRUM = Spectrum.get_keychain(extendable=True)
+Spectrum._KEYS = SPECTRUM
+
+Source = _Source
+SOURCE = Source.get_keychain()
+Source._KEYS = SOURCE
+
+Realization = _Realization
+REALIZATION = Realization.get_keychain()
+Realization._KEYS = REALIZATION
+
+Model = _Model
+MODEL = Model.get_keychain()
+Model._KEYS = MODEL
+
+Quantity = _Quantity
+QUANTITY = Quantity.get_keychain()
+Quantity._KEYS = QUANTITY
+
+Error = _Error
+ERROR = Error.get_keychain()
+Error._KEYS = ERROR
