@@ -1,0 +1,399 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "photometry",
+    "description": "An item representing a single photometric data-point.",
+    "version": "0.1",
+    "type": "object",
+
+    "definitions": {
+        "NUMERIC": {
+            "type": ["number", "string"]
+        },
+        "NUMERIC_LIST": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "$ref": "#/definitions/NUMERIC"
+            }
+        },
+        "NUMERIC_LISTABLE": {
+            "anyOf": [
+                {"$ref": "#/definitions/NUMERIC"},
+                {"$ref": "#/definitions/NUMERIC_LIST"}
+            ]
+        },
+        "FLUX_REQUIREMENTS": {
+            "anyOf": [
+                {"required": ["frequency"]},
+                {"required": ["band"]},
+                {"required": ["energy"]}
+            ],
+            "dependencies": {
+                "frequency": { "required": ["u_frequency"] },
+                "energy": { "required": ["u_energy"] }
+            }
+        }
+    },
+
+    "properties": {
+
+        "time": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC_LISTABLE",
+			"listable": true,
+			"priority": 10
+		},
+
+        "magnitude": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC",
+			"priority": 9
+		},
+        "flux": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "fluxdensity": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "countrate": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "luminosity": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "zero_point": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "upper_limit_sigma": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "energy": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC_LISTABLE",
+			"listable": true
+		},
+        "frequency": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC_LISTABLE",
+			"listable": true
+		},
+        "wavelength": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC_LISTABLE",
+			"listable": true
+		},
+        "nhmw": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "photonindex": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "unabsorbedflux": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "exposure_time": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "off_axis_angle": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "extraction_radius": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "e_countrate": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "e_flux": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "e_fluxdensity": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "e_luminosity": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "e_magnitude": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC",
+			"priority": 7
+		},
+        "e_time": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "e_unabsorbedflux": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "e_lower_unabsorbedflux": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "e_upper_unabsorbedflux": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "e_lower_count_rate": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "e_upper_count_rate": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "e_lower_magnitude": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "e_upper_magnitude": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "e_lower_flux": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "e_upper_flux_density": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "e_lower_flux_density": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "e_upper_flux": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "e_lower_luminosity": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "e_upper_luminosity": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "e_lower_time": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+        "e_upper_time": {
+			"description": "",
+			"$ref": "#/definitions/NUMERIC"
+		},
+
+        "model": {
+			"description": "",
+			"type": "string",
+			"distinguishing": false
+		},
+        "realization": {
+			"description": "",
+			"type": "string",
+			"priority": 15
+		},
+        "source": {
+			"description": "",
+			"type": "string",
+			"distinguishing": false
+		},
+        "telescope": {
+			"description": "",
+			"type": "string",
+			"distinguishing": false
+		},
+        "instrument": {
+			"description": "",
+			"type": "string",
+			"distinguishing": false
+		},
+        "mode": {
+			"description": "",
+			"type": "string",
+			"distinguishing": false
+		},
+        "band": {
+			"description": "",
+			"type": "string",
+			"priority": 8
+		},
+        "observatory": {
+			"description": "",
+			"type": "string",
+			"distinguishing": false
+		},
+        "observer": {
+			"description": "",
+			"type": "string",
+			"distinguishing": false
+		},
+        "survey": {
+			"description": "",
+			"type": "string",
+			"distinguishing": false
+		},
+        "bandset": {
+			"description": "",
+			"type": "string"
+		},
+        "system": {
+			"description": "",
+			"type": "string"
+		},
+        "description": {
+			"description": "",
+			"type": "string",
+			"distinguishing": false
+		},
+        "u_countrate": {
+			"description": "",
+			"type": "string"
+		},
+        "u_time": {
+			"description": "",
+			"type": "string"
+		},
+        "u_flux": {
+			"description": "",
+			"type": "string"
+		},
+        "u_fluxdensity": {
+			"description": "",
+			"type": "string"
+		},
+        "u_frequency": {
+			"description": "",
+			"type": "string"
+		},
+        "u_wavelength": {
+			"description": "",
+			"type": "string"
+		},
+        "u_energy": {
+			"description": "",
+			"type": "string"
+		},
+        "u_luminosity": {
+			"description": "",
+			"type": "string"
+		},
+        "u_exposure_time": {
+			"description": "",
+			"type": "string"
+		},
+        "u_off_axis_angle": {
+			"description": "",
+			"type": "string"
+		},
+        "u_extraction_radius": {
+			"description": "",
+			"type": "string"
+		},
+
+        "scorrected": {
+			"description": "",
+			"type": "boolean"
+		},
+        "kcorrected": {
+			"description": "",
+			"type": "boolean"
+		},
+        "mcorrected": {
+			"description": "",
+			"type": "boolean"
+		},
+        "synthetic": {
+			"description": "",
+			"type": "boolean"
+		},
+        "simulated": {
+			"description": "",
+			"type": "boolean"
+		},
+        "upperlimit": {
+			"description": "",
+			"type": "boolean",
+			"priority": 6
+		},
+        "lowerlimit": {
+			"description": "",
+			"type": "boolean"
+		},
+        "host": {
+			"description": "",
+			"type": "boolean"
+		},
+        "includes_host": {
+			"description": "",
+			"type": "boolean"
+		},
+        "rest_frame": {
+			"description": "",
+			"type": "boolean"
+		},
+        "host_nh_corr": {
+			"description": "",
+			"type": "boolean"
+		}
+
+    },
+
+    "allOf": [
+        {
+            "anyOf": [
+                { "required": ["source"]},
+                { "required": ["model"]}
+            ]
+        },
+
+        {
+            "anyOf": [
+                { "required": ["time"]},
+                { "required": ["host"]}
+            ]
+        },
+
+        {
+            "anyOf": [
+                { "required": ["magnitude"]},
+                { "required": ["flux"]},
+                { "required": ["unabsorbedflux"]},
+                { "required": ["fluxdensity"]},
+                { "required": ["count_rate"]},
+                { "required": ["luminosity"]}
+            ]
+        }
+    ],
+
+    "dependencies": {
+        "flux": {
+            "allOf": [
+                {"required": ["u_flux"]},
+                {"$ref": "#definitions/FLUX_REQUIREMENTS"}
+            ]
+        },
+        "fluxdensity": {
+            "allOf": [
+                {"required": ["u_fluxdensity"]},
+                {"$ref": "#definitions/FLUX_REQUIREMENTS"}
+            ]
+        }
+    }
+
+}

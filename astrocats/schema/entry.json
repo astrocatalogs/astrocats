@@ -1,0 +1,306 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "entry",
+    "description": "An item representing a complete catalog entry.",
+    "version": "0.2",
+    "type": "object",
+
+    "definitions": {
+        "NUMERIC": {
+            "type": ["number", "string"]
+        },
+        "QUANTITY": {
+            "$ref": "file:/Users/lzkelley/Research/catalogs/astroschema/schema/quantity.json"
+        },
+        "SOURCE": {
+            "$ref": "file:/Users/lzkelley/Research/catalogs/astroschema/schema/source.json"
+        },
+        "PHOTOMETRY": {
+            "$ref": "file:/Users/lzkelley/Research/catalogs/astroschema/schema/photometry.json"
+        },
+        "SPECTRUM": {
+            "$ref": "file:/Users/lzkelley/Research/catalogs/astroschema/schema/spectrum.json"
+        },
+        "SOURCE_LIST": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "$ref": "#/definitions/SOURCE"
+            }
+        },
+        "QUANTITY_LIST": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "$ref": "#/definitions/QUANTITY"
+            }
+        },
+        "QUANTITY_LISTABLE": {
+            "anyOf": [
+                {"$ref": "#/definitions/QUANTITY"},
+                {"$ref": "#/definitions/QUANTITY_LIST"}
+            ]
+        },
+        "PHOTOMETRY_LIST": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "$ref": "#/definitions/PHOTOMETRY"
+            }
+        },
+        "SPECTRUM_LIST": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "$ref": "#/definitions/SPECTRUM"
+            }
+        },
+        "DIST_PREF_KINDS": {
+            "kind_preference": ["heliocentric", "cmb", "spectroscopic", "photometric", "host", "cluster"]
+        },
+        "HOST_DIST_PREF_KINDS": {
+            "kind_preference": ["heliocentric", "cmb", "spectroscopic", "photometric", "host", "cluster"]
+        }
+    },
+
+    "properties": {
+        "name": {
+            "description": "Standard designation for this Entry.",
+            "type": "string",
+            "unique": false,
+            "distinguishing": true,
+            "no_source": true,
+            "minLength": 3
+        },
+        "errors": {
+            "description": "Known issues/problems with this Entry or some of its data.",
+            "no_source": true,
+            "unique": false,
+            "distinguishing": true
+        },
+
+        "sources": {
+            "description": "Bibliographic attributions describing the sources of this Entry's data.",
+            "no_source": true,
+            "$ref": "#/definitions/SOURCE_LIST"
+        },
+        "photometry": {
+            "description": "",
+            "$ref": "#/definitions/PHOTOMETRY_LIST"
+        },
+        "spectra": {
+            "description": "",
+            "$ref": "#/definitions/SPECTRUM_LIST"
+        },
+
+        "alias": {
+            "type": "array",
+            "description": "",
+            "unique": false,
+            "distinguishing": true,
+            "minItems": 1,
+            "items": {
+                "$ref": "#/definitions/QUANTITY"
+            }
+        },
+        "comoving_dist": {
+            "description": "",
+            "unique": false,
+            "distinguishing": true,
+            "$ref": "#/definitions/DIST_PREF_KINDS",
+            "replace_better": true,
+            "$ref": "#/definitions/QUANTITY_LISTABLE"
+        },
+        "dec": {
+            "description": "",
+            "unique": false,
+            "distinguishing": true,
+            "$ref": "#/definitions/QUANTITY_LISTABLE"
+        },
+        "discoverdate": {
+            "description": "",
+            "unique": false,
+            "distinguishing": true,
+            "replace_better": true,
+            "$ref": "#/definitions/QUANTITY_LISTABLE"
+        },
+        "discoverer": {
+            "description": "",
+            "unique": false,
+            "distinguishing": true,
+            "$ref": "#/definitions/QUANTITY_LISTABLE"
+        },
+        "distinct_from": {
+            "description": "",
+            "unique": false,
+            "distinguishing": true,
+            "$ref": "#/definitions/QUANTITY_LISTABLE"
+        },
+        "ebv": {
+            "description": "",
+            "unique": false,
+            "distinguishing": true,
+            "replace_better": true,
+            "$ref": "#/definitions/QUANTITY_LISTABLE"
+        },
+        "av_circum": {
+            "description": "",
+            "unique": false,
+            "distinguishing": true,
+            "replace_better": true,
+            "$ref": "#/definitions/QUANTITY_LISTABLE"
+        },
+        "host": {
+            "description": "",
+            "unique": false,
+            "distinguishing": true,
+            "$ref": "#/definitions/QUANTITY_LISTABLE"
+        },
+        "host_dec": {
+            "description": "",
+            "unique": false,
+            "distinguishing": true,
+            "$ref": "#/definitions/QUANTITY_LISTABLE"
+        },
+        "host_offset_ang": {
+            "description": "",
+            "unique": false,
+            "distinguishing": true,
+            "$ref": "#/definitions/QUANTITY_LISTABLE"
+        },
+        "host_offset_dist": {
+            "description": "",
+            "unique": false,
+            "distinguishing": true,
+            "$ref": "#/definitions/QUANTITY_LISTABLE"
+        },
+        "host_ra": {
+            "description": "",
+            "unique": false,
+            "distinguishing": true,
+            "$ref": "#/definitions/QUANTITY_LISTABLE"
+        },
+        "host_redshift": {
+            "description": "",
+            "unique": false,
+            "distinguishing": true,
+            "$ref": "#/definitions/HOST_DIST_PREF_KINDS",
+            "replace_better": true,
+            "$ref": "#/definitions/QUANTITY_LISTABLE"
+        },
+        "host_velocity": {
+            "description": "",
+            "unique": false,
+            "distinguishing": true,
+            "$ref": "#/definitions/HOST_DIST_PREF_KINDS",
+            "replace_better": true,
+            "$ref": "#/definitions/QUANTITY_LISTABLE"
+        },
+        "host_lum_dist": {
+            "description": "",
+            "unique": false,
+            "distinguishing": true,
+            "$ref": "#/definitions/HOST_DIST_PREF_KINDS",
+            "replace_better": true,
+            "$ref": "#/definitions/QUANTITY_LISTABLE"
+        },
+        "host_comoving_dist": {
+            "description": "",
+            "unique": false,
+            "distinguishing": true,
+            "$ref": "#/definitions/HOST_DIST_PREF_KINDS",
+            "replace_better": true,
+            "$ref": "#/definitions/QUANTITY_LISTABLE"
+        },
+        "lum_dist": {
+            "description": "",
+            "unique": false,
+            "distinguishing": true,
+            "$ref": "#/definitions/DIST_PREF_KINDS",
+            "replace_better": true,
+            "$ref": "#/definitions/QUANTITY_LISTABLE"
+        },
+        "maxabsmag": {
+            "description": "",
+            "unique": false,
+            "distinguishing": true,
+            "$ref": "#/definitions/QUANTITY_LISTABLE"
+        },
+        "maxappmag": {
+            "description": "",
+            "unique": false,
+            "distinguishing": true,
+            "$ref": "#/definitions/QUANTITY_LISTABLE"
+        },
+        "maxband": {
+            "description": "",
+            "unique": false,
+            "distinguishing": true,
+            "$ref": "#/definitions/QUANTITY_LISTABLE"
+        },
+        "maxdate": {
+            "description": "",
+            "unique": false,
+            "distinguishing": true,
+            "replace_better": true,
+            "$ref": "#/definitions/QUANTITY_LISTABLE"
+        },
+        "models": {
+            "description": "",
+            "unique": false,
+            "distinguishing": true,
+            "$ref": "#/definitions/QUANTITY_LISTABLE"
+        },
+        "ra": {
+            "description": "",
+            "unique": false,
+            "distinguishing": true,
+            "$ref": "#/definitions/QUANTITY_LISTABLE"
+        },
+        "redshift": {
+            "description": "",
+            "unique": false,
+            "distinguishing": true,
+            "$ref": "#/definitions/DIST_PREF_KINDS",
+            "replace_better": true,
+            "$ref": "#/definitions/QUANTITY_LISTABLE"
+        },
+        "velocity": {
+            "description": "",
+            "unique": false,
+            "distinguishing": true,
+            "$ref": "#/definitions/DIST_PREF_KINDS",
+            "replace_better": true,
+            "$ref": "#/definitions/QUANTITY_LISTABLE"
+        },
+
+        "claimedtype": {
+            "$ref": "#/definitions/QUANTITY_LISTABLE",
+            "kind_preference": ["spectroscopic", "photometric"],
+            "replace_better": true
+        },
+        "discovery_date": {
+            "type": "string"
+        },
+        "explosion_date": {
+            "type": "string"
+        },
+        "maxvisualabsmag": {
+            "$ref": "#/definitions/NUMERIC"
+        },
+        "maxvisualappmag": {
+            "$ref": "#/definitions/NUMERIC"
+        },
+        "maxvisualband": {
+            "type": "string"
+        },
+        "maxvisualdate": {
+            "type": "string",
+            "replace_better": true
+        },
+        "errors": {}
+
+    },
+
+    "required": ["name", "sources"]
+}

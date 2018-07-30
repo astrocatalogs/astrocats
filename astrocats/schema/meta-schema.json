@@ -1,0 +1,23 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "meta-schema",
+    "description": "Core astro-schema meta-schema.  Describes requirements of all other schema.",
+    "version": "0.5",
+
+    "allOf": [
+        {
+            "$ref": "http://json-schema.org/draft-06/schema#"
+        },
+        {
+            "properties": {
+                "properties": {
+                    "patternProperties": {
+                        ".*": {
+                            "$ref": "file:/Users/lzkelley/Research/catalogs/astroschema/schema/key.json"
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}
