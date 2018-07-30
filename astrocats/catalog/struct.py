@@ -4,7 +4,7 @@ import os
 import sys
 
 import astrocats
-from astrocats.catalog import utils
+from astrocats.catalog import utils, catdict
 
 _PAS_PATH = "/Users/lzkelley/Research/catalogs/astroschema"
 if _PAS_PATH not in sys.path:
@@ -15,11 +15,29 @@ import pyastroschema as pas  # noqa
 SCHEMA_DIR = "/Users/lzkelley/Research/catalogs/astrocats/astrocats/schema/"
 
 
+class CatDictError(Exception):
+    """Special Error class for non-fatal errors raised in CatDict."""
+
+    def __init__(self, *args, **kwargs):
+        """Initialize `CatDictError`."""
+        # If `warn` is True, then a warning should be issues.  Otherwise ignore
+        # completely
+        self.warn = True
+        if 'warn' in kwargs:
+            self.warn = kwargs.pop('warn')
+        Exception.__init__(self, *args, **kwargs)
+
+
 class My_Meta_Struct(pas.struct.Meta_Struct):
 
     def __init__(self, parent, key=None, **kwargs):
-        # super(Meta_Struct, self).__init__(self._SCHEMA_NAME, *args, **kwargs)
         super(My_Meta_Struct, self).__init__(extendable=True, **kwargs)
+        if not hasattr(self, "_KEYS"):
+            err = ("`My_Meta_Struct` subclasses must have `_KEYS` set "
+                   "before initialization!  `self` = '{}', `parent` = '{}'").format(
+                       self, parent)
+            raise RuntimeError(err)
+
         self._key = key
         self._parent = parent
         return
@@ -153,6 +171,7 @@ class _Photometry(My_Meta_Struct):
     def __init__(self, parent, key=None, **kwargs):
         super(_Photometry, self).__init__(parent, key=key, **kwargs)
 
+        '''
         # If `BAND` is given, but any of `bandmetaf_keys` is not, try to infer
         if self._KEYS.BAND in self:
             sband = self[self._KEYS.BAND]
@@ -163,6 +182,7 @@ class _Photometry(My_Meta_Struct):
                     temp = utils.bandmetaf(sband, bmf)
                     if temp is not None:
                         self[bmf] = temp
+        '''
 
         # Convert dates to MJD
         timestrs = [str(x) for x in utils.listify(self.get(self._KEYS.TIME, ''))]
@@ -194,6 +214,7 @@ class _Photometry(My_Meta_Struct):
 
         return
 
+    '''
     def _clean_value_for_key(self, key, value):
         value = super(_Photometry, self)._clean_value_for_key(key, value)
 
@@ -204,6 +225,7 @@ class _Photometry(My_Meta_Struct):
             return utils.instrumentrepf(value)
 
         return value
+    '''
 
     def sort_func(self, key):
         """Specify order for attributes."""
@@ -214,3 +236,169 @@ class _Photometry(My_Meta_Struct):
         if key == self._KEYS.SOURCE:
             return 'zzz'
         return key
+
+
+class _Spectrum(My_Meta_Struct):
+    """Class for storing a single spectrum."""
+
+    _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "spectrum.json")
+
+    def __init__(self, parent, key=None, **kwargs):
+        super(_Spectrum, self).__init__(parent, key=key, **kwargs)
+
+        # If `data` is not given, construct it from wavelengths, fluxes
+        # [errors] `errors` is optional, but if given, then `errorunit` is also
+        # req'd
+        if self._KEYS.DATA not in self:
+            try:
+                wavelengths = self[self._KEYS.WAVELENGTHS]
+                fluxes = self[self._KEYS.FLUXES]
+            except KeyError:
+                if self._KEYS.FILENAME in self:
+                    return
+
+            errors = self.get(self._KEYS.ERRORS, None)
+            if (errors is not None and max([float(err) for err in errors]) > 0.0):
+                data = [utils.trim_str_arr(wavelengths), utils.trim_str_arr(fluxes),
+                        utils.trim_str_arr(errors)]
+            else:
+                data = [utils.trim_str_arr(wavelengths), utils.trim_str_arr(fluxes)]
+
+            self[self._KEYS.DATA] = [list(i) for i in zip(*data)]
+            if self._KEYS.WAVELENGTHS in self:
+                del self[self._KEYS.WAVELENGTHS]
+            if self._KEYS.FLUXES in self:
+                del self[self._KEYS.FLUXES]
+            if self._KEYS.ERRORS in self:
+                del self[self._KEYS.ERRORS]
+
+        if self._KEYS.U_TIME not in self:
+            msg = '`{}` not found in spectrum, assuming MJD.'.format(self._KEYS.U_TIME)
+            self._parent._log.info(msg)
+            self[self._KEYS.U_TIME] = 'MJD'
+
+        return
+
+    def is_duplicate_of(self, other):
+        """Check if spectrum is duplicate of another."""
+        if super(_Spectrum, self).is_duplicate_of(other):
+            return True
+
+        row_matches = 0
+        for ri, row in enumerate(self.get(self._KEYS.DATA, [])):
+            lambda1, flux1 = tuple(row[0:2])
+            if (self._KEYS.DATA not in other or
+                    ri > len(other[self._KEYS.DATA])):
+                break
+            lambda2, flux2 = tuple(other[self._KEYS.DATA][ri][0:2])
+            minlambdalen = min(len(lambda1), len(lambda2))
+            minfluxlen = min(len(flux1), len(flux2))
+            if (lambda1[:minlambdalen + 1] == lambda2[:minlambdalen + 1] and
+                    flux1[:minfluxlen + 1] == flux2[:minfluxlen + 1] and
+                    float(flux1[:minfluxlen + 1]) != 0.0):
+                row_matches += 1
+            # Five row matches should be enough to be sure spectrum is a dupe.
+            if row_matches >= 5:
+                return True
+            # Matches need to happen in the first 10 rows.
+            if ri >= 10:
+                break
+        return False
+
+    def sort_func(self, key):
+        """Logic for sorting keys in a `Spectrum` relative to one another."""
+        if key == self._KEYS.TIME:
+            return 'aaa'
+        if key == self._KEYS.DATA:
+            return 'zzy'
+        if key == self._KEYS.SOURCE:
+            return 'zzz'
+        return key
+
+
+class _Error(My_Meta_Struct):
+
+    _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "error.json")
+
+
+class _Realization(My_Meta_Struct):
+
+    _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "realization.json")
+
+
+class _Model(My_Meta_Struct):
+    """Container for a model with associated metadata.
+
+    `Source` citation required.
+    """
+
+    _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "model.json")
+
+    def _init_cat_dict(self, cat_dict_class, key_in_self, **kwargs):
+        """Initialize a CatDict object, checking for errors.
+        """
+        # Catch errors associated with crappy, but not unexpected data
+        try:
+            new_entry = cat_dict_class(self, key=key_in_self, **kwargs)
+        except catdict.CatDictError as err:
+            if err.warn:
+                self._parent._log.info("'{}' Not adding '{}': '{}'".format(
+                    self[self._KEYS.NAME], key_in_self, str(err)))
+            return None
+        return new_entry
+
+    def _add_cat_dict(self, cat_dict_class, key_in_self, check_for_dupes=True, **kwargs):
+        """Add a CatDict to this Entry if initialization succeeds and it
+        doesn't already exist within the Entry.
+        """
+        # Try to create a new instance of this subclass of `CatDict`
+        new_entry = self._init_cat_dict(cat_dict_class, key_in_self, **kwargs)
+        if new_entry is None:
+            return False
+
+        # Compare this new entry with all previous entries to make sure is new
+        if cat_dict_class != _Error:
+            for item in self.get(key_in_self, []):
+                if new_entry.is_duplicate_of(item):
+                    item.append_sources_from(new_entry)
+                    # Return the entry in case we want to use any additional
+                    # tags to augment the old entry
+                    return new_entry
+
+        self.setdefault(key_in_self, []).append(new_entry)
+
+        return True
+
+    def add_realization(self, **kwargs):
+        self._add_cat_dict(_Realization, self._KEYS.REALIZATIONS, **kwargs)
+
+    def sort_func(self, key):
+        if key == self._KEYS.SOURCE:
+            return 'zzy'
+        if key == self._KEYS.ALIAS:
+            return 'zzz'
+        return key
+
+
+class _Correlation(My_Meta_Struct):
+    """Class to store correlation of a `Quantity` with another `Quantity`."""
+
+    _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "correlation.json")
+
+    def __init__(self, parent, key=None, **kwargs):
+        super(_Correlation, self).__init__(parent, key=key, **kwargs)
+
+        # Check that value exists
+        bad = False
+        value = self[self._KEYS.VALUE]
+        if len(value) == 0:
+            bad = True
+        elif (value == '--') or (value == '-'):
+            bad = True
+
+        if bad:
+            err = "Value '{}' is empty, not adding to '{}'".format(
+                value, parent[parent._KEYS.NAME])
+            raise CatDictError(err)
+
+        return
