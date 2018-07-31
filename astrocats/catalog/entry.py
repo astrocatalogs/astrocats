@@ -807,10 +807,11 @@ class _Entry(struct.My_Meta_Struct):
 
     def name(self):
         """Return own name."""
-        try:
-            return self[self._KEYS.NAME]
-        except KeyError:
-            return None
+        # try:
+        #     return self[self._KEYS.NAME]
+        # except KeyError:
+        #     return None
+        return self.get(self._KEYS.NAME, None)
 
     def num_sources(self):
         """Return the current number of sources stored in this instance.
