@@ -6,14 +6,11 @@ from decimal import Decimal
 import numpy as np
 from astrocats.catalog.entry import Entry
 from astrocats.catalog.photometry import PHOTOMETRY
-# from astrocats.catalog.quantity import QUANTITY
-# from astrocats.catalog.source import SOURCE
 from astrocats.catalog.struct import (QUANTITY, SOURCE)
 from astrocats.catalog.utils import (bib_priority, get_sig_digits,
                                      get_source_year, is_number,
                                      jd_to_mjd, listify, make_date_string,
                                      pretty_num, uniq_cdl, mjd_to_datetime)
-# from astropy.time import Time as astrotime
 from six import string_types
 
 from .constants import MAX_VISUAL_BANDS
@@ -30,8 +27,6 @@ class Testnova(Entry):
     FIX: check that no stored values are empty/invalid (delete key in that
          case?)
     """
-
-    # _KEYS = TESTNOVA
 
     def __init__(self, catalog, name=None, stub=False):
         """Initialize `Testnova`."""
