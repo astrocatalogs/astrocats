@@ -61,7 +61,7 @@ def mjd_to_datetime(mjd):
     return time
 
 
-def astrotime(datetime, input='mjd', output='datetime'):
+def astrotime(datetime, input='mjd', output='datetime', to_str=False):
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", ErfaWarning)
         time = ap.time.Time(datetime, format=input)
@@ -76,12 +76,7 @@ def astrotime(datetime, input='mjd', output='datetime'):
             add_err = "Unrecognized `output` type = '{}'!".format(output)
             raise AttributeError(add_err + str(err)) from err
 
-    # elif output == 'datetime':
-    #     time = time.datetime
-    # elif output == 'mjd':
-    #     time = time.mjd
-    # else:
-    #     err = "Unrecognized `output` = '{}'!".format(output)
-    #     raise ValueError(err)
+    if to_str:
+        time = str(time)
 
     return time

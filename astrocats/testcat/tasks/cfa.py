@@ -1,17 +1,12 @@
 """Import tasks for the Harvard Center for Astrophysics."""
 import csv
 import os
-import warnings
 from glob import glob
 from math import floor
+from decimal import Decimal
 
 from astrocats.catalog.photometry import PHOTOMETRY
-from astrocats.catalog.utils import (is_number, jd_to_mjd, pbar, pbar_strings,
-                                     uniq_cdl)
-from astropy.time import Time as astrotime
-from astropy._erfa.core import ErfaWarning
-
-from decimal import Decimal
+from astrocats.catalog import utils
 
 from ..testnova import TESTNOVA
 from ..utils import clean_snname
@@ -28,7 +23,7 @@ def do_cfa_photo(catalog):
     task_str = catalog.get_current_task_str()
     file_names = glob(os.path.join(catalog.get_current_task_repo(), 'cfa-input/*.dat'))
     ni = 0
-    for fname in pbar_strings(file_names, task_str):
+    for fname in utils.pbar_strings(file_names, task_str):
         f = open(fname, 'r')
         tsvin = csv.reader(f, delimiter=' ', skipinitialspace=True)
         csv_data = []
@@ -89,10 +84,10 @@ def do_cfa_photo(catalog):
                 for v, val in enumerate(row):
                     if v == 0:
                         if tu == 'JD':
-                            mjd = str(jd_to_mjd(Decimal(val) + jdoffset))
+                            mjd = str(utils.jd_to_mjd(Decimal(val) + jdoffset))
                             tuout = 'MJD'
                         elif tu == 'HJD':
-                            mjd = str(jd_to_mjd(Decimal(val)))
+                            mjd = str(utils.jd_to_mjd(Decimal(val)))
                             tuout = 'MJD'
                         else:
                             mjd = val
@@ -124,7 +119,7 @@ def do_cfa_photo(catalog):
     this_path = os.path.join(catalog.get_current_task_repo(), 'hicken-2012-standard.dat')
     with open(this_path, 'r') as infile:
         tsvin = list(csv.reader(infile, delimiter='|', skipinitialspace=True))
-        for r, row in enumerate(pbar(tsvin, task_str)):
+        for r, row in enumerate(utils.pbar(tsvin, task_str)):
             if r <= 47:
                 continue
 
@@ -157,7 +152,7 @@ def do_cfa_photo(catalog):
             os.path.join(catalog.get_current_task_repo(),
                          'bianco-2014-standard.dat'), 'r') as infile:
         tsvin = list(csv.reader(infile, delimiter=' ', skipinitialspace=True))
-        for rr, row in enumerate(pbar(tsvin, task_str)):
+        for rr, row in enumerate(utils.pbar(tsvin, task_str)):
             name = 'SN' + row[0]
             name = catalog.add_entry(name)
 
@@ -190,11 +185,11 @@ def do_cfa_spectra(catalog):
     oldname = ''
     file_names = next(
         os.walk(os.path.join(catalog.get_current_task_repo(), 'CfA_SNII')))[1]
-    for ni, name in enumerate(pbar_strings(file_names, task_str)):
+    for ni, name in enumerate(utils.pbar_strings(file_names, task_str)):
         fullpath = os.path.join(catalog.get_current_task_repo(),
                                 'CfA_SNII/') + name
         origname = name
-        if name.startswith('sn') and is_number(name[2:6]):
+        if name.startswith('sn') and utils.is_number(name[2:6]):
             name = 'SN' + name[2:]
         name = catalog.get_preferred_name(name)
         if oldname and name != oldname:
@@ -214,7 +209,7 @@ def do_cfa_spectra(catalog):
                     glob(fullpath + '/*'), key=lambda s: s.lower())):
             filename = os.path.basename(fname)
             fileparts = filename.split('-')
-            if origname.startswith('sn') and is_number(origname[2:6]):
+            if origname.startswith('sn') and utils.is_number(origname[2:6]):
                 year = fileparts[1][:4]
                 month = fileparts[1][4:6]
                 day = fileparts[1][6:]
@@ -231,7 +226,7 @@ def do_cfa_spectra(catalog):
             wavelengths = data[0]
             fluxes = data[1]
             errors = data[2]
-            sources = uniq_cdl([
+            sources = utils.uniq_cdl([
                 source,
                 (catalog.entries[name]
                  .add_source(bibcode='2017arXiv170601030H'))
@@ -260,13 +255,13 @@ def do_cfa_spectra(catalog):
     oldname = ''
     file_names = next(
         os.walk(os.path.join(catalog.get_current_task_repo(), 'CfA_SNIa')))[1]
-    for ni, name in enumerate(pbar_strings(file_names, task_str)):
+    for ni, name in enumerate(utils.pbar_strings(file_names, task_str)):
         fullpath = os.path.join(catalog.get_current_task_repo(),
                                 'CfA_SNIa/') + name
         origname = name
-        if name.startswith('sn') and is_number(name[2:6]):
+        if name.startswith('sn') and utils.is_number(name[2:6]):
             name = 'SN' + name[2:]
-        if name.startswith('snf') and is_number(name[3:7]):
+        if name.startswith('snf') and utils.is_number(name[3:7]):
             name = 'SNF' + name[3:]
         name = catalog.get_preferred_name(name)
         if oldname and name != oldname:
@@ -286,7 +281,7 @@ def do_cfa_spectra(catalog):
                     glob(fullpath + '/*'), key=lambda s: s.lower())):
             filename = os.path.basename(fname)
             fileparts = filename.split('-')
-            if origname.startswith('sn') and is_number(origname[2:6]):
+            if origname.startswith('sn') and utils.is_number(origname[2:6]):
                 year = fileparts[1][:4]
                 month = fileparts[1][4:6]
                 day = fileparts[1][6:]
@@ -303,7 +298,7 @@ def do_cfa_spectra(catalog):
             wavelengths = data[0]
             fluxes = data[1]
             errors = data[2]
-            sources = uniq_cdl([
+            sources = utils.uniq_cdl([
                 source, (catalog.entries[name]
                          .add_source(bibcode='2012AJ....143..126B')),
                 (catalog.entries[name]
@@ -333,10 +328,10 @@ def do_cfa_spectra(catalog):
     oldname = ''
     file_names = next(
         os.walk(os.path.join(catalog.get_current_task_repo(), 'CfA_SNIbc')))[1]
-    for ni, name in enumerate(pbar(file_names, task_str)):
+    for ni, name in enumerate(utils.pbar(file_names, task_str)):
         fullpath = os.path.join(catalog.get_current_task_repo(),
                                 'CfA_SNIbc/') + name
-        if name.startswith('sn') and is_number(name[2:6]):
+        if name.startswith('sn') and utils.is_number(name[2:6]):
             name = 'SN' + name[2:]
         name = catalog.get_preferred_name(name)
         if oldname and name != oldname:
@@ -368,7 +363,7 @@ def do_cfa_spectra(catalog):
             data = [list(i) for i in zip(*data)]
             wavelengths = data[0]
             fluxes = data[1]
-            sources = uniq_cdl([
+            sources = utils.uniq_cdl([
                 source, catalog.entries[name]
                 .add_source(bibcode='2014AJ....147...99M')
             ])
@@ -394,10 +389,10 @@ def do_cfa_spectra(catalog):
     oldname = ''
     file_names = next(
         os.walk(os.path.join(catalog.get_current_task_repo(), 'CfA_Extra')))[1]
-    for ni, name in enumerate(pbar_strings(file_names, task_str)):
+    for ni, name in enumerate(utils.pbar_strings(file_names, task_str)):
         fullpath = os.path.join(catalog.get_current_task_repo(),
                                 'CfA_Extra/') + name
-        if name.startswith('sn') and is_number(name[2:6]):
+        if name.startswith('sn') and utils.is_number(name[2:6]):
             name = 'SN' + name[2:]
         name = catalog.get_preferred_name(name)
         if oldname and name != oldname:
@@ -430,7 +425,7 @@ def do_cfa_spectra(catalog):
                 year = fileparts[1][:4]
                 month = fileparts[1][4:6]
                 day = fileparts[1][6:]
-                if is_number(year) and is_number(month) and is_number(day):
+                if utils.is_number(year) and utils.is_number(month) and utils.is_number(day):
                     if len(fileparts) > 2:
                         instrument = fileparts[-1]
                     time = _get_time_str(year, month, day)
@@ -460,11 +455,11 @@ def do_cfa_spectra(catalog):
 
 
 def _get_time_str(year, month, day):
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore", ErfaWarning)
-        _day = str(floor(float(day))).zfill(2)
-        time = astrotime(year + '-' + month + '-' + _day)
-        time = time.mjd + float(day) - floor(float(day))
+    _day = str(floor(float(day))).zfill(2)
+    # time = astrotime(year + '-' + month + '-' + _day)
+    # time = time.mjd + float(day) - floor(float(day))
+    time = utils.astrotime(year + '-' + month + '-' + _day, input=None, output='mjd')
+    time = time + float(day) - floor(float(day))
 
     time = str(time)
     return time

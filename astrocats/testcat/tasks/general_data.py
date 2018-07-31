@@ -9,9 +9,8 @@ from glob import glob
 
 from astrocats.catalog.photometry import PHOTOMETRY
 from astrocats.catalog.struct import SPECTRUM
-from astrocats.catalog.utils import jd_to_mjd, pbar_strings
+from astrocats.catalog import utils
 from astropy.io import fits
-from astropy.time import Time as astrotime
 
 from ..testnova import TESTNOVA, Testnova
 
@@ -20,7 +19,7 @@ def do_external_radio(catalog):
     task_str = catalog.get_current_task_str()
     path_pattern = os.path.join(catalog.get_current_task_repo(), '*.txt')
     ni = 0
-    for datafile in pbar_strings(glob(path_pattern), task_str):
+    for datafile in utils.pbar_strings(glob(path_pattern), task_str):
         oldname = os.path.basename(datafile).split('.')[0]
         name = catalog.add_entry(oldname)
         radiosourcedict = OrderedDict()
@@ -70,7 +69,7 @@ def do_external_xray(catalog):
     task_str = catalog.get_current_task_str()
     path_pattern = os.path.join(catalog.get_current_task_repo(), '*.txt')
     ni = 0
-    for datafile in pbar_strings(glob(path_pattern), task_str):
+    for datafile in utils.pbar_strings(glob(path_pattern), task_str):
         oldname = os.path.basename(datafile).split('.')[0]
         name = catalog.add_entry(oldname)
         with open(datafile, 'r') as ff:
@@ -153,7 +152,7 @@ def do_external_fits_spectra(catalog):
         #     print(key, hdulist[0].header[key])
         if hdulist[0].header['SIMPLE']:
             if 'JD' in hdrkeys:
-                mjd = str(jd_to_mjd(Decimal(str(hdulist[0].header['JD']))))
+                mjd = str(utils.jd_to_mjd(Decimal(str(hdulist[0].header['JD']))))
             elif 'MJD' in hdrkeys:
                 mjd = str(hdulist[0].header['MJD'])
             elif 'DATE-OBS' in hdrkeys:
@@ -162,7 +161,8 @@ def do_external_fits_spectra(catalog):
                 elif 'UTC-OBS' in hdrkeys:
                     dateobs = hdulist[0].header['DATE-OBS'].strip(
                     ) + 'T' + hdulist[0].header['UTC-OBS'].strip()
-                mjd = str(astrotime(dateobs, format='isot').mjd)
+                # mjd = str(astrotime(dateobs, format='isot').mjd)
+                mjd = utils.astrotime(dateobs, input='isot', output='mjd', to_str=True)
             else:
                 raise ValueError("Couldn't find JD/MJD for spectrum.")
             w0 = hdulist[0].header['CRVAL1']
@@ -233,7 +233,7 @@ def do_internal(catalog):
     files = glob(path_pattern)
     catalog.log.debug("found {} files matching '{}'".format(len(files), path_pattern))
     ni = 0
-    for datafile in pbar_strings(files, task_str):
+    for datafile in utils.pbar_strings(files, task_str):
         new_entry = Testnova.init_from_file(catalog, path=datafile, clean=True, merge=True)
 
         name = new_entry[TESTNOVA.NAME]
