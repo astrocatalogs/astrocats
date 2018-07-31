@@ -1276,6 +1276,7 @@ class Catalog(object):
             Whether to check for valid SSL cert when downloading
 
         """
+        log = self.log
         file_txt = None
         url_txt = None
 
@@ -1301,22 +1302,23 @@ class Catalog(object):
         if os.path.isfile(cached_path):
             with codecs.open(cached_path, 'r', encoding='utf8') as infile:
                 file_txt = infile.read()
-                self.log.debug("Task {}: Loaded from '{}'.".format(
-                    self.current_task.name, cached_path))
+                log.debug("Task {}: Loaded from '{}'.".format(self.current_task.name, cached_path))
 
         # In `archived` mode and task - try to return the cached page
         if archived_mode or (archived_task and not update_mode):
             if file_txt is not None:
+                log.debug("Returning text from loaded file: '{}'".format(cached_path))
                 return file_txt
 
             # If this flag is set, don't even attempt to download from web
             if cache_only:
+                log.warning("WARNING: `cache_only` is set, but no cache file found!")
                 return None
 
             # If file does not exist, log error, continue
             else:
-                self.log.error("Task {}: Cached file '{}' does not exist.".
-                               format(self.current_task.name, cached_path))
+                self.log.error("Task {}: Cached file '{}' does not exist.".format(
+                    self.current_task.name, cached_path))
 
         # Load url.  'None' is returned on failure - handle that below
         url_txt = self.download_url(
@@ -1327,17 +1329,21 @@ class Catalog(object):
 
         # If URL download failed, error or return cached data
         # ---------------------------------------------------
-        if url_txt is None:
+        if url_txt is not None:
+            log.debug("Text downloaded from url: '{}'".format(url))
+        else:
+            log.debug("Text downloaded from url Failed!  '{}'".format(url))
+
             # Both sources failed
             if file_txt is None:
                 err_str = "Both url and file retrieval failed!"
                 # If we should raise errors on failure
                 if fail:
                     err_str += " `fail` set."
-                    self.log.error(err_str)
+                    log.error(err_str)
                     raise RuntimeError(err_str)
                 # Otherwise warn and return None
-                self.log.warning(err_str)
+                log.warning(err_str)
                 return None
 
             # Otherwise, if only url failed, return file data
@@ -1345,11 +1351,10 @@ class Catalog(object):
                 # If we are trying to update, but the url failed, then return
                 # None
                 if update_mode:
-                    self.log.error(
-                        "Cannot check for updates, url download failed.")
+                    log.error("Cannot check for updates, url download failed.")
                     return None
                 # Otherwise, return file data
-                self.log.warning("URL download failed, using cached data.")
+                log.warning("URL download failed, using cached data.")
                 return file_txt
 
         # Here: `url_txt` exists, `file_txt` may exist or may be None
@@ -1358,15 +1363,14 @@ class Catalog(object):
         # Write new url_txt to cache file
         # -------------------------------
         if write:
-            self.log.info(
-                "Writing `url_txt` to file '{}'.".format(cached_path))
+            log.info("Writing `url_txt` to file '{}'.".format(cached_path))
             self._write_cache_file(url_txt, cached_path, json_sort=json_sort)
         # If `file_txt` doesnt exist but were not writing.. warn
         elif file_txt is None:
             err_str = "Warning: cached file '{}' does not exist.".format(
                 cached_path)
             err_str += " And is not being saved."
-            self.log.warning(err_str)
+            log.warning(err_str)
 
         # Check if we need to update this data
         # ------------------------------------
@@ -1375,18 +1379,17 @@ class Catalog(object):
             from hashlib import md5
             url_md5 = md5(url_txt.encode('utf-8')).hexdigest()
             file_md5 = md5(file_txt.encode('utf-8')).hexdigest()
-            self.log.debug("URL: '{}', File: '{}'.".format(url_md5, file_md5))
+            log.debug("URL: '{}', File: '{}'.".format(url_md5, file_md5))
             # If the data is the same, no need to parse (update), return None
             if url_md5 == file_md5:
-                self.log.info(
-                    "Skipping file '{}', no changes.".format(cached_path))
+                log.info("Skipping file '{}', no changes.".format(cached_path))
                 return None
             else:
-                self.log.info("File '{}' has been updated".format(cached_path))
+                log.info("File '{}' has been updated".format(cached_path))
                 # Warn if we didnt save a new copy
                 if not write:
                     err_str = "Warning: updated data not saved to file."
-                    self.log.warning(err_str)
+                    log.warning(err_str)
 
         return url_txt
 
