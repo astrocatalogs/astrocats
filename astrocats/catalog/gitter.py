@@ -46,10 +46,16 @@ def get_sha(path=None, log=None, short=False, timeout=None):
     if log is not None:
         log.debug("{} {}".format(git_command, str(kwargs)))
 
-    sha = subprocess.check_output(git_command, **kwargs)
+    try:
+        sha = subprocess.check_output(git_command, **kwargs)
+    except subprocess.CalledProcessError as err:
+        sha = None
+        if log is not None:
+            log.warning("git command failed: '{}'".format(str(err)))
+
     try:
         sha = sha.decode('ascii').strip()
-    except:
+    except Exception:
         if log is not None:
             log.debug("decode of '{}' failed".format(sha))
 
@@ -135,7 +141,7 @@ def git_add_commit_push_all_repos(cat):
             try:
                 git_comm = ["git", "reset", "HEAD"]
                 _call_command_in_repo(git_comm, repo, cat.log, fail=True)
-            except:
+            except Exception:
                 pass
 
             raise err
@@ -324,6 +330,8 @@ def clone(repo, log, depth=1):
                     "once, may take a few minutes per repo).")
         grepo = git.Repo.clone_from(repo_name, repo, **kwargs)
     except Exception:
+        log.info("`repo` = '{}'".format(repo))
+        log.info("`repo_name` = '{}'".format(repo_name))
         log.error("CLONING '{}' INTERRUPTED".format(repo))
         raise
 
