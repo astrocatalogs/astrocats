@@ -1,6 +1,6 @@
 """
 """
-from astrocats.catalog.utils import is_number
+from astrocats.catalog.utils import is_number, is_integer
 
 from past.builtins import basestring
 
@@ -137,6 +137,7 @@ class KeyCollection(object):
 
 class KEY_TYPES(KeyCollection):
     NUMERIC = 'numeric'
+    INTEGER = 'integer'
     TIME = 'time'
     STRING = 'string'
     BOOL = 'bool'
@@ -242,12 +243,17 @@ class Key(str):
         if not self.listable and is_list:
             return False
 
-        # `is_number` already checks for either list or single value
+        # `is_number` already checks for either list (comma separated) or single value (both str)
         if self.type == KEY_TYPES.NUMERIC and not is_number(val):
             return False
+
+        elif self.type == KEY_TYPES.INTEGER and not is_integer(val):
+            return False
+
         elif (self.type == KEY_TYPES.TIME and
               not is_number(val) and '-' not in val and '/' not in val):
             return False
+
         elif self.type == KEY_TYPES.STRING:
             # If its a list, check first element
             if is_list:
@@ -256,6 +262,7 @@ class Key(str):
             # Otherwise, check it
             elif not isinstance(val, basestring):
                 return False
+
         elif self.type == KEY_TYPES.BOOL:
             if is_list and not isinstance(val[0], bool):
                 return False
