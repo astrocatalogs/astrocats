@@ -8,6 +8,7 @@ from astrocats import _CONFIG_PATH, __version__
 from astrocats.catalog.utils import log_raise
 
 _BASE_PATH_KEY = 'base_path'
+_PROFILE = False
 
 
 def main():
@@ -65,7 +66,18 @@ def main():
 
     # Run the `main.main` method of the specified module
     log.debug("Running `main.main()`")
+
+    if _PROFILE:
+        import cProfile
+        pr = cProfile.Profile()
+        pr.enable()
+
     mod.main.main(args, sub_clargs, log)
+
+    if _PROFILE:
+        pr.disable()
+        pr.print_stats(sort='time')
+        pr.dump_stats("cprofile_run_stats.dat")
 
     end_time = datetime.now()
     log.warning("\nAll complete at {}, After {}".format(end_time, end_time -
