@@ -398,15 +398,17 @@ class _Entry(struct.My_Meta_Struct):
                     self._KEYS.NAME], key_in_self, str(err)))
             return None
         except Exception as err:
-            print("ERROR in `Entry._init_cat_dict()`!")
-            print("name = ", self[self._KEYS.NAME])
-            print("\n\n\n")
-            print("`cat_dict_class` = '{}'".format(cat_dict_class))
-            print("`key_in_self` = '{}'".format(key_in_self))
-            print("`kwargs = '{}'".format(kwargs))
-            print("\n\n\n")
-            print(repr(self))
-            print("\n\n\n")
+            log = self._log
+            log.error("ERROR in `Entry._init_cat_dict()`!")
+            log.error("Current task = '{}'".format(self._parent.current_task))
+            log.error("name = '{}'".format(self[self._KEYS.NAME]))
+            log.error("\n\n\n")
+            log.error("`cat_dict_class` = '{}'".format(cat_dict_class))
+            log.error("`key_in_self` = '{}'".format(key_in_self))
+            log.error("`kwargs = '{}'".format(kwargs))
+            log.error("\n\n")
+            log.error("self = \n'{}'".format(repr(self)))
+            log.error("\n")
             raise
 
         # NOTE: LZK COMMENTED OUT for testing new `Quantity` astroschema
