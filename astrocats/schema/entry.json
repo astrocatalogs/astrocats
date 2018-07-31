@@ -7,7 +7,8 @@
 
     "definitions": {
         "NUMERIC": {
-            "type": ["number", "string"]
+            "type": ["number", "string"],
+            "format": "numeric"
         },
         "QUANTITY": {
             "$ref": "file:/Users/lzkelley/Research/catalogs/astroschema/schema/quantity.json"

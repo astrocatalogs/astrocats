@@ -53,6 +53,12 @@
             "unique": false,
             "distinguishing": true,
             "default": false
+        },
+        "format": {
+            "description": "Whether additional checks should be preformed on the stored value.  If `numeric`, then the stored value must either be a number (integer or float), or a string which is convertible to a number (e.g. '1.234', '42', '3.14e15').  If `astrotime` ... ",
+            "type": "string",
+            "unique": false,
+            "distinguishing": true
         }
 
     }

@@ -7,7 +7,25 @@
 
     "definitions": {
         "NUMERIC": {
-            "type": ["number", "string"]
+            "type": ["number", "string"],
+            "format": "numeric"
+        },
+        "TIME": {
+            "type": ["number", "string"],
+            "format": "astrotime"
+        },
+        "TIME_LIST": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "$ref": "#/definitions/TIME"
+            }
+        },
+        "TIME_LISTABLE": {
+            "anyOf": [
+                {"$ref": "#/definitions/TIME"},
+                {"$ref": "#/definitions/TIME_LIST"}
+            ]
         },
         "NUMERIC_LIST": {
             "type": "array",
@@ -39,8 +57,7 @@
 
         "time": {
 			"description": "",
-			"$ref": "#/definitions/NUMERIC_LISTABLE",
-			"listable": true,
+			"$ref": "#/definitions/TIME_LISTABLE",
 			"priority": 10
 		},
 
@@ -75,18 +92,15 @@
 		},
         "energy": {
 			"description": "",
-			"$ref": "#/definitions/NUMERIC_LISTABLE",
-			"listable": true
+			"$ref": "#/definitions/NUMERIC_LISTABLE"
 		},
         "frequency": {
 			"description": "",
-			"$ref": "#/definitions/NUMERIC_LISTABLE",
-			"listable": true
+			"$ref": "#/definitions/NUMERIC_LISTABLE"
 		},
         "wavelength": {
 			"description": "",
-			"$ref": "#/definitions/NUMERIC_LISTABLE",
-			"listable": true
+			"$ref": "#/definitions/NUMERIC_LISTABLE"
 		},
         "nhmw": {
 			"description": "",

@@ -5,6 +5,13 @@
     "version": "0.1",
     "type": "object",
 
+    "definitions": {
+        "NUMERIC": {
+            "type": ["number", "string"],
+            "format": "numeric"
+        }
+    },
+
     "properties": {
 
         "data": {
@@ -24,31 +31,31 @@
 		},
 
         "e_lower_time": {
-			"type": ["number", "string"],
+            "$ref": "#/definitions/NUMERIC",
 			"distinguishing": false
 		},
         "e_time": {
-			"type": ["number", "string"],
+            "$ref": "#/definitions/NUMERIC",
 			"distinguishing": false
 		},
         "e_upper_time": {
-			"type": ["number", "string"],
+            "$ref": "#/definitions/NUMERIC",
 			"distinguishing": false
 		},
         "snr": {
-			"type": ["number", "string"],
+            "$ref": "#/definitions/NUMERIC",
 			"distinguishing": false
 		},
         "time": {
-			"type": ["number", "string"],
+            "$ref": "#/definitions/NUMERIC",
 			"distinguishing": false
 		},
         "redshift": {
-			"type": ["number", "string"],
+            "$ref": "#/definitions/NUMERIC",
 			"distinguishing": false
 		},
         "airmass": {
-			"type": ["number", "string"],
+            "$ref": "#/definitions/NUMERIC",
 			"distinguishing": false
 		},
 

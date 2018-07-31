@@ -7,14 +7,14 @@
 
     "definitions": {
         "NUMERIC": {
-            "type": ["number", "string"]
+            "type": ["number", "string"],
+            "format": "numeric"
         }
     },
 
     "properties": {
         "value": {
-            "description": "The numerical value associated with this Quantity.",
-            "$ref": "#/definitions/NUMERIC",
+            "description": "The value (not necessarily numeric) associated with this Quantity.",
             "unique": false,
             "distinguishing": true
         },
@@ -79,7 +79,7 @@
             "minLength": 1
         },
         "source": {
-            "$ref": "#/definitions/NUMERIC",
+            "type": ["string", "number"],
             "unique": false,
             "distinguishing": false
         },
