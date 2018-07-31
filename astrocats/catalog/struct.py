@@ -52,6 +52,17 @@ class My_Meta_Struct(pas.struct.Meta_Struct):
 
         return
 
+    def validate(self):
+        """Override the parent class `validate` method to raise a `CatDictError`.
+        """
+        try:
+            super(My_Meta_Struct, self).validate()
+        except pas.ValidationError as v_err:
+            err = "Caught `ValidationError` during validation!  '{}'".format(str(v_err))
+            raise CatDictError(err, warn=True)
+
+        return
+
 
 class _Source(My_Meta_Struct):
 
