@@ -137,6 +137,15 @@ def get_logger(name=None, stream_fmt=None, file_fmt=None, date_fmt=None,
     if tofile is not None:
         logger.warning("... Writing to '{}'".format(os.path.abspath(tofile)))
 
+    def _raise_error(self, msg, error=RuntimeError):
+            """Log an error message and raise an error.
+            """
+            # self.error(msg)
+            self.exception(msg, exc_info=True)
+            raise error(msg)
+
+    logger.raise_error = _raise_error.__get__(logger)
+
     return logger
 
 
