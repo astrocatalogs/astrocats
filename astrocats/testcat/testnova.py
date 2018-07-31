@@ -246,6 +246,7 @@ class Testnova(Entry):
             # FIX: this is something that should be done completely internally
             #      i.e. add it to `clean` or something??
             self[self._KEYS.CLAIMED_TYPE] = self.ct_list_prioritized()
+
         if self._KEYS.CLAIMED_TYPE in self:
             self[self._KEYS.CLAIMED_TYPE][:] = [
                 ct for ct in self[self._KEYS.CLAIMED_TYPE]
@@ -260,73 +261,64 @@ class Testnova(Entry):
                 ]
             if not len(self[self._KEYS.CLAIMED_TYPE]):
                 del (self[self._KEYS.CLAIMED_TYPE])
+
         if self._KEYS.CLAIMED_TYPE not in self and name.startswith('AT'):
             source = self.add_self_source()
             self.add_quantity(self._KEYS.CLAIMED_TYPE, 'Candidate', source)
 
         if self._KEYS.SOURCES in self:
             for source in self[self._KEYS.SOURCES]:
-                if SOURCE.BIBCODE in source:
-                    import urllib
-                    from html import unescape
-                    # First sanitize the bibcode
-                    if len(source[SOURCE.BIBCODE]) != 19:
-                        source[SOURCE.BIBCODE] = urllib.parse.unquote(
-                            unescape(source[SOURCE.BIBCODE])).replace('A.A.',
-                                                                      'A&A')
-                    if source[SOURCE.BIBCODE] in self.catalog.biberror_dict:
-                        source[SOURCE.BIBCODE] = \
-                            self.catalog.biberror_dict[source[SOURCE.BIBCODE]]
+                if SOURCE.BIBCODE not in source:
+                    continue
 
-                    if (source[SOURCE.BIBCODE] not in
-                            self.catalog.bibauthor_dict):
-                        bibcode = source[SOURCE.BIBCODE]
-                        adsquery = (self.catalog.ADS_BIB_URL +
-                                    urllib.parse.quote(bibcode) +
-                                    '&data_type=Custom&format=%253m%20%25(y)')
-                        bibcodeauthor = ''
-                        try:
-                            response = urllib.request.urlopen(adsquery)
-                            html = response.read().decode('utf-8')
-                            hsplit = html.split("\n")
-                            if len(hsplit) > 5:
-                                bibcodeauthor = hsplit[5]
-                        except:
-                            pass
+                import urllib
+                from html import unescape
+                bibcode = source[SOURCE.BIBCODE]
+                # First sanitize the bibcode
+                if len(bibcode) != 19:
+                    bibcode = urllib.parse.unquote(unescape(bibcode)).replace('A.A.', 'A&A')
 
-                        if not bibcodeauthor:
-                            warnings.warn(
-                                "Bibcode didn't return authors, not converting"
-                                "this bibcode.")
+                if bibcode in self.catalog.biberror_dict:
+                    bibcode = self.catalog.biberror_dict[bibcode]
 
-                        self.catalog.bibauthor_dict[bibcode] = unescape(
-                            bibcodeauthor).strip()
+                if (bibcode not in self.catalog.bibauthor_dict):
+                    adsquery = (self.catalog.ADS_BIB_URL +
+                                urllib.parse.quote(bibcode) +
+                                '&data_type=Custom&format=%253m%20%25(y)')
+                    bibcodeauthor = ''
+                    try:
+                        response = urllib.request.urlopen(adsquery)
+                        html = response.read().decode('utf-8')
+                        hsplit = html.split("\n")
+                        if len(hsplit) > 5:
+                            bibcodeauthor = hsplit[5]
+                    except:
+                        pass
 
-            for source in self[self._KEYS.SOURCES]:
-                if (SOURCE.BIBCODE in source and
-                        source[SOURCE.BIBCODE] in self.catalog.bibauthor_dict
-                        and
-                        self.catalog.bibauthor_dict[source[SOURCE.BIBCODE]]):
-                    source[SOURCE.REFERENCE] = self.catalog.bibauthor_dict[
-                        source[SOURCE.BIBCODE]]
-                if (SOURCE.NAME not in source and SOURCE.BIBCODE in source and
-                        source[SOURCE.BIBCODE]):
-                    source[SOURCE.NAME] = source[SOURCE.BIBCODE]
+                    if not bibcodeauthor:
+                        warnings.warn("Bibcode didn't return authors, not converting"
+                                      " this bibcode.")
+
+                    self.catalog.bibauthor_dict[bibcode] = unescape(bibcodeauthor).strip()
+
+                    source[SOURCE.BIBCODE] = bibcode
+
+                if (self.catalog.bibauthor_dict.get(bibcode, None) is not None):
+                    source[SOURCE.REFERENCE] = self.catalog.bibauthor_dict[bibcode]
+
+                if SOURCE.NAME not in source:
+                    source[SOURCE.NAME] = bibcode
 
         if self._KEYS.REDSHIFT in self:
             self[self._KEYS.REDSHIFT] = list(
-                sorted(
-                    self[self._KEYS.REDSHIFT],
-                    key=lambda q: frame_priority(q, self._KEYS.REDSHIFT)))
+                sorted(self[self._KEYS.REDSHIFT],
+                       key=lambda q: frame_priority(q, self._KEYS.REDSHIFT)))
 
         if self._KEYS.VELOCITY in self:
             self[self._KEYS.VELOCITY] = list(
                 sorted(
                     self[self._KEYS.VELOCITY],
                     key=lambda q: frame_priority(q, self._KEYS.VELOCITY)))
-
-        if self._KEYS.CLAIMED_TYPE in self:
-            self[self._KEYS.CLAIMED_TYPE] = self.ct_list_prioritized()
 
         # Renumber and reorder sources
         if self._KEYS.SOURCES in self:
@@ -335,21 +327,25 @@ class Testnova(Entry):
                                               key=lambda x: bib_priority(x))
 
             # Assign new aliases to match new order
+            sources_list = self[self._KEYS.SOURCES]
             source_reps = OrderedDict(
-                [[x[SOURCE.ALIAS], str(i + 1)]
-                 for i, x in enumerate(self[self._KEYS.SOURCES])])
-            for i, source in enumerate(self[self._KEYS.SOURCES]):
-                self[self._KEYS.SOURCES][i][SOURCE.ALIAS] = source_reps[source[SOURCE.ALIAS]]
+                [[src[SOURCE.ALIAS], str(ii + 1)]
+                 for ii, src in enumerate(sources_list)])
+            for ii, source in enumerate(sources_list):
+                self[self._KEYS.SOURCES][ii][SOURCE.ALIAS] = source_reps[source[SOURCE.ALIAS]]
 
-            # Change sources to match new aliases
+            # Change sources of data to match new aliases
             for key in self.keys():
                 if self._KEYS.get_key_by_name(key).no_source:
                     continue
                 for item in self[key]:
                     try:
                         temp = [int(source_reps[x]) for x in item[item._KEYS.SOURCE].split(',')]
-                    except AttributeError:
+                    except:
                         print("Failed")
+                        print("item[item._KEYS.SOURCE].split(',') = '{}'".format(
+                            item[item._KEYS.SOURCE].split(',')))
+                        print("source_reps = '{}'".format(source_reps))
                         print("key = '{}'".format(key), repr(key))
                         print("item = '{}'".format(item), repr(item))
                         raise
@@ -520,47 +516,38 @@ class Testnova(Entry):
         return flmjd, flsource
 
     def set_first_max_light(self):
+
         if TESTNOVA.MAX_APP_MAG not in self:
             # Get the maximum amongst all bands
-            mldt, mlmag, mlband, mlsource = self._get_max_light()
+            _max_lights = self._get_max_light()
+            mldt, mlmag, mlband, mlsource = _max_lights
             if mldt or mlmag or mlband:
                 source = self.add_self_source()
                 uniq_src = uniq_cdl([source] + mlsource.split(','))
             if mldt:
                 max_date = make_date_string(mldt.year, mldt.month, mldt.day)
-                self.add_quantity(
-                    TESTNOVA.MAX_DATE, max_date, uniq_src, derived=True)
+                self.add_quantity(TESTNOVA.MAX_DATE, max_date, uniq_src, derived=True)
             if mlmag:
                 mlmag = pretty_num(mlmag)
-                self.add_quantity(
-                    TESTNOVA.MAX_APP_MAG, mlmag, uniq_src, derived=True)
+                self.add_quantity(TESTNOVA.MAX_APP_MAG, mlmag, uniq_src, derived=True)
             if mlband:
-                self.add_quantity(
-                    TESTNOVA.MAX_BAND, mlband, uniq_src, derived=True)
+                self.add_quantity(TESTNOVA.MAX_BAND, mlband, uniq_src, derived=True)
 
         if TESTNOVA.MAX_VISUAL_APP_MAG not in self:
             # Get the "visual" maximum
-            mldt, mlmag, mlband, mlsource = self._get_max_light(visual=True)
+            _max_lights = self._get_max_light(visual=True)
+            mldt, mlmag, mlband, mlsource = _max_lights
             if mldt or mlmag or mlband:
                 source = self.add_self_source()
                 uniq_src = uniq_cdl([source] + mlsource.split(','))
             if mldt:
                 max_date = make_date_string(mldt.year, mldt.month, mldt.day)
-                self.add_quantity(
-                    TESTNOVA.MAX_VISUAL_DATE,
-                    max_date,
-                    uniq_src,
-                    derived=True)
+                self.add_quantity(TESTNOVA.MAX_VISUAL_DATE, max_date, uniq_src, derived=True)
             if mlmag:
                 mlmag = pretty_num(mlmag)
-                self.add_quantity(
-                    TESTNOVA.MAX_VISUAL_APP_MAG,
-                    mlmag,
-                    uniq_src,
-                    derived=True)
+                self.add_quantity(TESTNOVA.MAX_VISUAL_APP_MAG, mlmag, uniq_src, derived=True)
             if mlband:
-                self.add_quantity(
-                    TESTNOVA.MAX_VISUAL_BAND, mlband, uniq_src, derived=True)
+                self.add_quantity(TESTNOVA.MAX_VISUAL_BAND, mlband, uniq_src, derived=True)
 
         if (self._KEYS.DISCOVER_DATE not in self or max([
                 len(x[QUANTITY.VALUE].split('/'))
@@ -571,10 +558,8 @@ class Testnova(Entry):
                 source = self.add_self_source()
                 disc_date = make_date_string(fldt.year, fldt.month, fldt.day)
                 self.add_quantity(
-                    self._KEYS.DISCOVER_DATE,
-                    disc_date,
-                    uniq_cdl([source] + flsource.split(',')),
-                    derived=True)
+                    self._KEYS.DISCOVER_DATE, disc_date,
+                    uniq_cdl([source] + flsource.split(',')), derived=True)
 
         if self._KEYS.DISCOVER_DATE not in self and self._KEYS.SPECTRA in self:
             minspecmjd = float("+inf")
@@ -598,10 +583,8 @@ class Testnova(Entry):
                 source = self.add_self_source()
                 disc_date = make_date_string(fldt.year, fldt.month, fldt.day)
                 self.add_quantity(
-                    self._KEYS.DISCOVER_DATE,
-                    disc_date,
-                    uniq_cdl([source] + minspecsource.split(',')),
-                    derived=True)
+                    self._KEYS.DISCOVER_DATE, disc_date,
+                    uniq_cdl([source] + minspecsource.split(',')), derived=True)
         return
 
     def purge_bandless_photometry(self):
@@ -775,27 +758,28 @@ class Testnova(Entry):
         return name
 
     def ct_list_prioritized(self):
+
+        def _ct_priority(attr):
+            aliases = attr['source'].split(',')
+            max_source_year = -10000
+            vaguetypes = ['CC', 'I']
+            if attr[QUANTITY.VALUE] in vaguetypes:
+                return -max_source_year
+            for alias in aliases:
+                if alias == 'D':
+                    continue
+                source = self.get_source_by_alias(alias)
+                if SOURCE.BIBCODE in source:
+                    source_year = get_source_year(source)
+                    if source_year > max_source_year:
+                        max_source_year = source_year
+            return -max_source_year
+
         ct_list = list(
             sorted(
                 self[self._KEYS.CLAIMED_TYPE],
-                key=lambda key: self._ct_priority(key)))
+                key=lambda key: _ct_priority(key)))
         return ct_list
-
-    def _ct_priority(self, attr):
-        aliases = attr['source'].split(',')
-        max_source_year = -10000
-        vaguetypes = ['CC', 'I']
-        if attr[QUANTITY.VALUE] in vaguetypes:
-            return -max_source_year
-        for alias in aliases:
-            if alias == 'D':
-                continue
-            source = self.get_source_by_alias(alias)
-            if SOURCE.BIBCODE in source:
-                source_year = get_source_year(source)
-                if source_year > max_source_year:
-                    max_source_year = source_year
-        return -max_source_year
 
 
 TESTNOVA = Testnova.get_keychain(extendable=True)
