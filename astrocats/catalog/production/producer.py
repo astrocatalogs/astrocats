@@ -6,10 +6,9 @@ import gzip
 from collections import OrderedDict
 
 from astrocats.catalog import utils
+from astrocats.catalog.struct import SOURCE, QUANTITY
+from astrocats.catalog.entry import ENTRY
 from . import utils as production_utils
-from .. source import SOURCE
-from .. entry import ENTRY
-from .. quantity import QUANTITY
 
 
 class Producer_Base:

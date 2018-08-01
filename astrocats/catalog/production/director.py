@@ -1,18 +1,17 @@
 """
 """
 # import os
-import sys
+# import sys
 from collections import OrderedDict
 from copy import deepcopy
 
 import numpy as np
 
 from astrocats.catalog.utils import tq
-from astrocats.catalog.source import SOURCE
+from astrocats.catalog.struct import SOURCE, QUANTITY
+from astrocats.catalog.entry import ENTRY
 from . import utils as production_utils
 from . import producer, html_pro, host_image_pro
-from .. entry import ENTRY
-from .. quantity import QUANTITY
 
 
 class Director(producer.Producer_Base):
