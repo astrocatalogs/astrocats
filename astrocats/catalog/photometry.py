@@ -3,7 +3,8 @@
 from . import struct
 
 Photometry = struct._Photometry
-PHOTOMETRY = Photometry.get_keychain(extendable=True)
+# PHOTOMETRY = Photometry.keychain
+PHOTOMETRY = Photometry._KEYCHAIN
 Photometry._KEYS = PHOTOMETRY
 
 # NOTE: temporary fix LZK

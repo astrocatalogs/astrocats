@@ -777,7 +777,7 @@ class Testnova(Entry):
         return ct_list
 
 
-TESTNOVA = Testnova.get_keychain(extendable=True)
+TESTNOVA = Testnova._KEYCHAIN
 Testnova._KEYS = TESTNOVA
 
 TESTNOVA.DISCOVER_DATE = TESTNOVA.DISCOVERDATE

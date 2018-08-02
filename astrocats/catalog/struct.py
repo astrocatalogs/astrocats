@@ -27,12 +27,12 @@ class CatDictError(Exception):
         Exception.__init__(self, *args, **kwargs)
 
 
-class My_Meta_Struct(pas.struct.Meta_Struct):
+class Meta_Struct(pas.struct.Struct):
 
     def __init__(self, parent, key=None, **kwargs):
-        super(My_Meta_Struct, self).__init__(extendable=True, **kwargs)
+        super(Meta_Struct, self).__init__(**kwargs)
         if not hasattr(self, "_KEYS"):
-            err = ("`My_Meta_Struct` subclasses must have `_KEYS` set "
+            err = ("`Meta_Struct` subclasses must have `_KEYS` set "
                    "before initialization!  `self` = '{}', `parent` = '{}'").format(
                        self, parent)
             raise RuntimeError(err)
@@ -56,7 +56,7 @@ class My_Meta_Struct(pas.struct.Meta_Struct):
         """Override the parent class `validate` method to raise a `CatDictError`.
         """
         try:
-            super(My_Meta_Struct, self).validate()
+            super(Meta_Struct, self).validate()
         except pas.ValidationError as v_err:
             err = "Caught `ValidationError` during validation!  '{}'".format(str(v_err))
             raise CatDictError(err, warn=True)
@@ -64,9 +64,9 @@ class My_Meta_Struct(pas.struct.Meta_Struct):
         return
 
 
-class _Source(My_Meta_Struct):
-
-    _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "source.json")
+path_schema_source = os.path.join(SCHEMA_DIR, "source.json")
+@pas.struct.schema_set(path_schema_source)  # noqa
+class _Source(Meta_Struct):
 
     def sort_func(self, key):
         if key == self._KEYS.NAME:
@@ -106,9 +106,11 @@ class _Source(My_Meta_Struct):
             return None
 
 
-class _Quantity(My_Meta_Struct):
+path_schema_quantity = os.path.join(SCHEMA_DIR, "quantity.json")
+@pas.struct.schema_set(path_schema_quantity)  # noqa
+class _Quantity(Meta_Struct):
 
-    _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "quantity.json")
+    # _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "quantity.json")
 
     def __init__(self, parent, key=None, **kwargs):
         super(_Quantity, self).__init__(parent, key=key, **kwargs)
@@ -168,7 +170,9 @@ class _Quantity(My_Meta_Struct):
         return key
 
 
-class _Photometry(My_Meta_Struct):
+path_schema_photometry = os.path.join(SCHEMA_DIR, "photometry.json")
+@pas.struct.schema_set(path_schema_photometry)  # noqa
+class _Photometry(Meta_Struct):
     """Container for a single photometric point with associated metadata.
 
     `Source` citation required.
@@ -176,7 +180,7 @@ class _Photometry(My_Meta_Struct):
 
     """
 
-    _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "photometry.json")
+    # _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "photometry.json")
 
     def __init__(self, parent, key=None, **kwargs):
         super(_Photometry, self).__init__(parent, key=key, **kwargs)
@@ -248,10 +252,12 @@ class _Photometry(My_Meta_Struct):
         return key
 
 
-class _Spectrum(My_Meta_Struct):
+path_schema_spectrum = os.path.join(SCHEMA_DIR, "spectrum.json")
+@pas.struct.schema_set(path_schema_spectrum)  # noqa
+class _Spectrum(Meta_Struct):
     """Class for storing a single spectrum."""
 
-    _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "spectrum.json")
+    # _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "spectrum.json")
 
     def __init__(self, parent, key=None, **kwargs):
         super(_Spectrum, self).__init__(parent, key=key, **kwargs)
@@ -326,23 +332,29 @@ class _Spectrum(My_Meta_Struct):
         return key
 
 
-class _Error(My_Meta_Struct):
-
-    _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "error.json")
-
-
-class _Realization(My_Meta_Struct):
-
-    _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "realization.json")
+path_schema_error = os.path.join(SCHEMA_DIR, "error.json")
+@pas.struct.schema_set(path_schema_error)  # noqa
+class _Error(Meta_Struct):
+    pass
+    # _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "error.json")
 
 
-class _Model(My_Meta_Struct):
+path_schema_realization = os.path.join(SCHEMA_DIR, "realization.json")
+@pas.struct.schema_set(path_schema_realization)  # noqa
+class _Realization(Meta_Struct):
+    pass
+    # _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "realization.json")
+
+
+path_schema_model = os.path.join(SCHEMA_DIR, "model.json")
+@pas.struct.schema_set(path_schema_model)  # noqa
+class _Model(Meta_Struct):
     """Container for a model with associated metadata.
 
     `Source` citation required.
     """
 
-    _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "model.json")
+    # _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "model.json")
 
     def _init_cat_dict(self, cat_dict_class, key_in_self, **kwargs):
         """Initialize a CatDict object, checking for errors.
@@ -390,10 +402,12 @@ class _Model(My_Meta_Struct):
         return key
 
 
-class _Correlation(My_Meta_Struct):
+path_schema_correlation = os.path.join(SCHEMA_DIR, "correlation.json")
+@pas.struct.schema_set(path_schema_correlation)  # noqa
+class _Correlation(Meta_Struct):
     """Class to store correlation of a `Quantity` with another `Quantity`."""
 
-    _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "correlation.json")
+    # _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "correlation.json")
 
     def __init__(self, parent, key=None, **kwargs):
         super(_Correlation, self).__init__(parent, key=key, **kwargs)
@@ -415,29 +429,29 @@ class _Correlation(My_Meta_Struct):
 
 
 Correlation = _Correlation
-CORRELATION = Correlation.get_keychain(extendable=True)
+CORRELATION = Correlation._KEYCHAIN
 Correlation._KEYS = CORRELATION
 
 Spectrum = _Spectrum
-SPECTRUM = Spectrum.get_keychain(extendable=True)
+SPECTRUM = Spectrum._KEYCHAIN
 Spectrum._KEYS = SPECTRUM
 
 Source = _Source
-SOURCE = Source.get_keychain()
+SOURCE = Source._KEYCHAIN
 Source._KEYS = SOURCE
 
 Realization = _Realization
-REALIZATION = Realization.get_keychain()
+REALIZATION = Realization._KEYCHAIN
 Realization._KEYS = REALIZATION
 
 Model = _Model
-MODEL = Model.get_keychain()
+MODEL = Model._KEYCHAIN
 Model._KEYS = MODEL
 
 Quantity = _Quantity
-QUANTITY = Quantity.get_keychain()
+QUANTITY = Quantity._KEYCHAIN
 Quantity._KEYS = QUANTITY
 
 Error = _Error
-ERROR = Error.get_keychain()
+ERROR = Error._KEYCHAIN
 Error._KEYS = ERROR

@@ -19,10 +19,18 @@ from six import string_types
 
 SCHEMA_DIR = "/Users/lzkelley/Research/catalogs/astrocats/astrocats/schema/"
 
+_PAS_PATH = "/Users/lzkelley/Research/catalogs/astroschema"
+if _PAS_PATH not in sys.path:
+    sys.path.append(_PAS_PATH)
 
-class _Entry(struct.My_Meta_Struct):
+import pyastroschema as pas
 
-    _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "entry.json")
+
+path_schema_entry = os.path.join(SCHEMA_DIR, "entry.json")
+@pas.struct.schema_set(path_schema_entry)  # noqa
+class _Entry(struct.Meta_Struct):
+
+    # _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "entry.json")
 
     def __init__(self, catalog=None, name=None, stub=False):
         # super(Entry, self).__init__()
@@ -583,7 +591,7 @@ class _Entry(struct.My_Meta_Struct):
                 Quantity, quantity,
                 compare_to_existing=compare_to_existing, check_for_dupes=check_for_dupes,
                 **kwargs)
-            if isinstance(cat_dict, struct.My_Meta_Struct):
+            if isinstance(cat_dict, struct.Meta_Struct):
                 self._append_additional_tags(quantity, source, cat_dict)
                 success = False
 
@@ -972,5 +980,5 @@ class _Entry(struct.My_Meta_Struct):
 
 
 Entry = _Entry
-ENTRY = Entry.get_keychain(extendable=True)
+ENTRY = Entry._KEYCHAIN
 Entry._KEYS = ENTRY
