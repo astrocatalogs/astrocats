@@ -516,6 +516,6 @@ object_list = [Correlation, Spectrum, Source, Realization, Model, Quantity, Erro
 for obj in object_list:
     _schema = obj._SCHEMA
     _title = _schema['title'].lower()
-    fname = os.path.join(PATH_SCHEMA_OUTPUT, _title)
+    fname = os.path.join(PATH_SCHEMA_OUTPUT, _title + ".json")
     _schema.dump(fname)
     print("struct.py : saved structure '{}' schema to '{}'".format(_title, fname))

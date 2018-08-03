@@ -1,0 +1,105 @@
+{
+  "description":"An item representing a numerical value.",
+  "$schema":"http://json-schema.org/schema#",
+  "properties":{
+    "value":{
+      "description":"The value (not necessarily numeric) associated with this Quantity.",
+      "unique":false,
+      "distinguishing":true
+    },
+    "e_value":{
+      "description":"Symmetric, one-sigma error associated with this Quantity's value.",
+      "$ref":"#/definitions/NUMERIC",
+      "unique":false,
+      "distinguishing":true
+    },
+    "e_upper_value":{
+      "description":"Upper (plus) one-sigma error on this Quantity's value.",
+      "$ref":"#/definitions/NUMERIC",
+      "unique":false,
+      "distinguishing":true
+    },
+    "e_lower_value":{
+      "description":"Lower (minus) one-sigma error on this Quantity's value.",
+      "$ref":"#/definitions/NUMERIC",
+      "unique":false,
+      "distinguishing":true
+    },
+    "upper_limit":{
+      "description":"Lower (minus) one-sigma error on this Quantity's value.",
+      "type":"boolean",
+      "unique":false,
+      "distinguishing":true
+    },
+    "lower_limit":{
+      "description":"Lower (minus) one-sigma error on this Quantity's value.",
+      "type":"boolean",
+      "unique":false,
+      "distinguishing":true
+    },
+    "derived":{
+      "description":"Whether or not this Quantity is derived from other parameters/observations.",
+      "type":"boolean",
+      "unique":false,
+      "distinguishing":true
+    },
+    "description":{
+      "description":"Any additional descriptive/meta information about this quantity.",
+      "type":"string",
+      "unique":false,
+      "distinguishing":false
+    },
+    "u_value":{
+      "description":"The units with which this Quantity's value is stored.",
+      "type":"string",
+      "unique":false,
+      "distinguishing":true
+    },
+    "u_e_value":{
+      "description":"The units with which this Quantity's errors are stored.",
+      "type":"string",
+      "unique":false,
+      "distinguishing":true
+    },
+    "source":{
+      "type":[
+        "string",
+        "number"
+      ],
+      "unique":false,
+      "distinguishing":false
+    },
+    "prob":{
+      "$ref":"#/definitions/NUMERIC"
+    },
+    "model":{
+      "type":"string",
+      "distinguishing":false
+    },
+    "kind":{
+      "type":"string",
+      "unique":false,
+      "distinguishing":true,
+      "minLength":1
+    },
+    "realization":{
+      "type":"string"
+    }
+  },
+  "type":"object",
+  "title":"quantity",
+  "version":"0.3",
+  "definitions":{
+    "NUMERIC":{
+      "type":[
+        "number",
+        "string"
+      ],
+      "format":"numeric"
+    }
+  },
+  "required":[
+    "value",
+    "source"
+  ]
+}
