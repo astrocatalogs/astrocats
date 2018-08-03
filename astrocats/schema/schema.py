@@ -70,4 +70,5 @@ def replace_in_file(fname, mappings):
 
 
 if __name__ == "__main__":
-    main()
+    # main()
+    pass
