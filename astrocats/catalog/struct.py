@@ -11,7 +11,27 @@ if _PAS_PATH not in sys.path:
 
 import pyastroschema as pas  # noqa
 
-SCHEMA_DIR = "/Users/lzkelley/Research/catalogs/astrocats/astrocats/schema/"
+PATH_SCHEMA = "/Users/lzkelley/Research/catalogs/astrocats/astrocats/schema/"
+PATH_SCHEMA_INPUT = os.path.join(PATH_SCHEMA, "input", "")
+PATH_SCHEMA_OUTPUT = os.path.join(PATH_SCHEMA, "output", "")
+
+_QUANTITY_RENAMES = [
+    ["error_value", "e_value"],
+    ["error_lower", "e_lower_value"],
+    ["error_upper", "e_upper_value"],
+    ["units_value", "u_value"],
+    ["units_error", "u_e_value"],
+]
+
+path_my_source_schema = os.path.join(PATH_SCHEMA_INPUT, "astrocats_source.json")
+path_my_quantity_schema = os.path.join(PATH_SCHEMA_INPUT, "astrocats_quantity.json")
+path_my_photometry_schema = os.path.join(PATH_SCHEMA_INPUT, "astrocats_photometry.json")
+path_my_spectrum_schema = os.path.join(PATH_SCHEMA_INPUT, "astrocats_spectrum.json")
+
+path_error_schema = os.path.join(PATH_SCHEMA_INPUT, "error.json")
+path_realization_schema = os.path.join(PATH_SCHEMA_INPUT, "realization.json")
+path_model_schema = os.path.join(PATH_SCHEMA_INPUT, "model.json")
+path_correlation_schema = os.path.join(PATH_SCHEMA_INPUT, "correlation.json")
 
 
 class CatDictError(Exception):
@@ -64,9 +84,12 @@ class Meta_Struct(pas.struct.Struct):
         return
 
 
-path_schema_source = os.path.join(SCHEMA_DIR, "source.json")
-@pas.struct.schema_set(path_schema_source)  # noqa
-class _Source(Meta_Struct):
+# Source
+# =================================
+
+
+@pas.struct.set_struct_schema("source", extensions=[path_my_source_schema])
+class Source(Meta_Struct):
 
     def sort_func(self, key):
         if key == self._KEYS.NAME:
@@ -106,14 +129,36 @@ class _Source(Meta_Struct):
             return None
 
 
-path_schema_quantity = os.path.join(SCHEMA_DIR, "quantity.json")
-@pas.struct.schema_set(path_schema_quantity)  # noqa
-class _Quantity(Meta_Struct):
+SOURCE = Source._KEYCHAIN
+Source._KEYS = SOURCE
 
-    # _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "quantity.json")
+
+# Quantity
+# =================================
+
+class _Quantity_Schema_Rename(pas.schema.SchemaDict):
+
+    def __init__(self, schema={}):
+        # print("_Quantity_Schema_Rename.__init__(): '{}'".format(schema))
+        # Make sure loaded object is a dict
+        schema = pas.utils.get_schema_odict(schema)
+        # Convert to str
+        schema = pas.utils.json_dump_str(schema)
+        # replace strings
+        for old, new in _QUANTITY_RENAMES:
+            schema = schema.replace(old, new)
+        # Convert back to dict
+        schema = pas.utils.json_load_str(schema)
+        super(_Quantity_Schema_Rename, self).__init__(schema=schema)
+        return
+
+
+@pas.struct.set_struct_schema(
+    "quantity", extensions=[path_my_quantity_schema], schema_class=_Quantity_Schema_Rename)
+class Quantity(Meta_Struct):
 
     def __init__(self, parent, key=None, **kwargs):
-        super(_Quantity, self).__init__(parent, key=key, **kwargs)
+        super(Quantity, self).__init__(parent, key=key, **kwargs)
 
         # Aliases not added if in DISTINCT_FROM
         if self._key == parent._KEYS.ALIAS:
@@ -149,15 +194,6 @@ class _Quantity(Meta_Struct):
                 self[self._KEYS.VALUE], parent[parent._KEYS.NAME])
             raise CatDictError(err)
 
-        # Check that quantity value matches type after cleaning
-        '''
-        if isinstance(self._key, Key):
-            if (self._key.type == KEY_TYPES.NUMERIC) and (not is_number(self[self._KEYS.VALUE])):
-                err = "Value '{}' is not numeric, not adding to '{}'".format(
-                    self[self._KEYS.VALUE], parent[parent._KEYS.NAME])
-                raise CatDictError(err)
-        '''
-
         self.validate()
         return
 
@@ -170,20 +206,19 @@ class _Quantity(Meta_Struct):
         return key
 
 
-path_schema_photometry = os.path.join(SCHEMA_DIR, "photometry.json")
-@pas.struct.schema_set(path_schema_photometry)  # noqa
-class _Photometry(Meta_Struct):
-    """Container for a single photometric point with associated metadata.
+QUANTITY = Quantity._KEYCHAIN
+Quantity._KEYS = QUANTITY
 
-    `Source` citation required.
-    Photometry can be given as [magnitude, flux, flux-density, counts, luminosity].
 
-    """
+# Photometry
+# =================================
 
-    # _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "photometry.json")
+
+@pas.struct.set_struct_schema("photometry", extensions=[path_my_photometry_schema])
+class Photometry(Meta_Struct):
 
     def __init__(self, parent, key=None, **kwargs):
-        super(_Photometry, self).__init__(parent, key=key, **kwargs)
+        super(Photometry, self).__init__(parent, key=key, **kwargs)
 
         '''
         # If `BAND` is given, but any of `bandmetaf_keys` is not, try to infer
@@ -252,15 +287,35 @@ class _Photometry(Meta_Struct):
         return key
 
 
-path_schema_spectrum = os.path.join(SCHEMA_DIR, "spectrum.json")
-@pas.struct.schema_set(path_schema_spectrum)  # noqa
-class _Spectrum(Meta_Struct):
+PHOTOMETRY = Photometry._KEYCHAIN
+Photometry._KEYS = PHOTOMETRY
+
+PHOTOMETRY.FLUX_DENSITY = PHOTOMETRY.FLUXDENSITY
+PHOTOMETRY.U_FLUX_DENSITY = PHOTOMETRY.U_FLUXDENSITY
+PHOTOMETRY.E_FLUX_DENSITY = PHOTOMETRY.E_FLUXDENSITY
+PHOTOMETRY.COUNT_RATE = PHOTOMETRY.COUNTRATE
+PHOTOMETRY.E_COUNT_RATE = PHOTOMETRY.E_COUNTRATE
+PHOTOMETRY.U_COUNT_RATE = PHOTOMETRY.U_COUNTRATE
+PHOTOMETRY.UPPER_LIMIT = PHOTOMETRY.UPPERLIMIT
+PHOTOMETRY.LOWER_LIMIT = PHOTOMETRY.LOWERLIMIT
+PHOTOMETRY.PHOTON_INDEX = PHOTOMETRY.PHOTONINDEX
+PHOTOMETRY.UNABSORBED_FLUX = PHOTOMETRY.UNABSORBEDFLUX
+PHOTOMETRY.E_UNABSORBED_FLUX = PHOTOMETRY.E_UNABSORBEDFLUX
+PHOTOMETRY.E_UPPER_UNABSORBED_FLUX = PHOTOMETRY.E_UPPER_UNABSORBEDFLUX
+PHOTOMETRY.E_LOWER_UNABSORBED_FLUX = PHOTOMETRY.E_LOWER_UNABSORBEDFLUX
+PHOTOMETRY.BAND_SET = PHOTOMETRY.BANDSET
+
+
+# Spectrum
+# ==================================
+
+
+@pas.struct.set_struct_schema("spectrum", extensions=[path_my_spectrum_schema])
+class Spectrum(Meta_Struct):
     """Class for storing a single spectrum."""
 
-    # _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "spectrum.json")
-
     def __init__(self, parent, key=None, **kwargs):
-        super(_Spectrum, self).__init__(parent, key=key, **kwargs)
+        super(Spectrum, self).__init__(parent, key=key, **kwargs)
 
         # If `data` is not given, construct it from wavelengths, fluxes
         # [errors] `errors` is optional, but if given, then `errorunit` is also
@@ -297,7 +352,7 @@ class _Spectrum(Meta_Struct):
 
     def is_duplicate_of(self, other):
         """Check if spectrum is duplicate of another."""
-        if super(_Spectrum, self).is_duplicate_of(other):
+        if super(Spectrum, self).is_duplicate_of(other):
             return True
 
         row_matches = 0
@@ -332,29 +387,46 @@ class _Spectrum(Meta_Struct):
         return key
 
 
-path_schema_error = os.path.join(SCHEMA_DIR, "error.json")
-@pas.struct.schema_set(path_schema_error)  # noqa
-class _Error(Meta_Struct):
+SPECTRUM = Spectrum._KEYCHAIN
+Spectrum._KEYS = SPECTRUM
+
+
+# Error
+# ==================================
+
+
+@pas.struct.set_struct_schema(path_error_schema)
+class Error(Meta_Struct):
     pass
-    # _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "error.json")
 
 
-path_schema_realization = os.path.join(SCHEMA_DIR, "realization.json")
-@pas.struct.schema_set(path_schema_realization)  # noqa
-class _Realization(Meta_Struct):
+ERROR = Error._KEYCHAIN
+Error._KEYS = ERROR
+
+
+# Realization
+# ==================================
+
+
+@pas.struct.set_struct_schema(path_realization_schema)
+class Realization(Meta_Struct):
     pass
-    # _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "realization.json")
 
 
-path_schema_model = os.path.join(SCHEMA_DIR, "model.json")
-@pas.struct.schema_set(path_schema_model)  # noqa
-class _Model(Meta_Struct):
+REALIZATION = Realization._KEYCHAIN
+Realization._KEYS = REALIZATION
+
+
+# Model
+# ==================================
+
+
+@pas.struct.set_struct_schema(path_model_schema)
+class Model(Meta_Struct):
     """Container for a model with associated metadata.
 
     `Source` citation required.
     """
-
-    # _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "model.json")
 
     def _init_cat_dict(self, cat_dict_class, key_in_self, **kwargs):
         """Initialize a CatDict object, checking for errors.
@@ -379,7 +451,7 @@ class _Model(Meta_Struct):
             return False
 
         # Compare this new entry with all previous entries to make sure is new
-        if cat_dict_class != _Error:
+        if cat_dict_class != Error:
             for item in self.get(key_in_self, []):
                 if new_entry.is_duplicate_of(item):
                     item.append_sources_from(new_entry)
@@ -392,7 +464,7 @@ class _Model(Meta_Struct):
         return True
 
     def add_realization(self, **kwargs):
-        self._add_cat_dict(_Realization, self._KEYS.REALIZATIONS, **kwargs)
+        self._add_cat_dict(Realization, self._KEYS.REALIZATIONS, **kwargs)
 
     def sort_func(self, key):
         if key == self._KEYS.SOURCE:
@@ -402,15 +474,20 @@ class _Model(Meta_Struct):
         return key
 
 
-path_schema_correlation = os.path.join(SCHEMA_DIR, "correlation.json")
-@pas.struct.schema_set(path_schema_correlation)  # noqa
-class _Correlation(Meta_Struct):
+MODEL = Model._KEYCHAIN
+Model._KEYS = MODEL
+
+
+# Correlation
+# ==================================
+
+
+@pas.struct.set_struct_schema(path_correlation_schema)
+class Correlation(Meta_Struct):
     """Class to store correlation of a `Quantity` with another `Quantity`."""
 
-    # _SCHEMA_NAME = os.path.join(SCHEMA_DIR, "correlation.json")
-
     def __init__(self, parent, key=None, **kwargs):
-        super(_Correlation, self).__init__(parent, key=key, **kwargs)
+        super(Correlation, self).__init__(parent, key=key, **kwargs)
 
         # Check that value exists
         bad = False
@@ -428,30 +505,17 @@ class _Correlation(Meta_Struct):
         return
 
 
-Correlation = _Correlation
 CORRELATION = Correlation._KEYCHAIN
 Correlation._KEYS = CORRELATION
 
-Spectrum = _Spectrum
-SPECTRUM = Spectrum._KEYCHAIN
-Spectrum._KEYS = SPECTRUM
 
-Source = _Source
-SOURCE = Source._KEYCHAIN
-Source._KEYS = SOURCE
+# Output astrocats schema
+# -------------------------------------
 
-Realization = _Realization
-REALIZATION = Realization._KEYCHAIN
-Realization._KEYS = REALIZATION
-
-Model = _Model
-MODEL = Model._KEYCHAIN
-Model._KEYS = MODEL
-
-Quantity = _Quantity
-QUANTITY = Quantity._KEYCHAIN
-Quantity._KEYS = QUANTITY
-
-Error = _Error
-ERROR = Error._KEYCHAIN
-Error._KEYS = ERROR
+object_list = [Correlation, Spectrum, Source, Realization, Model, Quantity, Error]
+for obj in object_list:
+    _schema = obj._SCHEMA
+    _title = _schema['title'].lower()
+    fname = os.path.join(PATH_SCHEMA_OUTPUT, _title)
+    _schema.dump(fname)
+    print("struct.py : saved structure '{}' schema to '{}'".format(_title, fname))

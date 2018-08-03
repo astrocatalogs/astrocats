@@ -1,0 +1,20 @@
+{
+    "properties": {
+        "prob": {
+            "$ref": "#/definitions/NUMERIC"
+        },
+        "model": {
+            "type": "string",
+            "distinguishing": false
+        },
+        "kind": {
+            "type": "string",
+            "unique": false,
+            "distinguishing": true,
+            "minLength": 1
+        },
+        "realization": {
+            "type": "string"
+        }
+    }
+}

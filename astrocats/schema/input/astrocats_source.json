@@ -1,0 +1,19 @@
+{
+    "properties": {
+        "acknowledgment": {
+            "type": "string",
+            "unique": false,
+            "distinguishing": false
+        },
+        "reference": {
+            "type": "string",
+            "unique": false,
+            "distinguishing": false
+        },
+        "private": {
+            "type": "boolean",
+            "unique": false,
+            "distinguishing": false
+        }
+    }
+}

@@ -5,7 +5,7 @@ from glob import glob
 from math import floor
 from decimal import Decimal
 
-from astrocats.catalog.photometry import PHOTOMETRY
+from astrocats.catalog.struct import PHOTOMETRY
 from astrocats.catalog import utils
 
 from ..testnova import TESTNOVA
