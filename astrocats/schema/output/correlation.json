@@ -1,6 +1,9 @@
 {
-  "description":"",
   "$schema":"http://json-schema.org/schema#",
+  "title":"correlation",
+  "description":"",
+  "version":"",
+  "type":"object",
   "properties":{
     "value":{
       "priority":10
@@ -26,9 +29,6 @@
       "type":"string"
     }
   },
-  "type":"object",
-  "title":"correlation",
-  "version":"",
   "required":[
     "value",
     "quantity"

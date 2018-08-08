@@ -2,6 +2,7 @@
 """
 import os
 import sys
+from collections import OrderedDict
 
 import astrocats
 from astrocats.catalog import utils
@@ -513,10 +514,42 @@ Correlation._KEYS = CORRELATION
 # -------------------------------------
 
 def output_schema(path_out, strct_obj, verbose=True):
+    # Order of dictionary keys in output file
+    sort_order = ['$schema', 'id', 'title', 'description', 'version',
+                  'type', 'definitions', 'properties', 'required']
+
+    def sort_item_func(item):
+        """Method to generate key for sorting each item of a dictionary
+        """
+        kk = item[0]
+
+        # Find the index of this key in the `sort_order` list
+        idx = None
+        for ii, sval in enumerate(sort_order):
+            # Ignore text-case
+            if kk.lower().startswith(sval.lower()):
+                idx = ii
+                break
+
+        # Sort things first if found in `sort_order`
+        if idx is not None:
+            rv = "a_" + str(idx)
+        # Then just sort alphabetically by the key
+        else:
+            rv = "b_" + str(kk)
+
+        return rv
+
+    def sort_dict_func(odict):
+        """Method to sort an entire dictionary
+        """
+        out = OrderedDict(sorted(odict.items(), key=sort_item_func))
+        return out
+
     _schema = strct_obj._SCHEMA
     _title = _schema['title'].lower()
     fname = os.path.join(path_out, _title + ".json")
-    _schema.dump(fname)
+    _schema.dump(fname, sort_func=sort_dict_func)
     if verbose:
         print("struct.py:output_schema() - saved structure '{}' schema to '{}'".format(
             _title, fname))

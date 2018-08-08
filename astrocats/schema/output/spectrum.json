@@ -1,6 +1,18 @@
 {
-  "description":"An item representing a single spectrum.",
   "$schema":"http://json-schema.org/schema#",
+  "title":"spectrum",
+  "description":"An item representing a single spectrum.",
+  "version":"0.1",
+  "type":"object",
+  "definitions":{
+    "NUMERIC":{
+      "type":[
+        "number",
+        "string"
+      ],
+      "format":"numeric"
+    }
+  },
   "properties":{
     "data":{
       "distinguishing":false
@@ -123,18 +135,6 @@
     "realization":{
       "type":"string",
       "priority":15
-    }
-  },
-  "type":"object",
-  "title":"spectrum",
-  "version":"0.1",
-  "definitions":{
-    "NUMERIC":{
-      "type":[
-        "number",
-        "string"
-      ],
-      "format":"numeric"
     }
   },
   "allOf":[

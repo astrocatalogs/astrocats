@@ -1,6 +1,17 @@
 {
-  "description":"",
   "$schema":"http://json-schema.org/schema#",
+  "title":"realization",
+  "description":"",
+  "version":"",
+  "type":"object",
+  "definitions":{
+    "NUMERIC":{
+      "type":[
+        "number",
+        "string"
+      ]
+    }
+  },
   "properties":{
     "score":{
       "$ref":"#/definitions/NUMERIC"
@@ -13,17 +24,6 @@
     },
     "alias":{
       "type":"string"
-    }
-  },
-  "type":"object",
-  "title":"realization",
-  "version":"",
-  "definitions":{
-    "NUMERIC":{
-      "type":[
-        "number",
-        "string"
-      ]
     }
   }
 }

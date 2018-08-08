@@ -1,18 +1,17 @@
 {
+  "$schema":"http://json-schema.org/schema#",
+  "title":"model",
   "description":"",
-  "anyOf":[
-    {
-      "required":[
-        "name"
-      ]
-    },
-    {
-      "required":[
-        "code"
+  "version":"",
+  "type":"object",
+  "definitions":{
+    "NUMERIC":{
+      "type":[
+        "number",
+        "string"
       ]
     }
-  ],
-  "$schema":"http://json-schema.org/schema#",
+  },
   "properties":{
     "source":{
       "type":"string",
@@ -55,19 +54,20 @@
       "distinguishing":false
     }
   },
-  "type":"object",
-  "title":"model",
-  "version":"",
-  "definitions":{
-    "NUMERIC":{
-      "type":[
-        "number",
-        "string"
-      ]
-    }
-  },
   "required":[
     "source",
     "alias"
+  ],
+  "anyOf":[
+    {
+      "required":[
+        "name"
+      ]
+    },
+    {
+      "required":[
+        "code"
+      ]
+    }
   ]
 }

@@ -1,6 +1,18 @@
 {
-  "description":"An item representing a numerical value.",
   "$schema":"http://json-schema.org/schema#",
+  "title":"quantity",
+  "description":"An item representing a numerical value.",
+  "version":"0.3",
+  "type":"object",
+  "definitions":{
+    "NUMERIC":{
+      "type":[
+        "number",
+        "string"
+      ],
+      "format":"numeric"
+    }
+  },
   "properties":{
     "value":{
       "description":"The value (not necessarily numeric) associated with this Quantity.",
@@ -84,18 +96,6 @@
     },
     "realization":{
       "type":"string"
-    }
-  },
-  "type":"object",
-  "title":"quantity",
-  "version":"0.3",
-  "definitions":{
-    "NUMERIC":{
-      "type":[
-        "number",
-        "string"
-      ],
-      "format":"numeric"
     }
   },
   "required":[

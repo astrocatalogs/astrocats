@@ -1,33 +1,9 @@
 {
-  "description":"An item representing a bibliographic attribution or reference.",
-  "anyOf":[
-    {
-      "required":[
-        "bibcode"
-      ]
-    },
-    {
-      "required":[
-        "arxivid"
-      ]
-    },
-    {
-      "required":[
-        "doi"
-      ]
-    },
-    {
-      "required":[
-        "url"
-      ]
-    },
-    {
-      "required":[
-        "name"
-      ]
-    }
-  ],
   "$schema":"http://json-schema.org/schema#",
+  "title":"source",
+  "description":"An item representing a bibliographic attribution or reference.",
+  "version":"0.5",
+  "type":"object",
   "properties":{
     "alias":{
       "description":"The unique identifier for this source.",
@@ -101,10 +77,34 @@
       "distinguishing":false
     }
   },
-  "type":"object",
-  "title":"source",
-  "version":"0.5",
   "required":[
     "alias"
+  ],
+  "anyOf":[
+    {
+      "required":[
+        "bibcode"
+      ]
+    },
+    {
+      "required":[
+        "arxivid"
+      ]
+    },
+    {
+      "required":[
+        "doi"
+      ]
+    },
+    {
+      "required":[
+        "url"
+      ]
+    },
+    {
+      "required":[
+        "name"
+      ]
+    }
   ]
 }
