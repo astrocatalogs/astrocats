@@ -10,13 +10,15 @@ from collections import OrderedDict
 from copy import deepcopy
 from decimal import Decimal
 
+import astrocats
 from astrocats.catalog import utils, struct
 from astrocats.catalog.struct import (Error, Model, Photometry, Quantity, Source, Spectrum)
 from astrocats.catalog.struct import (ERROR, MODEL, PHOTOMETRY, QUANTITY, SOURCE, SPECTRUM)
 from past.builtins import basestring
 from six import string_types
 
-PATH_SCHEMA_INPUT = "/Users/lzkelley/Research/catalogs/astrocats/astrocats/schema/input/"
+PATH_SCHEMA_INPUT = os.path.join(astrocats._PATH_SCHEMA, "input", "")
+PATH_SCHEMA_OUTPUT = os.path.join(astrocats._PATH_SCHEMA, "output", "")
 
 _PAS_PATH = "/Users/lzkelley/Research/catalogs/astroschema"
 if _PAS_PATH not in sys.path:
@@ -25,12 +27,11 @@ if _PAS_PATH not in sys.path:
 import pyastroschema as pas
 
 
-path_schema_entry = os.path.join(PATH_SCHEMA_INPUT, "entry.json")
-@pas.struct.set_struct_schema(path_schema_entry)  # noqa
+path_my_entry_schema = os.path.join(PATH_SCHEMA_INPUT, "astrocats_entry.json")
+@pas.struct.set_struct_schema("entry", extensions=[path_my_entry_schema])  # noqa
 class Entry(struct.Meta_Struct):
 
     def __init__(self, catalog=None, name=None, stub=False):
-        # super(Entry, self).__init__()
         # NOTE: FIX: LZK: cannot validate until a valid `name` is set
         super(Entry, self).__init__(catalog, key=name, validate=False)
         self.catalog = catalog
@@ -978,3 +979,5 @@ class Entry(struct.Meta_Struct):
 
 ENTRY = Entry._KEYCHAIN
 Entry._KEYS = ENTRY
+
+struct.output_schema(PATH_SCHEMA_OUTPUT, Entry)

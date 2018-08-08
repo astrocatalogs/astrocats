@@ -3,6 +3,7 @@
 import os
 import sys
 
+import astrocats
 from astrocats.catalog import utils
 
 _PAS_PATH = "/Users/lzkelley/Research/catalogs/astroschema"
@@ -11,9 +12,8 @@ if _PAS_PATH not in sys.path:
 
 import pyastroschema as pas  # noqa
 
-PATH_SCHEMA = "/Users/lzkelley/Research/catalogs/astrocats/astrocats/schema/"
-PATH_SCHEMA_INPUT = os.path.join(PATH_SCHEMA, "input", "")
-PATH_SCHEMA_OUTPUT = os.path.join(PATH_SCHEMA, "output", "")
+PATH_SCHEMA_INPUT = os.path.join(astrocats._PATH_SCHEMA, "input", "")
+PATH_SCHEMA_OUTPUT = os.path.join(astrocats._PATH_SCHEMA, "output", "")
 
 _QUANTITY_RENAMES = [
     ["error_value", "e_value"],
@@ -512,10 +512,17 @@ Correlation._KEYS = CORRELATION
 # Output astrocats schema
 # -------------------------------------
 
+def output_schema(path_out, strct_obj, verbose=True):
+    _schema = strct_obj._SCHEMA
+    _title = _schema['title'].lower()
+    fname = os.path.join(path_out, _title + ".json")
+    _schema.dump(fname)
+    if verbose:
+        print("struct.py:output_schema() - saved structure '{}' schema to '{}'".format(
+            _title, fname))
+    return fname
+
+
 object_list = [Correlation, Spectrum, Source, Realization, Model, Quantity, Error]
 for obj in object_list:
-    _schema = obj._SCHEMA
-    _title = _schema['title'].lower()
-    fname = os.path.join(PATH_SCHEMA_OUTPUT, _title + ".json")
-    _schema.dump(fname)
-    print("struct.py : saved structure '{}' schema to '{}'".format(_title, fname))
+    output_schema(PATH_SCHEMA_OUTPUT, obj)

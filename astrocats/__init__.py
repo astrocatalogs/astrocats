@@ -12,3 +12,7 @@ __license__ = 'MIT'
 # Set the path for the user's configuration file
 _CONFIG_PATH = os.path.join(
     os.path.expanduser('~'), '.config', 'astrocats', 'astrocatsrc')
+
+_PATH_ROOT = os.path.join(os.path.dirname(__file__), "")
+_PATH_CATALOG = os.path.join(_PATH_ROOT, "catalog", "")
+_PATH_SCHEMA = os.path.join(_PATH_ROOT, "schema", "")
