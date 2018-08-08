@@ -2,6 +2,7 @@
 """
 import os
 import sys
+import urllib
 from collections import OrderedDict
 
 import astrocats
@@ -46,6 +47,7 @@ class CatDictError(Exception):
         if 'warn' in kwargs:
             self.warn = kwargs.pop('warn')
         Exception.__init__(self, *args, **kwargs)
+        return
 
 
 class Meta_Struct(pas.struct.Struct):
@@ -123,7 +125,7 @@ class Source(Meta_Struct):
 
         """
         try:
-            code = url.split('/abs/')
+            code = urllib.parse.unquote(url).split('/abs/')
             code = code[1].strip()
             return code
         except Exception:
