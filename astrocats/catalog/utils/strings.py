@@ -1,11 +1,12 @@
 """
 """
 import json
+import urllib
 
 from .digits import round_sig
 
 __all__ = [
-    'dict_to_pretty_string', 'rep_chars', 'get_filename',
+    'decode_url', 'dict_to_pretty_string', 'rep_chars', 'get_filename',
     'single_spaces', 'trim_str_arr', 'uniq_cdl', 'utf8'
 ]
 
@@ -54,3 +55,8 @@ def dict_to_pretty_string(odict):
 
 def get_filename(name):
     return (name.replace('/', '_'))
+
+
+def decode_url(url):
+    decode = urllib.parse.unquote(url)
+    return decode

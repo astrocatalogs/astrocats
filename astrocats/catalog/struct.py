@@ -2,7 +2,6 @@
 """
 import os
 import sys
-import urllib
 from collections import OrderedDict
 
 import astrocats
@@ -125,7 +124,8 @@ class Source(Meta_Struct):
 
         """
         try:
-            code = urllib.parse.unquote(url).split('/abs/')
+            # code = urllib.parse.unquote(url).split('/abs/')
+            code = utils.parse_url(url).split('/abs/')
             code = code[1].strip()
             return code
         except Exception:
