@@ -379,6 +379,40 @@ class Entry(struct.Meta_Struct):
 
         return True
 
+    def _handle_addition_failure(self, fail_loc, cat_class, cat_key, **kwargs):
+        """Based on `catalog.ADDITION_FAILURE_BEHAVIOR`, react to a failure appropriately.
+
+        A `logging.DEBUG` level message is always given.
+
+        `ADDITION_FAILURE_BEHAVIOR` == `ADD_FAIL_ACTION.WARN`
+            Then a `logging.WARNING` message is raised.
+        `ADDITION_FAILURE_BEHAVIOR` == `ADD_FAIL_ACTION.IGNORE`
+            No addition action is taken.
+        `ADDITION_FAILURE_BEHAVIOR` == `ADD_FAIL_ACTION.RAISE`
+            Then an error is raised.
+            This is the default behavior that also acts if an unknown value is given.
+
+        """
+        err_str = "'{}' failed!\n".format(fail_loc)
+        err_str += "class: '{}', key: '{}'\nkwargs: '{}'".format(cat_class, cat_key, kwargs)
+
+        fail_flag = self.catalog.ADDITION_FAILURE_BEHAVIOR
+        # Log a message at 'debug' level regardless
+        self._log.debug(err_str)
+        self._log.debug("`ADDITION_FAILURE_BEHAVIOR` = '{}'".format(fail_flag))
+
+        # if `WARN` then also log a warning
+        if fail_flag == utils.ADD_FAIL_ACTION.WARN:
+            self._log.warning(err_str)
+        # Raise an error
+        elif fail_flag == utils.ADD_FAIL_ACTION.IGNORE:
+            pass
+        # default behavior is to raise an error
+        else:
+            utils.log_raise(self._log, err_str, RuntimeError)
+
+        return
+
     def _init_cat_dict(self, cat_dict_class, key_in_self, **kwargs):
         """Initialize a CatDict object, checking for errors."""
         log = self._log
@@ -436,7 +470,9 @@ class Entry(struct.Meta_Struct):
         CatDict only added if initialization succeeds and it
         doesn't already exist within the Entry.
         """
+        log = self._log
         # Make sure that a source is given, and is valid (nor erroneous)
+        failure = False
         if cat_dict_class != Error:
             try:
                 source = self._check_cat_dict_source(cat_dict_class, key_in_self, **kwargs)
@@ -444,21 +480,35 @@ class Entry(struct.Meta_Struct):
                 if err.warn:
                     msg = "'{}' Not adding '{}': '{}'".format(
                         self[self._KEYS.NAME], key_in_self, str(err))
-                    self._log.info(msg)
-                return False
+                    log.info(msg)
+                # return False
+                failure = True
 
             if source is None:
-                return False
+                log.warning("Source `None` in `Entry._add_cat_dict()`!")
+                log.warning("key: '{}', kwargs: '{}'".format(key_in_self, kwargs))
+                # return False
+                failure = True
 
         # Try to create a new instance of this subclass of `CatDict`
         new_entry = self._init_cat_dict(cat_dict_class, key_in_self, **kwargs)
         if new_entry is None:
+            # if self.catalog.RAISE_ERROR_ON_ADDITION_FAILURE:
+            #     err_str = "Entry._init_cat_dict() failed!"
+            #     err_str += "class: '{}', key_in_self: '{}', kwargs: '{}'".format(
+            #         cat_dict_class, key_in_self, kwargs)
+            #     utils.log_raise(self._log, err_str, RuntimeError)
+            # return False
+            failure = True
+
+        if failure:
+            err_str = "Entry._init_cat_dict() failed!"
+            err_str += "class: '{}', key_in_self: '{}', kwargs: '{}'".format(
+                cat_dict_class, key_in_self, kwargs)
             if self.catalog.RAISE_ERROR_ON_ADDITION_FAILURE:
-                err_str = "Entry._init_cat_dict() failed!"
-                err_str += "class: '{}', key_in_self: '{}', kwargs: '{}'".format(
-                    cat_dict_class, key_in_self, kwargs)
-                utils.log_raise(self._log, err_str, RuntimeError)
-            return False
+                log.raise_error(err_str)
+            else:
+                log.info(err_str)
 
         # Compare this new entry with all previous entries to make sure is new
         #    If it is NOT new, return the entry
@@ -496,40 +546,6 @@ class Entry(struct.Meta_Struct):
         '''
 
         return True
-
-    def _handle_addition_failure(self, fail_loc, cat_class, cat_key, **kwargs):
-        """Based on `catalog.ADDITION_FAILURE_BEHAVIOR`, react to a failure appropriately.
-
-        A `logging.DEBUG` level message is always given.
-
-        `ADDITION_FAILURE_BEHAVIOR` == `ADD_FAIL_ACTION.WARN`
-            Then a `logging.WARNING` message is raised.
-        `ADDITION_FAILURE_BEHAVIOR` == `ADD_FAIL_ACTION.IGNORE`
-            No addition action is taken.
-        `ADDITION_FAILURE_BEHAVIOR` == `ADD_FAIL_ACTION.RAISE`
-            Then an error is raised.
-            This is the default behavior that also acts if an unknown value is given.
-
-        """
-        err_str = "'{}' failed!\n".format(fail_loc)
-        err_str += "class: '{}', key: '{}'\nkwargs: '{}'".format(cat_class, cat_key, kwargs)
-
-        fail_flag = self.catalog.ADDITION_FAILURE_BEHAVIOR
-        # Log a message at 'debug' level regardless
-        self._log.debug(err_str)
-        self._log.debug("`ADDITION_FAILURE_BEHAVIOR` = '{}'".format(fail_flag))
-
-        # if `WARN` then also log a warning
-        if fail_flag == utils.ADD_FAIL_ACTION.WARN:
-            self._log.warning(err_str)
-        # Raise an error
-        elif fail_flag == utils.ADD_FAIL_ACTION.IGNORE:
-            pass
-        # default behavior is to raise an error
-        else:
-            utils.log_raise(self._log, err_str, RuntimeError)
-
-        return
 
     @classmethod
     def init_from_file(cls, catalog, name=None, path=None, try_gzip=False, **kwargs):
