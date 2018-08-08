@@ -331,16 +331,12 @@ class Entry(struct.Meta_Struct):
                 len(model), model_key))
             for mod in model:
                 self._add_cat_dict(
-                    Model,
-                    self._KEYS.MODELS,
-                    compare_to_existing=compare_to_existing,
-                    **mod)
+                    Model, self._KEYS.MODELS, compare_to_existing=compare_to_existing, **mod)
 
         # Handle everything else --- should be `Quantity`s
         # ------------------------------------------------
         if len(data):
-            self._log.debug("{} remaining entries, assuming `Quantity`".format(
-                len(data)))
+            self._log.debug("{} remaining entries, assuming `Quantity`".format(len(data)))
             # Iterate over remaining keys
             for key in list(data.keys()):
                 vals = data.pop(key)
@@ -351,11 +347,8 @@ class Entry(struct.Meta_Struct):
                 self._log.debug("{}: {}".format(key, vals))
                 for vv in vals:
                     self._add_cat_dict(
-                        Quantity,
-                        key,
-                        check_for_dupes=merge,
-                        compare_to_existing=compare_to_existing,
-                        **vv)
+                        Quantity, key,
+                        check_for_dupes=merge, compare_to_existing=compare_to_existing, **vv)
 
         if merge and self.dupe_of:
             self.merge_dupes()
@@ -431,10 +424,9 @@ class Entry(struct.Meta_Struct):
                 err = "`cat_dict_class` = '{}' returned None on init!".format(cat_dict_class)
                 raise RuntimeError(err)
         except struct.CatDictError as err:
-            # log.warning("EXCEPT!")
-            if err.warn:
-                log.info("'{}' Not adding '{}': '{}'".format(
-                    self[self._KEYS.NAME], key_in_self, str(err)))
+            log_lvl = log.WARNING if err.warn else log.INFO
+            msg = "'{}' Not adding '{}': '{}'".format(self[self._KEYS.NAME], key_in_self, str(err))
+            log.log(log_lvl, msg)
             return None
         except Exception as err:
             log = self._log
@@ -764,7 +756,6 @@ class Entry(struct.Meta_Struct):
         if source_obj is None:
             return None
 
-        # log.warning("Entry.add_source() - source_obj returned non-None")
         for item in self.get(self._KEYS.SOURCES, []):
             if source_obj.is_duplicate_of(item):
                 return item[SOURCE.ALIAS]
