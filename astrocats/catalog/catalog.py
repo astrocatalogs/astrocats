@@ -108,7 +108,10 @@ class Catalog(object):
             """Initialize `Catalog`."""
             self.catalog = catalog
             this_file = os.path.abspath(sys.modules[self.__module__].__file__)
+            # Path of the `catalog`
             self.catalog_dir = os.path.dirname(this_file)
+            # Path in which `catalog` resides
+            self.root_dir = os.path.realpath(os.path.join(self.catalog_dir, os.path.pardir))
             self.tasks_dir = os.path.join(self.catalog_dir, 'tasks')
             _check_dirs = []
 
@@ -148,6 +151,11 @@ class Catalog(object):
             # html path and files
             self.PATH_HTML = os.path.join(self.PATH_OUTPUT, 'html', '')
             _check_dirs.append(self.PATH_HTML)
+
+            # Schema files
+            self.PATH_SCHEMA = os.path.join(self.root_dir, "schema", "")
+            self.PATH_SCHEMA_INPUT = os.path.join(self.PATH_SCHEMA, "input", "")
+            self.PATH_SCHEMA_OUTPUT = os.path.join(self.PATH_SCHEMA, "output", "")
 
             # critical datafiles
             # ------------------
