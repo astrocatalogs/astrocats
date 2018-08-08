@@ -16,6 +16,13 @@
         "SPECTRUM": {
             "$ref": "file:/Users/lzkelley/Research/catalogs/astroschema/schema/spectrum.json"
         },
+        "STRING_LIST": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "string"
+            }
+        },
         "SOURCE_LIST": {
             "type": "array",
             "minItems": 1,
@@ -29,6 +36,12 @@
             "items": {
                 "$ref": "#/definitions/QUANTITY"
             }
+        },
+        "STRING_LISTABLE": {
+            "anyOf": [
+                {"type": "string"},
+                {"$ref": "#/definitions/STRING_LIST"}
+            ]
         },
         "QUANTITY_LISTABLE": {
             "anyOf": [
@@ -60,11 +73,7 @@
 
     "properties": {
         "tasks": {
-            "type": "array",
-            "minItems": 1,
-            "items": {
-                "$ref": "#/definitions/SOURCE"
-            }
+            "$ref": "#/definitions/STRING_LISTABLE"
         },
 
         "maxabsmag": {
