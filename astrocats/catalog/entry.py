@@ -57,14 +57,6 @@ class Entry(struct.Meta_Struct):
         jsonstring = utils.dict_to_pretty_string({ENTRY.NAME: self})
         return jsonstring
 
-    '''
-    def add(self, key, value, **kwargs):
-        log = self._log
-        log.debug("Entry.add()")
-
-        return
-    '''
-
     def _append_additional_tags(self, quantity, source, cat_dict):
         """Append additional bits of data to an existing quantity.
 
@@ -431,56 +423,6 @@ class Entry(struct.Meta_Struct):
 
         return new_entry
 
-    def add_data(self, key_in_self, value=None, source=None, cat_dict_class=Quantity,
-                 check_for_dupes=True, dupes_merge_tags=True, **kwargs):
-        """Add a `CatDict` data container (dict) to this `Entry`.
-
-        CatDict only added if initialization succeeds and it
-        doesn't already exist within the Entry.
-        """
-        log = self._log
-        log.debug("Entry.add_data()")
-        FAIL = 0
-        DUPE = -1
-        SUCC = 1
-
-        if value is not None:
-            if QUANTITY.VALUE in kwargs:
-                utils.log_raise(log, "`value` given as both arg and kwarg!\n{}".format(kwargs))
-            kwargs[QUANTITY.VALUE] = value
-
-        if source is not None:
-            if QUANTITY.SOURCE in kwargs:
-                utils.log_raise(log, "`source` given as both arg and kwarg!\n{}".format(kwargs))
-            kwargs[QUANTITY.SOURCE] = source
-
-        # Make sure that a source, if given, is valid
-        retval = self._check_cat_dict_source(cat_dict_class, key_in_self, **kwargs)
-        if not retval:
-            self._handle_addition_failure(
-                "Entry._check_cat_dict_source()", cat_dict_class, key_in_self, **kwargs)
-            return None, FAIL
-
-        # Try to create a new instance of this subclass of `CatDict`
-        new_data = self._init_cat_dict(cat_dict_class, key_in_self, **kwargs)
-        if new_data is None:
-            self._handle_addition_failure(
-                "Entry._init_cat_dict()", cat_dict_class, key_in_self, **kwargs)
-            return None, FAIL
-
-        # Compare this new entry with all previous entries to make sure is new
-        if check_for_dupes:
-            for item in self.get(key_in_self, []):
-                # Do not add duplicates
-                if new_data.is_duplicate_of(item):
-                    item.append_sources_from(new_data)
-                    return new_data, DUPE
-
-        # Add data
-        self.setdefault(key_in_self, []).append(new_data)
-
-        return new_data, SUCC
-
     def _add_cat_dict(self, cat_dict_class, key_in_self,
                       check_for_dupes=True, compare_to_existing=True, **kwargs):
         """Add a `CatDict` to this `Entry`.
@@ -645,6 +587,64 @@ class Entry(struct.Meta_Struct):
         new_entry._load_data_from_json(load_path, gzip=try_gzip, **kwargs)
 
         return new_entry
+
+    '''
+    def add(self, key, value, **kwargs):
+        log = self._log
+        log.debug("Entry.add()")
+
+        return
+    '''
+
+    def add_data(self, key_in_self, value=None, source=None, cat_dict_class=Quantity,
+                 check_for_dupes=True, dupes_merge_tags=True, **kwargs):
+        """Add a `CatDict` data container (dict) to this `Entry`.
+
+        CatDict only added if initialization succeeds and it
+        doesn't already exist within the Entry.
+        """
+        log = self._log
+        log.debug("Entry.add_data()")
+        FAIL = 0
+        DUPE = -1
+        SUCC = 1
+
+        if value is not None:
+            if QUANTITY.VALUE in kwargs:
+                utils.log_raise(log, "`value` given as both arg and kwarg!\n{}".format(kwargs))
+            kwargs[QUANTITY.VALUE] = value
+
+        if source is not None:
+            if QUANTITY.SOURCE in kwargs:
+                utils.log_raise(log, "`source` given as both arg and kwarg!\n{}".format(kwargs))
+            kwargs[QUANTITY.SOURCE] = source
+
+        # Make sure that a source, if given, is valid
+        retval = self._check_cat_dict_source(cat_dict_class, key_in_self, **kwargs)
+        if not retval:
+            self._handle_addition_failure(
+                "Entry._check_cat_dict_source()", cat_dict_class, key_in_self, **kwargs)
+            return None, FAIL
+
+        # Try to create a new instance of this subclass of `CatDict`
+        new_data = self._init_cat_dict(cat_dict_class, key_in_self, **kwargs)
+        if new_data is None:
+            self._handle_addition_failure(
+                "Entry._init_cat_dict()", cat_dict_class, key_in_self, **kwargs)
+            return None, FAIL
+
+        # Compare this new entry with all previous entries to make sure is new
+        if check_for_dupes:
+            for item in self.get(key_in_self, []):
+                # Do not add duplicates
+                if new_data.is_duplicate_of(item):
+                    item.append_sources_from(new_data)
+                    return new_data, DUPE
+
+        # Add data
+        self.setdefault(key_in_self, []).append(new_data)
+
+        return new_data, SUCC
 
     def add_alias(self, alias, source, clean=True, check_for_dupes=True, **kwargs):
         """Add an alias, optionally 'cleaning' the alias string.
