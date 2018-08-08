@@ -381,19 +381,25 @@ class Entry(struct.Meta_Struct):
 
     def _init_cat_dict(self, cat_dict_class, key_in_self, **kwargs):
         """Initialize a CatDict object, checking for errors."""
+        log = self._log
+        log.debug("Entry._init_cat_dict()")
 
         # Remove empty string values
-        bad_keys = [kk for kk, vv in kwargs.items()
-                    if isinstance(vv, str) and len(vv) == 0]
+        bad_keys = [kk for kk, vv in kwargs.items() if isinstance(vv, str) and len(vv) == 0]
         for bk in bad_keys:
             kwargs.pop(bk)
 
         # Catch errors associated with crappy, but not unexpected data
         try:
+            # log.warning("Entry._init_cat_dict() - calling `cat_dict_class` '{}'".format(cat_dict_class))
             new_entry = cat_dict_class(self, key=key_in_self, **kwargs)
+            if new_entry is None:
+                err = "`cat_dict_class` = '{}' returned None on init!".format(cat_dict_class)
+                raise RuntimeError(err)
         except struct.CatDictError as err:
+            # log.warning("EXCEPT!")
             if err.warn:
-                self._log.info("'{}' Not adding '{}': '{}'".format(
+                log.info("'{}' Not adding '{}': '{}'".format(
                     self[self._KEYS.NAME], key_in_self, str(err)))
             return None
         except Exception as err:
@@ -420,7 +426,7 @@ class Entry(struct.Meta_Struct):
                     self._KEYS.NAME], key_in_self, str(err)))
             return None
         '''
-
+        # log.warning("return new_entry")
         return new_entry
 
     def _add_cat_dict(self, cat_dict_class, key_in_self,
@@ -596,6 +602,15 @@ class Entry(struct.Meta_Struct):
         return
     '''
 
+    def add_listed(self, key, value, check=True):
+        listed = self.setdefault(key, [])
+        # Make sure `value` isn't already in the list
+        if check and (value in listed):
+            return
+
+        listed.append(value)
+        return
+
     def add_data(self, key_in_self, value=None, source=None, cat_dict_class=Quantity,
                  check_for_dupes=True, dupes_merge_tags=True, **kwargs):
         """Add a `CatDict` data container (dict) to this `Entry`.
@@ -717,24 +732,29 @@ class Entry(struct.Meta_Struct):
 
     def add_source(self, allow_alias=False, **kwargs):
         """Add a `Source` instance to this entry."""
+        log = self._log
+        log.debug("Entry.add_source()")
         if (not allow_alias) and (SOURCE.ALIAS in kwargs):
             err_str = "`{}` passed in kwargs, this shouldn't happen!".format(SOURCE.ALIAS)
-            self._log.error(err_str)
+            log.error(err_str)
             raise RuntimeError(err_str)
 
         # Set alias number to be +1 of current number of sources
         if SOURCE.ALIAS not in kwargs:
             kwargs[SOURCE.ALIAS] = str(self.num_sources() + 1)
+
+        # log.warning("Entry.add_source() - Calling `Entry._init_cat_dict()`")
         source_obj = self._init_cat_dict(Source, self._KEYS.SOURCES, **kwargs)
         if source_obj is None:
             return None
 
+        # log.warning("Entry.add_source() - source_obj returned non-None")
         for item in self.get(self._KEYS.SOURCES, []):
             if source_obj.is_duplicate_of(item):
-                return item[item._KEYS.ALIAS]
+                return item[SOURCE.ALIAS]
 
         self.setdefault(self._KEYS.SOURCES, []).append(source_obj)
-        return source_obj[source_obj._KEYS.ALIAS]
+        return source_obj[SOURCE.ALIAS]
 
     def add_model(self, allow_alias=False, **kwargs):
         """Add a `Model` instance to this entry."""
@@ -1108,5 +1128,7 @@ class Entry(struct.Meta_Struct):
 
 ENTRY = Entry._KEYCHAIN
 Entry._KEYS = ENTRY
+
+ENTRY.DISCOVER_DATE = ENTRY.DISCOVERDATE
 
 struct.output_schema(PATH_SCHEMA_OUTPUT, Entry)
