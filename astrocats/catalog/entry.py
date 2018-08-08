@@ -13,8 +13,8 @@ from decimal import Decimal
 import astrocats
 from astrocats.catalog import utils, struct
 from astrocats.catalog.struct import (Error, Model, Photometry, Quantity, Source, Spectrum)
-from astrocats.catalog.struct import (ERROR, MODEL, PHOTOMETRY, QUANTITY, SOURCE, SPECTRUM)
-from past.builtins import basestring
+from astrocats.catalog.struct import (ERROR, MODEL, QUANTITY, SOURCE, SPECTRUM)
+# from past.builtins import basestring
 from six import string_types
 
 PATH_SCHEMA_INPUT = os.path.join(astrocats._PATH_SCHEMA, "input", "")
@@ -56,6 +56,14 @@ class Entry(struct.Meta_Struct):
         """Return JSON representation of self."""
         jsonstring = utils.dict_to_pretty_string({ENTRY.NAME: self})
         return jsonstring
+
+    '''
+    def add(self, key, value, **kwargs):
+        log = self._log
+        log.debug("Entry.add()")
+
+        return
+    '''
 
     def _append_additional_tags(self, quantity, source, cat_dict):
         """Append additional bits of data to an existing quantity.
@@ -393,8 +401,8 @@ class Entry(struct.Meta_Struct):
             new_entry = cat_dict_class(self, key=key_in_self, **kwargs)
         except struct.CatDictError as err:
             if err.warn:
-                self._log.info("'{}' Not adding '{}': '{}'".format(self[
-                    self._KEYS.NAME], key_in_self, str(err)))
+                self._log.info("'{}' Not adding '{}': '{}'".format(
+                    self[self._KEYS.NAME], key_in_self, str(err)))
             return None
         except Exception as err:
             log = self._log
@@ -555,7 +563,7 @@ class Entry(struct.Meta_Struct):
             This is the default behavior that also acts if an unknown value is given.
 
         """
-        err_str = "'{}' failed!\n"
+        err_str = "'{}' failed!\n".format(fail_loc)
         err_str += "class: '{}', key: '{}'\nkwargs: '{}'".format(cat_class, cat_key, kwargs)
 
         fail_flag = self.catalog.ADDITION_FAILURE_BEHAVIOR
@@ -1005,8 +1013,8 @@ class Entry(struct.Meta_Struct):
         '''
 
         if self._KEYS.SOURCES in self:
-            _NO_SRCS_REQUIRED = [self._KEYS.NAME, self._KEYS.SCHEMA, self._KEYS.SOURCES,
-                                 self._KEYS.ERRORS]
+            # _NO_SRCS_REQUIRED = [self._KEYS.NAME, self._KEYS.SCHEMA, self._KEYS.SOURCES,
+            #                      self._KEYS.ERRORS]
             # Remove orphan sources
             source_aliases = [x[SOURCE.ALIAS] for x in self[self._KEYS.SOURCES]]
             # Sources with the `PRIVATE` attribute are always retained
