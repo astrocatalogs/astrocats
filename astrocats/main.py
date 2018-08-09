@@ -8,7 +8,7 @@ from astrocats import _CONFIG_PATH, __version__
 from astrocats.catalog.utils import log_raise
 
 _BASE_PATH_KEY = 'base_path'
-_PROFILE = False
+_PROFILE = True
 
 
 def main():
@@ -68,6 +68,12 @@ def main():
     log.debug("Running `main.main()`")
 
     if _PROFILE:
+        msg = "RUNNING IN PROFILE MODE"
+        log.warning("")
+        log.warning("="*len(msg))
+        log.warning(msg)
+        log.warning("="*len(msg))
+        log.warning("")
         import cProfile
         pr = cProfile.Profile()
         pr.enable()
