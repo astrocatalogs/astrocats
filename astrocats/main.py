@@ -8,7 +8,7 @@ from astrocats import _CONFIG_PATH, __version__
 from astrocats.catalog.utils import log_raise
 
 _BASE_PATH_KEY = 'base_path'
-_PROFILE = True
+_PROFILE = False
 
 
 def main():
