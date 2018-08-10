@@ -292,11 +292,6 @@ class Catalog(object):
                 return True
             return False
 
-    '''
-    class SCHEMA:
-        HASH = ''
-        URL = ''
-    '''
 
     def __init__(self, args={}, log=logging.Logger("INFO"), git_clone=True):
         # Store runtime arguments
@@ -1046,7 +1041,7 @@ class Catalog(object):
                 bury_entry = False
                 save_entry = True
                 if bury:
-                    (bury_entry, save_entry) = self.should_bury(name)
+                    bury_entry, save_entry = self.should_bury(name)
 
                 if save_entry:
                     try:
@@ -1058,10 +1053,8 @@ class Catalog(object):
                         self.log.error("\n\n{}\n\n".format(self.entries[name]))
                         raise
 
-                    self.log.info(
-                        "Saved {} to '{}'.".format(name.ljust(20), save_name))
-                    if (gz and os.path.getsize(save_name) >
-                            self.COMPRESS_ABOVE_FILESIZE):
+                    self.log.info("Saved {} to '{}'.".format(name.ljust(20), save_name))
+                    if (gz and os.path.getsize(save_name) > self.COMPRESS_ABOVE_FILESIZE):
                         save_name = utils.compress_gz(save_name)
                         self.log.debug(
                             "Compressed '{}' to '{}'".format(name, save_name))
