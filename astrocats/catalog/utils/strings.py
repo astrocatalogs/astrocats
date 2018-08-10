@@ -48,13 +48,12 @@ def utf8(x):
 
 
 def dict_to_pretty_string(odict):
-    jsonstring = json.dumps(
-        odict, indent=4, separators=(',', ':'), ensure_ascii=False)
+    jsonstring = json.dumps(odict, indent=4, separators=(',', ':'), ensure_ascii=False)
     return jsonstring
 
 
 def get_filename(name):
-    return (name.replace('/', '_'))
+    return name.replace('/', '_')
 
 
 def decode_url(url):
