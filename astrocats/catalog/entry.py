@@ -10,30 +10,18 @@ from collections import OrderedDict
 from copy import deepcopy
 from decimal import Decimal
 
-import astrocats
 from astrocats.catalog import utils, struct
 from astrocats.catalog.struct import (Error, Model, Photometry, Quantity, Source, Spectrum)
 from astrocats.catalog.struct import (ERROR, MODEL, QUANTITY, SOURCE, SPECTRUM)
-# from past.builtins import basestring
 from six import string_types
 
-PATH_SCHEMA_INPUT = os.path.join(astrocats._PATH_SCHEMA, "input", "")
-PATH_SCHEMA_OUTPUT = os.path.join(astrocats._PATH_SCHEMA, "output", "")
 
-_PAS_PATH = "/Users/lzkelley/Research/catalogs/astroschema"
-if _PAS_PATH not in sys.path:
-    sys.path.append(_PAS_PATH)
-
-import pyastroschema as pas
-
-
-path_my_entry_schema = os.path.join(PATH_SCHEMA_INPUT, "astrocats_entry.json")
-@pas.struct.set_struct_schema("entry", extensions=[path_my_entry_schema])  # noqa
-class Entry(struct.Meta_Struct):
+@struct.set_struct_schema("entry", extensions="astrocats_entry")  # noqa
+class _Entry(struct.Meta_Struct):
 
     def __init__(self, catalog=None, name=None, stub=False):
         # NOTE: FIX: LZK: cannot validate until a valid `name` is set
-        super(Entry, self).__init__(catalog, key=name, validate=False)
+        super(_Entry, self).__init__(catalog, key=name, validate=False)
         self.catalog = catalog
         self.filename = None
         self.dupe_of = []
@@ -54,7 +42,7 @@ class Entry(struct.Meta_Struct):
 
     def __repr__(self):
         """Return JSON representation of self."""
-        jsonstring = utils.dict_to_pretty_string({ENTRY.NAME: self})
+        jsonstring = utils.dict_to_pretty_string({self._KEYS.NAME: self})
         return jsonstring
 
     def _append_additional_tags(self, quantity, source, cat_dict):
@@ -213,9 +201,9 @@ class Entry(struct.Meta_Struct):
         jfil.close()
 
         # If object doesnt have a name yet, but json does, store it
-        self_name = self[ENTRY.NAME]
+        self_name = self[self._KEYS.NAME]
         if len(self_name) == 0:
-            self[ENTRY.NAME] = name
+            self[self._KEYS.NAME] = name
         # Warn if there is a name mismatch
         elif self_name.lower().strip() != name.lower().strip():
             self._log.warning("Object name '{}' does not match name in json: '{}'".format(
@@ -953,7 +941,7 @@ class Entry(struct.Meta_Struct):
     def is_private(self, key, sources):
         """Check if attribute is private."""
         # aliases are always public.
-        if key == ENTRY.ALIAS:
+        if key == self._KEYS.ALIAS:
             return False
         return all([SOURCE.PRIVATE in self.get_source_by_alias(x)
                     for x in sources.split(',')])
@@ -1131,11 +1119,3 @@ class Entry(struct.Meta_Struct):
         if key == self._KEYS.SPECTRA:
             return 'zzz'
         return key
-
-
-ENTRY = Entry._KEYCHAIN
-Entry._KEYS = ENTRY
-
-ENTRY.DISCOVER_DATE = ENTRY.DISCOVERDATE
-
-struct.output_schema(PATH_SCHEMA_OUTPUT, Entry)

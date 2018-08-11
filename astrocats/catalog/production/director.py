@@ -8,8 +8,8 @@ from copy import deepcopy
 import numpy as np
 
 from astrocats.catalog.utils import tq
-from astrocats.catalog.struct import SOURCE, QUANTITY
-from astrocats.catalog.entry import ENTRY
+from astrocats.catalog.struct import ENTRY, SOURCE, QUANTITY
+# from astrocats.catalog.entry import ENTRY
 from . import utils as production_utils
 from . import producer, html_pro, host_image_pro
 

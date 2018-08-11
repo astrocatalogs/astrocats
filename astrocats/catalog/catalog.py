@@ -16,8 +16,9 @@ from tqdm import tqdm
 from astrocats import __version__
 from astrocats.catalog import gitter
 from astrocats.catalog.production import director
-from astrocats.catalog.entry import ENTRY, Entry
-from astrocats.catalog.struct import (MODEL, SOURCE)
+# from astrocats.catalog.entry import ENTRY, Entry
+from astrocats.catalog.struct import (ENTRY, MODEL, SOURCE)
+from astrocats.catalog.struct import Entry
 from astrocats.catalog.task import Task
 from astrocats.catalog import utils
 
