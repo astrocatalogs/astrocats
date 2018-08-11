@@ -2,7 +2,6 @@
 """
 import os
 import sys
-from collections import OrderedDict
 
 import astrocats
 from astrocats.catalog import utils
@@ -14,25 +13,37 @@ if _PAS_PATH not in sys.path:
 import pyastroschema as pas  # noqa
 
 PATH_SCHEMA_INPUT = os.path.join(astrocats._PATH_SCHEMA, "input", "")
-PATH_SCHEMA_OUTPUT = os.path.join(astrocats._PATH_SCHEMA, "output", "")
+# PATH_SCHEMA_OUTPUT = os.path.join(astrocats._PATH_SCHEMA, "output", "")
 
-_QUANTITY_RENAMES = [
-    ["error_value", "e_value"],
-    ["error_lower", "e_lower_value"],
-    ["error_upper", "e_upper_value"],
-    ["units_value", "u_value"],
-    ["units_error", "u_e_value"],
-]
 
-path_my_source_schema = os.path.join(PATH_SCHEMA_INPUT, "astrocats_source.json")
-path_my_quantity_schema = os.path.join(PATH_SCHEMA_INPUT, "astrocats_quantity.json")
-path_my_photometry_schema = os.path.join(PATH_SCHEMA_INPUT, "astrocats_photometry.json")
-path_my_spectrum_schema = os.path.join(PATH_SCHEMA_INPUT, "astrocats_spectrum.json")
+def set_struct_schema(schema_source, extensions=[], updates=[], **kwargs):
+    # Make sure input extensions and updates are lists of names
+    if not isinstance(extensions, list):
+        extensions = [extensions]
 
-path_error_schema = os.path.join(PATH_SCHEMA_INPUT, "error.json")
-path_realization_schema = os.path.join(PATH_SCHEMA_INPUT, "realization.json")
-path_model_schema = os.path.join(PATH_SCHEMA_INPUT, "model.json")
-path_correlation_schema = os.path.join(PATH_SCHEMA_INPUT, "correlation.json")
+    if not isinstance(updates, list):
+        updates = [updates]
+
+    # Function to convert from schema filename to full path from schema-input directory
+    def prep(sname):
+        if os.path.exists(sname) and len(sname.split(os.path.sep)) > 1:
+            return sname
+
+        fname = os.path.join(PATH_SCHEMA_INPUT, sname)
+        if not fname.lower().endswith('.json'):
+            fname += '.json'
+
+        return fname
+
+    # Convert from schema names to paths in schema input directory
+    schema_path = prep(schema_source)
+    extensions = [prep(ext) for ext in extensions]
+    updates = [prep(upd) for upd in updates]
+
+    # Constrct the wrapper from `pyastroschema`
+    wrapper = pas.struct.set_struct_schema(
+        schema_path, extensions=extensions, updates=updates, **kwargs)
+    return wrapper
 
 
 class CatDictError(Exception):
@@ -90,7 +101,7 @@ class Meta_Struct(pas.struct.Struct):
 # =================================
 
 
-@pas.struct.set_struct_schema("source", extensions=[path_my_source_schema])
+@set_struct_schema("source", extensions="astrocats_source")
 class Source(Meta_Struct):
 
     def sort_func(self, key):
@@ -139,25 +150,8 @@ Source._KEYS = SOURCE
 # Quantity
 # =================================
 
-class _Quantity_Schema_Rename(pas.schema.SchemaDict):
 
-    def __init__(self, schema={}):
-        # print("_Quantity_Schema_Rename.__init__(): '{}'".format(schema))
-        # Make sure loaded object is a dict
-        schema = pas.utils.get_schema_odict(schema)
-        # Convert to str
-        schema = pas.utils.json_dump_str(schema)
-        # replace strings
-        for old, new in _QUANTITY_RENAMES:
-            schema = schema.replace(old, new)
-        # Convert back to dict
-        schema = pas.utils.json_load_str(schema)
-        super(_Quantity_Schema_Rename, self).__init__(schema=schema)
-        return
-
-
-@pas.struct.set_struct_schema(
-    "quantity", extensions=[path_my_quantity_schema], schema_class=_Quantity_Schema_Rename)
+@set_struct_schema("quantity", extensions="astrocats_quantity")
 class Quantity(Meta_Struct):
 
     def __init__(self, parent, key=None, **kwargs):
@@ -217,7 +211,7 @@ Quantity._KEYS = QUANTITY
 # =================================
 
 
-@pas.struct.set_struct_schema("photometry", extensions=[path_my_photometry_schema])
+@set_struct_schema("photometry", extensions="astrocats_photometry")
 class Photometry(Meta_Struct):
 
     def __init__(self, parent, key=None, **kwargs):
@@ -313,7 +307,7 @@ PHOTOMETRY.BAND_SET = PHOTOMETRY.BANDSET
 # ==================================
 
 
-@pas.struct.set_struct_schema("spectrum", extensions=[path_my_spectrum_schema])
+@set_struct_schema("spectrum", extensions="astrocats_spectrum")
 class Spectrum(Meta_Struct):
     """Class for storing a single spectrum."""
 
@@ -398,7 +392,7 @@ Spectrum._KEYS = SPECTRUM
 # ==================================
 
 
-@pas.struct.set_struct_schema(path_error_schema)
+@set_struct_schema("error")
 class Error(Meta_Struct):
     pass
 
@@ -411,7 +405,7 @@ Error._KEYS = ERROR
 # ==================================
 
 
-@pas.struct.set_struct_schema(path_realization_schema)
+@set_struct_schema("realization")
 class Realization(Meta_Struct):
     pass
 
@@ -424,7 +418,7 @@ Realization._KEYS = REALIZATION
 # ==================================
 
 
-@pas.struct.set_struct_schema(path_model_schema)
+@set_struct_schema("model")
 class Model(Meta_Struct):
     """Container for a model with associated metadata.
 
@@ -485,7 +479,7 @@ Model._KEYS = MODEL
 # ==================================
 
 
-@pas.struct.set_struct_schema(path_correlation_schema)
+@set_struct_schema("correlation")
 class Correlation(Meta_Struct):
     """Class to store correlation of a `Quantity` with another `Quantity`."""
 
@@ -512,52 +506,25 @@ CORRELATION = Correlation._KEYCHAIN
 Correlation._KEYS = CORRELATION
 
 
-# Output astrocats schema
-# -------------------------------------
+# Entry
+# =================================
 
-def output_schema(path_out, strct_obj, verbose=True):
-    # Order of dictionary keys in output file
-    sort_order = ['$schema', 'id', 'title', 'description', 'version',
-                  'type', 'definitions', 'properties', 'required']
+# NOTE: this needs to be last to avoid circular import errors
+from astrocats.catalog import entry
+Entry = entry._Entry
+ENTRY = Entry._KEYCHAIN
+Entry._KEYS = ENTRY
 
-    def sort_item_func(item):
-        """Method to generate key for sorting each item of a dictionary
-        """
-        kk = item[0]
-
-        # Find the index of this key in the `sort_order` list
-        idx = None
-        for ii, sval in enumerate(sort_order):
-            # Ignore text-case
-            if kk.lower().startswith(sval.lower()):
-                idx = ii
-                break
-
-        # Sort things first if found in `sort_order`
-        if idx is not None:
-            rv = "a_" + str(idx)
-        # Then just sort alphabetically by the key
-        else:
-            rv = "b_" + str(kk)
-
-        return rv
-
-    def sort_dict_func(odict):
-        """Method to sort an entire dictionary
-        """
-        out = OrderedDict(sorted(odict.items(), key=sort_item_func))
-        return out
-
-    _schema = strct_obj._SCHEMA
-    _title = _schema['title'].lower()
-    fname = os.path.join(path_out, _title + ".json")
-    _schema.dump(fname, sort_func=sort_dict_func)
-    if verbose:
-        print("struct.py:output_schema() - saved structure '{}' schema to '{}'".format(
-            _title, fname))
-    return fname
+ENTRY.DISCOVER_DATE = ENTRY.DISCOVERDATE
 
 
-object_list = [Correlation, Spectrum, Source, Realization, Model, Quantity, Error]
-for obj in object_list:
-    output_schema(PATH_SCHEMA_OUTPUT, obj)
+# Other
+
+
+STRUCTURES = [Correlation, Entry, Photometry, Spectrum,
+              Source, Realization, Model, Quantity, Error,
+              "defs.json"]
+
+# Run the `main` routine to setup schema
+from astrocats.catalog import schema
+schema.main()
