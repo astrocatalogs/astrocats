@@ -4,15 +4,6 @@
   "description":"An item representing a single spectrum.",
   "version":"0.1",
   "type":"object",
-  "definitions":{
-    "NUMERIC":{
-      "type":[
-        "number",
-        "string"
-      ],
-      "format":"numeric"
-    }
-  },
   "properties":{
     "data":{
       "distinguishing":false
@@ -30,31 +21,31 @@
       "distinguishing":false
     },
     "e_lower_time":{
-      "$ref":"#/definitions/NUMERIC",
+      "$ref":"file:defs.json#/definitions/NUMERIC",
       "distinguishing":false
     },
     "e_time":{
-      "$ref":"#/definitions/NUMERIC",
+      "$ref":"file:defs.json#/definitions/NUMERIC",
       "distinguishing":false
     },
     "e_upper_time":{
-      "$ref":"#/definitions/NUMERIC",
+      "$ref":"file:defs.json#/definitions/NUMERIC",
       "distinguishing":false
     },
     "snr":{
-      "$ref":"#/definitions/NUMERIC",
+      "$ref":"file:defs.json#/definitions/NUMERIC",
       "distinguishing":false
     },
     "time":{
-      "$ref":"#/definitions/NUMERIC",
+      "$ref":"file:defs.json#/definitions/NUMERIC",
       "distinguishing":false
     },
     "redshift":{
-      "$ref":"#/definitions/NUMERIC",
+      "$ref":"file:defs.json#/definitions/NUMERIC",
       "distinguishing":false
     },
     "airmass":{
-      "$ref":"#/definitions/NUMERIC",
+      "$ref":"file:defs.json#/definitions/NUMERIC",
       "distinguishing":false
     },
     "filename":{
