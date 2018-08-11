@@ -16,3 +16,7 @@ _CONFIG_PATH = os.path.join(
 _PATH_ROOT = os.path.join(os.path.dirname(__file__), "")
 _PATH_CATALOG = os.path.join(_PATH_ROOT, "catalog", "")
 _PATH_SCHEMA = os.path.join(_PATH_ROOT, "schema", "")
+
+import warnings
+warnings.filterwarnings("ignore", message="numpy.dtype size changed")
+warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
