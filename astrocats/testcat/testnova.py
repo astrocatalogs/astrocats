@@ -1,10 +1,15 @@
 """TestnovaCatalog transient class."""
+
+import os
 import warnings
+import sys
 from collections import OrderedDict
 from decimal import Decimal
 
 import numpy as np
-from astrocats.catalog.entry import Entry
+
+import astrocats
+from astrocats.catalog.struct import Entry
 from astrocats.catalog.struct import (PHOTOMETRY, QUANTITY, SOURCE)
 from astrocats.catalog.utils import (bib_priority, get_sig_digits,
                                      get_source_year, is_number,
@@ -15,7 +20,17 @@ from six import string_types
 from .constants import MAX_VISUAL_BANDS
 from .utils import frame_priority, host_clean, radec_clean
 
+_PAS_PATH = "/Users/lzkelley/Research/catalogs/astroschema"
+if _PAS_PATH not in sys.path:
+    sys.path.append(_PAS_PATH)
 
+import pyastroschema as pas  # noqa
+
+path_entry = os.path.join(astrocats._PATH_SCHEMA, "input", "entry.json")
+path_astrocats_entry = os.path.join(astrocats._PATH_SCHEMA, "input", "astrocats_entry.json")
+
+
+@pas.struct.set_struct_schema(path_entry, extensions=[path_astrocats_entry])
 class Testnova(Entry):
     """Testnova `Entry` child class.
 
