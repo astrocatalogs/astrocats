@@ -43,9 +43,10 @@ class TestnovaCatalog(Catalog):
             """
             """
             all_repos = super().get_all_repo_folders(*args, **kwargs)
-            repos = [rep for rep in all_repos if 'testcat-output' in rep]
-            self.catalog.log.warning("Skipping all non-targeted repos...")
-            return repos
+            # repos = [rep for rep in all_repos if 'testcat-output' in rep]
+            # self.catalog.log.warning("Skipping all non-targeted repos...")
+            # return repos
+            return all_repos
 
     def __init__(self, args, log):
         """Initialize catalog."""
