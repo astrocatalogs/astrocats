@@ -2,10 +2,11 @@
 """
 
 import importlib
-import json
 import os
+import sys
+from datetime import datetime
 
-from astrocats import __version__
+from astrocats import __version__, __git_version__, argshandler
 from astrocats.utils import logger
 
 _BASE_PATH_KEY = 'base_path'
@@ -19,56 +20,63 @@ def main():
     public methods executed (for example: import scripts).
 
     """
-    from datetime import datetime
 
-    # Initialize Command-Line and User-Config Settings, Log
-    # -----------------------------------------------------
-
-    beg_time = datetime.now()
-    # Process command-line arguments to determine action
-    # If no subcommand (e.g. 'import') is given, returns 'None' --> exit
-    args, sub_clargs = load_command_line_args()
+    # Initialize: Load command line arguments, log, etc
+    # ----------------------------------------------------
+    args = argshandler.parse_args()
     if args is None:
         return
 
     # Create a logging object
     log = load_log(args)
 
-    # Run configuration/setup interactive script
-    '''
-    if args.command == 'setup':
-        setup_user_config(log)
-        return
+    title_str = "Astrocats, version: {}, SHA: {}".format(__version__, __git_version__)
+    log.warning("\n{}\n{}\n".format(title_str, '=' * len(title_str)))
 
-    # Make sure configuration file exists, or that's what we're doing
-    # (with the 'setup' subcommand)
-    if not os.path.isfile(_CONFIG_PATH):
-        raise RuntimeError("'{}' does not exist.  "
-                           "Run `astrocats setup` to configure."
-                           "".format(_CONFIG_PATH))
-    '''
+    beg_time = datetime.now()
+    log.info("{}\n".format(beg_time.ctime()))
 
-    git_vers = get_git()
-    title_str = "Astrocats, version: {}, SHA: {}".format(__version__, git_vers)
-    log.warning("\n\n{}\n{}\n{}\n".format(title_str, '=' * len(title_str),
-                                          beg_time.ctime()))
+    log.info("command: '{}'".format(args.command))
+    log.info("catalog: '{}'".format(args.catalog))
 
-    # Load the user settings from the home directory
-    args = load_user_config(args, log)
+    # Load target catalog module
+    # ----------------------------------------
 
-    # Choose Catalog and Operation(s) to perform
-    # ------------------------------------------
-    mod_name = args.command
-    log.debug("Importing specified module: '{}'".format(mod_name))
+    catalog_path = args.catalog
+    catalog_path = os.path.realpath(os.path.abspath(catalog_path))
+    log.debug("Importing specified catalog module: '{}'".format(catalog_path))
+
+    if not os.path.exists(catalog_path):
+        log.raise_error("`catalog_path` '{}' does not exist!".format(catalog_path))
+
+    if not os.path.isdir(catalog_path):
+        log.raise_error("`catalog_path` '{}' is not a directory!".format(catalog_path))
+
     # Try to import the specified module
     try:
-        mod = importlib.import_module('.' + mod_name, package='astrocats')
-    except Exception as err:
-        log.error("Import of specified module '{}' failed.".format(mod_name))
-        log.raise_error(str(err), type(err))
+        # catalog_module = importlib.import_module('.' + mod_name, package='astrocats')
+        # Get the location of the module to add to `sys.path`
+        catalog_path_dir = os.path.dirname(catalog_path)
+        catalog_module_name = os.path.basename(catalog_path)
 
-    # Run the `main.main` method of the specified module
-    log.debug("Running `main.main()`")
+        # Insert the path to this module.  Make it first to avoid builtin package conflicts
+        log.debug("adding catalog module path: '{}'".format(catalog_path_dir))
+        sys.path.insert(0, catalog_path_dir)
+
+        # Import catalog module
+        log.debug("importing catalog module name: '{}'".format(catalog_module_name))
+        catalog_module = importlib.import_module(catalog_module_name)
+
+        # Remove added path to avoid unintended imports
+        sys.path.pop(0)
+        log.info("Loaded: '{}'".format(str(catalog_module)))
+
+    except Exception as err:
+        msg = "Import of specified catalog module '{}' failed.".format(catalog_path)
+        log.raise_error(msg, err)
+
+    # Run target command in the given catalog module
+    # -----------------------------------------------------------
 
     if _PROFILE:
         msg = "RUNNING IN PROFILE MODE"
@@ -81,140 +89,25 @@ def main():
         pr = cProfile.Profile()
         pr.enable()
 
-    mod.main.main(args, sub_clargs, log)
+    run_command(args, log, catalog_module)
 
     if _PROFILE:
         pr.disable()
         pr.print_stats(sort='time')
-        pr.dump_stats("cprofile_run_stats.dat")
+        dt_str = beg_time.strftime("%Y%m%d-%H%M%S")
+        profile_fname = "{:mod}_{:date}_cprofile-run-stats.dat".format(catalog_module_name, dt_str)
+        msg = "Saved profile stats to '{}'".format(profile_fname)
+        log.warning("")
+        log.warning("="*len(msg))
+        log.warning(msg)
+        log.warning("="*len(msg))
+        log.warning("")
+        pr.dump_stats(profile_fname)
 
     end_time = datetime.now()
-    log.warning("\nAll complete at {}, After {}".format(end_time, end_time -
-                                                        beg_time))
+    log.warning("\nAll complete at {}".format(end_time))
+    log.warning("Duration {}\n".format(end_time - beg_time))
     return
-
-
-def load_command_line_args(clargs=None):
-    """Load and parse command-line arguments.
-
-    Arguments
-    ---------
-
-    Returns
-    -------
-    args : `argparse.Namespace` object
-        Namespace in which settings are stored - default values modified by the
-        given command-line arguments.
-
-    """
-    import argparse
-
-    git_vers = get_git()
-    version_info = 'AstroCats v{}, SHA: {}'.format(__version__, git_vers)
-
-    parser = argparse.ArgumentParser(
-        prog='astrocats',
-        description='Generate catalogs for astronomical data.')
-
-    parser.add_argument('command', nargs='?', default=None)
-
-    parser.add_argument(
-        '--version',
-        action='version',
-        version=version_info)
-    parser.add_argument(
-        '--verbose',
-        '-v',
-        dest='verbose',
-        default=False,
-        action='store_true',
-        help='Print more messages to the screen.')
-    parser.add_argument(
-        '--debug',
-        '-d',
-        dest='debug',
-        default=False,
-        action='store_true',
-        help='Print excessive messages to the screen.')
-    parser.add_argument(
-        '--include-private',
-        dest='private',
-        default=False,
-        action='store_true',
-        help='Include private data in import.')
-    parser.add_argument(
-        '--travis',
-        '-t',
-        dest='travis',
-        default=False,
-        action='store_true',
-        help='Run import script in test mode for Travis.')
-    '''
-    parser.add_argument(
-        '--test',
-        dest='test',
-        default=False,
-        action='store_true',
-        help='Run in test mode (WARNING: could have strange behavior).')
-    '''
-    parser.add_argument(
-        '--clone-depth',
-        dest='clone_depth',
-        default=0,
-        type=int,
-        help=('When cloning git repos, only clone out to this depth '
-              '(default: 0 = all levels).'))
-    parser.add_argument(
-        '--purge-outputs',
-        dest='purge_outputs',
-        default=False,
-        action='store_true',
-        help=('Purge git outputs after cloning.'))
-    parser.add_argument(
-        '--log',
-        dest='log_filename',
-        default=None,
-        help='Filename to which to store logging information.')
-
-    # If output files should be written or not
-    # ----------------------------------------
-    write_group = parser.add_mutually_exclusive_group()
-    write_group.add_argument(
-        '--write',
-        action='store_true',
-        dest='write_entries',
-        default=True,
-        help='Write entries to files [default].')
-    write_group.add_argument(
-        '--no-write',
-        action='store_false',
-        dest='write_entries',
-        default=True,
-        help='do not write entries to file.')
-
-    # If previously cleared output files should be deleted or not
-    # -----------------------------------------------------------
-    delete_group = parser.add_mutually_exclusive_group()
-    delete_group.add_argument(
-        '--predelete',
-        action='store_true',
-        dest='delete_old',
-        default=True,
-        help='Delete all old event files to begin [default].')
-    delete_group.add_argument(
-        '--no-predelete',
-        action='store_false',
-        dest='delete_old',
-        default=True,
-        help='Do not delete all old event files to start.')
-
-    args, sub_clargs = parser.parse_known_args(args=clargs)
-    # Print the help information if no command is given
-    if args.command is None:
-        parser.print_help()
-        return None, None
-
-    return args, sub_clargs
 
 
 def load_log(args):
@@ -246,77 +139,75 @@ def load_log(args):
     return log
 
 
-'''
-def setup_user_config(log):
-    """Setup a configuration file in the user's home directory.
+def run_command(args, log, catalog_module):
+    log.debug(__file__ + ":run_command()")
 
-    Currently this method stores default values to a fixed configuration
-    filename.  It should be modified to run an interactive prompt session
-    asking for parameters (or at least confirming the default ones).
-
-    Arguments
-    ---------
-    log : `logging.Logger` object
-
-    """
-    log.warning("AstroCats Setup")
-    log.warning("Configure filepath: '{}'".format(_CONFIG_PATH))
-
-    # Create path to configuration file as needed
-    config_path_dir = os.path.split(_CONFIG_PATH)[0]
-    if not os.path.exists(config_path_dir):
-        log.debug("Creating config directory '{}'".format(config_path_dir))
-        os.makedirs(config_path_dir)
-
-    if not os.path.isdir(config_path_dir):
-        log.raise_error("Configure path error '{}'".format(config_path_dir))
-
-    # Determine default settings
-
-    # Get this containing directory and use that as default data path
-    def_base_path = os.path.abspath(os.path.dirname(os.path.abspath(__file__)))
-    log.warning("Setting '{}' to default path: '{}'".format(_BASE_PATH_KEY,
-                                                            def_base_path))
-    config = {_BASE_PATH_KEY: def_base_path}
-
-    # Write settings to configuration file
-    json.dump(config, open(_CONFIG_PATH, 'w'))
-    if not os.path.exists(def_base_path):
-        log.raise_error("Problem creating configuration file.")
+    try:
+        # catalog_module_name = catalog_module.__name__
+        # Catalog_Class = importlib.import_module(".Catalog_Class", catalog_module_name)
+        print("Catalog_Class = ", catalog_module.Catalog_Class)
+        catalog = catalog_module.Catalog_Class(args, log)
+        print(catalog)
+    except Exception as err:
+        raise
 
     return
 
+    # Load the catalog
 
-def load_user_config(args, log):
-    """Load settings from the user's confiuration file, and add them to `args`.
+    # Data Import
+    # -----------
+    if args.command == 'import':
+        log.log(log_lvl, "Running 'import'.")
+        catalog.import_data()
 
-    Settings are loaded from the configuration file in the user's home
-    directory.  Those parameters are added (as attributes) to the `args`
-    object.
+    # Data Export
+    # -----------
+    elif args.subcommand == 'produce':
+        # from . import production
+        self.log.log(log_lvl, "Running 'produce'.")
+        manager = catalog.Director(catalog, args)
+        manager.direct(args)
 
-    Arguments
-    ---------
-    args : `argparse.Namespace`
-        Namespace object to which configuration attributes will be added.
+    # Git Subcommands
+    # ---------------
+    elif args.subcommand.startswith('git'):
+        from . import gitter
 
-    Returns
-    -------
-    args : `argparse.Namespace`
-        Namespace object with added attributes.
+        if args.subcommand == 'git-clone':
+            self.log.log(log_lvl, "Running 'git clone'.")
+            gitter.git_clone_all_repos(catalog)
+        elif args.subcommand == 'git-push':
+            self.log.log(log_lvl, "Running 'git push'.")
+            gitter.git_add_commit_push_all_repos(catalog)
+        elif args.subcommand == 'git-pull':
+            self.log.log(log_lvl, "Running 'git pull'.")
+            gitter.git_pull_all_repos(catalog)
+        elif args.subcommand == 'git-reset-local':
+            self.log.log(log_lvl, "Running 'git reset' using the local HEAD.")
+            gitter.git_reset_all_repos(catalog, hard=True, origin=False, clean=True)
+        elif args.subcommand == 'git-reset-origin':
+            self.log.log(log_lvl, "Running 'git reset' using 'origin/master'.")
+            gitter.git_reset_all_repos(catalog, hard=True, origin=True, clean=True)
+        elif args.subcommand == 'git-status':
+            self.log.log(log_lvl, "Running 'git status'.")
+            gitter.git_status_all_repos(catalog)
+        else:
+            self.log.error("Unrecognized git subcommand '{}'".format(args.subcommand))
 
-    """
-    if not os.path.exists(_CONFIG_PATH):
-        err_str = (
-            "Configuration file does not exists ({}).\n".format(_CONFIG_PATH) +
-            "Run `python -m astrocats setup` to configure.")
-        log.raise_error(err_str)
+    # Analyze Catalogs
+    # ----------------
+    elif args.subcommand == 'analyze':
+        self.log.log(log_lvl, "Running 'analyze'.")
+        from . import analysis
+        # Create an `Analysis` instance
+        lysis = analysis.analysis.Analysis(catalog, self.log)
+        # Pass the command-line arguments to run.
+        lysis.analyze(args)
 
-    config = json.load(open(_CONFIG_PATH, 'r'))
-    setattr(args, _BASE_PATH_KEY, config[_BASE_PATH_KEY])
-    log.debug("Loaded configuration: {}: {}".format(_BASE_PATH_KEY, config[
-        _BASE_PATH_KEY]))
-    return args
-'''
+
+
+    return
 
 
 if __name__ == "__main__":
