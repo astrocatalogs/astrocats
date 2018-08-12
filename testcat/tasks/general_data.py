@@ -8,7 +8,7 @@ from decimal import Decimal
 from glob import glob
 
 from astrocats.catalog.struct import SPECTRUM, PHOTOMETRY
-from astrocats.catalog import utils
+from astrocats import utils
 from astropy.io import fits
 
 from ..testnova import TESTNOVA, Testnova

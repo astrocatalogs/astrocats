@@ -6,7 +6,7 @@ from math import floor
 from decimal import Decimal
 
 from astrocats.catalog.struct import PHOTOMETRY
-from astrocats.catalog import utils
+from astrocats import utils
 
 from ..testnova import TESTNOVA
 from ..utils import clean_snname

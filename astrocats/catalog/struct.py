@@ -4,7 +4,7 @@ import os
 import sys
 
 import astrocats
-from astrocats.catalog import utils
+from astrocats import utils
 
 _PAS_PATH = "/Users/lzkelley/Research/catalogs/astroschema"
 if _PAS_PATH not in sys.path:

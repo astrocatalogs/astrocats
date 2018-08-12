@@ -5,7 +5,7 @@ import os
 
 import urllib
 
-from astrocats.catalog import utils
+from astrocats import utils
 from astrocats.catalog.struct import ENTRY, QUANTITY, SOURCE
 # from astrocats.catalog.entry import ENTRY
 from . import producer, DIR_TEMPLATES

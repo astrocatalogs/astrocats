@@ -14,13 +14,13 @@ import six
 from tqdm import tqdm
 
 from astrocats import __version__
-from astrocats.catalog import gitter
-from astrocats.catalog.production import director
+from astrocats.utils import gitter
+from astrocats.production import director
 # from astrocats.catalog.entry import ENTRY, Entry
 from astrocats.catalog.struct import (ENTRY, MODEL, SOURCE)
 from astrocats.catalog.struct import Entry
 from astrocats.catalog.task import Task
-from astrocats.catalog import utils
+from astrocats import utils
 
 
 class Catalog(object):
@@ -116,10 +116,10 @@ class Catalog(object):
             self.tasks_dir = os.path.join(self.catalog_dir, 'tasks')
             _check_dirs = []
 
-            self.PATH_BASE = ''
-            if catalog.args:
-                self.PATH_BASE = os.path.join(catalog.args.base_path,
-                                              self.catalog_dir, '')
+            self.PATH_BASE = os.path.join(self.catalog_dir, "")
+            # self.PATH_BASE = ''
+            # if catalog.args:
+            #     self.PATH_BASE = os.path.join(catalog.args.base_path, self.catalog_dir, '')
             self.PATH_INPUT = os.path.join(self.PATH_BASE, 'input', '')
             _check_dirs.append(self.PATH_INPUT)
 
