@@ -13,7 +13,7 @@ _STREAM_LEVEL_DEF = WARNING
 _LOADED_LEVEL = INFO
 
 
-__all__ = ["get_logger", "log_raise", "DEBUG", "WARNING", "INFO", "log_memory"]
+__all__ = ["get_logger", "DEBUG", "WARNING", "INFO", "log_memory"]
 
 
 class IndentFormatter(logging.Formatter):
@@ -38,8 +38,7 @@ class IndentFormatter(logging.Formatter):
 
 
 def get_logger(name=None, stream_fmt=None, file_fmt=None, date_fmt=None,
-               stream_level=None, file_level=None,
-               tofile=None, tostr=True):
+               stream_level=None, file_level=None, tofile=None, tostr=True):
     """Create a standard logger object which logs to file and or stdout stream.
 
     If a logger has already been created in this session, it is returned
@@ -72,13 +71,11 @@ def get_logger(name=None, stream_fmt=None, file_fmt=None, date_fmt=None,
         Logger object to use for logging.
 
     """
-    if tofile is None and not tostr:
-        raise ValueError(
-            "Must log to something: `tofile` or `tostr` must be `True`.")
+    if (tofile is None) and (not tostr):
+        raise ValueError("Must log to something: `tofile` or `tostr` must be `True`.")
 
     logger = logging.getLogger(name)
-    # Add a custom attribute to this `logger` so that we know when an existing
-    # one is being returned
+    # Add custom attribute so that we know when an existing logger is being returned
     if hasattr(logger, '_OSC_LOGGER'):
         return logger
     else:
@@ -116,7 +113,7 @@ def get_logger(name=None, stream_fmt=None, file_fmt=None, date_fmt=None,
         fileHandler.setFormatter(fileFormatter)
         fileHandler.setLevel(file_level)
         logger.addHandler(fileHandler)
-        #     Store output filename to `logger` object
+        # Store output filename to `logger` object
         logger.filename = tofile
 
     # Log To stdout
@@ -138,36 +135,14 @@ def get_logger(name=None, stream_fmt=None, file_fmt=None, date_fmt=None,
         logger.warning("... Writing to '{}'".format(os.path.abspath(tofile)))
 
     def _raise_error(self, msg, error=RuntimeError):
-            """Log an error message and raise an error.
-            """
-            # self.error(msg)
-            self.exception(msg, exc_info=True)
-            raise error(msg)
+        """Log an error message and raise an error.
+        """
+        self.exception(msg, exc_info=True)
+        raise error(msg)
 
     logger.raise_error = _raise_error.__get__(logger)
 
     return logger
-
-
-def log_raise(log, err_str, err_type=RuntimeError):
-    """Log an error message and raise an error.
-
-    Arguments
-    ---------
-    log : `logging.Logger` object
-    err_str : str
-        Error message to be logged and raised.
-    err_type : `Exception` object
-        Type of error to raise.
-
-    """
-    log.error(err_str)
-    # Make sure output is flushed
-    # (happens automatically to `StreamHandlers`, but not `FileHandlers`)
-    for handle in log.handlers:
-        handle.flush()
-    # Raise given error
-    raise err_type(err_str)
 
 
 def log_memory(log, pref=None, lvl=logging.DEBUG, raise_flag=True):

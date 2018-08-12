@@ -390,7 +390,7 @@ class _Entry(struct.Meta_Struct):
             pass
         # default behavior is to raise an error
         else:
-            utils.log_raise(self._log, err_str, RuntimeError)
+            self._log.raise_error(err_str, RuntimeError)
 
         return
 
@@ -477,7 +477,7 @@ class _Entry(struct.Meta_Struct):
             #     err_str = "Entry._init_cat_dict() failed!"
             #     err_str += "class: '{}', key_in_self: '{}', kwargs: '{}'".format(
             #         cat_dict_class, key_in_self, kwargs)
-            #     utils.log_raise(self._log, err_str, RuntimeError)
+            #     self._log.raise_error(err_str, RuntimeError)
             # return False
             failure = True
 
@@ -622,12 +622,12 @@ class _Entry(struct.Meta_Struct):
 
         if value is not None:
             if QUANTITY.VALUE in kwargs:
-                utils.log_raise(log, "`value` given as both arg and kwarg!\n{}".format(kwargs))
+                log.raise_error("`value` given as both arg and kwarg!\n{}".format(kwargs))
             kwargs[QUANTITY.VALUE] = value
 
         if source is not None:
             if QUANTITY.SOURCE in kwargs:
-                utils.log_raise(log, "`source` given as both arg and kwarg!\n{}".format(kwargs))
+                log.raise_error("`source` given as both arg and kwarg!\n{}".format(kwargs))
             kwargs[QUANTITY.SOURCE] = source
 
         # Make sure that a source, if given, is valid

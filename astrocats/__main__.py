@@ -65,7 +65,7 @@ def main():
         mod = importlib.import_module('.' + mod_name, package='astrocats')
     except Exception as err:
         log.error("Import of specified module '{}' failed.".format(mod_name))
-        log_raise(log, str(err), type(err))
+        log.raise_error(str(err), type(err))
 
     # Run the `main.main` method of the specified module
     log.debug("Running `main.main()`")
@@ -269,7 +269,7 @@ def setup_user_config(log):
         os.makedirs(config_path_dir)
 
     if not os.path.isdir(config_path_dir):
-        log_raise(log, "Configure path error '{}'".format(config_path_dir))
+        log.raise_error("Configure path error '{}'".format(config_path_dir))
 
     # Determine default settings
 
@@ -282,7 +282,7 @@ def setup_user_config(log):
     # Write settings to configuration file
     json.dump(config, open(_CONFIG_PATH, 'w'))
     if not os.path.exists(def_base_path):
-        log_raise(log, "Problem creating configuration file.")
+        log.raise_error("Problem creating configuration file.")
 
     return
 
@@ -309,7 +309,7 @@ def load_user_config(args, log):
         err_str = (
             "Configuration file does not exists ({}).\n".format(_CONFIG_PATH) +
             "Run `python -m astrocats setup` to configure.")
-        log_raise(log, err_str)
+        log.raise_error(err_str)
 
     config = json.load(open(_CONFIG_PATH, 'r'))
     setattr(args, _BASE_PATH_KEY, config[_BASE_PATH_KEY])

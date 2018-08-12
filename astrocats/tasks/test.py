@@ -372,11 +372,11 @@ def test_load_url(catalog):
     if os.path.exists(TEST_URL_FNAME_1):
         err_str = "File '{}' should not have been produced!".format(
             TEST_URL_FNAME_1)
-        log_raise(err_str, log)
+        log.raise_error(err_str)
     if test_data is None:
         err_str = "URL '{}' returned no data!".format(
             TEST_URL)
-        log_raise(err_str, log)
+        log.raise_error(err_str)
 
     # Do Write
     log.info("calling `load_url(...write=True)`")
@@ -388,11 +388,11 @@ def test_load_url(catalog):
     if not os.path.exists(test_path):
         err_str = "File '{}' should have been produced!".format(
             test_path)
-        log_raise(err_str, log)
+        log.raise_error(err_str)
     if test_data is None:
         err_str = "URL '{}' returned no data!".format(
             TEST_URL)
-        log_raise(err_str, log)
+        log.raise_error(err_str)
 
     # Make sure that update mode is working
     log.info("calling `load_url(...update_mode=True)`")
@@ -408,20 +408,20 @@ def test_load_url(catalog):
     #                              write=True, update_mode=True)
     # if test_data is None:
     #     err_str = "Update mode should Still have created file!"
-    #     log_raise(err_str, log)
+    #     log.raise_error(err_str)
     # # update mode should return None for unchanged URL
     # test_data = catalog.load_url(TEST_URL_STATIC, TEST_STATIC_FNAME,
     #                              write=False, update_mode=True)
     # if test_data is not None:
     #     err_str = "Update mode should have returned None."
-    #     log_raise(err_str, log)
+    #     log.raise_error(err_str)
 
     # Use an invalid URL, but valid file
     log.info("calling `load_url(..., write=False)` with invalid URL")
     test_data = catalog.load_url(TEST_BAD_URL, TEST_URL_FNAME_2, write=False)
     if test_data is None:
         err_str = "Data should still have been retrieved!"
-        log_raise(err_str, log)
+        log.raise_error(err_str)
 
     # Use invalid URL and invalid file, should return None
     log.info("calling `load_url(..., fail=False)` with invalid URL and File")
@@ -430,7 +430,7 @@ def test_load_url(catalog):
     if test_data is not None:
         err_str = "Return value should have been None!"
         err_str += "\n'{}'".format(test_data)
-        log_raise(err_str, log)
+        log.raise_error(err_str)
 
     # Use invalid URL and invalid file, with `fail` flag --- should raise
     log.info("calling `load_url(..., fail=True)` with invalid URL and File")
@@ -443,7 +443,7 @@ def test_load_url(catalog):
     else:
         err_str = "An error should have been raised!"
         err_str += "\nInstead, got '{}'".format(test_data)
-        log_raise(err_str)
+        log.raise_error(err_str)
 
     return
 
@@ -453,8 +453,3 @@ def test_load_url(catalog):
     catalog.load_cached_url('http://google.com', test_path)
 
     return
-
-
-def log_raise(err_str, log):
-    log.error(err_str)
-    raise RuntimeError(err_str)

@@ -790,11 +790,11 @@ class Catalog(object):
             # If there are no additional aliases (besides name) then there can't be duplicates
             if len(allnames1) <= 1:
                 if len(allnames1) == 0:
-                    utils.log_raise(self.log, "No aliases (missing name) for '{}'!".format(name1))
+                    self.log.raise_error("No aliases (missing name) for '{}'!".format(name1))
                 else:
                     alias1 = allnames1.pop()
                     if alias1 != name1:
-                        utils.log_raise(self.log, "alias '{}' != name '{}'!".format(alias1, name1))
+                        self.log.raise_error("alias '{}' != name '{}'!".format(alias1, name1))
                 n1 = n1 + 1
                 mainpbar.update(1)
                 continue
@@ -817,13 +817,11 @@ class Catalog(object):
                 # If there are no additional aliases (besides name) then there can't be duplicates
                 if len(allnames2) <= 1:
                     if len(allnames2) == 0:
-                        utils.log_raise(self.log,
-                                        "No aliases (missing name) for '{}'!".format(name2))
+                        self.log.raise_error("No aliases (missing name) for '{}'!".format(name2))
                     else:
                         alias2 = allnames2.pop()
                         if alias2 != name2:
-                            utils.log_raise(self.log,
-                                            "alias '{}' != name '{}'!".format(alias2, name2))
+                            self.log.raise_error("alias '{}' != name '{}'!".format(alias2, name2))
                     continue
 
                 # If there are any common names or aliases, merge
