@@ -75,34 +75,7 @@ class Catalog(object):
     _EVENT_HTML_COLUMNS_CUSTOM = {}
 
     class PATHS(object):
-        """Store and control catalog file-structure information.
-
-        Individual catalogs must provide the below file structure.
-        -   `repos.json`
-        -   `tasks.json`
-
-        Attributes
-        ----------
-        catalog : `astrocats.catalog.catalog.Catalog` (sub)class object
-        catalog_dir : str
-        tasks_dir : str
-        PATH_BASE : str
-        PATH_INPUT : str
-        PATH_OUTPUT : str
-        REPOS_LIST : str
-        TASK_LIST : str
-        repos_dict : dict
-            Dictionary of 'repo-types: repo-lists' key-value pairs.
-            Loaded from `REPOS_LIST` file.
-
-        Methods
-        -------
-        get_all_repo_folders : get a list of paths for all data repositories
-        get_repo_boneyard : get the path of the boneyard repository
-        get_repo_input_folders : get the paths of all input data repositories
-        get_repo_output_file_list : get the paths of all files in output repos
-        get_repo_output_folders : get the paths of all input data repositories
-
+        """
         """
 
         def __init__(self, catalog):
@@ -292,7 +265,6 @@ class Catalog(object):
             if os.path.isfile(fname):
                 return True
             return False
-
 
     def __init__(self, args={}, log=logging.Logger("INFO"), git_clone=True):
         # Store runtime arguments
