@@ -18,6 +18,18 @@ class MyProgressPrinter(git.RemoteProgress):
         print(msg + "\r")
 
 
+def get_git():
+    """Get a string representing the current git status (tag and commit hash).
+
+    Returns
+    -------
+    git_vers : str
+    """
+    import subprocess
+    git_vers = subprocess.check_output(["git", "describe", "--always"]).strip()
+    return git_vers
+
+
 def fetch(repo_name, progress=True, log=None):
     repo = git.Repo(repo_name)
     _progress = MyProgressPrinter() if progress else None

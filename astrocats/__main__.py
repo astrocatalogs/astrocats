@@ -246,18 +246,6 @@ def load_log(args):
     return log
 
 
-def get_git():
-    """Get a string representing the current git status (tag and commit hash).
-
-    Returns
-    -------
-    git_vers : str
-    """
-    import subprocess
-    git_vers = subprocess.check_output(["git", "describe", "--always"]).strip()
-    return git_vers
-
-
 '''
 def setup_user_config(log):
     """Setup a configuration file in the user's home directory.
