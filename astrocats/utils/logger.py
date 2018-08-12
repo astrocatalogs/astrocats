@@ -137,8 +137,18 @@ def get_logger(name=None, stream_fmt=None, file_fmt=None, date_fmt=None,
     def _raise_error(self, msg, error=RuntimeError):
         """Log an error message and raise an error.
         """
-        self.exception(msg, exc_info=True)
-        raise error(msg)
+        # If `error` is a class of error e.g. `RuntimeError`, then raise it
+        if callable(error):
+            self.exception(msg, exc_info=True)
+            raise error(msg)
+        # If `error` is an error instance, then extend it
+        else:
+            # self.exception(msg)
+            self.error(msg)
+            self.exception(str(error))
+            # self.exception(str(error), exc_info=True)
+            raise error
+            # raise type(error)(msg) from error
 
     logger.raise_error = _raise_error.__get__(logger)
 
