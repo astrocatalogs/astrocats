@@ -136,7 +136,7 @@ class Paths(object):
         return
 
     def __str__(self):
-        rstr = "`catalog_dir` = '{}'".format(self.catalog_dir)
+        rstr = "`ROOT` = '{}'".format(self.ROOT)
         rstr += "\n`INPUT` = '{}'".format(self.INPUT)
         rstr += "\n`OUTPUT` = '{}'".format(self.OUTPUT)
         rstr += "\n\t`BIBLIO_FILE` = '{}'".format(self.BIBLIO_FILE)
@@ -148,8 +148,8 @@ class Paths(object):
         rstr += "\n\t\t`ALL_AUTHORS_FILE` = '{}'".format(self.ALL_AUTHORS_FILE)
         rstr += "\n\t`JSON` = '{}'".format(self.JSON)
         rstr += "\n\t`HTML` = '{}'".format(self.HTML)
-        rstr += "\n`REPOS_LIST` = '{}'".format(self.REPOS_LIST)
-        rstr += "\n`TASK_LIST` = '{}'".format(self.TASK_LIST)
+        rstr += "\n`REPOS_FILE` = '{}'".format(self.REPOS_FILE)
+        rstr += "\n`TASKS_FILE` = '{}'".format(self.TASKS_FILE)
         return rstr
 
     def _get_repo_file_list(self, repo_folders, normal=True, bones=True):
@@ -164,9 +164,8 @@ class Paths(object):
                 continue
             if not bones and 'boneyard' in rep:
                 continue
-            these_files = glob(rep + "/*.json") + glob(rep + "/*.json.gz")
-            self.catalog.log.debug(
-                "Found {} files in '{}'".format(len(these_files), rep))
+            these_files = glob.glob(rep + "/*.json") + glob.glob(rep + "/*.json.gz")
+            # self.log.debug("Found {} files in '{}'".format(len(these_files), rep))
             files += these_files
 
         return files
