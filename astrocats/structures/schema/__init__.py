@@ -3,29 +3,16 @@
 
 import os
 # import sys
-import warnings
+# import warnings
 import shutil
 import glob
-from collections import OrderedDict
+# from collections import OrderedDict
 
 # import astrocats
 from astrocats import PATHS as AC_PATHS
 # from astrocats.structures import struct
 
 import pyastroschema as pas  # noqa
-
-
-# This describes replacements/renames that should be applied to the file corresponding to the
-# given schema name
-_REPLACE = {
-    'quantity': [
-        ["error_value", "e_value"],
-        ["error_lower", "e_lower_value"],
-        ["error_upper", "e_upper_value"],
-        ["units_value", "u_value"],
-        ["units_error", "u_e_value"],
-    ]
-}
 
 
 def setup(log):
@@ -92,51 +79,8 @@ def setup(log):
 
     return
 
-    mod_files = schema_fnames + add_files
 
-    # Make any schema-file modifications
-    warnings.warn("WARNING: `modify_schema_file` might not take effect until a second run...")
-    for sch_file in mod_files:
-        modify_schema_file(sch_file)
-
-    # Save all schema to output directory
-    output_structures = struct.STRUCTURES + add_structures
-    for obj in output_structures:
-        output_schema(PATH_SCHEMA_OUTPUT, obj)
-
-    return
-
-
-def modify_schema_file(fname):
-
-    if not os.path.exists(fname):
-        raise RuntimeError("Schema file '{}' does not exist!".format(fname))
-
-    def do_replace(fil, mapping):
-        with open(fil, 'r') as inn:
-            schema = inn.read()
-
-        for old, new in mapping:
-            schema = schema.replace(old, new)
-
-        with open(fil, 'w') as out:
-            out.write(schema)
-
-        return
-
-    # Get the name of the schema itself
-    schema_name = os.path.basename(fname).lower().split('.json')[0]
-    # If there is any entry for this schema, do the replacement
-    if schema_name in _REPLACE:
-        # print("Running replace in '{}'".format(schema_name))
-        # Load the mapping (src-->dst) for replacements
-        mapping = _REPLACE[schema_name]
-        # Do the replacing
-        do_replace(fname, mapping)
-
-    return
-
-
+'''
 def output_schema(path_out, struct_obj, verbose=True):
     # Order of dictionary keys in output file
     sort_order = ['$schema', 'id', 'title', 'description', 'version',
@@ -188,3 +132,4 @@ def output_schema(path_out, struct_obj, verbose=True):
     # if verbose:
     #     print("saved structure '{}' schema to '{}'".format(_title, fname))
     return fname
+'''
