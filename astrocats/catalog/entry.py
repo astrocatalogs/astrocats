@@ -17,7 +17,7 @@ from astrocats.catalog.struct import (ERROR, MODEL, QUANTITY, SOURCE, SPECTRUM)
 from six import string_types
 
 
-@struct.set_struct_schema("entry", extensions="astrocats_entry")  # noqa
+@struct.set_struct_schema("astroschema_entry", extensions="astrocats_entry")  # noqa
 class _Entry(struct.Meta_Struct):
 
     def __init__(self, catalog=None, name=None, stub=False):

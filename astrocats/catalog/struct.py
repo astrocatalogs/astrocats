@@ -1,19 +1,12 @@
 """
 """
 import os
-import sys
+# import sys
 
-import astrocats
-from astrocats import utils
-
-_PAS_PATH = "/Users/lzkelley/Research/catalogs/astroschema"
-if _PAS_PATH not in sys.path:
-    sys.path.append(_PAS_PATH)
+# import astrocats
+from astrocats import utils, PATHS
 
 import pyastroschema as pas  # noqa
-
-PATH_SCHEMA_INPUT = os.path.join(astrocats._PATH_SCHEMA, "input", "")
-# PATH_SCHEMA_OUTPUT = os.path.join(astrocats._PATH_SCHEMA, "output", "")
 
 
 def set_struct_schema(schema_source, extensions=[], updates=[], **kwargs):
@@ -29,7 +22,7 @@ def set_struct_schema(schema_source, extensions=[], updates=[], **kwargs):
         if os.path.exists(sname) and len(sname.split(os.path.sep)) > 1:
             return sname
 
-        fname = os.path.join(PATH_SCHEMA_INPUT, sname)
+        fname = os.path.join(PATHS.SCHEMA_OUTPUT, sname)
         if not fname.lower().endswith('.json'):
             fname += '.json'
 
@@ -51,8 +44,7 @@ class CatDictError(Exception):
 
     def __init__(self, *args, **kwargs):
         """Initialize `CatDictError`."""
-        # If `warn` is True, then a warning should be issues.  Otherwise ignore
-        # completely
+        # If `warn` is True, then a warning should be issues.  Otherwise ignore completely
         self.warn = True
         if 'warn' in kwargs:
             self.warn = kwargs.pop('warn')
@@ -101,7 +93,7 @@ class Meta_Struct(pas.struct.Struct):
 # =================================
 
 
-@set_struct_schema("source", extensions="astrocats_source")
+@set_struct_schema("astroschema_source", extensions="astrocats_source")
 class Source(Meta_Struct):
 
     def sort_func(self, key):
@@ -150,8 +142,7 @@ Source._KEYS = SOURCE
 # Quantity
 # =================================
 
-
-@set_struct_schema("quantity", extensions="astrocats_quantity")
+@set_struct_schema("astroschema_quantity", extensions="astrocats_quantity")
 class Quantity(Meta_Struct):
 
     def __init__(self, parent, key=None, **kwargs):
@@ -211,24 +202,22 @@ Quantity._KEYS = QUANTITY
 # =================================
 
 
-@set_struct_schema("photometry", extensions="astrocats_photometry")
+@set_struct_schema("astroschema_photometry", extensions="astrocats_photometry")
 class Photometry(Meta_Struct):
 
     def __init__(self, parent, key=None, **kwargs):
         super(Photometry, self).__init__(parent, key=key, **kwargs)
 
-        '''
         # If `BAND` is given, but any of `bandmetaf_keys` is not, try to infer
-        if self._KEYS.BAND in self:
-            sband = self[self._KEYS.BAND]
-            bandmetaf_keys = [self._KEYS.INSTRUMENT, self._KEYS.TELESCOPE, self._KEYS.SYSTEM]
-
-            for bmf in bandmetaf_keys:
-                if bmf not in self:
-                    temp = utils.bandmetaf(sband, bmf)
-                    if temp is not None:
-                        self[bmf] = temp
-        '''
+        # if self._KEYS.BAND in self:
+        #     sband = self[self._KEYS.BAND]
+        #     bandmetaf_keys = [self._KEYS.INSTRUMENT, self._KEYS.TELESCOPE, self._KEYS.SYSTEM]
+        #
+        #     for bmf in bandmetaf_keys:
+        #         if bmf not in self:
+        #             temp = utils.bandmetaf(sband, bmf)
+        #             if temp is not None:
+        #                 self[bmf] = temp
 
         # Convert dates to MJD
         timestrs = [str(x) for x in utils.listify(self.get(self._KEYS.TIME, ''))]
@@ -260,18 +249,16 @@ class Photometry(Meta_Struct):
 
         return
 
-    '''
-    def _clean_value_for_key(self, key, value):
-        value = super(_Photometry, self)._clean_value_for_key(key, value)
-
-        # Do some basic homogenization
-        if key == self._KEYS.BAND:
-            return utils.bandrepf(value)
-        elif key == self._KEYS.INSTRUMENT:
-            return utils.instrumentrepf(value)
-
-        return value
-    '''
+    # def _clean_value_for_key(self, key, value):
+    #     value = super(_Photometry, self)._clean_value_for_key(key, value)
+    #
+    #     # Do some basic homogenization
+    #     if key == self._KEYS.BAND:
+    #         return utils.bandrepf(value)
+    #     elif key == self._KEYS.INSTRUMENT:
+    #         return utils.instrumentrepf(value)
+    #
+    #     return value
 
     def sort_func(self, key):
         """Specify order for attributes."""
@@ -307,7 +294,7 @@ PHOTOMETRY.BAND_SET = PHOTOMETRY.BANDSET
 # ==================================
 
 
-@set_struct_schema("spectrum", extensions="astrocats_spectrum")
+@set_struct_schema("astroschema_spectrum", extensions="astrocats_spectrum")
 class Spectrum(Meta_Struct):
     """Class for storing a single spectrum."""
 
@@ -392,7 +379,7 @@ Spectrum._KEYS = SPECTRUM
 # ==================================
 
 
-@set_struct_schema("error")
+@set_struct_schema("astrocats_error")
 class Error(Meta_Struct):
     pass
 
@@ -405,7 +392,7 @@ Error._KEYS = ERROR
 # ==================================
 
 
-@set_struct_schema("realization")
+@set_struct_schema("astrocats_realization")
 class Realization(Meta_Struct):
     pass
 
@@ -418,7 +405,7 @@ Realization._KEYS = REALIZATION
 # ==================================
 
 
-@set_struct_schema("model")
+@set_struct_schema("astrocats_model")
 class Model(Meta_Struct):
     """Container for a model with associated metadata.
 
@@ -479,7 +466,7 @@ Model._KEYS = MODEL
 # ==================================
 
 
-@set_struct_schema("correlation")
+@set_struct_schema("astrocats_correlation")
 class Correlation(Meta_Struct):
     """Class to store correlation of a `Quantity` with another `Quantity`."""
 
@@ -520,7 +507,7 @@ ENTRY.DISCOVER_DATE = ENTRY.DISCOVERDATE
 
 # Other
 
-
+'''
 STRUCTURES = [Correlation, Entry, Photometry, Spectrum,
               Source, Realization, Model, Quantity, Error,
               "defs.json"]
@@ -528,3 +515,4 @@ STRUCTURES = [Correlation, Entry, Photometry, Spectrum,
 # Run the `main` routine to setup schema
 from astrocats.catalog import schema
 schema.main()
+'''
