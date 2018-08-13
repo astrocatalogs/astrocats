@@ -16,7 +16,7 @@ __author__ = 'James Guillochon & Luke Kelley'
 __license__ = 'MIT'
 
 
-class _PATHS(object):
+class Paths(object):
     """
     """
 
@@ -29,7 +29,7 @@ class _PATHS(object):
 
     def __init__(self):
         # Determine if this instance is from a derived class (as apposed to this class itself)
-        is_astrocats = (type(self) == _PATHS)
+        is_astrocats = (type(self) == Paths)
         is_derived = (not is_astrocats)
 
         if self.ASTROCATS != os.path.join(os.path.dirname(__file__), ""):
@@ -51,7 +51,8 @@ class _PATHS(object):
         self.SCHEMA = os.path.join(self.STRUCTURES, "schema", "")
         self.SCHEMA_INPUT = os.path.join(self.SCHEMA, "input", "")
         self.SCHEMA_OUTPUT = os.path.join(self.SCHEMA, "output", "")
-        check_dirs_derived.extend([self.SCHEMA_OUTPUT])
+        # check_dirs_derived.extend([self.SCHEMA_OUTPUT])
+        check_dirs_astrocats.extend([self.SCHEMA_OUTPUT])
 
         self.SCHEMA_INPUT_ASTROSCHEMA = os.path.join(self.SCHEMA_INPUT, "astroschema", "")
         self.SCHEMA_INPUT_ASTROCATS = os.path.join(self.SCHEMA_INPUT, "astrocats", "")
@@ -117,8 +118,6 @@ class _PATHS(object):
                 if not os.path.isfile(fname):
                     raise RuntimeError("Required file '{}' is not a file!".format(fname))
 
-        # self.repos_dict = utils.read_json_dict(self.REPOS_LIST)
-
         # self.catalog = catalog
         # this_file = os.path.abspath(sys.modules[self.__module__].__file__)
         # Path of the `catalog`
@@ -171,6 +170,15 @@ class _PATHS(object):
             files += these_files
 
         return files
+
+    @property
+    def repos_dict(self):
+        if hasattr(self, '_repos_dict'):
+            return self._repos_dict
+        from astrocats import utils
+        repos = utils.read_json_dict(self.REPOS_FILE)
+        self._repos_dict = repos
+        return repos
 
     def get_all_repo_folders(self, boneyard=True, private=False):
         """Get the full paths of all data repositories."""
@@ -230,10 +238,10 @@ class _PATHS(object):
         repo_folders += self.repos_dict.get('output', [])
         if bones:
             repo_folders += self.repos_dict.get('boneyard', [])
-        repo_folders = list(
-            sorted(
-                list(set(repo_folders)),
-                key=lambda key: utils.repo_priority(key)))
+        # repo_folders = list(
+        #     sorted(
+        #         list(set(repo_folders)),
+        #         key=lambda key: utils.repo_priority(key)))
         repo_folders = [
             os.path.join(self.OUTPUT, rf) for rf in repo_folders
             if len(rf)
@@ -249,7 +257,7 @@ class _PATHS(object):
         return False
 
 
-PATHS = _PATHS()
+PATHS = Paths()
 
 
 # =============================================
@@ -274,4 +282,4 @@ for fname in old_files:
 
 from .utils import gitter
 
-__git_version__ = gitter.get_git(os.path.dirname(__file__))
+__git_version__ = gitter.get_git_sha(os.path.dirname(__file__))
