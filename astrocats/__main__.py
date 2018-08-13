@@ -75,11 +75,9 @@ def main():
         msg = "Import of specified catalog module '{}' failed.".format(catalog_path)
         log.raise_error(msg, err)
 
-    # Perform setup operations with the target catalog
+    # Perform setup operations before loading the target catalog
     # -----------------------------------------------------------
-    # setup(catalog)
-    catalog = None
-    setup(catalog=catalog, log=log)
+    setup(log)
 
     # Construct a catalog instance based on the loaded module
     try:
@@ -98,6 +96,9 @@ def main():
 
     except Exception as err:
         raise
+
+    # Perform setup operations with the target catalog
+    setup_catalog(catalog)
 
     # Run target command in the given catalog module
     # -----------------------------------------------------------
@@ -218,27 +219,30 @@ def run_command(args, log, catalog_module):
         # Pass the command-line arguments to run.
         lysis.analyze(args)
 
+    return
 
+
+def setup(log):
+    log.debug(__file__ + ":setup()")
+
+    # Setup schema files
+    # ------------------------
+    log.info("Setting up schema")
+    import astrocats.structures.schema
+    astrocats.structures.schema.setup(log=log)
 
     return
 
 
-def setup(catalog=None, log=None, git_clone=False):
-    if catalog is not None:
-        log = catalog.log
-    elif (log is None):
-        raise RuntimeError("If no `catalog` is provided, `log` is required")
+def setup_catalog(catalog, git_clone=True):
+    log = catalog.log
+    log.debug(__file__ + ":setup_catalog()")
 
     # Setup git repositories
     # -------------------------
     if git_clone:
-        log.debug("Cloning all repos")
+        log.info("Cloning all repos")
         gitter.git_clone_all_repos(catalog)
-
-    # Setup schema files
-    # ------------------------
-    import astrocats.structures.schema
-    astrocats.structures.schema.setup(catalog=catalog, log=log)
 
     return
 
