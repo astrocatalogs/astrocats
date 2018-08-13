@@ -18,7 +18,7 @@ class MyProgressPrinter(git.RemoteProgress):
         print(msg + "\r")
 
 
-def get_git():
+def get_git(path=None):
     """Get a string representing the current git status (tag and commit hash).
 
     Returns
@@ -26,7 +26,8 @@ def get_git():
     git_vers : str
     """
     import subprocess
-    git_vers = subprocess.check_output(["git", "describe", "--always"]).strip()
+    command = ["git", "describe", "--always"]
+    git_vers = subprocess.check_output(command, cwd=path).strip()
     return git_vers
 
 
