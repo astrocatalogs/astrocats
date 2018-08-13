@@ -8,21 +8,247 @@ warnings.filterwarnings("ignore", message="numpy.dtype size changed")
 warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 
 import os
+import glob
 import sys
 
 __version__ = '0.3.42'
 __author__ = 'James Guillochon & Luke Kelley'
 __license__ = 'MIT'
 
-_PATH_ROOT = os.path.join(os.path.dirname(__file__), "")
-_PATH_CATALOG = os.path.join(_PATH_ROOT, "catalog", "")
-_PATH_SCHEMA = os.path.join(_PATH_ROOT, "schema", "")
+
+class _PATHS(object):
+    """
+    """
+
+    ASTROCATS = os.path.join(os.path.dirname(__file__), "")
+
+    ROOT = os.path.join(os.path.dirname(__file__), "")
+    NAME = __name__
+    FILE = __file__
+
+    def __init__(self):
+        # Determine if this instance is from a derived class (as apposed to this class itself)
+        derived = (type(self) != _PATHS)
+
+        check_dirs = []
+
+        self.CATALOG = os.path.join(self.ROOT, "catalog", "")
+
+        # Schema files
+        # -----------------------------
+        self.SCHEMA = os.path.join(self.CATALOG, "schema", "")
+        self.SCHEMA_INPUT = os.path.join(self.SCHEMA, "input", "")
+        self.SCHEMA_OUTPUT = os.path.join(self.SCHEMA, "output", "")
+        check_dirs.extend([self.SCHEMA_OUTPUT])
+
+        self.SCHEMA_INPUT_ASTROSCHEMA = os.path.join(self.SCHEMA_INPUT, "astroschema", "")
+        self.SCHEMA_INPUT_ASTROCATS = os.path.join(self.SCHEMA_INPUT, "astrocats", "")
+        check_dirs.extend([self.SCHEMA_INPUT_ASTROSCHEMA, self.SCHEMA_INPUT_ASTROCATS])
+
+        self.INPUT = os.path.join(self.ROOT, 'input', '')
+        check_dirs.append(self.INPUT)
+
+        # Output Paths and Files
+        # ----------------------
+        self.OUTPUT = os.path.join(self.ROOT, 'output', '')
+        check_dirs.append(self.OUTPUT)
+
+        self.BIBLIO_FILE = os.path.join(self.OUTPUT, 'biblio.json')
+        self.BIBLIO_MIN_FILE = os.path.join(self.OUTPUT, 'biblio.min.json')
+
+        self.WEB_TABLE_FILE = os.path.join(self.OUTPUT, 'catalog.json')
+        self.WEB_TABLE_MIN_FILE = os.path.join(self.OUTPUT, 'catalog.min.json')
+
+        self.NAMES_FILE = os.path.join(self.OUTPUT, 'names.json')
+        self.NAMES_MIN_FILE = os.path.join(self.OUTPUT, 'names.min.json')
+
+        # Cache path and files
+        self.CACHE = os.path.join(self.OUTPUT, 'cache', '')
+        check_dirs.append(self.CACHE)
+
+        self.MD5_FILE = os.path.join(self.CACHE, 'md5s.json')
+        self.AUTHORS_FILE = os.path.join(self.CACHE, 'bibauthors.json')
+        self.ALL_AUTHORS_FILE = os.path.join(self.CACHE, 'biballauthors.json')
+        self.HOST_IMAGES_FILE = os.path.join(self.CACHE, 'host_images.json')
+
+        # json path and files
+        self.JSON = os.path.join(self.OUTPUT, 'json', '')
+        check_dirs.append(self.JSON)
+        # html path and files
+        self.HTML = os.path.join(self.OUTPUT, 'html', '')
+        check_dirs.append(self.HTML)
+
+        # critical datafiles
+        # ------------------
+        self.TASKS = os.path.join(self.ROOT, 'tasks', "")
+        self.REPOS_LIST = os.path.join(self.INPUT, 'repos.json')
+        self.TASK_LIST = os.path.join(self.INPUT, 'tasks.json')
+
+        self._derived = derived
+
+        # Only continue if this is a derived class from a particular catalog module
+        if not derived:
+            return
+
+        # self.repos_dict = utils.read_json_dict(self.REPOS_LIST)
+
+        # self.catalog = catalog
+        # this_file = os.path.abspath(sys.modules[self.__module__].__file__)
+        # Path of the `catalog`
+        # self.catalog_dir = os.path.dirname(this_file)
+        # Path in which `catalog` resides
+        # self.root_dir = os.path.realpath(os.path.join(self.catalog_dir, os.path.pardir))
+        # self.tasks_dir = os.path.join(self.catalog_dir, 'tasks')
+
+        # Create directories that dont exist
+        for cd in check_dirs:
+            self._check_create_dir(cd)
+
+        return
+
+    def _check_create_dir(self, direct):
+        if not os.path.isdir(direct):
+            print("Creating path '{}'".format(direct))
+            os.makedirs(direct)
+
+        return
+
+    def __str__(self):
+        rstr = "`catalog_dir` = '{}'".format(self.catalog_dir)
+        rstr += "\n`INPUT` = '{}'".format(self.INPUT)
+        rstr += "\n`OUTPUT` = '{}'".format(self.OUTPUT)
+        rstr += "\n\t`BIBLIO_FILE` = '{}'".format(self.BIBLIO_FILE)
+        rstr += "\n\t`NAMES_MIN_FILE` = '{}'".format(self.NAMES_MIN_FILE)
+        rstr += "\n\t`WEB_TABLE_FILE` = '{}'".format(self.WEB_TABLE_FILE)
+        rstr += "\n\t`CACHE` = '{}'".format(self.CACHE)
+        rstr += "\n\t\t`MD5_FILE` = '{}'".format(self.MD5_FILE)
+        rstr += "\n\t\t`AUTHORS_FILE` = '{}'".format(self.AUTHORS_FILE)
+        rstr += "\n\t\t`ALL_AUTHORS_FILE` = '{}'".format(self.ALL_AUTHORS_FILE)
+        rstr += "\n\t`JSON` = '{}'".format(self.JSON)
+        rstr += "\n\t`HTML` = '{}'".format(self.HTML)
+        rstr += "\n`REPOS_LIST` = '{}'".format(self.REPOS_LIST)
+        rstr += "\n`TASK_LIST` = '{}'".format(self.TASK_LIST)
+        return rstr
+
+    def _get_repo_file_list(self, repo_folders, normal=True, bones=True):
+        """Get filenames for files in each repository.
+
+        `boneyard` optionally include with `bones=True`.
+        """
+        # repo_folders = get_repo_output_folders()
+        files = []
+        for rep in repo_folders:
+            if 'boneyard' not in rep and not normal:
+                continue
+            if not bones and 'boneyard' in rep:
+                continue
+            these_files = glob(rep + "/*.json") + glob(rep + "/*.json.gz")
+            self.catalog.log.debug(
+                "Found {} files in '{}'".format(len(these_files), rep))
+            files += these_files
+
+        return files
+
+    def get_all_repo_folders(self, boneyard=True, private=False):
+        """Get the full paths of all data repositories."""
+        all_repos = self.get_repo_input_folders(private=private)
+        all_repos.extend(self.get_repo_output_folders(bones=boneyard))
+        return all_repos
+
+    def get_repo_boneyard(self):
+        bone_path = self.repos_dict.get('boneyard', [])
+        try:
+            bone_path = bone_path[0]
+        except TypeError:
+            pass
+        bone_path = os.path.join(self.OUTPUT, bone_path, '')
+        return bone_path
+
+    def get_filename_for_internal_event(self, event_name, suffix='.json'):
+        """Get the full path to the target input folder.
+        """
+        folder = self.repos_dict.get('internal')
+        # 'internal' must be a unique folder
+        if (folder is None) or (len(folder) != 1):
+            return None
+
+        fname = os.path.join(self.INPUT, folder[0], event_name + suffix)
+        return fname
+
+    def get_repo_input_folders(self, private=False):
+        """Get the full paths of the input data repositories."""
+        repo_folders = []
+        repo_folders += self.repos_dict.get('external', [])
+        repo_folders += self.repos_dict.get('internal', [])
+        if private:
+            repo_folders += self.repos_dict.get('private', [])
+        repo_folders = list(sorted(set(repo_folders)))
+        repo_folders = [
+            os.path.join(self.INPUT, rf) for rf in repo_folders
+            if len(rf)
+        ]
+        return repo_folders
+
+    def get_md5_filename(self, fname='md5s.json'):
+        return os.path.join(self.CACHE, fname)
+
+    def get_repo_output_file_list(self, normal=True, bones=True):
+        """Get a list of all existing output files.
+
+        These are the files deleted in the `delete_old_entry_files` task.
+        """
+        repo_folders = self.get_repo_output_folders(bones=bones)
+        repo_files = self._get_repo_file_list(repo_folders, normal=normal, bones=bones)
+        return repo_files
+
+    def get_repo_output_folders(self, bones=True):
+        """Get the full paths of the output data repositories."""
+        repo_folders = []
+        repo_folders += self.repos_dict.get('output', [])
+        if bones:
+            repo_folders += self.repos_dict.get('boneyard', [])
+        repo_folders = list(
+            sorted(
+                list(set(repo_folders)),
+                key=lambda key: utils.repo_priority(key)))
+        repo_folders = [
+            os.path.join(self.OUTPUT, rf) for rf in repo_folders
+            if len(rf)
+        ]
+        return repo_folders
+
+    def is_internal_event(self, event_name):
+        """Check if the given event corresponds to an 'internal' file.
+        """
+        fname = self.get_filename_for_internal_event(event_name)
+        if os.path.isfile(fname):
+            return True
+        return False
+
+
+PATHS = _PATHS()
+
+
+# =============================================
+
 
 warnings.warn("Adding `pyastroschema` to `sys.path` for easy access... fix this")
 _PAS_PATH = "/Users/lzkelley/Research/catalogs/astroschema"
 if _PAS_PATH not in sys.path:
     sys.path.append(_PAS_PATH)
 
+# =====================================
+
+_RM_PATH = "/Users/lzkelley/Research/catalogs/redesign/astrocats/astrocats/catalog/schema/output/"
+warnings.warn("Removing schema files from {} for testing!".format(_RM_PATH))
+pattern = os.path.join(_RM_PATH, "", "*.json")
+old_files = sorted(glob.glob(pattern))
+old_files = [os.path.join(_RM_PATH, fname) for fname in old_files]
+for fname in old_files:
+    os.remove(fname)
+
+# ======================================
+
 from .utils import gitter
 
-__git_version__ = gitter.get_git()
+__git_version__ = gitter.get_git(os.path.dirname(__file__))
