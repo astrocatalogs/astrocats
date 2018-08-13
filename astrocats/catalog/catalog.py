@@ -13,30 +13,16 @@ import psutil
 import six
 from tqdm import tqdm
 
-from astrocats import __version__
+from astrocats import __version__, utils
 from astrocats.utils import gitter
-from astrocats.production import director
+# from astrocats.production import director
 # from astrocats.catalog.entry import ENTRY, Entry
-from astrocats.catalog.struct import (ENTRY, MODEL, SOURCE)
-from astrocats.catalog.struct import Entry
-from astrocats.catalog.task import Task
-from astrocats import utils
+# from astrocats.catalog.struct import (ENTRY, MODEL, SOURCE)
+# from astrocats.catalog.struct import Entry
+# from astrocats.catalog.task import Task
 
 
 class Catalog(object):
-    """Object to hold the main catalog dictionary and other catalog globals.
-
-    Attributes
-    ----------
-    OSC_BIBCODE
-    OSC_NAME
-    OSC_URL
-    ADS_BIB_URL
-    TRAVIS_QUERY_LIMIT
-    COMPRESS_ABOVE_FILESIZE
-
-    """
-
     OSC_BIBCODE = '2017ApJ...835...64G'
     OSC_NAME = 'The Open Supernova Catalog'
     OSC_URL = 'https://sne.space'
@@ -51,13 +37,14 @@ class Catalog(object):
     COMPRESS_ABOVE_FILESIZE = 90e6  # bytes
     # Set behavior for when adding a quantity (photometry, source, etc) fails
     #    Options are 'IGNORE', 'WARN', 'RAISE' (see `utils.imports`)
-    ADDITION_FAILURE_BEHAVIOR = utils.ADD_FAIL_ACTION.IGNORE
+    # ADDITION_FAILURE_BEHAVIOR = utils.ADD_FAIL_ACTION.IGNORE
 
     # These Dictionaries are combined into `HTML_Pro.COLUMNS`.
     #    The 'keys' determine which keys from each Entry are stored.  The 'values' define the
     #    column header titles, and the order in which they are listed respectively
     #    To customize the includes keys, add values to the `_COLUNNS_CUSTOM` in the appropriate
     #    subclass.
+    '''
     _EVENT_HTML_COLUMNS = {
         ENTRY.NAME: ["Name", 0],
         ENTRY.ALIAS: ["Aliases", 1],
@@ -71,217 +58,24 @@ class Catalog(object):
         ENTRY.REDSHIFT: [r"<em>z</em>", 9],
         ENTRY.LUM_DIST: [r"<em>d</em><sub>L</sub> (Mpc)", 10],
     }
+    '''
 
     _EVENT_HTML_COLUMNS_CUSTOM = {}
 
-    class PATHS(object):
-        """
-        """
-
-        def __init__(self, catalog):
-            """Initialize `Catalog`."""
-            self.catalog = catalog
-            this_file = os.path.abspath(sys.modules[self.__module__].__file__)
-            # Path of the `catalog`
-            self.catalog_dir = os.path.dirname(this_file)
-            # Path in which `catalog` resides
-            self.root_dir = os.path.realpath(os.path.join(self.catalog_dir, os.path.pardir))
-            self.tasks_dir = os.path.join(self.catalog_dir, 'tasks')
-            _check_dirs = []
-
-            self.PATH_BASE = os.path.join(self.catalog_dir, "")
-            # self.PATH_BASE = ''
-            # if catalog.args:
-            #     self.PATH_BASE = os.path.join(catalog.args.base_path, self.catalog_dir, '')
-            self.PATH_INPUT = os.path.join(self.PATH_BASE, 'input', '')
-            _check_dirs.append(self.PATH_INPUT)
-
-            # Output Paths and Files
-            # ----------------------
-            self.PATH_OUTPUT = os.path.join(self.PATH_BASE, 'output', '')
-            _check_dirs.append(self.PATH_OUTPUT)
-
-            self.BIBLIO_FILE = os.path.join(self.PATH_OUTPUT, 'biblio.json')
-            self.BIBLIO_MIN_FILE = os.path.join(self.PATH_OUTPUT, 'biblio.min.json')
-
-            self.WEB_TABLE_FILE = os.path.join(self.PATH_OUTPUT, 'catalog.json')
-            self.WEB_TABLE_MIN_FILE = os.path.join(self.PATH_OUTPUT, 'catalog.min.json')
-
-            self.NAMES_FILE = os.path.join(self.PATH_OUTPUT, 'names.json')
-            self.NAMES_MIN_FILE = os.path.join(self.PATH_OUTPUT, 'names.min.json')
-
-            # Cache path and files
-            self.PATH_CACHE = os.path.join(self.PATH_OUTPUT, 'cache', '')
-            _check_dirs.append(self.PATH_CACHE)
-
-            self.MD5_FILE = os.path.join(self.PATH_CACHE, 'md5s.json')
-            self.AUTHORS_FILE = os.path.join(self.PATH_CACHE, 'bibauthors.json')
-            self.ALL_AUTHORS_FILE = os.path.join(self.PATH_CACHE, 'biballauthors.json')
-            self.HOST_IMAGES_FILE = os.path.join(self.PATH_CACHE, 'host_images.json')
-
-            # json path and files
-            self.PATH_JSON = os.path.join(self.PATH_OUTPUT, 'json', '')
-            _check_dirs.append(self.PATH_JSON)
-            # html path and files
-            self.PATH_HTML = os.path.join(self.PATH_OUTPUT, 'html', '')
-            _check_dirs.append(self.PATH_HTML)
-
-            # Schema files
-            self.PATH_SCHEMA = os.path.join(self.root_dir, "schema", "")
-            self.PATH_SCHEMA_INPUT = os.path.join(self.PATH_SCHEMA, "input", "")
-            self.PATH_SCHEMA_OUTPUT = os.path.join(self.PATH_SCHEMA, "output", "")
-
-            # critical datafiles
-            # ------------------
-            self.REPOS_LIST = os.path.join(self.PATH_INPUT, 'repos.json')
-            self.TASK_LIST = os.path.join(self.PATH_INPUT, 'tasks.json')
-            self.repos_dict = utils.read_json_dict(self.REPOS_LIST)
-
-            # Create directories that dont exist
-            for cd in _check_dirs:
-                self._check_create_dir(cd)
-
-            return
-
-        def __str__(self):
-            rstr = "`catalog_dir` = '{}'".format(self.catalog_dir)
-            rstr += "\n`PATH_INPUT` = '{}'".format(self.PATH_INPUT)
-            rstr += "\n`PATH_OUTPUT` = '{}'".format(self.PATH_OUTPUT)
-            rstr += "\n\t`BIBLIO_FILE` = '{}'".format(self.BIBLIO_FILE)
-            rstr += "\n\t`NAMES_MIN_FILE` = '{}'".format(self.NAMES_MIN_FILE)
-            rstr += "\n\t`WEB_TABLE_FILE` = '{}'".format(self.WEB_TABLE_FILE)
-            rstr += "\n\t`PATH_CACHE` = '{}'".format(self.PATH_CACHE)
-            rstr += "\n\t\t`MD5_FILE` = '{}'".format(self.MD5_FILE)
-            rstr += "\n\t\t`AUTHORS_FILE` = '{}'".format(self.AUTHORS_FILE)
-            rstr += "\n\t\t`ALL_AUTHORS_FILE` = '{}'".format(self.ALL_AUTHORS_FILE)
-            rstr += "\n\t`PATH_JSON` = '{}'".format(self.PATH_JSON)
-            rstr += "\n\t`PATH_HTML` = '{}'".format(self.PATH_HTML)
-            rstr += "\n`REPOS_LIST` = '{}'".format(self.REPOS_LIST)
-            rstr += "\n`TASK_LIST` = '{}'".format(self.TASK_LIST)
-            return rstr
-
-        def _get_repo_file_list(self, repo_folders, normal=True, bones=True):
-            """Get filenames for files in each repository.
-
-            `boneyard` optionally include with `bones=True`.
-            """
-            # repo_folders = get_repo_output_folders()
-            files = []
-            for rep in repo_folders:
-                if 'boneyard' not in rep and not normal:
-                    continue
-                if not bones and 'boneyard' in rep:
-                    continue
-                these_files = glob(rep + "/*.json") + glob(rep + "/*.json.gz")
-                self.catalog.log.debug(
-                    "Found {} files in '{}'".format(len(these_files), rep))
-                files += these_files
-
-            return files
-
-        def get_all_repo_folders(self, boneyard=True, private=False):
-            """Get the full paths of all data repositories."""
-            all_repos = self.get_repo_input_folders(private=private)
-            all_repos.extend(self.get_repo_output_folders(bones=boneyard))
-            return all_repos
-
-        def get_repo_boneyard(self):
-            bone_path = self.repos_dict.get('boneyard', [])
-            try:
-                bone_path = bone_path[0]
-            except TypeError:
-                pass
-            bone_path = os.path.join(self.PATH_OUTPUT, bone_path, '')
-            return bone_path
-
-        def get_filename_for_internal_event(self, event_name, suffix='.json'):
-            """Get the full path to the target input folder.
-            """
-            folder = self.repos_dict.get('internal')
-            # 'internal' must be a unique folder
-            if (folder is None) or (len(folder) != 1):
-                return None
-
-            fname = os.path.join(self.PATH_INPUT, folder[0], event_name + suffix)
-            return fname
-
-        def get_repo_input_folders(self, private=False):
-            """Get the full paths of the input data repositories."""
-            repo_folders = []
-            repo_folders += self.repos_dict.get('external', [])
-            repo_folders += self.repos_dict.get('internal', [])
-            if private:
-                repo_folders += self.repos_dict.get('private', [])
-            repo_folders = list(sorted(set(repo_folders)))
-            repo_folders = [
-                os.path.join(self.PATH_INPUT, rf) for rf in repo_folders
-                if len(rf)
-            ]
-            return repo_folders
-
-        def get_md5_filename(self, fname='md5s.json'):
-            return os.path.join(self.PATH_CACHE, fname)
-
-        def get_repo_output_file_list(self, normal=True, bones=True):
-            """Get a list of all existing output files.
-
-            These are the files deleted in the `delete_old_entry_files` task.
-            """
-            repo_folders = self.get_repo_output_folders(bones=bones)
-            repo_files = self._get_repo_file_list(repo_folders, normal=normal, bones=bones)
-            return repo_files
-
-        def get_repo_output_folders(self, bones=True):
-            """Get the full paths of the output data repositories."""
-            repo_folders = []
-            repo_folders += self.repos_dict.get('output', [])
-            if bones:
-                repo_folders += self.repos_dict.get('boneyard', [])
-            repo_folders = list(
-                sorted(
-                    list(set(repo_folders)),
-                    key=lambda key: utils.repo_priority(key)))
-            repo_folders = [
-                os.path.join(self.PATH_OUTPUT, rf) for rf in repo_folders
-                if len(rf)
-            ]
-            return repo_folders
-
-        def _check_create_dir(self, dir_):
-            if not os.path.isdir(dir_):
-                try:
-                    os.makedirs(dir_)
-                    self.catalog.log.warning("Created path '{}'".format(dir_))
-                except FileExistsError as err:
-                    self.catalog.log.error("Catalog.PATHS._check_create_dir(): '{}'".format(dir_))
-                    self.catalog.log.error(err)
-                    raise
-            return
-
-        def is_internal_event(self, event_name):
-            """Check if the given event corresponds to an 'internal' file.
-            """
-            fname = self.get_filename_for_internal_event(event_name)
-            if os.path.isfile(fname):
-                return True
-            return False
-
-    def __init__(self, args={}, log=logging.Logger("INFO"), git_clone=True):
+    def __init__(self, args={}, log=logging.Logger("INFO")):
         # Store runtime arguments
         self.args = args
         self.log = log
-        self.proto = Entry
-        self.Director = director.Director
+        # self.proto = Entry
+        # self.Director = director.Director
 
+        '''
         # Instantiate PATHS
         self.PATHS = self.PATHS(self)
 
         # Load repos dictionary (required)
         self.repos_dict = utils.read_json_dict(self.PATHS.REPOS_LIST)
         # self.clone_repos()
-        if git_clone:
-            log.debug("Cloning all repos")
-            gitter.git_clone_all_repos(self)
 
         # Create empty `entries` collection
         self.entries = OrderedDict()
@@ -313,6 +107,7 @@ class Catalog(object):
         self._version_long = "Astrocats v'{}' SHA'{}' - {} SHA'{}'".format(
             __version__, astrocats_sha, self.name, catalog_sha)
         self.log.debug(self._version_long)
+        '''
         return
 
     def import_data(self):
