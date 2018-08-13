@@ -497,7 +497,7 @@ Correlation._KEYS = CORRELATION
 # =================================
 
 # NOTE: this needs to be last to avoid circular import errors
-from astrocats.catalog import entry
+from astrocats.structures import entry
 Entry = entry._Entry
 ENTRY = Entry._KEYCHAIN
 Entry._KEYS = ENTRY
@@ -513,6 +513,6 @@ STRUCTURES = [Correlation, Entry, Photometry, Spectrum,
               "defs.json"]
 
 # Run the `main` routine to setup schema
-from astrocats.catalog import schema
+from astrocats.structures import schema
 schema.main()
 '''

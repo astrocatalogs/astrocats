@@ -7,8 +7,8 @@ from decimal import Decimal, localcontext
 from random import seed, shuffle
 from palettable import colorbrewer, cubehelix, wesanderson
 
-from astrocats.catalog.utils.digits import get_sig_digits
-from astrocats.catalog.struct import PHOTOMETRY
+from astrocats.structures.utils.digits import get_sig_digits
+from astrocats.structures.struct import PHOTOMETRY
 
 __all__ = ["bandrepf", "bandcolorf", "radiocolorf", "xraycolorf", "bandshortaliasf",
            "bandwavef", "bandmetaf", "set_pd_mag_from_counts"]

@@ -2,11 +2,11 @@
 """
 import os
 
-from astrocats.catalog.catalog import ENTRY
-from astrocats.catalog.source import SOURCE
-from astrocats.catalog.quantity import QUANTITY
-from astrocats.catalog.photometry import PHOTOMETRY, set_pd_mag_from_counts
-from astrocats.catalog.utils import tprint, tq, pbar_strings
+from astrocats.structures.catalog import ENTRY
+from astrocats.structures.source import SOURCE
+from astrocats.structures.quantity import QUANTITY
+from astrocats.structures.photometry import PHOTOMETRY, set_pd_mag_from_counts
+from astrocats.structures.utils import tprint, tq, pbar_strings
 
 FAKE_ALIAS_1 = 'EN-TEST-AA'
 FAKE_ALIAS_2 = 'PS-TEST-AB'

@@ -6,8 +6,8 @@ import gzip
 from collections import OrderedDict
 
 from astrocats import utils
-from astrocats.catalog.struct import ENTRY, SOURCE, QUANTITY
-# from astrocats.catalog.entry import ENTRY
+from astrocats.structures.struct import ENTRY, SOURCE, QUANTITY
+# from astrocats.structures.entry import ENTRY
 from . import utils as production_utils
 
 

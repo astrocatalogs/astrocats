@@ -87,7 +87,7 @@ def main():
         catalog_class_name = catalog_module.catalog_class['name']
         catalog_class_file = catalog_module.catalog_class['file']
         catalog_class_path = catalog_module.catalog_class['import_path']
-        log.info(catalog_package_name, catalog_class_name, catalog_class_path)
+        log.info("{} {} {}".format(catalog_package_name, catalog_class_name, catalog_class_path))
         # catalog = catalog_module.Catalog_Class(args, log)
         mod = catalog_class_file
         mod_path = catalog_class_path
@@ -237,8 +237,8 @@ def setup(catalog=None, log=None, git_clone=False):
 
     # Setup schema files
     # ------------------------
-    import astrocats.catalog.schema
-    astrocats.catalog.schema.setup(catalog=catalog, log=log)
+    import astrocats.structures.schema
+    astrocats.structures.schema.setup(catalog=catalog, log=log)
 
     return
 

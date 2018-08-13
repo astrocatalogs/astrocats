@@ -22,36 +22,48 @@ class _PATHS(object):
 
     ASTROCATS = os.path.join(os.path.dirname(__file__), "")
 
+    # These need to be overridden in subclasses
     ROOT = os.path.join(os.path.dirname(__file__), "")
     NAME = __name__
     FILE = __file__
 
     def __init__(self):
         # Determine if this instance is from a derived class (as apposed to this class itself)
-        derived = (type(self) != _PATHS)
+        is_astrocats = (type(self) == _PATHS)
+        is_derived = (not is_astrocats)
 
-        check_dirs = []
+        if self.ASTROCATS != os.path.join(os.path.dirname(__file__), ""):
+            raise ValueError("`ASTROCATS` attribute must not be overridden!")
 
-        self.CATALOG = os.path.join(self.ROOT, "catalog", "")
+        if is_derived:
+            if os.path.realpath(self.ASTROCATS).lower() == os.path.realpath(self.ROOT).lower():
+                raise ValueError("`ROOT` attribute must be overridden!")
+
+        check_dirs_astrocats = []
+        check_dirs_derived = []
+
+        required_files_derived = []
+
+        self.STRUCTURES = os.path.join(self.ROOT, "structures", "")
 
         # Schema files
         # -----------------------------
-        self.SCHEMA = os.path.join(self.CATALOG, "schema", "")
+        self.SCHEMA = os.path.join(self.STRUCTURES, "schema", "")
         self.SCHEMA_INPUT = os.path.join(self.SCHEMA, "input", "")
         self.SCHEMA_OUTPUT = os.path.join(self.SCHEMA, "output", "")
-        check_dirs.extend([self.SCHEMA_OUTPUT])
+        check_dirs_derived.extend([self.SCHEMA_OUTPUT])
 
         self.SCHEMA_INPUT_ASTROSCHEMA = os.path.join(self.SCHEMA_INPUT, "astroschema", "")
         self.SCHEMA_INPUT_ASTROCATS = os.path.join(self.SCHEMA_INPUT, "astrocats", "")
-        check_dirs.extend([self.SCHEMA_INPUT_ASTROSCHEMA, self.SCHEMA_INPUT_ASTROCATS])
+        check_dirs_astrocats.extend([self.SCHEMA_INPUT_ASTROSCHEMA, self.SCHEMA_INPUT_ASTROCATS])
 
         self.INPUT = os.path.join(self.ROOT, 'input', '')
-        check_dirs.append(self.INPUT)
+        # check_dirs.append(self.INPUT)
 
         # Output Paths and Files
         # ----------------------
         self.OUTPUT = os.path.join(self.ROOT, 'output', '')
-        check_dirs.append(self.OUTPUT)
+        check_dirs_derived.append(self.OUTPUT)
 
         self.BIBLIO_FILE = os.path.join(self.OUTPUT, 'biblio.json')
         self.BIBLIO_MIN_FILE = os.path.join(self.OUTPUT, 'biblio.min.json')
@@ -64,7 +76,7 @@ class _PATHS(object):
 
         # Cache path and files
         self.CACHE = os.path.join(self.OUTPUT, 'cache', '')
-        check_dirs.append(self.CACHE)
+        check_dirs_derived.append(self.CACHE)
 
         self.MD5_FILE = os.path.join(self.CACHE, 'md5s.json')
         self.AUTHORS_FILE = os.path.join(self.CACHE, 'bibauthors.json')
@@ -73,22 +85,37 @@ class _PATHS(object):
 
         # json path and files
         self.JSON = os.path.join(self.OUTPUT, 'json', '')
-        check_dirs.append(self.JSON)
+        check_dirs_derived.append(self.JSON)
         # html path and files
         self.HTML = os.path.join(self.OUTPUT, 'html', '')
-        check_dirs.append(self.HTML)
+        check_dirs_derived.append(self.HTML)
 
         # critical datafiles
         # ------------------
         self.TASKS = os.path.join(self.ROOT, 'tasks', "")
-        self.REPOS_LIST = os.path.join(self.INPUT, 'repos.json')
-        self.TASK_LIST = os.path.join(self.INPUT, 'tasks.json')
+        self.REPOS_FILE = os.path.join(self.INPUT, 'repos.json')
+        self.TASKS_FILE = os.path.join(self.INPUT, 'tasks.json')
+        required_files_derived.extend([self.REPOS_FILE, self.TASKS_FILE])
 
-        self._derived = derived
+        self._derived = is_derived
 
-        # Only continue if this is a derived class from a particular catalog module
-        if not derived:
-            return
+        if is_astrocats:
+            # Make sure astrocats required directories exist
+            for cd in check_dirs_astrocats:
+                self._check_create_dir(cd)
+
+        if is_derived:
+            # Make sure derived required directories exist
+            for cd in check_dirs_derived:
+                self._check_create_dir(cd)
+
+            # Make sure derived required files exist
+            for fname in required_files_derived:
+                if not os.path.exists(fname):
+                    raise RuntimeError("Required file '{}' does not exist!".format(fname))
+
+                if not os.path.isfile(fname):
+                    raise RuntimeError("Required file '{}' is not a file!".format(fname))
 
         # self.repos_dict = utils.read_json_dict(self.REPOS_LIST)
 
@@ -99,10 +126,6 @@ class _PATHS(object):
         # Path in which `catalog` resides
         # self.root_dir = os.path.realpath(os.path.join(self.catalog_dir, os.path.pardir))
         # self.tasks_dir = os.path.join(self.catalog_dir, 'tasks')
-
-        # Create directories that dont exist
-        for cd in check_dirs:
-            self._check_create_dir(cd)
 
         return
 

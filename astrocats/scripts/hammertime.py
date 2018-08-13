@@ -16,8 +16,8 @@ from bokeh.plotting import Figure
 from bokeh.resources import CDN
 from palettable import cubehelix
 
-from astrocats.catalog.utils import tprint, tq
-from astrocats.catalog.production import utils as production_utils
+from astrocats.structures.utils import tprint, tq
+from astrocats.structures.production import utils as production_utils
 from astrocats.scripts.repos import repo_file_list, get_all_rep_folders
 
 parser = argparse.ArgumentParser(

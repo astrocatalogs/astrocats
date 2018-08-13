@@ -10,7 +10,7 @@ from collections import OrderedDict
 
 import astrocats
 from astrocats import PATHS as AC_PATHS
-# from astrocats.catalog import struct
+# from astrocats.structures import struct
 
 import pyastroschema as pas  # noqa
 

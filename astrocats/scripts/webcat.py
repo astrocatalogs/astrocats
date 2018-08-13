@@ -22,13 +22,13 @@ from statistics import mean
 import inflect
 import numpy as np
 import requests
-from astrocats.catalog.utils import (bandaliasf, bandcodes, bandcolorf,
+from astrocats.structures.utils import (bandaliasf, bandcodes, bandcolorf,
                                      bandgroupf, bandshortaliasf, bandwavef,
                                      bandwavelengths, get_sig_digits,
                                      is_number, pretty_num, radiocolorf,
                                      round_sig, tq, xraycolorf)
 from astrocats.scripts.repos import (get_all_rep_folders, repo_file_list)
-from astrocats.catalog.production import utils as production_utils
+from astrocats.structures.production import utils as production_utils
 from astropy import units as un
 from astropy.coordinates import SkyCoord as coord
 from astropy.time import Time as astrotime

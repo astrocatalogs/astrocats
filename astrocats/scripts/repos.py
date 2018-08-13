@@ -1,7 +1,7 @@
 import warnings
 from glob import glob
 
-from astrocats.catalog.utils import is_number
+from astrocats.structures.utils import is_number
 
 
 def get_all_rep_folders(module):

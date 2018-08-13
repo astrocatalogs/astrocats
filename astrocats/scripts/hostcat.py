@@ -12,7 +12,7 @@ from math import sqrt
 from astropy.time import Time as astrotime
 from tqdm import tqdm
 
-from astrocats.catalog.utils import pretty_num
+from astrocats.structures.utils import pretty_num
 from astrocats.scripts.repos import repo_file_list, get_all_rep_folders
 
 parser = argparse.ArgumentParser(

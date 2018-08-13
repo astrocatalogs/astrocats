@@ -11,9 +11,9 @@ from copy import deepcopy
 from decimal import Decimal
 
 from astrocats import utils
-from astrocats.catalog import struct
-from astrocats.catalog.struct import (Error, Model, Photometry, Quantity, Source, Spectrum)
-from astrocats.catalog.struct import (ERROR, MODEL, QUANTITY, SOURCE, SPECTRUM)
+from astrocats.structures import struct
+from astrocats.structures.struct import (Error, Model, Photometry, Quantity, Source, Spectrum)
+from astrocats.structures.struct import (ERROR, MODEL, QUANTITY, SOURCE, SPECTRUM)
 from six import string_types
 
 
@@ -30,7 +30,7 @@ class _Entry(struct.Meta_Struct):
         if catalog is not None:
             self._log = catalog.log
         else:
-            from astrocats.catalog.catalog import Catalog
+            from astrocats.structures.catalog import Catalog
             self._log = logging.getLogger()
             self._log.error("WARNING: Entry created without a catalog... creating catalog!")
             self.catalog = Catalog(None, self._log)
@@ -537,7 +537,7 @@ class _Entry(struct.Meta_Struct):
 
         Arguments
         ---------
-        catalog : `astrocats.catalog.catalog.Catalog` instance
+        catalog : `astrocats.structures.catalog.Catalog` instance
             The parent catalog object of which this entry belongs.
         name : str or 'None'
             The name of this entry, e.g. `SN1987A` for a `Supernova` entry.
@@ -550,7 +550,7 @@ class _Entry(struct.Meta_Struct):
 
         """
         if not catalog:
-            from astrocats.catalog.catalog import Catalog
+            from astrocats.structures.catalog import Catalog
             log = logging.getLogger()
             catalog = Catalog(None, log)
 
@@ -876,7 +876,7 @@ class _Entry(struct.Meta_Struct):
 
         Returns
         -------
-        source : `astrocats.catalog.source.Source` object
+        source : `astrocats.structures.source.Source` object
             The source object corresponding to the passed alias.
 
         """
@@ -898,7 +898,7 @@ class _Entry(struct.Meta_Struct):
 
         Returns
         -------
-        stub : `astrocats.catalog.entry.Entry` subclass object
+        stub : `astrocats.structures.entry.Entry` subclass object
             The type of the returned object is this instance's type.
 
         """

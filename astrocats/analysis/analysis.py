@@ -13,8 +13,8 @@ from collections import OrderedDict
 
 import numpy as np
 
-from astrocats.catalog.utils import tq, dict_to_pretty_string
-from astrocats.catalog.production import utils as production_utils
+from astrocats.structures.utils import tq, dict_to_pretty_string
+from astrocats.structures.production import utils as production_utils
 
 
 class Analysis:
@@ -28,7 +28,7 @@ class Analysis:
 
         Arguments
         ---------
-        catalog : `astrocats.catalog.catalog.Catalog` subclass
+        catalog : `astrocats.structures.catalog.Catalog` subclass
         log : `logging.Logger` object
 
         """

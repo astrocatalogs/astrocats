@@ -8,7 +8,7 @@ from collections import OrderedDict
 
 from tqdm import tqdm
 
-from astrocats.catalog.catalog import Catalog
+from astrocats.structures.catalog import Catalog
 
 parser = argparse.ArgumentParser(
     description='Generate a sky location map AstroCats data.'
