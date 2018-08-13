@@ -4,7 +4,7 @@ import importlib
 import json
 import logging
 import os
-import sys
+
 import warnings
 from collections import OrderedDict
 from glob import glob
@@ -13,31 +13,28 @@ import psutil
 import six
 from tqdm import tqdm
 
-from astrocats import __version__, utils
+import astrocats
+from astrocats import utils
+from astrocats import PATHS as _PATHS
 from astrocats.utils import gitter
-# from astrocats.production import director
-# from astrocats.structures.entry import ENTRY, Entry
-# from astrocats.structures.struct import (ENTRY, MODEL, SOURCE)
-# from astrocats.structures.struct import Entry
-# from astrocats.structures.task import Task
+from astrocats.production import director
+from astrocats.structures.struct import (ENTRY, MODEL, SOURCE)
+from astrocats.structures.struct import Entry
+from astrocats.structures.task import Task
 
 
 class Catalog(object):
-    OSC_BIBCODE = '2017ApJ...835...64G'
-    OSC_NAME = 'The Open Supernova Catalog'
-    OSC_URL = 'https://sne.space'
 
     # NOTE: this needs to be reset by subclasses for `HTML_Pro`
     MODULE_NAME = None
-
-    ADS_BIB_URL = ("http://cdsads.u-strasbg.fr/cgi-bin/nph-abs_connect?"
-                   "db_key=ALL&version=1&bibcode=")
 
     TRAVIS_QUERY_LIMIT = 10
     COMPRESS_ABOVE_FILESIZE = 90e6  # bytes
     # Set behavior for when adding a quantity (photometry, source, etc) fails
     #    Options are 'IGNORE', 'WARN', 'RAISE' (see `utils.imports`)
     # ADDITION_FAILURE_BEHAVIOR = utils.ADD_FAIL_ACTION.IGNORE
+
+    PATHS = _PATHS
 
     # These Dictionaries are combined into `HTML_Pro.COLUMNS`.
     #    The 'keys' determine which keys from each Entry are stored.  The 'values' define the
@@ -58,23 +55,30 @@ class Catalog(object):
         ENTRY.REDSHIFT: [r"<em>z</em>", 9],
         ENTRY.LUM_DIST: [r"<em>d</em><sub>L</sub> (Mpc)", 10],
     }
+    _EVENT_HTML_COLUMNS_CUSTOM = {}
     '''
 
-    _EVENT_HTML_COLUMNS_CUSTOM = {}
+    # NOTE: FIX: MOVE SOMEWHERE ELSE
+    '''
+    OSC_BIBCODE = '2017ApJ...835...64G'
+    OSC_NAME = 'The Open Supernova Catalog'
+    OSC_URL = 'https://sne.space'
+    ADS_BIB_URL = ("http://cdsads.u-strasbg.fr/cgi-bin/nph-abs_connect?"
+                   "db_key=ALL&version=1&bibcode=")
+    '''
 
     def __init__(self, args={}, log=logging.Logger("INFO")):
         # Store runtime arguments
         self.args = args
         self.log = log
-        # self.proto = Entry
-        # self.Director = director.Director
+        self.proto = Entry
+        self.Director = director.Director
 
-        '''
         # Instantiate PATHS
-        self.PATHS = self.PATHS(self)
+        # self.PATHS = self.PATHS(self)
 
         # Load repos dictionary (required)
-        self.repos_dict = utils.read_json_dict(self.PATHS.REPOS_LIST)
+        # self.repos_dict = utils.read_json_dict(self.PATHS.REPOS_LIST)
         # self.clone_repos()
 
         # Create empty `entries` collection
@@ -84,30 +88,27 @@ class Catalog(object):
         # Only journal tasks with priorities greater than this number, unless updating.
         self.min_journal_priority = 0
 
+        # NOTE: FIX: MOVE SOMEWHERE ELSE
+        '''
         columns = self._EVENT_HTML_COLUMNS
         columns.update(self._EVENT_HTML_COLUMNS_CUSTOM)
-
         self.EVENT_HTML_COLUMNS = OrderedDict(sorted(columns.items(), key=lambda x: x[1][1]))
+        '''
 
         # Store version information
         # -------------------------
         # git `SHA` of this directory (i.e. a sub-catalog)
-        my_path = self.PATHS.catalog_dir
+        my_path = self.PATHS.ROOT
         catalog_sha = 'N/A'
         if os.path.exists(os.path.join(my_path, '.git')):
-            catalog_sha = gitter.get_sha(path=my_path, log=self.log)
-        # Git SHA of `astrocats`
-        parent_path = os.path.abspath(
-            os.path.join(my_path, os.pardir, os.pardir))
-        astrocats_sha = 'N/A'
-        if os.path.exists(os.path.join(parent_path, '.git')):
-            astrocats_sha = gitter.get_sha(path=parent_path, log=self.log)
+            catalog_sha = gitter.get_git_sha(path=my_path, log=self.log)
+
         # Name of this class (if subclassed)
         self.name = type(self).__name__
         self._version_long = "Astrocats v'{}' SHA'{}' - {} SHA'{}'".format(
-            __version__, astrocats_sha, self.name, catalog_sha)
+            astrocats.__version__, astrocats.__git_version__, self.name, catalog_sha)
         self.log.debug(self._version_long)
-        '''
+
         return
 
     def import_data(self):
@@ -299,8 +300,7 @@ class Catalog(object):
         """
         """
         def_task_list_filename = self.PATHS.TASK_LIST
-        self.log.debug(
-            "Loading task-list from '{}'".format(def_task_list_filename))
+        self.log.debug("Loading task-list from '{}'".format(def_task_list_filename))
         data = json.load(codecs.open(def_task_list_filename, 'r'))
         # Create `Task` objects for each element in the tasks data file
         tasks = {}

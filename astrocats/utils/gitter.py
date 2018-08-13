@@ -18,6 +18,7 @@ class MyProgressPrinter(git.RemoteProgress):
         print(msg + "\r")
 
 
+'''
 def get_git(path=None):
     """Get a string representing the current git status (tag and commit hash).
 
@@ -29,6 +30,7 @@ def get_git(path=None):
     command = ["git", "describe", "--always"]
     git_vers = subprocess.check_output(command, cwd=path).strip()
     return git_vers
+'''
 
 
 def fetch(repo_name, progress=True, log=None):
@@ -40,11 +42,9 @@ def fetch(repo_name, progress=True, log=None):
                                                    fetch_info.commit))
 
 
-def get_sha(path=None, log=None, short=False, timeout=None):
+def get_git_sha(path=None, log=None, short=False, timeout=None):
     """Use `git rev-parse HEAD <REPO>` to get current SHA.
     """
-    # git_command = "git rev-parse HEAD {}".format(repo_name).split()
-    # git_command = "git rev-parse HEAD".split()
     git_command = ["git", "rev-parse"]
     if short:
         git_command.append("--short")
@@ -94,7 +94,7 @@ def git_add_commit_push_all_repos(cat):
     for repo in all_repos:
         log.info("Repo in: '{}'".format(repo))
         # Get the initial git SHA
-        sha_beg = get_sha(repo)
+        sha_beg = get_git_sha(repo)
         log.debug("Current SHA: '{}'".format(sha_beg))
 
         # Get files that should be added, compress and check sizes
@@ -176,7 +176,7 @@ def git_pull_all_repos(cat, strategy_recursive=True, strategy='theirs'):
     for repo_name in all_repos:
         log.info("Repo in: '{}'".format(repo_name))
         # Get the initial git SHA
-        sha_beg = get_sha(repo_name)
+        sha_beg = get_git_sha(repo_name)
         log.debug("Current SHA: '{}'".format(sha_beg))
 
         # Initialize the git repository
@@ -208,7 +208,7 @@ def git_pull_all_repos(cat, strategy_recursive=True, strategy='theirs'):
             log.error(err_str)
             raise RuntimeError(err_str)
 
-        sha_end = get_sha(repo_name)
+        sha_end = get_git_sha(repo_name)
         if sha_end != sha_beg:
             log.info("Updated SHA: '{}'".format(sha_end))
 
@@ -244,7 +244,7 @@ def git_clone_all_repos(cat):
             raise
 
         # Get the initial git SHA
-        sha_beg = get_sha(repo)
+        sha_beg = get_git_sha(repo)
         log.debug("Current SHA: '{}'".format(sha_beg))
 
     return
@@ -260,7 +260,7 @@ def git_reset_all_repos(cat, hard=True, origin=False, clean=True):
     for repo in all_repos:
         log.warning("Repo in: '{}'".format(repo))
         # Get the initial git SHA
-        sha_beg = get_sha(repo)
+        sha_beg = get_git_sha(repo)
         log.debug("Current SHA: '{}'".format(sha_beg))
 
         grepo = git.cmd.Git(repo)
@@ -286,7 +286,7 @@ def git_reset_all_repos(cat, hard=True, origin=False, clean=True):
             if len(retval):
                 log.warning("Git says: '{}'".format(retval))
 
-        sha_end = get_sha(repo)
+        sha_end = get_git_sha(repo)
         if sha_end != sha_beg:
             log.debug("Updated SHA: '{}'".format(sha_end))
 
@@ -303,7 +303,7 @@ def git_status_all_repos(cat, hard=True, origin=False, clean=True):
     for repo_name in all_repos:
         log.info("Repo in: '{}'".format(repo_name))
         # Get the initial git SHA
-        sha_beg = get_sha(repo_name)
+        sha_beg = get_git_sha(repo_name)
         log.debug("Current SHA: '{}'".format(sha_beg))
 
         log.info("Fetching")
@@ -313,7 +313,7 @@ def git_status_all_repos(cat, hard=True, origin=False, clean=True):
         _call_command_in_repo(
             git_comm, repo_name, cat.log, fail=True, log_flag=True)
 
-        sha_end = get_sha(repo_name)
+        sha_end = get_git_sha(repo_name)
         if sha_end != sha_beg:
             log.info("Updated SHA: '{}'".format(sha_end))
 

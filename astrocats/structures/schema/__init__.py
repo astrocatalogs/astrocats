@@ -8,7 +8,7 @@ import shutil
 import glob
 from collections import OrderedDict
 
-import astrocats
+# import astrocats
 from astrocats import PATHS as AC_PATHS
 # from astrocats.structures import struct
 
@@ -28,11 +28,7 @@ _REPLACE = {
 }
 
 
-def setup(catalog=None, log=None):
-    if catalog is not None:
-        log = catalog.log
-    elif (log is None):
-        raise RuntimeError("If no `catalog` is provided, `log` is required")
+def setup(log):
 
     # Clear output directory
     pattern = os.path.join(AC_PATHS.SCHEMA_OUTPUT, "", "*.json")
