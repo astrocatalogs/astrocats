@@ -7,7 +7,7 @@ import sys
 from datetime import datetime
 
 from astrocats import __version__, __git_version__, argshandler
-from astrocats.utils import logger
+from astrocats.utils import logger, gitter
 
 _BASE_PATH_KEY = 'base_path'
 _PROFILE = False
@@ -75,6 +75,30 @@ def main():
         msg = "Import of specified catalog module '{}' failed.".format(catalog_path)
         log.raise_error(msg, err)
 
+    # Perform setup operations with the target catalog
+    # -----------------------------------------------------------
+    # setup(catalog)
+    catalog = None
+    setup(catalog=catalog, log=log)
+
+    # Construct a catalog instance based on the loaded module
+    try:
+        catalog_package_name = catalog_module.__name__
+        catalog_class_name = catalog_module.catalog_class['name']
+        catalog_class_file = catalog_module.catalog_class['file']
+        catalog_class_path = catalog_module.catalog_class['import_path']
+        log.info(catalog_package_name, catalog_class_name, catalog_class_path)
+        # catalog = catalog_module.Catalog_Class(args, log)
+        mod = catalog_class_file
+        mod_path = catalog_class_path
+        # print(mod_path, mod)
+        catalog_file = importlib.import_module(mod_path + mod)  # , package=mod_path)
+        Catalog_Class = getattr(catalog_file, catalog_class_name)
+        catalog = Catalog_Class(args, log)
+
+    except Exception as err:
+        raise
+
     # Run target command in the given catalog module
     # -----------------------------------------------------------
 
@@ -89,7 +113,7 @@ def main():
         pr = cProfile.Profile()
         pr.enable()
 
-    run_command(args, log, catalog_module)
+    # run_command(args, log, catalog_module)
 
     if _PROFILE:
         pr.disable()
@@ -141,17 +165,6 @@ def load_log(args):
 
 def run_command(args, log, catalog_module):
     log.debug(__file__ + ":run_command()")
-
-    try:
-        # catalog_module_name = catalog_module.__name__
-        # Catalog_Class = importlib.import_module(".Catalog_Class", catalog_module_name)
-        print("Catalog_Class = ", catalog_module.Catalog_Class)
-        catalog = catalog_module.Catalog_Class(args, log)
-        print(catalog)
-    except Exception as err:
-        raise
-
-    return
 
     # Load the catalog
 
@@ -206,6 +219,26 @@ def run_command(args, log, catalog_module):
         lysis.analyze(args)
 
 
+
+    return
+
+
+def setup(catalog=None, log=None, git_clone=False):
+    if catalog is not None:
+        log = catalog.log
+    elif (log is None):
+        raise RuntimeError("If no `catalog` is provided, `log` is required")
+
+    # Setup git repositories
+    # -------------------------
+    if git_clone:
+        log.debug("Cloning all repos")
+        gitter.git_clone_all_repos(catalog)
+
+    # Setup schema files
+    # ------------------------
+    import astrocats.catalog.schema
+    astrocats.catalog.schema.setup(catalog=catalog, log=log)
 
     return
 
