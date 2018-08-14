@@ -220,27 +220,27 @@ def _add_git(git_pars):
     git_group = git_pars.add_mutually_exclusive_group()
 
     git_group.add_argument(
-        "--clone", action='store_true', default=False,
+        "--clone", dest="git_clone", action='store_true', default=False,
         help="Clone all defined data repositories if they dont exist.")
 
     git_group.add_argument(
-        "--push", action='store_true', default=False,
+        "--push", dest="git_push", action='store_true', default=False,
         help="Add all files to data repositories, commit, and push.")
 
     git_group.add_argument(
-        "--pull", action='store_true', default=False,
+        "--pull", dest="git_pull", action='store_true', default=False,
         help="'Pull' all data repositories.")
 
     git_group.add_argument(
-        "--reset-local", action='store_true', default=False,
+        "--reset-local", dest="git_reset_local", action='store_true', default=False,
         help="Hard reset all data repositories using local 'HEAD'.")
 
     git_group.add_argument(
-        "--reset-origin", action='store_true', default=False,
+        "--reset-origin", dest="git_reset_origin", action='store_true', default=False,
         help="Hard reset all data repositories using 'origin/master'.")
 
     git_group.add_argument(
-        "--status", action='store_true', default=False,
+        "--status", dest="git_status", action='store_true', default=False,
         help="Get the 'git status' of all data repositories.")
 
     return git_pars

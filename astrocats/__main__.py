@@ -193,26 +193,32 @@ def run_command(args, log, catalog):
     elif args.command.startswith('git'):
         from . import gitter
 
-        if args.command == 'git-clone':
+        if args.git_clone:
             log.log(log_lvl, "Running 'git clone'.")
             gitter.git_clone_all_repos(catalog)
-        elif args.command == 'git-push':
+
+        elif args.git_push:
             log.log(log_lvl, "Running 'git push'.")
             gitter.git_add_commit_push_all_repos(catalog)
-        elif args.command == 'git-pull':
+
+        elif args.git_pull:
             log.log(log_lvl, "Running 'git pull'.")
             gitter.git_pull_all_repos(catalog)
-        elif args.command == 'git-reset-local':
+
+        elif args.git_reset_local:
             log.log(log_lvl, "Running 'git reset' using the local HEAD.")
             gitter.git_reset_all_repos(catalog, hard=True, origin=False, clean=True)
-        elif args.command == 'git-reset-origin':
+
+        elif args.git_reset_origin:
             log.log(log_lvl, "Running 'git reset' using 'origin/master'.")
             gitter.git_reset_all_repos(catalog, hard=True, origin=True, clean=True)
-        elif args.command == 'git-status':
+
+        elif args.git_status:
             log.log(log_lvl, "Running 'git status'.")
             gitter.git_status_all_repos(catalog)
+
         else:
-            log.error("Unrecognized git subcommand '{}'".format(args.command))
+            log.raise_error("Unrecognized git subcommand '{}'".format(args.command))
 
     # Analyze Catalogs
     # ----------------
