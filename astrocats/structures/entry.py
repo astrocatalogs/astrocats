@@ -13,7 +13,7 @@ from decimal import Decimal
 from astrocats import utils
 from astrocats.structures import struct
 from astrocats.structures.struct import (Error, Model, Photometry, Quantity, Source, Spectrum)
-from astrocats.structures.struct import (ERROR, MODEL, QUANTITY, SOURCE, SPECTRUM)
+from astrocats.structures.struct import (ERROR, MODEL, PHOTOMETRY, QUANTITY, SOURCE, SPECTRUM)
 from six import string_types
 
 
