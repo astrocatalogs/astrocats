@@ -9,6 +9,7 @@ import sys
 from collections import OrderedDict
 from copy import deepcopy
 from decimal import Decimal
+import math
 
 import six
 
@@ -984,9 +985,26 @@ class _Entry(struct.Meta_Struct):
         """
         name = self[self._KEYS.NAME]
 
+        def sort_func_spec(spec):
+            sort = (float(spec.get(SPECTRUM.TIME, 0.0)), spec.get(SPECTRUM.FILENAME, ''))
+            return sort
+
+        def sort_func_phot(phot):
+            types = (six.string_types, float, int)
+            time = phot.get(PHOTOMETRY.TIME, 0.0)
+            if isinstance(time, types):
+                time = float(time)
+            else:
+                time = min([float(y) for y in time])
+
+            band = phot.get(PHOTOMETRY.BAND, '')
+            mag = float(phot[PHOTOMETRY.MAGNITUDE]) if PHOTOMETRY.MAGNITUDE in phot else -math.inf
+            sort = (time, band, mag)
+            return sort
+
         aliases = self.get_aliases(includename=False)
         if name not in aliases:
-            # Assign the first source to alias, if not available assign us.
+            # Assign the first source to alias, if not available assign astrocats.
             if self._KEYS.SOURCES in self:
                 self.add_quantity(self._KEYS.ALIAS, name, '1')
                 if self._KEYS.ALIAS not in self:
@@ -997,41 +1015,25 @@ class _Entry(struct.Meta_Struct):
                 self.add_quantity(self._KEYS.ALIAS, name, source)
 
         if self._KEYS.ALIAS in self:
-            self[self._KEYS.ALIAS].sort(key=lambda key: utils.alias_priority(name, key[QUANTITY.VALUE]))
+            self[self._KEYS.ALIAS].sort(
+                key=lambda key: utils.alias_priority(name, key[QUANTITY.VALUE]))
         else:
-            self._log.error('There should be at least one alias for `{}`.'.format(name))
+            self._log.raise_error('There should be at least one alias for `{}`.'.format(name))
 
-        # if self.catalog.name != 'BlackholeCatalog':
-        #     self._log.error(self.catalog.name)
-        #     self._log.error("WARNING: the `PHOTOMETRY` and `SPECTRA` "
-        #                     "portion of sanitize have been removed!")
-        # '''
         if self._KEYS.PHOTOMETRY in self:
-            self[self._KEYS.PHOTOMETRY].sort(
-                key=lambda x: ((float(x[PHOTOMETRY.TIME]) if
-                                isinstance(x[PHOTOMETRY.TIME],
-                                           (six.string_types, float, int))
-                                else min([float(y) for y in
-                                          x[PHOTOMETRY.TIME]])) if
-                               PHOTOMETRY.TIME in x else 0.0,
-                               x[PHOTOMETRY.BAND] if PHOTOMETRY.BAND in
-                               x else '',
-                               float(x[PHOTOMETRY.MAGNITUDE]) if
-                               PHOTOMETRY.MAGNITUDE in x else ''))
+            try:
+                self[self._KEYS.PHOTOMETRY].sort(key=sort_func_phot)
+            except TypeError:
+                print("\n", self[self._KEYS.PHOTOMETRY], "\n")
+                print("\n", [xx.get(PHOTOMETRY.TIME, None) for xx in self[self._KEYS.PHOTOMETRY]], "\n")
+                raise
 
-        if (self._KEYS.SPECTRA in self and list(
-                filter(None, [SPECTRUM.TIME in x for x in self[self._KEYS.SPECTRA]]))):
-            self[self._KEYS.SPECTRA].sort(
-                key=lambda x: (float(x[SPECTRUM.TIME]) if
-                               SPECTRUM.TIME in x else 0.0,
-                               x[SPECTRUM.FILENAME] if
-                               SPECTRUM.FILENAME in x else '')
-            )
-        # '''
+        if self._KEYS.SPECTRA in self:
+            spec_times = [SPECTRUM.TIME in x for x in self[self._KEYS.SPECTRA]]
+            if any(spec_times):
+                self[self._KEYS.SPECTRA].sort(key=sort_func_spec)
 
         if self._KEYS.SOURCES in self:
-            # _NO_SRCS_REQUIRED = [self._KEYS.NAME, self._KEYS.SCHEMA, self._KEYS.SOURCES,
-            #                      self._KEYS.ERRORS]
             # Remove orphan sources
             source_aliases = [x[SOURCE.ALIAS] for x in self[self._KEYS.SOURCES]]
             # Sources with the `PRIVATE` attribute are always retained
@@ -1039,8 +1041,6 @@ class _Entry(struct.Meta_Struct):
                 x[SOURCE.ALIAS] for x in self[self._KEYS.SOURCES]
                 if SOURCE.PRIVATE in x
             ]
-            # _SOURCES_SKIP_KEYS = [
-            #     self._KEYS.NAME, self._KEYS.SCHEMA, self._KEYS.SOURCES, self._KEYS.ERRORS]
             _SOURCES_SKIP_KEYS = [self._KEYS.NAME, self._KEYS.SOURCES, self._KEYS.ERRORS]
             for key in self:
                 # if self._KEYS.get_key_by_name(key).no_source:
