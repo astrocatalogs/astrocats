@@ -1,12 +1,14 @@
 """
 """
 import os
-# import sys
+import warnings
 
-# import astrocats
 from astrocats import utils, PATHS
 
 import pyastroschema as pas  # noqa
+
+# Instead, the values that are allowed to conflict should be omitted (or something like that)
+warnings.warn(__file__ + " - `check_conflict` is being set to False")
 
 
 def set_struct_schema(schema_source, extensions=[], updates=[], **kwargs):
@@ -34,6 +36,7 @@ def set_struct_schema(schema_source, extensions=[], updates=[], **kwargs):
     updates = [prep(upd) for upd in updates]
 
     # Constrct the wrapper from `pyastroschema`
+    kwargs.setdefault("check_conflict", False)
     wrapper = pas.struct.set_struct_schema(
         schema_path, extensions=extensions, updates=updates, **kwargs)
     return wrapper
@@ -196,6 +199,12 @@ class Quantity(Meta_Struct):
 
 QUANTITY = Quantity._KEYCHAIN
 Quantity._KEYS = QUANTITY
+
+QUANTITY.E_VALUE = QUANTITY.ERROR_VALUE
+QUANTITY.E_LOWER_VALUE = QUANTITY.ERROR_LOWER
+QUANTITY.E_UPPER_VALUE = QUANTITY.ERROR_UPPER
+QUANTITY.U_VALUE = QUANTITY.UNITS_VALUE
+QUANTITY.U_E_VALUE = QUANTITY.UNITS_ERROR
 
 
 # Photometry
@@ -503,16 +512,3 @@ ENTRY = Entry._KEYCHAIN
 Entry._KEYS = ENTRY
 
 ENTRY.DISCOVER_DATE = ENTRY.DISCOVERDATE
-
-
-# Other
-
-'''
-STRUCTURES = [Correlation, Entry, Photometry, Spectrum,
-              Source, Realization, Model, Quantity, Error,
-              "defs.json"]
-
-# Run the `main` routine to setup schema
-from astrocats.structures import schema
-schema.main()
-'''
