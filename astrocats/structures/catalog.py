@@ -41,7 +41,7 @@ class Catalog(object):
     #    column header titles, and the order in which they are listed respectively
     #    To customize the includes keys, add values to the `_COLUNNS_CUSTOM` in the appropriate
     #    subclass.
-    '''
+    # NOTE: FIX: MOVE THIS SOMEWHERE
     _EVENT_HTML_COLUMNS = {
         ENTRY.NAME: ["Name", 0],
         ENTRY.ALIAS: ["Aliases", 1],
@@ -56,7 +56,6 @@ class Catalog(object):
         ENTRY.LUM_DIST: [r"<em>d</em><sub>L</sub> (Mpc)", 10],
     }
     _EVENT_HTML_COLUMNS_CUSTOM = {}
-    '''
 
     # NOTE: FIX: MOVE SOMEWHERE ELSE
     OSC_BIBCODE = '2017ApJ...835...64G'
@@ -83,11 +82,9 @@ class Catalog(object):
         self.min_journal_priority = 0
 
         # NOTE: FIX: MOVE SOMEWHERE ELSE
-        '''
         columns = self._EVENT_HTML_COLUMNS
         columns.update(self._EVENT_HTML_COLUMNS_CUSTOM)
         self.EVENT_HTML_COLUMNS = OrderedDict(sorted(columns.items(), key=lambda x: x[1][1]))
-        '''
 
         # Store version information
         # -------------------------
@@ -823,7 +820,7 @@ class Catalog(object):
                         filename = filename.split('.')[0]
                         os.system('cd ' + outdir + '; git rm --cached ' +
                                   filename + '.json; git add -f ' + filename +
-                                  '.json.gz; cd ' + self.PATHS.PATH_BASE)
+                                  '.json.gz; cd ' + self.PATHS.ROOT)
 
             if clear:
                 self.entries[name] = self.entries[name].get_stub()
