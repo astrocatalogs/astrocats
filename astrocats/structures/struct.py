@@ -152,6 +152,7 @@ class Quantity(Meta_Struct):
         super(Quantity, self).__init__(parent, key=key, **kwargs)
 
         # Aliases not added if in DISTINCT_FROM
+        # NOTE: FIX: this should be in `Entry`
         if self._key == parent._KEYS.ALIAS:
             value = parent.catalog.clean_entry_name(self[self._KEYS.VALUE])
             for df in parent.get(parent._KEYS.DISTINCT_FROM, []):
@@ -217,16 +218,19 @@ class Photometry(Meta_Struct):
     def __init__(self, parent, key=None, **kwargs):
         super(Photometry, self).__init__(parent, key=key, **kwargs)
 
+        '''
+        # FIX: SUPERNOVAE
         # If `BAND` is given, but any of `bandmetaf_keys` is not, try to infer
-        # if self._KEYS.BAND in self:
-        #     sband = self[self._KEYS.BAND]
-        #     bandmetaf_keys = [self._KEYS.INSTRUMENT, self._KEYS.TELESCOPE, self._KEYS.SYSTEM]
-        #
-        #     for bmf in bandmetaf_keys:
-        #         if bmf not in self:
-        #             temp = utils.bandmetaf(sband, bmf)
-        #             if temp is not None:
-        #                 self[bmf] = temp
+        if self._KEYS.BAND in self:
+            sband = self[self._KEYS.BAND]
+            bandmetaf_keys = [self._KEYS.INSTRUMENT, self._KEYS.TELESCOPE, self._KEYS.SYSTEM]
+
+            for bmf in bandmetaf_keys:
+                if bmf not in self:
+                    temp = utils.bandmetaf(sband, bmf)
+                    if temp is not None:
+                        self[bmf] = temp
+        '''
 
         # Convert dates to MJD
         timestrs = [str(x) for x in utils.listify(self.get(self._KEYS.TIME, ''))]
@@ -258,16 +262,19 @@ class Photometry(Meta_Struct):
 
         return
 
-    # def _clean_value_for_key(self, key, value):
-    #     value = super(_Photometry, self)._clean_value_for_key(key, value)
-    #
-    #     # Do some basic homogenization
-    #     if key == self._KEYS.BAND:
-    #         return utils.bandrepf(value)
-    #     elif key == self._KEYS.INSTRUMENT:
-    #         return utils.instrumentrepf(value)
-    #
-    #     return value
+    '''
+    # FIX SUPERNOVAE
+    def _clean_value_for_key(self, key, value):
+        value = super(_Photometry, self)._clean_value_for_key(key, value)
+
+        # Do some basic homogenization
+        if key == self._KEYS.BAND:
+            return utils.bandrepf(value)
+        elif key == self._KEYS.INSTRUMENT:
+            return utils.instrumentrepf(value)
+
+        return value
+    '''
 
     def sort_func(self, key):
         """Specify order for attributes."""
