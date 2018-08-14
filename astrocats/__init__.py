@@ -32,12 +32,23 @@ class Paths(object):
         is_astrocats = (type(self) == Paths)
         is_derived = (not is_astrocats)
 
+        # Make sure these attributes have been set (use strings for error messages)
+        check_not_none = []
+
         if self.ASTROCATS != os.path.join(os.path.dirname(__file__), ""):
             raise ValueError("`ASTROCATS` attribute must not be overridden!")
 
+        # Make sure that derived classes look okay
         if is_derived:
             if os.path.realpath(self.ASTROCATS).lower() == os.path.realpath(self.ROOT).lower():
                 raise ValueError("`ROOT` attribute must be overridden!")
+
+            # Make sure required parameters have been changed to legit values (instead of `None`)
+            for check in check_not_none:
+                check_val = getattr(self, check, None)
+                if (check_val is None):
+                    err = "Attribute `{}` is 'None' but must be overridden!".format(check)
+                    raise ValueError(err)
 
         check_dirs_astrocats = []
         check_dirs_derived = []

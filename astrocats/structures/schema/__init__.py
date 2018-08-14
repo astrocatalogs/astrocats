@@ -13,7 +13,11 @@ import pyastroschema as pas
 import pyastroschema.utils  # noqa
 
 
-def setup(log):
+def setup(log, catalog_info):
+
+    # Path to catalog-specific schema-files
+    catalog_name = catalog_info['catalog_name']
+    catalog_schema_path = catalog_info.get('schema_path', None)
 
     # Clear output directory
     pattern = os.path.join(AC_PATHS.SCHEMA_OUTPUT, "", "*.json")
@@ -33,6 +37,7 @@ def setup(log):
     log.info("Copied {} files".format(len(astroschema_fnames)))
 
     # Load names of astrocats files (already in 'input')
+    # ------------------------------------------------------------
     log.info("Loading `astrocats` schema file names from input")
     pattern = os.path.join(AC_PATHS.SCHEMA_INPUT_ASTROCATS, "*.json")
     astrocats_fnames = list(sorted(glob.glob(pattern)))
@@ -42,6 +47,20 @@ def setup(log):
 
     log.info("Loaded {} file names".format(len(astrocats_fnames)))
 
+    # Copy catalog-specific files to 'input' directory
+    # ----------------------------------------------------------
+    log.info("Loading catalog '{}' schema file names from input".format(catalog_name))
+    if catalog_schema_path is None:
+        catalog_fnames = []
+    else:
+        pattern = os.path.join(catalog_schema_path, "*.json")
+        catalog_fnames = sorted(glob.glob(pattern))
+
+    log.info("Loaded {} file names".format(len(catalog_fnames)))
+
+    # Store all source filenames from input and construct the destination names for output
+    # ---------------------------------------------------------------------------------------
+
     def get_output_fname(src, group):
         base = os.path.basename(src)
         if not base.lower().startswith(group.lower()):
@@ -49,12 +68,11 @@ def setup(log):
         dst = os.path.join(AC_PATHS.SCHEMA_OUTPUT, base)
         return dst
 
-    # Store all source filenames from input and construct the destination names for output
     src_list = []
     dst_list = []
     rename_file_list = []
-    fnames = [astroschema_fnames, astrocats_fnames]
-    groups = ["astroschema", "astrocats"]
+    fnames = [astroschema_fnames, astrocats_fnames, catalog_fnames]
+    groups = ["astroschema", "astrocats", catalog_name]
     log.info("Loading and constructing schema file names")
     for src_files, grp in zip(fnames, groups):
         for src in src_files:
@@ -72,6 +90,7 @@ def setup(log):
             rename_file_list.append([src, dst])
 
     # Copy all input schema files to output with modified names
+    # ----------------------------------------------------------------------
     log.info("Copying {} schema files to output".format(len(src_list)))
     for src, dst in zip(src_list, dst_list):
         shutil.copy(src, dst)
@@ -132,10 +151,8 @@ def rename_internal_astroschema_refs(astroschema_list, log):
     This is applied to both the 'id' and 'title' values and properties.
 
     """
+    # Construct a mapping from source to destination filenames (base-name with extension)
     mapping = [[os.path.basename(fn) for fn in fnames] for fnames in astroschema_list]
-    # mapping = [[nam, "astroschema_" + nam] for nam in names]
-    for mm in mapping:
-        print(mm)
 
     for _, fname in astroschema_list:
         if not os.path.exists(fname):
