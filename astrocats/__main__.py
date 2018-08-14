@@ -74,16 +74,22 @@ def main():
         msg = "Import of specified catalog module '{}' failed.".format(catalog_path)
         log.raise_error(msg, err)
 
+    # Load basic data from catalog module
+    catalog_package_name = catalog_module.__name__
+    catalog_info = catalog_module.catalog_info
+
+    # Infomation about the catalog_class from this catalog-module
+    _catalog_class_info = catalog_info['catalog_class']
+    catalog_class_name = _catalog_class_info['name']
+    catalog_class_file = _catalog_class_info['file']
+    catalog_class_path = _catalog_class_info['path']
+
     # Perform setup operations before loading the target catalog
     # -----------------------------------------------------------
-    setup(log)
+    setup(log, catalog_info)
 
     # Construct a catalog instance based on the loaded module
     try:
-        catalog_package_name = catalog_module.__name__
-        catalog_class_name = catalog_module.catalog_class['name']
-        catalog_class_file = catalog_module.catalog_class['file']
-        catalog_class_path = catalog_module.catalog_class['import_path']
         log.info("{} {} {}".format(catalog_package_name, catalog_class_name, catalog_class_path))
         # catalog = catalog_module.Catalog_Class(args, log)
         mod = catalog_class_file
@@ -222,14 +228,14 @@ def run_command(args, log, catalog):
     return
 
 
-def setup(log):
+def setup(log, catalog_info):
     log.debug(__file__ + ":setup()")
 
     # Setup schema files
     # ------------------------
     log.info("Setting up schema")
     import astrocats.structures.schema
-    astrocats.structures.schema.setup(log=log)
+    astrocats.structures.schema.setup(log, catalog_info)
 
     return
 
