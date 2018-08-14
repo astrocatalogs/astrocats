@@ -59,27 +59,21 @@ class Catalog(object):
     '''
 
     # NOTE: FIX: MOVE SOMEWHERE ELSE
-    '''
     OSC_BIBCODE = '2017ApJ...835...64G'
     OSC_NAME = 'The Open Supernova Catalog'
     OSC_URL = 'https://sne.space'
     ADS_BIB_URL = ("http://cdsads.u-strasbg.fr/cgi-bin/nph-abs_connect?"
                    "db_key=ALL&version=1&bibcode=")
-    '''
 
     def __init__(self, args={}, log=logging.Logger("INFO")):
+        if not self.PATHS._derived:
+            raise log.raise_error("Catalog instance must have `PATHS` subclass!")
+
         # Store runtime arguments
         self.args = args
         self.log = log
         self.proto = Entry
         self.Director = director.Director
-
-        # Instantiate PATHS
-        # self.PATHS = self.PATHS(self)
-
-        # Load repos dictionary (required)
-        # self.repos_dict = utils.read_json_dict(self.PATHS.REPOS_LIST)
-        # self.clone_repos()
 
         # Create empty `entries` collection
         self.entries = OrderedDict()
@@ -138,9 +132,9 @@ class Catalog(object):
 
         prev_priority = 0
         prev_task_name = ''
-        # for task, task_obj in tasks_list.items():
         for task_name, task_obj in tasks_list.items():
             if not task_obj.active:
+                self.log.info("Task: '{}' is inactive".format(task_name))
                 continue
             self.log.warning("Task: '{}'".format(task_name))
 
@@ -155,9 +149,10 @@ class Catalog(object):
                     task_name, priority, prev_task_name, prev_priority, task_obj)
                 raise RuntimeError(err)
 
-            self.log.debug("\t{}, {}, {}, {}".format(nice_name, priority, mod_name, func_name))
+            self.log.info("\t{}, {}, {}, {}".format(nice_name, priority, mod_name, func_name))
             # Import appropriate submodule for this task
-            mod = importlib.import_module('.' + mod_name, package='astrocats')
+            # mod = importlib.import_module('.' + mod_name, package='astrocats')
+            mod = importlib.import_module(mod_name)
             self.current_task = task_obj
             # Run this task from imported submodule
             getattr(mod, func_name)(self)
@@ -299,7 +294,7 @@ class Catalog(object):
     def _load_task_list_from_file(self):
         """
         """
-        def_task_list_filename = self.PATHS.TASK_LIST
+        def_task_list_filename = self.PATHS.TASKS_FILE
         self.log.debug("Loading task-list from '{}'".format(def_task_list_filename))
         data = json.load(codecs.open(def_task_list_filename, 'r'))
         # Create `Task` objects for each element in the tasks data file
@@ -863,7 +858,7 @@ class Catalog(object):
     def get_current_task_repo(self):
         """Get the data repository corresponding to the currently active task.
         """
-        return self.current_task._get_repo_path(self.PATHS.PATH_BASE)
+        return self.current_task._get_repo_path(self.PATHS.ROOT)
 
     def set_preferred_names(self):
         """Choose between each entries given name and its possible aliases for
