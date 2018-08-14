@@ -151,7 +151,6 @@ class Catalog(object):
 
             self.log.info("\t{}, {}, {}, {}".format(nice_name, priority, mod_name, func_name))
             # Import appropriate submodule for this task
-            # mod = importlib.import_module('.' + mod_name, package='astrocats')
             mod = importlib.import_module(mod_name)
             self.current_task = task_obj
             # Run this task from imported submodule
