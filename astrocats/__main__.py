@@ -183,41 +183,40 @@ def run_command(args, log, catalog):
 
     # Data Export
     # -----------
-    elif args.subcommand == 'produce':
-        # from . import production
+    elif args.command == 'produce':
         log.log(log_lvl, "Running 'produce'.")
         manager = catalog.Director(catalog, args)
         manager.direct(args)
 
     # Git Subcommands
     # ---------------
-    elif args.subcommand.startswith('git'):
+    elif args.command.startswith('git'):
         from . import gitter
 
-        if args.subcommand == 'git-clone':
+        if args.command == 'git-clone':
             log.log(log_lvl, "Running 'git clone'.")
             gitter.git_clone_all_repos(catalog)
-        elif args.subcommand == 'git-push':
+        elif args.command == 'git-push':
             log.log(log_lvl, "Running 'git push'.")
             gitter.git_add_commit_push_all_repos(catalog)
-        elif args.subcommand == 'git-pull':
+        elif args.command == 'git-pull':
             log.log(log_lvl, "Running 'git pull'.")
             gitter.git_pull_all_repos(catalog)
-        elif args.subcommand == 'git-reset-local':
+        elif args.command == 'git-reset-local':
             log.log(log_lvl, "Running 'git reset' using the local HEAD.")
             gitter.git_reset_all_repos(catalog, hard=True, origin=False, clean=True)
-        elif args.subcommand == 'git-reset-origin':
+        elif args.command == 'git-reset-origin':
             log.log(log_lvl, "Running 'git reset' using 'origin/master'.")
             gitter.git_reset_all_repos(catalog, hard=True, origin=True, clean=True)
-        elif args.subcommand == 'git-status':
+        elif args.command == 'git-status':
             log.log(log_lvl, "Running 'git status'.")
             gitter.git_status_all_repos(catalog)
         else:
-            log.error("Unrecognized git subcommand '{}'".format(args.subcommand))
+            log.error("Unrecognized git subcommand '{}'".format(args.command))
 
     # Analyze Catalogs
     # ----------------
-    elif args.subcommand == 'analyze':
+    elif args.command == 'analyze':
         log.log(log_lvl, "Running 'analyze'.")
         from . import analysis
         # Create an `Analysis` instance
