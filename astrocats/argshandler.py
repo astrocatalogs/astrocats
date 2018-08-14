@@ -76,6 +76,13 @@ def _add_general(parser):
         dest='log_filename',
         default=None,
         help='Filename to which to store logging information.')
+    parser.add_argument(
+        '--travis',
+        '-t',
+        dest='travis',
+        default=False,
+        action='store_true',
+        help='Run import script in test mode for Travis.')
 
     parser.add_argument(
         '--clone-depth',
@@ -129,13 +136,6 @@ def _add_import(import_pars):
         default=False,
         action='store_true',
         help='Include private data in import.')
-    import_pars.add_argument(
-        '--travis',
-        '-t',
-        dest='travis',
-        default=False,
-        action='store_true',
-        help='Run import script in test mode for Travis.')
 
     # Control which 'tasks' are executed
     # ----------------------------------
