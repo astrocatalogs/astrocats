@@ -1000,11 +1000,11 @@ class _Entry(struct.Meta_Struct):
         else:
             self._log.error('There should be at least one alias for `{}`.'.format(name))
 
-        if self.catalog.name != 'BlackholeCatalog':
-            self._log.error(self.catalog.name)
-            self._log.error("WARNING: the `PHOTOMETRY` and `SPECTRA` "
-                            "portion of sanitize have been removed!")
-        '''
+        # if self.catalog.name != 'BlackholeCatalog':
+        #     self._log.error(self.catalog.name)
+        #     self._log.error("WARNING: the `PHOTOMETRY` and `SPECTRA` "
+        #                     "portion of sanitize have been removed!")
+        # '''
         if self._KEYS.PHOTOMETRY in self:
             self[self._KEYS.PHOTOMETRY].sort(
                 key=lambda x: ((float(x[PHOTOMETRY.TIME]) if
@@ -1026,7 +1026,7 @@ class _Entry(struct.Meta_Struct):
                                x[SPECTRUM.FILENAME] if
                                SPECTRUM.FILENAME in x else '')
             )
-        '''
+        # '''
 
         if self._KEYS.SOURCES in self:
             # _NO_SRCS_REQUIRED = [self._KEYS.NAME, self._KEYS.SCHEMA, self._KEYS.SOURCES,
