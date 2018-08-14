@@ -114,7 +114,7 @@ def main():
         pr = cProfile.Profile()
         pr.enable()
 
-    # run_command(args, log, catalog_module)
+    run_command(args, log, catalog)
 
     if _PROFILE:
         pr.disable()
@@ -164,16 +164,17 @@ def load_log(args):
     return log
 
 
-def run_command(args, log, catalog_module):
+def run_command(args, log, catalog):
     log.debug(__file__ + ":run_command()")
-
-    # Load the catalog
+    log_lvl = log.INFO
 
     # Data Import
     # -----------
     if args.command == 'import':
-        log.log(log_lvl, "Running 'import'.")
+        log.log(log_lvl, "Running 'import'")
         catalog.import_data()
+        # importer = catalog.Importer(catalog)
+        # importer.import_data()
 
     # Data Export
     # -----------
