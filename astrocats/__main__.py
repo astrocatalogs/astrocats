@@ -9,7 +9,6 @@ from datetime import datetime
 from astrocats import __version__, __git_version__, argshandler
 from astrocats.utils import logger, gitter
 
-_BASE_PATH_KEY = 'base_path'
 _PROFILE = False
 
 
@@ -180,7 +179,7 @@ def run_command(args, log, catalog):
     # -----------
     elif args.subcommand == 'produce':
         # from . import production
-        self.log.log(log_lvl, "Running 'produce'.")
+        log.log(log_lvl, "Running 'produce'.")
         manager = catalog.Director(catalog, args)
         manager.direct(args)
 
@@ -190,33 +189,33 @@ def run_command(args, log, catalog):
         from . import gitter
 
         if args.subcommand == 'git-clone':
-            self.log.log(log_lvl, "Running 'git clone'.")
+            log.log(log_lvl, "Running 'git clone'.")
             gitter.git_clone_all_repos(catalog)
         elif args.subcommand == 'git-push':
-            self.log.log(log_lvl, "Running 'git push'.")
+            log.log(log_lvl, "Running 'git push'.")
             gitter.git_add_commit_push_all_repos(catalog)
         elif args.subcommand == 'git-pull':
-            self.log.log(log_lvl, "Running 'git pull'.")
+            log.log(log_lvl, "Running 'git pull'.")
             gitter.git_pull_all_repos(catalog)
         elif args.subcommand == 'git-reset-local':
-            self.log.log(log_lvl, "Running 'git reset' using the local HEAD.")
+            log.log(log_lvl, "Running 'git reset' using the local HEAD.")
             gitter.git_reset_all_repos(catalog, hard=True, origin=False, clean=True)
         elif args.subcommand == 'git-reset-origin':
-            self.log.log(log_lvl, "Running 'git reset' using 'origin/master'.")
+            log.log(log_lvl, "Running 'git reset' using 'origin/master'.")
             gitter.git_reset_all_repos(catalog, hard=True, origin=True, clean=True)
         elif args.subcommand == 'git-status':
-            self.log.log(log_lvl, "Running 'git status'.")
+            log.log(log_lvl, "Running 'git status'.")
             gitter.git_status_all_repos(catalog)
         else:
-            self.log.error("Unrecognized git subcommand '{}'".format(args.subcommand))
+            log.error("Unrecognized git subcommand '{}'".format(args.subcommand))
 
     # Analyze Catalogs
     # ----------------
     elif args.subcommand == 'analyze':
-        self.log.log(log_lvl, "Running 'analyze'.")
+        log.log(log_lvl, "Running 'analyze'.")
         from . import analysis
         # Create an `Analysis` instance
-        lysis = analysis.analysis.Analysis(catalog, self.log)
+        lysis = analysis.analysis.Analysis(catalog, log)
         # Pass the command-line arguments to run.
         lysis.analyze(args)
 
