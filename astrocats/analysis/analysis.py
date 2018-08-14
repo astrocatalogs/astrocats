@@ -13,8 +13,8 @@ from collections import OrderedDict
 
 import numpy as np
 
-from astrocats.structures.utils import tq, dict_to_pretty_string
-from astrocats.structures.production import utils as production_utils
+from astrocats import utils
+from astrocats.production import utils as production_utils
 
 
 class Analysis:
@@ -91,7 +91,7 @@ class Analysis:
 
         # Iterate over all events
         # -----------------------
-        for event_count, event_fname in enumerate(tq(event_filenames)):
+        for event_count, event_fname in enumerate(utils.tq(event_filenames)):
 
             if args.travis and (event_count >= catalog.TRAVIS_QUERY_LIMIT):
                 break
@@ -108,7 +108,7 @@ class Analysis:
 
         #
         log.warning("Resulting data tree:")
-        json_str = dict_to_pretty_string(data_tree)
+        json_str = utils.dict_to_pretty_string(data_tree)
         log.warning(json_str)
         with open(save_fname, 'w') as ff:
             ff.write(json_str)
