@@ -10,11 +10,12 @@ from collections import OrderedDict
 from copy import deepcopy
 from decimal import Decimal
 
+import six
+
 from astrocats import utils
 from astrocats.structures import struct
 from astrocats.structures.struct import (Error, Model, Photometry, Quantity, Source, Spectrum)
 from astrocats.structures.struct import (ERROR, MODEL, PHOTOMETRY, QUANTITY, SOURCE, SPECTRUM)
-from six import string_types
 
 
 @struct.set_struct_schema("astroschema_entry", extensions="astrocats_entry")  # noqa
@@ -125,7 +126,7 @@ class _Entry(struct.Meta_Struct):
         unit = quantity.get(QUANTITY.U_VALUE, '').strip()
         kind = quantity.get(QUANTITY.KIND, '')
 
-        if isinstance(kind, list) and not isinstance(kind, string_types):
+        if isinstance(kind, list) and not isinstance(kind, six.string_types):
             kind = [x.strip() for x in kind]
         else:
             kind = kind.strip()
@@ -1009,7 +1010,7 @@ class _Entry(struct.Meta_Struct):
             self[self._KEYS.PHOTOMETRY].sort(
                 key=lambda x: ((float(x[PHOTOMETRY.TIME]) if
                                 isinstance(x[PHOTOMETRY.TIME],
-                                           (basestring, float, int))
+                                           (six.string_types, float, int))
                                 else min([float(y) for y in
                                           x[PHOTOMETRY.TIME]])) if
                                PHOTOMETRY.TIME in x else 0.0,
