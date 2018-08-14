@@ -1,20 +1,22 @@
 {
+    "id": "astrocats_entry.json",
+
     "definitions": {
         "NUMERIC": {
             "type": ["number", "string"],
             "format": "numeric"
         },
         "QUANTITY": {
-            "$ref": "file:/Users/lzkelley/Research/catalogs/astroschema/schema/quantity.json"
+            "$ref": "file:astroschema_quantity.json"
         },
         "SOURCE": {
-            "$ref": "file:/Users/lzkelley/Research/catalogs/astroschema/schema/source.json"
+            "$ref": "file:astroschema_source.json"
         },
         "PHOTOMETRY": {
-            "$ref": "file:/Users/lzkelley/Research/catalogs/astroschema/schema/photometry.json"
+            "$ref": "file:astroschema_photometry.json"
         },
         "SPECTRUM": {
-            "$ref": "file:/Users/lzkelley/Research/catalogs/astroschema/schema/spectrum.json"
+            "$ref": "file:astroschema_spectrum.json"
         },
         "STRING_LIST": {
             "type": "array",
@@ -27,40 +29,40 @@
             "type": "array",
             "minItems": 1,
             "items": {
-                "$ref": "#/definitions/SOURCE"
+                "$ref": "astrocats_entry.json#/definitions/SOURCE"
             }
         },
         "QUANTITY_LIST": {
             "type": "array",
             "minItems": 1,
             "items": {
-                "$ref": "#/definitions/QUANTITY"
+                "$ref": "astrocats_entry.json#/definitions/QUANTITY"
             }
         },
         "STRING_LISTABLE": {
             "anyOf": [
                 {"type": "string"},
-                {"$ref": "#/definitions/STRING_LIST"}
+                {"$ref": "astrocats_entry.json#/definitions/STRING_LIST"}
             ]
         },
         "QUANTITY_LISTABLE": {
             "anyOf": [
-                {"$ref": "#/definitions/QUANTITY"},
-                {"$ref": "#/definitions/QUANTITY_LIST"}
+                {"$ref": "astrocats_entry.json#/definitions/QUANTITY"},
+                {"$ref": "astrocats_entry.json#/definitions/QUANTITY_LIST"}
             ]
         },
         "PHOTOMETRY_LIST": {
             "type": "array",
             "minItems": 1,
             "items": {
-                "$ref": "#/definitions/PHOTOMETRY"
+                "$ref": "astrocats_entry.json#/definitions/PHOTOMETRY"
             }
         },
         "SPECTRUM_LIST": {
             "type": "array",
             "minItems": 1,
             "items": {
-                "$ref": "#/definitions/SPECTRUM"
+                "$ref": "astrocats_entry.json#/definitions/SPECTRUM"
             }
         },
         "DIST_PREF_KINDS": {
@@ -73,42 +75,42 @@
 
     "properties": {
         "tasks": {
-            "$ref": "#/definitions/STRING_LISTABLE"
+            "$ref": "astrocats_entry.json#/definitions/STRING_LISTABLE"
         },
 
         "maxabsmag": {
             "description": "",
             "unique": false,
             "distinguishing": true,
-            "$ref": "#/definitions/QUANTITY_LISTABLE"
+            "$ref": "astrocats_entry.json#/definitions/QUANTITY_LISTABLE"
         },
         "maxappmag": {
             "description": "",
             "unique": false,
             "distinguishing": true,
-            "$ref": "#/definitions/QUANTITY_LISTABLE"
+            "$ref": "astrocats_entry.json#/definitions/QUANTITY_LISTABLE"
         },
         "maxband": {
             "description": "",
             "unique": false,
             "distinguishing": true,
-            "$ref": "#/definitions/QUANTITY_LISTABLE"
+            "$ref": "astrocats_entry.json#/definitions/QUANTITY_LISTABLE"
         },
         "maxdate": {
             "description": "",
             "unique": false,
             "distinguishing": true,
             "replace_better": true,
-            "$ref": "#/definitions/QUANTITY_LISTABLE"
+            "$ref": "astrocats_entry.json#/definitions/QUANTITY_LISTABLE"
         },
         "models": {
             "description": "",
             "unique": false,
             "distinguishing": true,
-            "$ref": "#/definitions/QUANTITY_LISTABLE"
+            "$ref": "astrocats_entry.json#/definitions/QUANTITY_LISTABLE"
         },
         "claimedtype": {
-            "$ref": "#/definitions/QUANTITY_LISTABLE",
+            "$ref": "astrocats_entry.json#/definitions/QUANTITY_LISTABLE",
             "kind_preference": ["spectroscopic", "photometric"],
             "replace_better": true
         },
@@ -116,10 +118,10 @@
             "type": "string"
         },
         "maxvisualabsmag": {
-            "$ref": "#/definitions/NUMERIC"
+            "$ref": "astrocats_entry.json#/definitions/NUMERIC"
         },
         "maxvisualappmag": {
-            "$ref": "#/definitions/NUMERIC"
+            "$ref": "astrocats_entry.json#/definitions/NUMERIC"
         },
         "maxvisualband": {
             "type": "string"
