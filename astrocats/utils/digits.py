@@ -5,10 +5,7 @@ import six
 import numpy as np
 
 
-__all__ = [
-    'get_sig_digits', 'is_integer', 'is_number', 'pretty_num', 'round_sig',
-    'zpad'
-]
+__all__ = ['get_sig_digits', 'is_integer', 'is_number', 'pretty_num', 'round_sig', 'zpad']
 
 
 def get_sig_digits(x, strip_zeroes=True):
@@ -60,7 +57,13 @@ def pretty_num(x, sig=4):
 def round_sig(x, sig=4):
     if x == 0.0:
         return 0.0
-    return round(x, sig - int(np.floor(np.log10(abs(x)))) - 1)
+    try:
+        rv = round(x, sig - int(np.floor(np.log10(abs(x)))) - 1)
+    except AttributeError:
+        x = np.float(x)
+        rv = round(x, sig - int(np.floor(np.log10(abs(x)))) - 1)
+
+    return rv
 
 
 def zpad(val, n=2):
