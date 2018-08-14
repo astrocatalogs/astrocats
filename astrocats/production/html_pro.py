@@ -82,7 +82,7 @@ class HTML_Pro(producer.Producer_Base):
         # Load specifications for columns to include in HTML pages from `catalog`
         self.COLUMNS = catalog.EVENT_HTML_COLUMNS
 
-        self.HTML_OUT_DIR = catalog.PATHS.PATH_HTML
+        self.HTML_OUT_DIR = catalog.PATHS.HTML
 
         event_page_fname = os.path.join(DIR_TEMPLATES, 'event_page.html')
         self.EVENT_PAGE = self._load_content_from(event_page_fname)

@@ -74,7 +74,7 @@ class Host_Image_Pro(Producer_Base):
         log.debug("Host_Image_Pro.__init__()")
 
         self.host_image_fname = catalog.PATHS.HOST_IMAGES_FILE
-        self.dir_images = catalog.PATHS.PATH_HTML
+        self.dir_images = catalog.PATHS.HTML
         log.debug("`host_image_fname` = '{}'".format(self.host_image_fname))
         log.debug("`dir_images` = '{}'".format(self.dir_images))
 
