@@ -36,10 +36,14 @@ def get_git(path=None):
 def fetch(repo_name, progress=True, log=None):
     repo = git.Repo(repo_name)
     _progress = MyProgressPrinter() if progress else None
-    for fetch_info in repo.remote().fetch(progress=_progress):
+    try:
+        fetch_results = repo.remote().fetch(progress=_progress)
+    except AssertionError:
+        fetch_results = repo.remote().fetch(refspec='master', progress=_progress)
+
+    for fetch_info in fetch_results:
         if log is not None:
-            log.debug("Updated {}:{} to {}".format(repo_name, fetch_info.ref,
-                                                   fetch_info.commit))
+            log.debug("Updated {}:{} to {}".format(repo_name, fetch_info.ref, fetch_info.commit))
 
 
 def get_git_sha(path=None, log=None, short=False, timeout=None):
