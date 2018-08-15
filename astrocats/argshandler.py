@@ -1,7 +1,6 @@
 """Handle user arguments when running AstroCats."""
 
 import argparse
-import logging
 
 import astrocats
 
@@ -16,11 +15,11 @@ def parse_args():
 
     parser = argparse.ArgumentParser(prog='astrocats', description=desc)
 
-    # Add subparsers for particular commands
-    subparsers = parser.add_subparsers(dest='command')
-
     # Add positional arguments
     parser.add_argument('catalog', help='path to catalog')
+
+    # Add subparsers for particular commands
+    subparsers = parser.add_subparsers(dest='command')
 
     # Add generally applicable arguments
     parser = _add_general(parser)
