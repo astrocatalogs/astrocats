@@ -1,14 +1,14 @@
 """
 """
 import os
-import warnings
+# import warnings
 
 from astrocats import utils, PATHS
 
 import pyastroschema as pas  # noqa
 
 # Instead, the values that are allowed to conflict should be omitted (or something like that)
-warnings.warn(__file__ + " - `check_conflict` is being set to False")
+# warnings.warn(__file__ + " - `check_conflict` is being set to False")
 
 
 def set_struct_schema(schema_source, extensions=[], updates=[], **kwargs):
