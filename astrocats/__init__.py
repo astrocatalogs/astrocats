@@ -9,7 +9,7 @@ warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 
 import os
 import glob
-import sys
+# import sys
 
 __version__ = '0.3.42'
 __author__ = 'James Guillochon & Luke Kelley'
@@ -272,14 +272,16 @@ PATHS = Paths()
 
 # =============================================
 
-
+'''
 warnings.warn("Adding `pyastroschema` to `sys.path` for easy access... fix this")
 _PAS_PATH = "/Users/lzkelley/Research/catalogs/astroschema"
 if _PAS_PATH not in sys.path:
     sys.path.append(_PAS_PATH)
+'''
 
 # =====================================
 
+'''
 _RM_PATH = "/Users/lzkelley/Research/catalogs/redesign/astrocats/astrocats/catalog/schema/output/"
 warnings.warn("Removing schema files from {} for testing!".format(_RM_PATH))
 pattern = os.path.join(_RM_PATH, "", "*.json")
@@ -287,6 +289,7 @@ old_files = sorted(glob.glob(pattern))
 old_files = [os.path.join(_RM_PATH, fname) for fname in old_files]
 for fname in old_files:
     os.remove(fname)
+'''
 
 # ======================================
 
