@@ -9,10 +9,13 @@ warnings.filterwarnings("ignore", message="numpy.ufunc size changed")
 
 import os
 import glob
-# import sys
 
-__version__ = '0.3.42'
-__author__ = 'James Guillochon & Luke Kelley'
+_PATH_VERSION = os.path.join(os.path.dirname(__file__), os.path.pardir, "VERSION")
+with open(_PATH_VERSION, "r") as inn:
+    version = inn.read().strip()
+
+__version__ = version
+__author__ = 'James Guillochon & Luke Zoltan Kelley'
 __license__ = 'MIT'
 
 
