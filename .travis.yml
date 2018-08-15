@@ -30,7 +30,8 @@ install:
     - git clone https://github.com/$TRAVIS_REPO_SLUG.git $TRAVIS_REPO_SLUG
     - git clone https://github.com/astrocats/testcat.git
     - cd $TRAVIS_REPO_SLUG
-    - pip install -r requirements.txt
+    # - pip install -r requirements.txt
+    - cat requirements.txt | cut -f1 -d"#" | sed '/^\s*$/d' | xargs -n 1 pip install
 
 # Run test
 script:
