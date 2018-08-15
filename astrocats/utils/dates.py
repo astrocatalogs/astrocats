@@ -74,7 +74,10 @@ def astrotime(datetime, input='mjd', output='datetime', to_str=False):
             time = getattr(time, output)
         except AttributeError as err:
             add_err = "Unrecognized `output` type = '{}'!".format(output)
-            raise AttributeError(add_err + str(err)) from err
+            warnings.warn(add_err)
+            # NOTE: this does not work in python2
+            # raise AttributeError(add_err + str(err)) from err
+            raise
 
     if to_str:
         time = str(time)
