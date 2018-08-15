@@ -492,6 +492,7 @@ class _Entry(struct.Meta_Struct):
                 log.raise_error(err_str)
             else:
                 log.info(err_str)
+                return False
 
         # Compare this new entry with all previous entries to make sure is new
         #    If it is NOT new, return the entry
