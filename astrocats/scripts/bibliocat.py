@@ -6,7 +6,7 @@ import os
 from collections import OrderedDict
 
 import ads
-from astrocats.structures.utils import tq
+from astrocats.structures.utils import pbar
 from astrocats.scripts.repos import get_all_rep_folders, repo_file_list
 from astropy.time import Time as astrotime
 
@@ -65,7 +65,7 @@ else:
         "https://ui.adsabs.harvard.edu/#user/settings/token and place it in "
         "this file.")
 
-for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
+for fcnt, eventfile in enumerate(pbar(files, sort=True)):
     # if fcnt > 4000:
     #    break
     fileeventname = os.path.splitext(os.path.basename(eventfile))[0].replace(

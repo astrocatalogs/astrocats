@@ -16,7 +16,7 @@ from bokeh.plotting import Figure
 from bokeh.resources import CDN
 from palettable import cubehelix
 
-from astrocats.structures.utils import tprint, tq
+from astrocats.structures.utils import tprint, pbar
 from astrocats.structures.production import utils as production_utils
 from astrocats.scripts.repos import repo_file_list, get_all_rep_folders
 
@@ -100,8 +100,7 @@ with open('astrocats/' + moduledir + '/input/non-' + modulename + '-types.json',
     nontypes = json.loads(f.read(), object_pairs_hook=OrderedDict)
     nontypes = [x.upper() for x in nontypes]
 
-for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()),
-                                    "Collecting positions")):
+for fcnt, eventfile in enumerate(pbar(files, "Collecting positions", sort=True)):
     # if fcnt > 5000:
     #    break
 

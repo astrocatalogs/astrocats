@@ -11,7 +11,7 @@ from glob import glob
 
 import psutil
 import six
-from tqdm import tqdm
+# from tqdm import tqdm
 
 import astrocats
 from astrocats import utils
@@ -133,7 +133,7 @@ class Catalog(object):
             if not task_obj.active:
                 self.log.info("Task: '{}' is inactive".format(task_name))
                 continue
-            self.log.warning("Task: '{}'".format(task_name))
+            self.log.info("Task: '{}'".format(task_name))
 
             nice_name = task_obj.nice_name
             mod_name = task_obj.module
@@ -154,12 +154,10 @@ class Catalog(object):
             getattr(mod, func_name)(self)
 
             num_events, num_stubs = self.count()
-            self.log.warning("Task finished.  Events: {},  Stubs: {}".format(
-                num_events, num_stubs))
+            self.log.info("Task finished.  Events: {},  Stubs: {}".format(num_events, num_stubs))
             self.journal_entries()
             num_events, num_stubs = self.count()
-            self.log.warning("Journal finished.  Events: {}, Stubs: {}".format(
-                num_events, num_stubs))
+            self.log.info("Journal finished.  Events: {}, Stubs: {}".format(num_events, num_stubs))
 
             prev_priority = priority
             prev_task_name = task_name
@@ -534,7 +532,7 @@ class Catalog(object):
         self.log.info("Merging with {} entries".format(num_entries))
         n1 = 0
         count_dupes = 0
-        mainpbar = tqdm(total=num_entries, desc=task_str)
+        mainpbar = utils.pbar(num_entries, task_str)
         while n1 < num_entries:
             name1 = keys[n1]
             if name1 not in self.entries:
@@ -630,7 +628,7 @@ class Catalog(object):
 
     def sanitize(self):
         task_str = self.get_current_task_str()
-        for name in utils.pbar(list(sorted(self.entries.keys())), task_str):
+        for name in utils.pbar(self.entries.keys(), task_str, sort=True):
             self.add_entry(name)
             self.journal_entries(bury=True, final=True)
 
@@ -729,7 +727,7 @@ class Catalog(object):
                         raise RuntimeError(err)
 
             if self.args.travis and (ii > self.TRAVIS_QUERY_LIMIT):
-                self.log.warning("Exiting on travis limit")
+                self.log.info("Exiting on travis limit")
                 break
 
         return self.entries

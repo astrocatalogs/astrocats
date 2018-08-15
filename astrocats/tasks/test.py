@@ -6,7 +6,7 @@ from astrocats.structures.catalog import ENTRY
 from astrocats.structures.source import SOURCE
 from astrocats.structures.quantity import QUANTITY
 from astrocats.structures.photometry import PHOTOMETRY, set_pd_mag_from_counts
-from astrocats.structures.utils import tprint, tq, pbar_strings
+from astrocats.structures.utils import tprint, pbar
 
 FAKE_ALIAS_1 = 'EN-TEST-AA'
 FAKE_ALIAS_2 = 'PS-TEST-AB'
@@ -46,11 +46,11 @@ def do_test(catalog):
     # Test repo path functions
     # ------------------------
     paths = catalog.PATHS.get_all_repo_folders()
-    for path in tq(paths, currenttask='Test tq progress bar.'):
+    for path in pbar(paths, currenttask='Test pbar progress bar.'):
         tprint('Test tprint.')
         log.debug(path)
     paths = catalog.PATHS.get_repo_input_folders()
-    for path in pbar_strings(paths, desc='Test pbar_strings progress bar.'):
+    for path in pbar(paths, desc='Test pbar progress bar.', sort=True):
         log.debug(path)
     boneyard = catalog.PATHS.get_repo_boneyard()
     log.debug(boneyard)

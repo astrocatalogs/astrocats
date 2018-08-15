@@ -91,7 +91,7 @@ class Analysis:
 
         # Iterate over all events
         # -----------------------
-        for event_count, event_fname in enumerate(utils.tq(event_filenames)):
+        for event_count, event_fname in enumerate(utils.pbar(event_filenames)):
 
             if args.travis and (event_count >= catalog.TRAVIS_QUERY_LIMIT):
                 break

@@ -2,29 +2,28 @@ from datetime import datetime
 
 from tqdm import tqdm
 
-__all__ = ['tq', 'tprint', 'pbar', 'pbar_strings']
+__all__ = ['tprint', 'pbar']
 
 
-def tq(li, currenttask='', leave=True):
-    return tqdm(
-        list(li),
-        desc=('<' + str(datetime.now().strftime("%Y-%m-%d %H:%M:%S")) + '> ' +
-              currenttask),
-        leave=leave,
-        dynamic_ncols=True)
+'''
+def pbar(li, currenttask='', leave=True):
+    desc = '<' + str(datetime.now().strftime("%Y-%m-%d %H:%M:%S")) + '> ' + currenttask
+    return tqdm(list(li), desc=desc, leave=leave, dynamic_ncols=True)
+'''
 
 
-def pbar(iter, desc='', **kwargs):
+def pbar(iters, desc='', sort=False, **kwargs):
     """Wrapper for `tqdm` progress bar.
     """
-    return tqdm(
-        iter,
-        desc=('<' + str(datetime.now().strftime("%Y-%m-%d %H:%M:%S")) + '> ' +
-              desc),
-        dynamic_ncols=True,
-        **kwargs)
+    kwargs.setdefault('leave', True)
+    kwargs.setdefault('dynamic_ncols', True)
+    if sort:
+        iters = sorted(iters, key=lambda s: s.lower())
+    desc = '<' + str(datetime.now().strftime("%Y-%m-%d %H:%M:%S")) + '> ' + desc
+    return tqdm(iters, desc=desc, **kwargs)
 
 
+'''
 def pbar_strings(files, desc='', **kwargs):
     """Wrapper for `tqdm` progress bar which also sorts list of strings
     """
@@ -34,6 +33,7 @@ def pbar_strings(files, desc='', **kwargs):
               desc),
         dynamic_ncols=True,
         **kwargs)
+'''
 
 
 def tprint(string):

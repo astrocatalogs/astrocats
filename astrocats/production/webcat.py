@@ -26,7 +26,7 @@ from astrocats.structures.utils import (bandaliasf, bandcodes, bandcolorf,
                                      bandgroupf, bandshortaliasf, bandwavef,
                                      bandwavelengths, get_sig_digits,
                                      is_number, pretty_num, radiocolorf,
-                                     round_sig, tq, xraycolorf)
+                                     round_sig, pbar, xraycolorf)
 from astrocats.scripts.repos import (get_all_rep_folders, repo_file_list)
 from astrocats.structures.production import utils as production_utils
 from astropy import units as un
@@ -329,7 +329,7 @@ if os.path.isfile(outdir + cachedir + 'md5s.json'):
 else:
     md5dict = {}
 
-for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
+for fcnt, eventfile in enumerate(pbar(files, sort=True)):
     fileeventname = os.path.splitext(os.path.basename(eventfile))[0].replace(
         '.json', '')
     if args.eventlist and fileeventname not in args.eventlist:

@@ -7,7 +7,7 @@ from copy import deepcopy
 
 import numpy as np
 
-# from astrocats.utils import tq
+# from astrocats.utils import pbar
 from astrocats import utils
 from astrocats.structures.struct import ENTRY, SOURCE, QUANTITY
 # from astrocats.structures.entry import ENTRY
@@ -106,7 +106,7 @@ class Director(producer.Producer_Base):
 
         # Iterate over all events
         # -----------------------
-        for event_count, event_fname in enumerate(utils.tq(event_filenames)):
+        for event_count, event_fname in enumerate(utils.pbar(event_filenames)):
 
             if args.travis and (event_count >= catalog.TRAVIS_QUERY_LIMIT):
                 self.log.warning("Reached travis limit ({})".format(event_count))
