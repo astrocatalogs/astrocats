@@ -11,7 +11,6 @@ from glob import glob
 
 import psutil
 import six
-# from tqdm import tqdm
 
 import astrocats
 from astrocats import utils
