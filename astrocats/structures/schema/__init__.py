@@ -2,7 +2,7 @@
 """
 
 import os
-import warnings
+# import warnings
 import shutil
 import re
 import glob
@@ -30,9 +30,9 @@ def setup(log, catalog_info):
     # Copy all `astroschema` schema files to the 'input' directory
     log.info("Copying `astroschema` schema files to input")
     astroschema_fnames = pas.copy_schema_files(AC_PATHS.SCHEMA_INPUT_ASTROSCHEMA, verbose=False)
-    for fname in astroschema_fnames:
-        base = os.path.basename(fname)
-        log.debug("Copied '{}' to '{}'".format(base, fname))
+    # for fname in astroschema_fnames:
+    #     base = os.path.basename(fname)
+    #     log.debug("Copied '{}' to '{}'".format(base, fname))
 
     log.info("Copied {} files".format(len(astroschema_fnames)))
 
@@ -86,7 +86,6 @@ def setup(log, catalog_info):
                 log.raise_error(err, ValueError)
 
             dst_list.append(dst)
-            # if grp == 'astroschema':
             rename_file_list.append([src, dst])
 
     # Copy all input schema files to output with modified names
@@ -94,12 +93,10 @@ def setup(log, catalog_info):
     log.info("Copying {} schema files to output".format(len(src_list)))
     for src, dst in zip(src_list, dst_list):
         shutil.copy(src, dst)
-        base = os.path.basename(dst)
-        log.debug("Copied '{}' : '{}' ==> '{}'".format(base, src, dst))
+        # base = os.path.basename(dst)
+        # log.debug("Copied '{}' : '{}' ==> '{}'".format(base, src, dst))
         # Make sure `id` parameter exists; check that it matches filename later (after rename)
         check_schema_id(dst, log, id_equals_name=False)
-
-    warnings.warn(__file__ + ":setup() - Add a schema validation here!")
 
     # Modify astroschema files to use (e.g.) "astroschema_source.json" instead of "source.json"
     # This is also applied to 'id' attributes which is required for correct reference resolution
@@ -109,10 +106,13 @@ def setup(log, catalog_info):
     for dst in dst_list:
         # Make sure that `id` matches the filename
         check_schema_id(dst, log, id_equals_name=True)
-        # base = os.path.basename(dst)
-        # This is not needed when using `check_id` above...
-        # set_schema_value(dst, "id", base)
-        # log.debug("Set `id` to '{}' in '{}'".format(base, dst))
+
+    # Try loading and validating all schema files
+    for dst in dst_list:
+        base = os.path.basename(dst)
+        log.debug("Loading and validating '{}'".format(base))
+        schema = pas.SchemaDict(dst)
+        schema.validate()
 
     return
 
@@ -134,17 +134,6 @@ def check_schema_id(fname, log, id_equals_name=False):
     return
 
 
-'''
-# This is no longer needed as `check_schema_id` is being used
-def set_schema_value(fname, key, value, if_missing=False):
-    data, *args = pas.utils.load_schema_dict(fname)
-    if (key not in data) or (not if_missing):
-        data[key] = value
-    pas.utils.json_dump_file(data, fname)
-    return
-'''
-
-
 def rename_internal_astroschema_refs(astroschema_list, log):
     """Rename internal schema references from old to new filenames.
 
@@ -158,12 +147,12 @@ def rename_internal_astroschema_refs(astroschema_list, log):
         if not os.path.exists(fname):
             raise RuntimeError("Schema file '{}' does not exist!".format(fname))
 
-        base = os.path.basename(fname)
+        # base = os.path.basename(fname)
         with open(fname, 'r') as inn:
             schema = inn.read()
 
         for old, new in mapping:
-            log.debug("In '{}' renaming '{}' ==> '{}'".format(base, old, new))
+            # log.debug("In '{}' renaming '{}' ==> '{}'".format(base, old, new))
             # schema = schema.replace(old, new)
             # Use `re` to avoid substrings e.g. 'foo_source.json' ==> 'foo_foo_source.json'
             schema = re.sub(r"\b{}\b".format(old), new, schema)
