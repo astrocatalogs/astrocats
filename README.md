@@ -30,3 +30,5 @@ Astrocats will soon be listed on PyPi, at which point the install instructions w
 - Speed.  SNe import takes ~13 hours.  Also memory issues.
 - Improve "ROOT" in PATHS object, shouldn't need so much boilerplate
 - schema 'output' should go into catalog directory not astrocats
+- quantity value is currently any type... this needs to be resolve to string vs numeric ones.
+- Create a value schema class to associate units and errors
