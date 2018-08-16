@@ -23,23 +23,21 @@ before_install:
     - conda config --system --set auto_update_conda false
     - conda config --set always_yes yes --set changeps1 no
     - conda update -q conda
+
 install:
     # - conda config --add channels conda-forge
     # - conda install --yes python=$TRAVIS_PYTHON_VERSION scipy matplotlib astropy beautifulsoup4 bokeh gitpython palettable psutil seaborn tqdm coveralls
     # - xargs -L 1 pip install < requirements.txt
+
     # - git clone https://github.com/$TRAVIS_REPO_SLUG.git $TRAVIS_REPO_SLUG
-    # - git config --global user.email "you@example.com"
-    # - git config --global user.name "Your Name"
-    - git clone https://github.com/astrocatalogs/testcat.git
     # - cd $TRAVIS_REPO_SLUG
+    - git clone https://github.com/astrocatalogs/testcat.git
     # - pip install -r requirements.txt
-    # - cat requirements.txt | cut -f1 -d"#" | sed '/^\s*$/d' | xargs -n 1 pip install
-    - pip install pip-tools
-    # - pip-sync requirements.txt
+    # - pip install pip-tools
+    - echo pip --version
     - cat requirements.txt | cut -f1 -d"#" | sed '/^\s*$/d' | xargs -n 1 pip install
     - cat dev_requirements.txt | cut -f1 -d"#" | sed '/^\s*$/d' | xargs -n 1 pip install
 
-# Run test
 script:
     - coverage run -a -m astrocats ./testcat --travis import --archived
     # - coverage run -a -m astrocats setup
