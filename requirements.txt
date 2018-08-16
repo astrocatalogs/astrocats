@@ -13,6 +13,7 @@ gitdb2==2.0.4             # via gitpython
 gitpython==2.1.11
 httpretty==0.8.10         # via ads
 idna==2.7                 # via requests
+jsonschema==2.6.0
 mock==2.0.0               # via ads
 numpy==1.15.0
 pbr==4.2.0                # via mock
