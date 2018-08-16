@@ -35,7 +35,9 @@ install:
     # - pip install -r requirements.txt
     # - cat requirements.txt | cut -f1 -d"#" | sed '/^\s*$/d' | xargs -n 1 pip install
     - pip install pip-tools
-    - pip-sync requirements.txt
+    # - pip-sync requirements.txt
+    - cat requirements.txt | cut -f1 -d"#" | sed '/^\s*$/d' | xargs -n 1 pip install
+    - cat dev_requirements.txt | cut -f1 -d"#" | sed '/^\s*$/d' | xargs -n 1 pip install
 
 # Run test
 script:
