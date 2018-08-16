@@ -11,8 +11,7 @@ from astrocats.structures.utils.digits import get_sig_digits
 from astrocats.structures.struct import PHOTOMETRY
 
 __all__ = ["bandrepf", "bandcolorf", "radiocolorf", "xraycolorf", "bandshortaliasf",
-           "bandwavef", "bandmetaf", "set_pd_mag_from_counts"]
-
+           "bandwavef", "bandmetaf", "set_pd_mag_from_counts", "bandaliasf", "bandgroupf"]
 
 DEFAULT_UL_SIGMA = 5.0
 DEFAULT_ZP = 30.0
@@ -114,6 +113,14 @@ XRAY_CODES = ["0.3 - 10", "0.5 - 8"]
 
 INSTRUMENT_REPS = {
     'Astrometric': 'Gaia-photometric'
+}
+
+BAND_GROUPS = {
+    "SDSS": ["u'", "g'", "r'", "i'", "z'"],
+    "UVOT": ["W2", "M2", "W1"],
+    "HST": ['F110W', 'F160W', 'F225W', 'F275W', 'F336W', 'F475W', 'F606W', 'F625W', 'F775W', 'F814W', 'F850W', 'F850LP'],
+
+    "Johnson": ['U', 'B', 'V', 'R', 'I', 'Y', 'J', 'H', 'K']
 }
 
 seed(101)
@@ -218,3 +225,18 @@ def set_pd_mag_from_counts(photodict, c='', ec='', lec='', uec='',
                 (dc + duec).log10() - dc.log10()))
             photodict[PHOTOMETRY.E_LOWER_MAGNITUDE] = str(D25 * (
                 dc.log10() - (dc - dlec).log10()))
+
+
+def bandaliasf(code):
+    newcode = bandrepf(code)
+    if newcode in BAND_ALIASES:
+        return BAND_ALIASES[newcode]
+    return newcode
+
+
+def bandgroupf(code):
+    newcode = bandrepf(code)
+    for group in BAND_GROUPS:
+        if newcode in BAND_GROUPS[group]:
+            return group
+    return ''
