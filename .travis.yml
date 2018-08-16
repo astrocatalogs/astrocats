@@ -35,6 +35,7 @@ install:
     # - pip install -r requirements.txt
     # - pip install pip-tools
     - echo pip --version
+    - pip --version
     - cat requirements.txt | cut -f1 -d"#" | sed '/^\s*$/d' | xargs -n 1 pip install
     - cat dev_requirements.txt | cut -f1 -d"#" | sed '/^\s*$/d' | xargs -n 1 pip install
 
