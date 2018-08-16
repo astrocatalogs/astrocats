@@ -33,7 +33,9 @@ install:
     - git clone https://github.com/astrocatalogs/testcat.git
     # - cd $TRAVIS_REPO_SLUG
     # - pip install -r requirements.txt
-    - cat requirements.txt | cut -f1 -d"#" | sed '/^\s*$/d' | xargs -n 1 pip install
+    # - cat requirements.txt | cut -f1 -d"#" | sed '/^\s*$/d' | xargs -n 1 pip install
+    - pip install pip-tools
+    - pip-sync requirements.txt
 
 # Run test
 script:
