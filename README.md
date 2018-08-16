@@ -28,3 +28,5 @@ Astrocats will soon be listed on PyPi, at which point the install instructions w
 - Enhancements to existing SCHEMA structure (in particular, lists of values instead of only individuals)
 - Producer class integration.
 - Speed.  SNe import takes ~13 hours.  Also memory issues.
+- Improve "ROOT" in PATHS object, shouldn't need so much boilerplate
+- schema 'output' should go into catalog directory not astrocats
