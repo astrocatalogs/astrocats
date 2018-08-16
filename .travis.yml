@@ -31,6 +31,8 @@ install:
 
     # - git clone https://github.com/$TRAVIS_REPO_SLUG.git $TRAVIS_REPO_SLUG
     # - cd $TRAVIS_REPO_SLUG
+    - git clone https://github.com/astrocatalogs/astroschema.git
+    - cd astroschema; pip install .
     - git clone https://github.com/astrocatalogs/testcat.git
     # - pip install -r requirements.txt
     # - pip install pip-tools
