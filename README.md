@@ -32,3 +32,5 @@ Astrocats will soon be listed on PyPi, at which point the install instructions w
 - schema 'output' should go into catalog directory not astrocats
 - quantity value is currently any type... this needs to be resolve to string vs numeric ones.
 - Create a value schema class to associate units and errors
+- Revisit 'type' vs 'format' distinction... is this the best way to do things?
+- Need to speed up `is_duplicate_of`, or use a different system.  Consider hashing each `struct` for quick comparison, combined with only doing duplicate checks during journaling.
