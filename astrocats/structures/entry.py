@@ -229,18 +229,6 @@ class _Entry(struct.Meta_Struct):
         if name_key in data:
             self[name_key] = data.pop(name_key)
 
-        # Handle 'schema'
-        '''
-        schema_key = self._KEYS.SCHEMA
-        if schema_key in data:
-            # Schema should be re-added every execution (done elsewhere) so
-            # just delete the old entry
-            if pop_schema:
-                data.pop(schema_key)
-            else:
-                self[schema_key] = data.pop(schema_key)
-        '''
-
         # Cleanup 'internal' repository stuff
         if clean:
             # Add data to `self` in ways accomodating 'internal' formats and
@@ -505,30 +493,6 @@ class _Entry(struct.Meta_Struct):
                     return new_entry
 
         self.setdefault(key_in_self, []).append(new_entry)
-
-        # NOTE: below code moved to `add_alias`
-        '''
-        # If this is an alias, add it to the parent catalog's reverse
-        # dictionary linking aliases to names for fast lookup.
-        if key_in_self == self._KEYS.ALIAS:
-            # Check if this adding this alias makes us a dupe, if so mark
-            # ourselves as a dupe.
-            if (check_for_dupes and 'aliases' in dir(self.catalog) and
-                    new_entry[QUANTITY.VALUE] in self.catalog.aliases):
-                possible_dupe = self.catalog.aliases[new_entry[QUANTITY.VALUE]]
-                if ((possible_dupe != self[self._KEYS.NAME]) and
-                        (possible_dupe in self.catalog.entries)):
-                    self.dupe_of.append(possible_dupe)
-
-            if 'aliases' in dir(self.catalog):
-                self.catalog.aliases[new_entry[QUANTITY.VALUE]] = self[self._KEYS.NAME]
-
-        self.setdefault(key_in_self, []).append(new_entry)
-
-        if (key_in_self == self._KEYS.ALIAS and check_for_dupes and self.dupe_of):
-            self.merge_dupes()
-        '''
-
         return True
 
     @classmethod
