@@ -379,17 +379,6 @@ class Catalog(object):
             self.log.debug("Deleted '{}'".format(os.path.split(rfil)[-1]))
         return
 
-    def get_preferred_name(self, name):
-        if name not in self.entries:
-            # matches = []
-            for entry in self.entries:
-                aliases = self.entries[entry].get_aliases(includename=False)
-                if len(aliases) > 1 and name in aliases:
-                    return entry
-            return name
-        else:
-            return name
-
     def find_entry_name_of_alias(self, alias):
         """Return the first entry name with the given 'alias' included in its
         list of aliases.
@@ -837,13 +826,17 @@ class Catalog(object):
 
         return
 
-    def entry_exists(self, name):
-        if name in self.entries:
-            return True
-        for ev in self.entries:
-            if name in self.entries[ev].get_aliases(includename=False):
-                return True
-        return False
+    def get_name_for_entry_or_alias(self, check):
+        """Find the entry name corresponding to the given alias, or `None` if it doesn't exist.
+
+        Combines functionality of `get_preferred_name()` and `entry_exists()`
+        """
+        if check in self.entries:
+            return check
+        for ent in self.entries:
+            if check in self.entries[ent].get_aliases(includename=False):
+                return ent
+        return None
 
     def count(self):
         full = 0
@@ -1252,6 +1245,39 @@ class Catalog(object):
                 return None
 
         return url_txt
+
+    # DEPRECATED METHODS
+    # ===================================
+    def get_preferred_name(self, *args, **kwargs):
+        err = str(__file__) + ":get_preferred_name() - DEPRECATED."
+        err += " Use `get_name_for_entry_or_alias`"
+        self.log.raise_error(err, NotImplementedError)
+
+    def entry_exists(self, *args, **kwargs):
+        err = str(__file__) + ":entry_exists() - DEPRECATED."
+        err += " Use `get_name_for_entry_or_alias`"
+        self.log.raise_error(err, NotImplementedError)
+
+    '''
+    def get_preferred_name(self, name):
+        if name not in self.entries:
+            # matches = []
+            for entry in self.entries:
+                aliases = self.entries[entry].get_aliases(includename=False)
+                if len(aliases) > 1 and name in aliases:
+                    return entry
+            return name
+        else:
+            return name
+
+    def entry_exists(self, name):
+        if name in self.entries:
+            return True
+        for ev in self.entries:
+            if name in self.entries[ev].get_aliases(includename=False):
+                return True
+        return False
+    '''
 
 
 def _get_task_priority(tasks, task_priority):
