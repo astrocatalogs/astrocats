@@ -9,6 +9,8 @@ from datetime import datetime
 from astrocats import __version__, __git_version__, argshandler
 from astrocats.utils import logger, gitter
 
+import pyastroschema as pas
+
 _PROFILE = False
 
 
@@ -29,7 +31,8 @@ def main():
     # Create a logging object
     log = load_log(args)
 
-    title_str = "Astrocats, version: {}, SHA: {}".format(__version__, __git_version__)
+    title_str = "Astrocats, version: {}, SHA: {}; Astroschema: {}".format(
+        __version__, __git_version__, pas.__version__)
     log.warning("\n{}\n{}\n".format(title_str, '=' * len(title_str)))
 
     beg_time = datetime.now()
