@@ -17,7 +17,7 @@ from astrocats import utils
 from astrocats import PATHS as _PATHS
 from astrocats.utils import gitter
 from astrocats.production import director
-from astrocats.structures.struct import (ENTRY, MODEL, SOURCE)
+from astrocats.structures.struct import (ENTRY, SOURCE)
 from astrocats.structures.struct import Entry
 from astrocats.structures.task import Task
 
@@ -448,6 +448,7 @@ class Catalog(object):
                 # NOTE: FIX if this is never raised, then use `rkey` instead of `key`
                 err = "rkey = '{}', key = '{}'".format(rkey, key)
                 log.raise_error(err)
+
             if key.no_source:
                 continue
             for item in src_entry[key]:
