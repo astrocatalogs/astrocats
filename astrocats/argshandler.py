@@ -5,10 +5,11 @@ import argparse
 import astrocats
 
 
-def parse_args():
+def parse_args(beg_time):
 
     # Setup argparse instance
     # ---------------------------------------
+    beg_time_str = beg_time.strftime("%Y%m%d-%H%M%S")
 
     # desc = 'Generate catalogs for astronomical data.'
     desc = None
@@ -22,7 +23,7 @@ def parse_args():
     subparsers = parser.add_subparsers(dest='command')
 
     # Add generally applicable arguments
-    parser = _add_general(parser)
+    parser = _add_general(parser, beg_time_str)
 
     # Add subparser arguments for particular commands
     # ---------------------------------------------------------
@@ -48,12 +49,16 @@ def parse_args():
         parser.print_help()
         return None
 
+    args._beg_time = beg_time
+    args._beg_time_str = beg_time_str
     return args
 
 
-def _add_general(parser):
+def _add_general(parser, beg_time_str):
     version_info = 'AstroCats v{}, SHA: {}'.format(
         astrocats.__version__, astrocats.__git_version__)
+
+    def_log_name = "{}_astrocats.log".format(beg_time_str)
 
     parser.add_argument('--version', action='version', version=version_info)
     parser.add_argument(
@@ -72,8 +77,11 @@ def _add_general(parser):
         help='Print excessive messages to the screen.')
     parser.add_argument(
         '--log',
+        '-l',
         dest='log_filename',
+        nargs='?',
         default=None,
+        const=def_log_name,
         help='Filename to which to store logging information.')
     parser.add_argument(
         '--travis',
@@ -82,6 +90,12 @@ def _add_general(parser):
         default=False,
         action='store_true',
         help='Run import script in test mode for Travis.')
+    parser.add_argument(
+        '--profile',
+        dest='profile',
+        default=False,
+        action='store_true',
+        help='Use `cProfile` to examine speed and performance.')
 
     parser.add_argument(
         '--clone-depth',

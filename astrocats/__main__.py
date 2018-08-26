@@ -11,8 +11,6 @@ from astrocats.utils import logger, gitter
 
 import pyastroschema as pas
 
-_PROFILE = False
-
 
 def main():
     """Primary entry point for all AstroCats catalogs.
@@ -21,10 +19,11 @@ def main():
     public methods executed (for example: import scripts).
 
     """
+    beg_time = datetime.now()
 
     # Initialize: Load command line arguments, log, etc
     # ----------------------------------------------------
-    args = argshandler.parse_args()
+    args = argshandler.parse_args(beg_time)
     if args is None:
         return
 
@@ -35,8 +34,7 @@ def main():
         __version__, __git_version__, pas.__version__)
     log.warning("\n{}\n{}\n".format(title_str, '=' * len(title_str)))
 
-    beg_time = datetime.now()
-    log.info("{}\n".format(beg_time.ctime()))
+    log.info("{} -- {}\n".format(beg_time.ctime(), args._beg_time_str))
 
     log.info("command: '{}'".format(args.command))
     log.info("catalog: '{}'".format(args.catalog))
@@ -111,7 +109,7 @@ def main():
     # Run target command in the given catalog module
     # -----------------------------------------------------------
 
-    if _PROFILE:
+    if args.profile:
         msg = "RUNNING IN PROFILE MODE"
         log.warning("")
         log.warning("="*len(msg))
@@ -124,11 +122,12 @@ def main():
 
     run_command(args, log, catalog)
 
-    if _PROFILE:
+    if args.profile:
         pr.disable()
         pr.print_stats(sort='time')
-        dt_str = beg_time.strftime("%Y%m%d-%H%M%S")
-        profile_fname = "{:mod}_{:date}_cprofile-run-stats.dat".format(catalog_module_name, dt_str)
+        # dt_str = beg_time.strftime("%Y%m%d-%H%M%S")
+        dt_str = args._beg_time_str
+        profile_fname = "{:}_{:}_cprofile-run-stats.dat".format(catalog_module_name, dt_str)
         msg = "Saved profile stats to '{}'".format(profile_fname)
         log.warning("")
         log.warning("="*len(msg))
