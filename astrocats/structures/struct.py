@@ -55,6 +55,12 @@ class CatDictError(Exception):
         return
 
 
+class DeprecationError(Exception):
+
+    def __init__(self, *args, **kwargs):
+        Exception.__init__(self, *args, **kwargs)
+
+
 class Meta_Struct(pas.struct.Struct):
 
     def __init__(self, parent, key=None, **kwargs):
