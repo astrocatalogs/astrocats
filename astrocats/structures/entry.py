@@ -334,23 +334,6 @@ class _Entry(struct.Meta_Struct):
 
         return
 
-    def _check_cat_dict_source(self, cat_dict_class, key_in_self, **kwargs):
-        """Check that the quantity isn't erroneous or private."""
-        # Make sure that a source is given
-        source = kwargs.get(cat_dict_class._KEYS.SOURCE, None)
-        if source is not None:
-            # If this source/data is erroneous, skip it
-            if self.is_erroneous(key_in_self, source):
-                self._log.info("This source is erroneous, skipping")
-                return False
-            # If this source/data is private, skip it
-            if (self.catalog.args is not None and not self.catalog.args.private and
-                    self.is_private(key_in_self, source)):
-                self._log.info("This source is private, skipping")
-                return False
-
-        return True
-
     def _handle_addition_failure(self, fail_loc, cat_class, cat_key, **kwargs):
         """Based on `catalog.ADDITION_FAILURE_BEHAVIOR`, react to a failure appropriately.
 
@@ -385,115 +368,86 @@ class _Entry(struct.Meta_Struct):
 
         return
 
-    def _init_cat_dict(self, cat_dict_class, key_in_self, **kwargs):
-        """Initialize a CatDict object, checking for errors."""
+    def add(self, struct_class, key_in_self, duplicate_check=True, **kwargs):
         log = self._log
-        log.debug("Entry._init_cat_dict()")
 
-        # Remove empty string values
-        bad_keys = [kk for kk, vv in kwargs.items() if isinstance(vv, str) and len(vv) == 0]
-        for bk in bad_keys:
-            kwargs.pop(bk)
+        # Perform checks and initialization operations before constructing struct class
+        # -----------------------------------------------------------------------------
+        valid, kwargs = self._add_bef(struct_class, key_in_self, **kwargs)
+        if not valid:
+            log.info("`_add_bef()` returned False, skipping")
+            return None
 
-        # Catch errors associated with crappy, but not unexpected data
+        source = kwargs.get(struct_class._KEYS.SOURCE, None)
+        if source is not None:
+            # If this source/data is erroneous, skip it
+            if self.is_erroneous(key_in_self, source):
+                log.info("This source is erroneous, skipping")
+                return None
+
+            # If this source/data is private, skip it
+            if ((not self.catalog.args.private) and self.is_private(key_in_self, source)):
+                log.info("This source is private, skipping")
+                return None
+
+        # Constructing struct class
+        # -----------------------------------------------------------------------------
         try:
-            # log.warning("Entry._init_cat_dict() - calling `cat_dict_class` '{}'".format(cat_dict_class))
-            new_entry = cat_dict_class(self, key=key_in_self, **kwargs)
-            if new_entry is None:
-                err = "`cat_dict_class` = '{}' returned None on init!".format(cat_dict_class)
-                raise RuntimeError(err)
+            new_struct = struct_class(self, key=key_in_self, **kwargs)
         except struct.CatDictError as err:
             log_lvl = log.WARNING if err.warn else log.INFO
             msg = "'{}' Not adding '{}': '{}'".format(self[self._KEYS.NAME], key_in_self, str(err))
             log.log(log_lvl, msg)
-            return None
+
+            err_str = "Entry._init_cat_dict() failed!"
+            err_str += "class: '{}', key_in_self: '{}', kwargs: '{}'".format(
+                struct_class, key_in_self, kwargs)
+            if self.catalog.RAISE_ERROR_ON_ADDITION_FAILURE:
+                log.raise_error(err_str)
+            else:
+                log.info(err_str)
+                return None
+
         except Exception as err:
             log = self._log
             log.error("ERROR in `Entry._init_cat_dict()`!")
             log.error("Current task = '{}'".format(self._parent.current_task))
             log.error("name = '{}'".format(self[self._KEYS.NAME]))
             log.error("\n\n\n")
-            log.error("`cat_dict_class` = '{}'".format(cat_dict_class))
+            log.error("`struct_class` = '{}'".format(struct_class))
             log.error("`key_in_self` = '{}'".format(key_in_self))
             log.error("`kwargs = '{}'".format(kwargs))
             log.error("\n\n")
             log.error("self = \n'{}'".format(repr(self)))
             log.error("\n")
+            log.error(str(err))
             raise
 
-        # NOTE: LZK COMMENTED OUT for testing new `Quantity` astroschema
-        '''
-        try:
-            new_entry = cat_dict_class(self, key=key_in_self, **kwargs)
-        except struct.CatDictError as err:
-            if err.warn:
-                self._log.info("'{}' Not adding '{}': '{}'".format(self[
-                    self._KEYS.NAME], key_in_self, str(err)))
+        # Perform checks and finalization operations before adding struct to self
+        # -----------------------------------------------------------------------------
+        valid, new_struct = self._add_aft(new_struct, **kwargs)
+        if not valid:
+            log.info("`_add_aft()` returned False, skipping")
             return None
-        '''
-        # log.warning("return new_entry")
-        return new_entry
-
-    def _add_cat_dict(self, cat_dict_class, key_in_self,
-                      check_for_dupes=True, compare_to_existing=True, **kwargs):
-        """Add a `CatDict` to this `Entry`.
-
-        CatDict only added if initialization succeeds and it
-        doesn't already exist within the Entry.
-        """
-        log = self._log
-        # Make sure that a source is given, and is valid (nor erroneous)
-        failure = False
-        if cat_dict_class != Error:
-            try:
-                source = self._check_cat_dict_source(cat_dict_class, key_in_self, **kwargs)
-            except struct.CatDictError as err:
-                if err.warn:
-                    msg = "'{}' Not adding '{}': '{}'".format(
-                        self[self._KEYS.NAME], key_in_self, str(err))
-                    log.info(msg)
-                # return False
-                failure = True
-
-            if source is None:
-                log.warning("Source `None` in `Entry._add_cat_dict()`!")
-                log.warning("key: '{}', kwargs: '{}'".format(key_in_self, kwargs))
-                # return False
-                failure = True
-
-        # Try to create a new instance of this subclass of `CatDict`
-        new_entry = self._init_cat_dict(cat_dict_class, key_in_self, **kwargs)
-        if new_entry is None:
-            # if self.catalog.RAISE_ERROR_ON_ADDITION_FAILURE:
-            #     err_str = "Entry._init_cat_dict() failed!"
-            #     err_str += "class: '{}', key_in_self: '{}', kwargs: '{}'".format(
-            #         cat_dict_class, key_in_self, kwargs)
-            #     self._log.raise_error(err_str, RuntimeError)
-            # return False
-            failure = True
-
-        if failure:
-            err_str = "Entry._init_cat_dict() failed!"
-            err_str += "class: '{}', key_in_self: '{}', kwargs: '{}'".format(
-                cat_dict_class, key_in_self, kwargs)
-            if self.catalog.RAISE_ERROR_ON_ADDITION_FAILURE:
-                log.raise_error(err_str)
-            else:
-                log.info(err_str)
-                return False
 
         # Compare this new entry with all previous entries to make sure is new
         #    If it is NOT new, return the entry
-        if compare_to_existing and cat_dict_class != Error:
+        if duplicate_check:
             for item in self.get(key_in_self, []):
-                if new_entry.is_duplicate_of(item):
-                    item.append_sources_from(new_entry)
+                if new_struct.is_duplicate_of(item):
+                    item.append_sources_from(new_struct)
                     # Return the entry in case we want to use any additional
                     # tags to augment the old entry
-                    return new_entry
+                    return new_struct
 
-        self.setdefault(key_in_self, []).append(new_entry)
-        return True
+        self.setdefault(key_in_self, []).append(new_struct)
+        return new_struct
+
+    def _add_bef(self, *args, **kwargs):
+        return True, kwargs
+
+    def _add_aft(self, new_struct, **kwargs):
+        return True, new_struct
 
     @classmethod
     def init_from_file(cls, catalog, name=None, path=None, try_gzip=False, **kwargs):
@@ -558,14 +512,6 @@ class _Entry(struct.Meta_Struct):
 
         return new_entry
 
-    '''
-    def add(self, key, value, **kwargs):
-        log = self._log
-        log.debug("Entry.add()")
-
-        return
-    '''
-
     def add_listed(self, key, value, check=True):
         listed = self.setdefault(key, [])
         # Make sure `value` isn't already in the list
@@ -575,7 +521,7 @@ class _Entry(struct.Meta_Struct):
         listed.append(value)
         return
 
-    def add_data(self, key_in_self, value=None, source=None, cat_dict_class=Quantity,
+    def add_data(self, key_in_self, value=None, source=None, struct_class=Quantity,
                  check_for_dupes=True, dupes_merge_tags=True, **kwargs):
         """Add a `CatDict` data container (dict) to this `Entry`.
 
@@ -599,17 +545,17 @@ class _Entry(struct.Meta_Struct):
             kwargs[QUANTITY.SOURCE] = source
 
         # Make sure that a source, if given, is valid
-        retval = self._check_cat_dict_source(cat_dict_class, key_in_self, **kwargs)
+        retval = self._check_cat_dict_source(struct_class, key_in_self, **kwargs)
         if not retval:
             self._handle_addition_failure(
-                "Entry._check_cat_dict_source()", cat_dict_class, key_in_self, **kwargs)
+                "Entry._check_cat_dict_source()", struct_class, key_in_self, **kwargs)
             return None, FAIL
 
         # Try to create a new instance of this subclass of `CatDict`
-        new_data = self._init_cat_dict(cat_dict_class, key_in_self, **kwargs)
+        new_data = self._init_cat_dict(struct_class, key_in_self, **kwargs)
         if new_data is None:
             self._handle_addition_failure(
-                "Entry._init_cat_dict()", cat_dict_class, key_in_self, **kwargs)
+                "Entry._init_cat_dict()", struct_class, key_in_self, **kwargs)
             return None, FAIL
 
         # Compare this new entry with all previous entries to make sure is new
@@ -1086,3 +1032,150 @@ class _Entry(struct.Meta_Struct):
         if key == self._KEYS.SPECTRA:
             return 'zzz'
         return key
+
+    # ======================  DEPRECATIONS  ========================
+    # ==============================================================
+
+    def _init_cat_dict(self, struct_class, key_in_self, **kwargs):
+        log = self._log
+        log.raise_error("`Entry._add_cat_dict()` is deprecated!", struct.DeprecationError)
+
+    '''
+    def _init_cat_dict(self, struct_class, key_in_self, **kwargs):
+        """Initialize a CatDict object, checking for errors."""
+        log = self._log
+        log.debug("Entry._init_cat_dict()")
+
+        # Remove empty string values
+        bad_keys = [kk for kk, vv in kwargs.items() if isinstance(vv, str) and len(vv) == 0]
+        for bk in bad_keys:
+            kwargs.pop(bk)
+
+        # Catch errors associated with crappy, but not unexpected data
+        try:
+            new_struct = struct_class(self, key=key_in_self, **kwargs)
+            if new_struct is None:
+                err = "`struct_class` = '{}' returned None on init!".format(struct_class)
+                raise RuntimeError(err)
+        except struct.CatDictError as err:
+            log_lvl = log.WARNING if err.warn else log.INFO
+            msg = "'{}' Not adding '{}': '{}'".format(self[self._KEYS.NAME], key_in_self, str(err))
+            log.log(log_lvl, msg)
+            return None
+        except Exception as err:
+            log = self._log
+            log.error("ERROR in `Entry._init_cat_dict()`!")
+            log.error("Current task = '{}'".format(self._parent.current_task))
+            log.error("name = '{}'".format(self[self._KEYS.NAME]))
+            log.error("\n\n\n")
+            log.error("`struct_class` = '{}'".format(struct_class))
+            log.error("`key_in_self` = '{}'".format(key_in_self))
+            log.error("`kwargs = '{}'".format(kwargs))
+            log.error("\n\n")
+            log.error("self = \n'{}'".format(repr(self)))
+            log.error("\n")
+            raise
+
+        # NOTE: LZK COMMENTED OUT for testing new `Quantity` astroschema
+        """
+        try:
+            new_struct = struct_class(self, key=key_in_self, **kwargs)
+        except struct.CatDictError as err:
+            if err.warn:
+                self._log.info("'{}' Not adding '{}': '{}'".format(self[
+                    self._KEYS.NAME], key_in_self, str(err)))
+            return None
+        """
+        # log.warning("return new_struct")
+        return new_struct
+    '''
+
+    def _check_cat_dict_source(self, struct_class, key_in_self, **kwargs):
+        log = self._log
+        log.raise_error("`Entry._check_cat_dict_source()` is deprecated!", struct.DeprecationError)
+
+    '''
+    def _check_cat_dict_source(self, struct_class, key_in_self, **kwargs):
+        """Check that the quantity isn't erroneous or private."""
+        # Make sure that a source is given
+        source = kwargs.get(struct_class._KEYS.SOURCE, None)
+        if source is not None:
+            # If this source/data is erroneous, skip it
+            if self.is_erroneous(key_in_self, source):
+                self._log.info("This source is erroneous, skipping")
+                return False
+            # If this source/data is private, skip it
+            if ((not self.catalog.args.private) and self.is_private(key_in_self, source)):
+                self._log.info("This source is private, skipping")
+                return False
+
+        return True
+    '''
+
+    '''
+    def _add_cat_dict(self, struct_class, key_in_self,
+                      check_for_dupes=True, compare_to_existing=True, **kwargs):
+        """Add a `CatDict` to this `Entry`.
+
+        CatDict only added if initialization succeeds and it
+        doesn't already exist within the Entry.
+        """
+        log = self._log
+        # Make sure that a source is given, and is valid (nor erroneous)
+        failure = False
+        if struct_class != Error:
+            try:
+                source = self._check_cat_dict_source(struct_class, key_in_self, **kwargs)
+            except struct.CatDictError as err:
+                if err.warn:
+                    msg = "'{}' Not adding '{}': '{}'".format(
+                        self[self._KEYS.NAME], key_in_self, str(err))
+                    log.info(msg)
+                # return False
+                failure = True
+
+            if source is None:
+                log.warning("Source `None` in `Entry._add_cat_dict()`!")
+                log.warning("key: '{}', kwargs: '{}'".format(key_in_self, kwargs))
+                # return False
+                failure = True
+
+        # Try to create a new instance of this subclass of `CatDict`
+        new_struct = self._init_cat_dict(struct_class, key_in_self, **kwargs)
+        if new_struct is None:
+            # if self.catalog.RAISE_ERROR_ON_ADDITION_FAILURE:
+            #     err_str = "Entry._init_cat_dict() failed!"
+            #     err_str += "class: '{}', key_in_self: '{}', kwargs: '{}'".format(
+            #         struct_class, key_in_self, kwargs)
+            #     self._log.raise_error(err_str, RuntimeError)
+            # return False
+            failure = True
+
+        if failure:
+            err_str = "Entry._init_cat_dict() failed!"
+            err_str += "class: '{}', key_in_self: '{}', kwargs: '{}'".format(
+                struct_class, key_in_self, kwargs)
+            if self.catalog.RAISE_ERROR_ON_ADDITION_FAILURE:
+                log.raise_error(err_str)
+            else:
+                log.info(err_str)
+                return False
+
+        # Compare this new entry with all previous entries to make sure is new
+        #    If it is NOT new, return the entry
+        if compare_to_existing and struct_class != Error:
+            for item in self.get(key_in_self, []):
+                if new_struct.is_duplicate_of(item):
+                    item.append_sources_from(new_struct)
+                    # Return the entry in case we want to use any additional
+                    # tags to augment the old entry
+                    return new_struct
+
+        self.setdefault(key_in_self, []).append(new_struct)
+        return True
+    '''
+
+    def _add_cat_dict(self, struct_class, key_in_self,
+                      check_for_dupes=True, compare_to_existing=True, **kwargs):
+        log = self._log
+        log.raise_error("`Entry._add_cat_dict()` is deprecated!", struct.DeprecationError)
