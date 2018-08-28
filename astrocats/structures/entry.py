@@ -1,14 +1,14 @@
 """Definitions related to the `Entry` class for catalog entries."""
 import codecs
 import gzip as gz
-import hashlib
+# import hashlib
 import json
 import logging
 import os
 import sys
 from collections import OrderedDict
 from copy import deepcopy
-from decimal import Decimal
+# from decimal import Decimal
 import math
 
 import six
@@ -21,6 +21,16 @@ from astrocats.structures.struct import (ERROR, MODEL, PHOTOMETRY, QUANTITY, SOU
 
 @struct.set_struct_schema("astroschema_entry", extensions="astrocats_entry")  # noqa
 class _Entry(struct.Meta_Struct):
+
+    _DEPRECATED_ADD_FUNCS = [
+        "add_data", "add_alias", "add_error", "add_photometry", "add_quantity",
+        "add_source", "add_model", "add_spectrum", "add_listed", "add_self_source",
+        "_handle_addition_failure", "_append_additional_tags"
+    ]
+
+    _DEPRECATED_UNUSED_FUNCS = [
+        "get_hash", "get_entry_text"
+    ]
 
     def __init__(self, catalog=None, name=None, stub=False):
         # NOTE: FIX: LZK: cannot validate until a valid `name` is set
@@ -48,12 +58,22 @@ class _Entry(struct.Meta_Struct):
         jsonstring = utils.dict_to_pretty_string({self._KEYS.NAME: self})
         return jsonstring
 
-    def _append_additional_tags(self, quantity, source, cat_dict):
-        """Append additional bits of data to an existing quantity.
+    def __deepcopy__(self, memo):
+        """Define how an `Entry` should be deep copied."""
+        new_entry = self.__class__(self.catalog)
+        for key in self:
+            if not key.startswith('__') and key != 'catalog':
+                new_entry[key] = deepcopy(self[key], memo)
+        return new_entry
 
-        Called when a newly added quantity is found to be a duplicate.
-        """
-        pass
+    def __getattr__(self, name):
+        if name in self._DEPRECATED_ADD_FUNCS:
+            log = self._log
+            msg = "Subclass using the `Entry_Old_Adder` class to preserve functionality."
+            log.raise_error("`Entry.{}()` is deprecated! {}".format(name, msg),
+                            struct.DeprecationError)
+
+        return super(_Entry, self).__getattr__(name)
 
     def _get_save_path(self, bury=False):
         """Return the path that this Entry should be saved to."""
@@ -107,57 +127,6 @@ class _Entry(struct.Meta_Struct):
             ndict[key] = odict[key]
 
         return ndict
-
-    def get_hash(self, keys=[]):
-        """Return a unique hash associated with the listed keys."""
-        if not len(keys):
-            keys = list(self.keys())
-
-        string_rep = ''
-        oself = self._ordered(deepcopy(self))
-        for key in keys:
-            string_rep += json.dumps(oself.get(key, ''), sort_keys=True)
-
-        return hashlib.sha512(string_rep.encode()).hexdigest()[:16]
-
-    def _clean_quantity(self, quantity):
-        """Clean quantity value before it is added to entry."""
-        value = quantity.get(QUANTITY.VALUE, '').strip()
-        error = quantity.get(QUANTITY.E_VALUE, '').strip()
-        unit = quantity.get(QUANTITY.U_VALUE, '').strip()
-        kind = quantity.get(QUANTITY.KIND, '')
-
-        if isinstance(kind, list) and not isinstance(kind, six.string_types):
-            kind = [x.strip() for x in kind]
-        else:
-            kind = kind.strip()
-
-        if not value:
-            return False
-
-        if utils.is_number(value):
-            value = '%g' % Decimal(value)
-        if error:
-            error = '%g' % Decimal(error)
-
-        if value:
-            quantity[QUANTITY.VALUE] = value
-        if error:
-            quantity[QUANTITY.E_VALUE] = error
-        if unit:
-            quantity[QUANTITY.U_VALUE] = unit
-        if kind:
-            quantity[QUANTITY.KIND] = kind
-
-        return True
-
-    def __deepcopy__(self, memo):
-        """Define how an `Entry` should be deep copied."""
-        new_entry = self.__class__(self.catalog)
-        for key in self:
-            if not key.startswith('__') and key != 'catalog':
-                new_entry[key] = deepcopy(self[key], memo)
-        return new_entry
 
     def _load_data_from_json(self, fhand,
                              clean=False, merge=True, pop_schema=True, ignore_keys=[],
@@ -334,41 +303,7 @@ class _Entry(struct.Meta_Struct):
 
         return
 
-    def _handle_addition_failure(self, fail_loc, cat_class, cat_key, **kwargs):
-        """Based on `catalog.ADDITION_FAILURE_BEHAVIOR`, react to a failure appropriately.
-
-        A `logging.DEBUG` level message is always given.
-
-        `ADDITION_FAILURE_BEHAVIOR` == `ADD_FAIL_ACTION.WARN`
-            Then a `logging.WARNING` message is raised.
-        `ADDITION_FAILURE_BEHAVIOR` == `ADD_FAIL_ACTION.IGNORE`
-            No addition action is taken.
-        `ADDITION_FAILURE_BEHAVIOR` == `ADD_FAIL_ACTION.RAISE`
-            Then an error is raised.
-            This is the default behavior that also acts if an unknown value is given.
-
-        """
-        err_str = "'{}' failed!\n".format(fail_loc)
-        err_str += "class: '{}', key: '{}'\nkwargs: '{}'".format(cat_class, cat_key, kwargs)
-
-        fail_flag = self.catalog.ADDITION_FAILURE_BEHAVIOR
-        # Log a message at 'debug' level regardless
-        self._log.debug(err_str)
-        self._log.debug("`ADDITION_FAILURE_BEHAVIOR` = '{}'".format(fail_flag))
-
-        # if `WARN` then also log a warning
-        if fail_flag == utils.ADD_FAIL_ACTION.WARN:
-            self._log.warning(err_str)
-        # Raise an error
-        elif fail_flag == utils.ADD_FAIL_ACTION.IGNORE:
-            pass
-        # default behavior is to raise an error
-        else:
-            self._log.raise_error(err_str, RuntimeError)
-
-        return
-
-    # ==================  STRUCT CREATION/ADDITION  ==================
+    # <<< ==================  STRUCT CREATION/ADDITION  ==================
 
     def create_struct(self, struct_class, key_in_self, **kwargs):
         log = self._log
@@ -471,6 +406,8 @@ class _Entry(struct.Meta_Struct):
     def _add_struct_bef(self, new_struct, **kwargs):
         return True, new_struct
 
+    # >>> ==================  STRUCT CREATION/ADDITION  ==================
+
     @classmethod
     def init_from_file(cls, catalog, name=None, path=None, try_gzip=False, **kwargs):
         """Construct a new `Entry` instance from an input file.
@@ -534,211 +471,6 @@ class _Entry(struct.Meta_Struct):
 
         return new_entry
 
-    def add_listed(self, key, value, check=True):
-        listed = self.setdefault(key, [])
-        # Make sure `value` isn't already in the list
-        if check and (value in listed):
-            return
-
-        listed.append(value)
-        return
-
-    def add_data(self, key_in_self, value=None, source=None, struct_class=Quantity,
-                 check_for_dupes=True, dupes_merge_tags=True, **kwargs):
-        """Add a `CatDict` data container (dict) to this `Entry`.
-
-        CatDict only added if initialization succeeds and it
-        doesn't already exist within the Entry.
-        """
-        log = self._log
-        log.debug("Entry.add_data()")
-        FAIL = 0
-        DUPE = -1
-        SUCC = 1
-
-        if value is not None:
-            if QUANTITY.VALUE in kwargs:
-                log.raise_error("`value` given as both arg and kwarg!\n{}".format(kwargs))
-            kwargs[QUANTITY.VALUE] = value
-
-        if source is not None:
-            if QUANTITY.SOURCE in kwargs:
-                log.raise_error("`source` given as both arg and kwarg!\n{}".format(kwargs))
-            kwargs[QUANTITY.SOURCE] = source
-
-        # Make sure that a source, if given, is valid
-        retval = self._check_cat_dict_source(struct_class, key_in_self, **kwargs)
-        if not retval:
-            self._handle_addition_failure(
-                "Entry._check_cat_dict_source()", struct_class, key_in_self, **kwargs)
-            return None, FAIL
-
-        # Try to create a new instance of this subclass of `CatDict`
-        new_data = self._init_cat_dict(struct_class, key_in_self, **kwargs)
-        if new_data is None:
-            self._handle_addition_failure(
-                "Entry._init_cat_dict()", struct_class, key_in_self, **kwargs)
-            return None, FAIL
-
-        # Compare this new entry with all previous entries to make sure is new
-        if check_for_dupes:
-            for item in self.get(key_in_self, []):
-                # Do not add duplicates
-                if new_data.is_duplicate_of(item):
-                    item.append_sources_from(new_data)
-                    return new_data, DUPE
-
-        # Add data
-        self.setdefault(key_in_self, []).append(new_data)
-
-        return new_data, SUCC
-
-    def add_alias(self, alias, source, clean=True, check_for_dupes=True, **kwargs):
-        """Add an alias, optionally 'cleaning' the alias string.
-
-        Calls the parent `catalog` method `clean_entry_name` - to apply the
-        same name-cleaning as is applied to entry names themselves.
-
-        Returns
-        -------
-        alias : str
-            The stored version of the alias (cleaned or not).
-
-        """
-        if clean:
-            alias = self.catalog.clean_entry_name(alias)
-
-        # self.add_quantity(self._KEYS.ALIAS, alias, source)
-        kwargs.update({QUANTITY.VALUE: alias, QUANTITY.SOURCE: source})
-        new_data, retval = self.add_data(
-            self._KEYS.ALIAS, check_for_dupes=check_for_dupes, **kwargs)
-
-        # Check if this adding this alias makes us a dupe, if so mark ourselves as a dupe.
-        if check_for_dupes and (alias in self.catalog.aliases):
-            poss_dupe = self.catalog.aliases[alias]
-            if (poss_dupe != self[self._KEYS.NAME]) and (poss_dupe in self.catalog.entries):
-                self.dupe_of.append(poss_dupe)
-
-        # If we're not checking for duplicates, warn about overwriting
-        elif alias in self.catalog.aliases:
-            self._log.warning("Warning, overwriting alias '{}': '{}'".format(
-                alias, self.catalog.aliases[alias]))
-
-        # Add this alias to parent catalog's reverse dictionary linking aliases to names
-        self.catalog.aliases[alias] = self[self._KEYS.NAME]
-
-        if self.dupe_of:
-            self.merge_dupes()
-
-        return alias
-
-    def add_error(self, value, **kwargs):
-        """Add an `Error` instance to this entry."""
-        kwargs.update({ERROR.VALUE: value})
-        self._add_cat_dict(Error, self._KEYS.ERRORS, **kwargs)
-        return
-
-    def add_photometry(self, compare_to_existing=True, **kwargs):
-        """Add a `Photometry` instance to this entry."""
-        self._add_cat_dict(Photometry, self._KEYS.PHOTOMETRY,
-                           compare_to_existing=compare_to_existing, **kwargs)
-        return
-
-    def add_quantity(self, quantities, value, source,
-                     check_for_dupes=True, compare_to_existing=True, **kwargs):
-        """Add an `Quantity` instance to this entry."""
-        success = True
-        for quantity in utils.listify(quantities):
-            kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: source})
-            cat_dict = self._add_cat_dict(
-                Quantity, quantity,
-                compare_to_existing=compare_to_existing, check_for_dupes=check_for_dupes,
-                **kwargs)
-            if isinstance(cat_dict, struct.Meta_Struct):
-                self._append_additional_tags(quantity, source, cat_dict)
-                success = False
-            elif cat_dict is False:
-                success = False
-
-        return success
-
-    def add_source(self, allow_alias=False, **kwargs):
-        """Add a `Source` instance to this entry."""
-        log = self._log
-        log.debug("Entry.add_source()")
-        if (not allow_alias) and (SOURCE.ALIAS in kwargs):
-            err_str = "`{}` passed in kwargs, this shouldn't happen!".format(SOURCE.ALIAS)
-            log.error(err_str)
-            raise RuntimeError(err_str)
-
-        # Set alias number to be +1 of current number of sources
-        if SOURCE.ALIAS not in kwargs:
-            kwargs[SOURCE.ALIAS] = str(self.num_sources() + 1)
-
-        # log.warning("Entry.add_source() - Calling `Entry._init_cat_dict()`")
-        source_obj = self._init_cat_dict(Source, self._KEYS.SOURCES, **kwargs)
-        if source_obj is None:
-            return None
-
-        for item in self.get(self._KEYS.SOURCES, []):
-            if source_obj.is_duplicate_of(item):
-                return item[SOURCE.ALIAS]
-
-        self.setdefault(self._KEYS.SOURCES, []).append(source_obj)
-        return source_obj[SOURCE.ALIAS]
-
-    def add_model(self, allow_alias=False, **kwargs):
-        """Add a `Model` instance to this entry."""
-        if not allow_alias and MODEL.ALIAS in kwargs:
-            err_str = "`{}` passed in kwargs, this shouldn't happen!".format(
-                SOURCE.ALIAS)
-            self._log.error(err_str)
-            raise RuntimeError(err_str)
-
-        # Set alias number to be +1 of current number of models
-        if MODEL.ALIAS not in kwargs:
-            kwargs[MODEL.ALIAS] = str(self.num_models() + 1)
-        model_obj = self._init_cat_dict(Model, self._KEYS.MODELS, **kwargs)
-        if model_obj is None:
-            return None
-
-        for item in self.get(self._KEYS.MODELS, ''):
-            if model_obj.is_duplicate_of(item):
-                return item[item._KEYS.ALIAS]
-
-        self.setdefault(self._KEYS.MODELS, []).append(model_obj)
-        return model_obj[model_obj._KEYS.ALIAS]
-
-    def add_spectrum(self, compare_to_existing=True, **kwargs):
-        """Add a `Spectrum` instance to this entry."""
-        spec_key = self._KEYS.SPECTRA
-        # Make sure that a source is given, and is valid (nor erroneous)
-        retval = self._check_cat_dict_source(Spectrum, spec_key, **kwargs)
-        if not retval:
-            return None
-
-        # Try to create a new instance of `Spectrum`
-        new_spectrum = self._init_cat_dict(Spectrum, spec_key, **kwargs)
-        if new_spectrum is None:
-            return None
-
-        is_dupe = False
-        for item in self.get(spec_key, []):
-            # Only the `filename` should be compared for duplicates. If a
-            # duplicate is found, that means the previous `exclude` array
-            # should be saved to the new object, and the old deleted
-            if new_spectrum.is_duplicate_of(item):
-                if SPECTRUM.EXCLUDE in new_spectrum:
-                    item[SPECTRUM.EXCLUDE] = new_spectrum[SPECTRUM.EXCLUDE]
-                elif SPECTRUM.EXCLUDE in item:
-                    item.update(new_spectrum)
-                is_dupe = True
-                break
-
-        if not is_dupe:
-            self.setdefault(spec_key, []).append(new_spectrum)
-        return
-
     def merge_dupes(self):
         """Merge two entries that correspond to the same entry."""
         for dupe in self.dupe_of:
@@ -750,17 +482,6 @@ class _Entry(struct.Meta_Struct):
                 del self.catalog.entries[dupe]
         self.dupe_of = []
         return
-
-    def add_self_source(self):
-        """Add a source that refers to the catalog itself.
-
-        For now this points to the Open Supernova Catalog by default.
-        """
-        return self.add_source(
-            bibcode=self.catalog.OSC_BIBCODE,
-            name=self.catalog.OSC_NAME,
-            url=self.catalog.OSC_URL,
-            secondary=True)
 
     def clean_internal(self, data=None):
         """Clean input from 'internal', human added data.
@@ -787,16 +508,6 @@ class _Entry(struct.Meta_Struct):
         if includename and self[self._KEYS.NAME] not in aliases:
             aliases = [self[self._KEYS.NAME]] + aliases
         return aliases
-
-    def get_entry_text(self, fname):
-        """Retrieve the raw text from a file."""
-        if fname.split('.')[-1] == 'gz':
-            with gz.open(fname, 'rt') as f:
-                filetext = f.read()
-        else:
-            with codecs.open(fname, 'r') as f:
-                filetext = f.read()
-        return filetext
 
     def get_source_by_alias(self, alias):
         """Given an alias, find the corresponding source in this entry.
@@ -879,8 +590,7 @@ class _Entry(struct.Meta_Struct):
         # aliases are always public.
         if key == self._KEYS.ALIAS:
             return False
-        return all([SOURCE.PRIVATE in self.get_source_by_alias(x)
-                    for x in sources.split(',')])
+        return all([SOURCE.PRIVATE in self.get_source_by_alias(x) for x in sources.split(',')])
 
     def name(self):
         """Return own name."""
@@ -895,16 +605,6 @@ class _Entry(struct.Meta_Struct):
             The *integer* number of existing sources.
         """
         return len(self.get(self._KEYS.SOURCES, []))
-
-    def num_models(self):
-        """Return the current number of models stored in this instance.
-
-        Returns
-        -------
-        len : int
-            The *integer* number of existing models.
-        """
-        return len(self.get(self._KEYS.MODELS, []))
 
     def priority_prefixes(self):
         """Return prefixes to given priority when merging duplicate entries."""
@@ -1201,3 +901,327 @@ class _Entry(struct.Meta_Struct):
                       check_for_dupes=True, compare_to_existing=True, **kwargs):
         log = self._log
         log.raise_error("`Entry._add_cat_dict()` is deprecated!", struct.DeprecationError)
+
+    '''
+    def get_hash(self, keys=[]):
+        """Return a unique hash associated with the listed keys."""
+        if not len(keys):
+            keys = list(self.keys())
+
+        string_rep = ''
+        oself = self._ordered(deepcopy(self))
+        for key in keys:
+            string_rep += json.dumps(oself.get(key, ''), sort_keys=True)
+
+        return hashlib.sha512(string_rep.encode()).hexdigest()[:16]
+    '''
+
+    '''
+    def _clean_quantity(self, quantity):
+        """Clean quantity value before it is added to entry."""
+        value = quantity.get(QUANTITY.VALUE, '').strip()
+        error = quantity.get(QUANTITY.E_VALUE, '').strip()
+        unit = quantity.get(QUANTITY.U_VALUE, '').strip()
+        kind = quantity.get(QUANTITY.KIND, '')
+
+        if isinstance(kind, list) and not isinstance(kind, six.string_types):
+            kind = [x.strip() for x in kind]
+        else:
+            kind = kind.strip()
+
+        if not value:
+            return False
+
+        if utils.is_number(value):
+            value = '%g' % Decimal(value)
+        if error:
+            error = '%g' % Decimal(error)
+
+        if value:
+            quantity[QUANTITY.VALUE] = value
+        if error:
+            quantity[QUANTITY.E_VALUE] = error
+        if unit:
+            quantity[QUANTITY.U_VALUE] = unit
+        if kind:
+            quantity[QUANTITY.KIND] = kind
+
+        return True
+    '''
+
+    def _clean_quantity(self, *args, **kwargs):
+        log = self._log
+        msg = ""
+        log.raise_error("`Entry._clean_quantity()` is deprecated! " + msg, struct.DeprecationError)
+
+    '''
+    def get_entry_text(self, fname):
+        """Retrieve the raw text from a file."""
+        if fname.split('.')[-1] == 'gz':
+            with gz.open(fname, 'rt') as f:
+                filetext = f.read()
+        else:
+            with codecs.open(fname, 'r') as f:
+                filetext = f.read()
+        return filetext
+    '''
+
+
+class _Entry_Old_Adder(_Entry):
+
+    def add_data(self, key_in_self, value=None, source=None, struct_class=Quantity,
+                 check_for_dupes=True, dupes_merge_tags=True, **kwargs):
+        """Add a `CatDict` data container (dict) to this `Entry`.
+
+        CatDict only added if initialization succeeds and it
+        doesn't already exist within the Entry.
+        """
+        log = self._log
+        log.debug("Entry.add_data()")
+        FAIL = 0
+        DUPE = -1
+        SUCC = 1
+
+        if value is not None:
+            if QUANTITY.VALUE in kwargs:
+                log.raise_error("`value` given as both arg and kwarg!\n{}".format(kwargs))
+            kwargs[QUANTITY.VALUE] = value
+
+        if source is not None:
+            if QUANTITY.SOURCE in kwargs:
+                log.raise_error("`source` given as both arg and kwarg!\n{}".format(kwargs))
+            kwargs[QUANTITY.SOURCE] = source
+
+        # Make sure that a source, if given, is valid
+        retval = self._check_cat_dict_source(struct_class, key_in_self, **kwargs)
+        if not retval:
+            self._handle_addition_failure(
+                "Entry._check_cat_dict_source()", struct_class, key_in_self, **kwargs)
+            return None, FAIL
+
+        # Try to create a new instance of this subclass of `CatDict`
+        new_data = self._init_cat_dict(struct_class, key_in_self, **kwargs)
+        if new_data is None:
+            self._handle_addition_failure(
+                "Entry._init_cat_dict()", struct_class, key_in_self, **kwargs)
+            return None, FAIL
+
+        # Compare this new entry with all previous entries to make sure is new
+        if check_for_dupes:
+            for item in self.get(key_in_self, []):
+                # Do not add duplicates
+                if new_data.is_duplicate_of(item):
+                    item.append_sources_from(new_data)
+                    return new_data, DUPE
+
+        # Add data
+        self.setdefault(key_in_self, []).append(new_data)
+
+        return new_data, SUCC
+
+    def add_alias(self, alias, source, clean=True, check_for_dupes=True, **kwargs):
+        """Add an alias, optionally 'cleaning' the alias string.
+
+        Calls the parent `catalog` method `clean_entry_name` - to apply the
+        same name-cleaning as is applied to entry names themselves.
+
+        Returns
+        -------
+        alias : str
+            The stored version of the alias (cleaned or not).
+
+        """
+        if clean:
+            alias = self.catalog.clean_entry_name(alias)
+
+        # self.add_quantity(self._KEYS.ALIAS, alias, source)
+        kwargs.update({QUANTITY.VALUE: alias, QUANTITY.SOURCE: source})
+        new_data, retval = self.add_data(
+            self._KEYS.ALIAS, check_for_dupes=check_for_dupes, **kwargs)
+
+        # Check if this adding this alias makes us a dupe, if so mark ourselves as a dupe.
+        if check_for_dupes and (alias in self.catalog.aliases):
+            poss_dupe = self.catalog.aliases[alias]
+            if (poss_dupe != self[self._KEYS.NAME]) and (poss_dupe in self.catalog.entries):
+                self.dupe_of.append(poss_dupe)
+
+        # If we're not checking for duplicates, warn about overwriting
+        elif alias in self.catalog.aliases:
+            self._log.warning("Warning, overwriting alias '{}': '{}'".format(
+                alias, self.catalog.aliases[alias]))
+
+        # Add this alias to parent catalog's reverse dictionary linking aliases to names
+        self.catalog.aliases[alias] = self[self._KEYS.NAME]
+
+        if self.dupe_of:
+            self.merge_dupes()
+
+        return alias
+
+    def add_error(self, value, **kwargs):
+        """Add an `Error` instance to this entry."""
+        kwargs.update({ERROR.VALUE: value})
+        self._add_cat_dict(Error, self._KEYS.ERRORS, **kwargs)
+        return
+
+    def add_photometry(self, compare_to_existing=True, **kwargs):
+        """Add a `Photometry` instance to this entry."""
+        self._add_cat_dict(Photometry, self._KEYS.PHOTOMETRY,
+                           compare_to_existing=compare_to_existing, **kwargs)
+        return
+
+    def add_quantity(self, quantities, value, source,
+                     check_for_dupes=True, compare_to_existing=True, **kwargs):
+        """Add an `Quantity` instance to this entry."""
+        success = True
+        for quantity in utils.listify(quantities):
+            kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: source})
+            cat_dict = self._add_cat_dict(
+                Quantity, quantity,
+                compare_to_existing=compare_to_existing, check_for_dupes=check_for_dupes,
+                **kwargs)
+            if isinstance(cat_dict, struct.Meta_Struct):
+                self._append_additional_tags(quantity, source, cat_dict)
+                success = False
+            elif cat_dict is False:
+                success = False
+
+        return success
+
+    def add_source(self, allow_alias=False, **kwargs):
+        """Add a `Source` instance to this entry."""
+        log = self._log
+        log.debug("Entry.add_source()")
+        if (not allow_alias) and (SOURCE.ALIAS in kwargs):
+            err_str = "`{}` passed in kwargs, this shouldn't happen!".format(SOURCE.ALIAS)
+            log.error(err_str)
+            raise RuntimeError(err_str)
+
+        # Set alias number to be +1 of current number of sources
+        if SOURCE.ALIAS not in kwargs:
+            kwargs[SOURCE.ALIAS] = str(self.num_sources() + 1)
+
+        # log.warning("Entry.add_source() - Calling `Entry._init_cat_dict()`")
+        source_obj = self._init_cat_dict(Source, self._KEYS.SOURCES, **kwargs)
+        if source_obj is None:
+            return None
+
+        for item in self.get(self._KEYS.SOURCES, []):
+            if source_obj.is_duplicate_of(item):
+                return item[SOURCE.ALIAS]
+
+        self.setdefault(self._KEYS.SOURCES, []).append(source_obj)
+        return source_obj[SOURCE.ALIAS]
+
+    def add_model(self, allow_alias=False, **kwargs):
+        """Add a `Model` instance to this entry."""
+        if not allow_alias and MODEL.ALIAS in kwargs:
+            err_str = "`{}` passed in kwargs, this shouldn't happen!".format(
+                SOURCE.ALIAS)
+            self._log.error(err_str)
+            raise RuntimeError(err_str)
+
+        # Set alias number to be +1 of current number of models
+        if MODEL.ALIAS not in kwargs:
+            kwargs[MODEL.ALIAS] = str(self.num_models() + 1)
+        model_obj = self._init_cat_dict(Model, self._KEYS.MODELS, **kwargs)
+        if model_obj is None:
+            return None
+
+        for item in self.get(self._KEYS.MODELS, ''):
+            if model_obj.is_duplicate_of(item):
+                return item[item._KEYS.ALIAS]
+
+        self.setdefault(self._KEYS.MODELS, []).append(model_obj)
+        return model_obj[model_obj._KEYS.ALIAS]
+
+    def add_spectrum(self, compare_to_existing=True, **kwargs):
+        """Add a `Spectrum` instance to this entry."""
+        spec_key = self._KEYS.SPECTRA
+        # Make sure that a source is given, and is valid (nor erroneous)
+        retval = self._check_cat_dict_source(Spectrum, spec_key, **kwargs)
+        if not retval:
+            return None
+
+        # Try to create a new instance of `Spectrum`
+        new_spectrum = self._init_cat_dict(Spectrum, spec_key, **kwargs)
+        if new_spectrum is None:
+            return None
+
+        is_dupe = False
+        for item in self.get(spec_key, []):
+            # Only the `filename` should be compared for duplicates. If a
+            # duplicate is found, that means the previous `exclude` array
+            # should be saved to the new object, and the old deleted
+            if new_spectrum.is_duplicate_of(item):
+                if SPECTRUM.EXCLUDE in new_spectrum:
+                    item[SPECTRUM.EXCLUDE] = new_spectrum[SPECTRUM.EXCLUDE]
+                elif SPECTRUM.EXCLUDE in item:
+                    item.update(new_spectrum)
+                is_dupe = True
+                break
+
+        if not is_dupe:
+            self.setdefault(spec_key, []).append(new_spectrum)
+        return
+
+    def add_listed(self, key, value, check=True):
+        listed = self.setdefault(key, [])
+        # Make sure `value` isn't already in the list
+        if check and (value in listed):
+            return
+
+        listed.append(value)
+        return
+
+    def add_self_source(self):
+        """Add a source that refers to the catalog itself.
+
+        For now this points to the Open Supernova Catalog by default.
+        """
+        return self.add_source(
+            bibcode=self.catalog.OSC_BIBCODE,
+            name=self.catalog.OSC_NAME,
+            url=self.catalog.OSC_URL,
+            secondary=True)
+
+    def _handle_addition_failure(self, fail_loc, cat_class, cat_key, **kwargs):
+        """Based on `catalog.ADDITION_FAILURE_BEHAVIOR`, react to a failure appropriately.
+
+        A `logging.DEBUG` level message is always given.
+
+        `ADDITION_FAILURE_BEHAVIOR` == `ADD_FAIL_ACTION.WARN`
+            Then a `logging.WARNING` message is raised.
+        `ADDITION_FAILURE_BEHAVIOR` == `ADD_FAIL_ACTION.IGNORE`
+            No addition action is taken.
+        `ADDITION_FAILURE_BEHAVIOR` == `ADD_FAIL_ACTION.RAISE`
+            Then an error is raised.
+            This is the default behavior that also acts if an unknown value is given.
+
+        """
+        err_str = "'{}' failed!\n".format(fail_loc)
+        err_str += "class: '{}', key: '{}'\nkwargs: '{}'".format(cat_class, cat_key, kwargs)
+
+        fail_flag = self.catalog.ADDITION_FAILURE_BEHAVIOR
+        # Log a message at 'debug' level regardless
+        self._log.debug(err_str)
+        self._log.debug("`ADDITION_FAILURE_BEHAVIOR` = '{}'".format(fail_flag))
+
+        # if `WARN` then also log a warning
+        if fail_flag == utils.ADD_FAIL_ACTION.WARN:
+            self._log.warning(err_str)
+        # Raise an error
+        elif fail_flag == utils.ADD_FAIL_ACTION.IGNORE:
+            pass
+        # default behavior is to raise an error
+        else:
+            self._log.raise_error(err_str, RuntimeError)
+
+        return
+
+    def _append_additional_tags(self, quantity, source, cat_dict):
+        """Append additional bits of data to an existing quantity.
+
+        Called when a newly added quantity is found to be a duplicate.
+        """
+        pass
