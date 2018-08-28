@@ -371,21 +371,23 @@ class _Entry(struct.Meta_Struct):
         valid, new_struct = self._add_struct_bef(new_struct, **kwargs)
         if not valid:
             log.info("`_add_struct_bef()` returned False, skipping")
-            return None
+            # return None
+            return False
 
         # Compare this new entry with all previous entries to make sure is new
         #    If it is NOT new, return the entry
         if duplicate_check:
             for item in self.get(key_in_self, []):
                 if new_struct.is_duplicate_of(item):
-                    item.append_sources_from(new_struct)
+                    item.append_aliases_from(new_struct)
                     log.info("Duplicate found, merging")
                     # Return the entry in case we want to use any additional
                     # tags to augment the old entry
                     return new_struct
 
         self.setdefault(key_in_self, []).append(new_struct)
-        return new_struct
+        # return new_struct
+        return True
 
     def create_and_add_struct(self, struct_class, key_in_self, duplicate_check=True, **kwargs):
         log = self._log
@@ -868,7 +870,7 @@ class _Entry_Old_Adder(_Entry):
             for item in self.get(key_in_self, []):
                 # Do not add duplicates
                 if new_data.is_duplicate_of(item):
-                    item.append_sources_from(new_data)
+                    item.append_aliases_from(new_data)
                     return new_data, DUPE
 
         # Add data
@@ -1200,7 +1202,7 @@ class _Entry_Old_Adder(_Entry):
         if compare_to_existing and struct_class != Error:
             for item in self.get(key_in_self, []):
                 if new_struct.is_duplicate_of(item):
-                    item.append_sources_from(new_struct)
+                    item.append_aliases_from(new_struct)
                     # Return the entry in case we want to use any additional
                     # tags to augment the old entry
                     return new_struct
@@ -1209,7 +1211,6 @@ class _Entry_Old_Adder(_Entry):
         return True
 
 
-'''
 class _Entry_New_Adder(_Entry):
 
     def add_data(self, key_in_self, value=None, source=None, struct_class=Quantity,
@@ -1254,7 +1255,7 @@ class _Entry_New_Adder(_Entry):
             for item in self.get(key_in_self, []):
                 # Do not add duplicates
                 if new_data.is_duplicate_of(item):
-                    item.append_sources_from(new_data)
+                    item.append_aliases_from(new_data)
                     return new_data, DUPE
 
         # Add data
@@ -1313,21 +1314,20 @@ class _Entry_New_Adder(_Entry):
                            compare_to_existing=compare_to_existing, **kwargs)
         return
 
-    def add_quantity(self, quantities, value, source,
+    def add_quantity(self, name, value, source,
                      check_for_dupes=True, compare_to_existing=True, **kwargs):
         """Add an `Quantity` instance to this entry."""
         success = True
-        for quantity in utils.listify(quantities):
-            kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: source})
-            cat_dict = self._add_cat_dict(
-                Quantity, quantity,
-                compare_to_existing=compare_to_existing, check_for_dupes=check_for_dupes,
-                **kwargs)
-            if isinstance(cat_dict, struct.Meta_Struct):
-                self._append_additional_tags(quantity, source, cat_dict)
-                success = False
-            elif cat_dict is False:
-                success = False
+        kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: source})
+        cat_dict = self._add_cat_dict(
+            Quantity, name,
+            compare_to_existing=compare_to_existing, check_for_dupes=check_for_dupes,
+            **kwargs)
+        if isinstance(cat_dict, struct.Meta_Struct):
+            self._append_additional_tags(name, source, cat_dict)
+            success = False
+        elif cat_dict is False:
+            success = False
 
         return success
 
@@ -1462,10 +1462,9 @@ class _Entry_New_Adder(_Entry):
 
         return
 
-    def _append_additional_tags(self, quantity, source, cat_dict):
+    def _append_additional_tags(self, name, source, cat_dict):
         """Append additional bits of data to an existing quantity.
 
         Called when a newly added quantity is found to be a duplicate.
         """
         pass
-'''

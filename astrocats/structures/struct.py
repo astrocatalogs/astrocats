@@ -75,7 +75,7 @@ class Meta_Struct(pas.struct.Struct):
         self._parent = parent
         return
 
-    def append_sources_from(self, other):
+    def append_aliases_from(self, other):
         """Merge the source alias lists of two CatDicts."""
         # Get aliases lists from this `CatDict` and other
         self_aliases = self[self._KEYS.SOURCE].split(',')
@@ -118,10 +118,10 @@ class Source(Meta_Struct):
             return 'zzz'
         return key
 
-    def append_sources_from(self, other):
-        """`CatDict.append_sources_from` should never be called in `Source`.
+    def append_aliases_from(self, other):
+        """`CatDict.append_aliases_from` should never be called in `Source`.
         """
-        raise RuntimeError("`Source.append_sources_from` called.")
+        raise RuntimeError("`Source.append_aliases_from` called.")
 
     @classmethod
     def bibcode_from_url(cls, url):
@@ -460,7 +460,7 @@ class Model(Meta_Struct):
         if cat_dict_class != Error:
             for item in self.get(key_in_self, []):
                 if new_entry.is_duplicate_of(item):
-                    item.append_sources_from(new_entry)
+                    item.append_aliases_from(new_entry)
                     # Return the entry in case we want to use any additional
                     # tags to augment the old entry
                     return new_entry
@@ -530,8 +530,6 @@ Entry_Old_Adder = entry._Entry_Old_Adder
 ENTRY_OLD_ADDER = Entry_Old_Adder._KEYCHAIN
 Entry_Old_Adder._Keys = ENTRY_OLD_ADDER
 
-'''
-Entry_Old_Adder = entry._Entry_Old_Adder
-ENTRY_OLD_ADDER = Entry_Old_Adder._KEYCHAIN
-Entry_Old_Adder._Keys = ENTRY_OLD_ADDER
-'''
+Entry_New_Adder = entry._Entry_New_Adder
+ENTRY_NEW_ADDER = Entry_New_Adder._KEYCHAIN
+Entry_New_Adder._Keys = ENTRY_NEW_ADDER
