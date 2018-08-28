@@ -525,3 +525,13 @@ ENTRY = Entry._KEYCHAIN
 Entry._KEYS = ENTRY
 
 ENTRY.DISCOVER_DATE = ENTRY.DISCOVERDATE
+
+Entry_Old_Adder = entry._Entry_Old_Adder
+ENTRY_OLD_ADDER = Entry_Old_Adder._KEYCHAIN
+Entry_Old_Adder._Keys = ENTRY_OLD_ADDER
+
+'''
+Entry_Old_Adder = entry._Entry_Old_Adder
+ENTRY_OLD_ADDER = Entry_Old_Adder._KEYCHAIN
+Entry_Old_Adder._Keys = ENTRY_OLD_ADDER
+'''
