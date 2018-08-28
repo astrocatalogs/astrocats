@@ -597,12 +597,10 @@ class Catalog(object):
                         priority1 = 0
                         priority2 = 0
                         for an in allnames1:
-                            if an.startswith(self.entries[name1]
-                                             .priority_prefixes()):
+                            if an.startswith(self.entries[name1].priority_prefixes()):
                                 priority1 += 1
                         for an in allnames2:
-                            if an.startswith(self.entries[name2]
-                                             .priority_prefixes()):
+                            if an.startswith(self.entries[name2].priority_prefixes()):
                                 priority2 += 1
 
                         if priority1 > priority2:
