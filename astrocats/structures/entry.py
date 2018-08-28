@@ -368,14 +368,16 @@ class _Entry(struct.Meta_Struct):
 
         return
 
-    def add(self, struct_class, key_in_self, duplicate_check=True, **kwargs):
+    # ==================  STRUCT CREATION/ADDITION  ==================
+
+    def create_struct(self, struct_class, key_in_self, **kwargs):
         log = self._log
 
         # Perform checks and initialization operations before constructing struct class
         # -----------------------------------------------------------------------------
-        valid, kwargs = self._add_bef(struct_class, key_in_self, **kwargs)
+        valid, kwargs = self._create_struct_bef(struct_class, key_in_self, **kwargs)
         if not valid:
-            log.info("`_add_bef()` returned False, skipping")
+            log.info("`_create_struct_bef()` returned False, skipping")
             return None
 
         source = kwargs.get(struct_class._KEYS.SOURCE, None)
@@ -423,11 +425,16 @@ class _Entry(struct.Meta_Struct):
             log.error(str(err))
             raise
 
+        return new_struct
+
+    def add_struct(self, key_in_self, new_struct, duplicate_check=True, **kwargs):
+        log = self._log
+
         # Perform checks and finalization operations before adding struct to self
         # -----------------------------------------------------------------------------
-        valid, new_struct = self._add_aft(new_struct, **kwargs)
+        valid, new_struct = self._add_struct_bef(new_struct, **kwargs)
         if not valid:
-            log.info("`_add_aft()` returned False, skipping")
+            log.info("`_add_struct_bef()` returned False, skipping")
             return None
 
         # Compare this new entry with all previous entries to make sure is new
@@ -436,6 +443,7 @@ class _Entry(struct.Meta_Struct):
             for item in self.get(key_in_self, []):
                 if new_struct.is_duplicate_of(item):
                     item.append_sources_from(new_struct)
+                    log.info("Duplicate found, merging")
                     # Return the entry in case we want to use any additional
                     # tags to augment the old entry
                     return new_struct
@@ -443,10 +451,24 @@ class _Entry(struct.Meta_Struct):
         self.setdefault(key_in_self, []).append(new_struct)
         return new_struct
 
-    def _add_bef(self, *args, **kwargs):
+    def create_and_add_struct(self, struct_class, key_in_self, duplicate_check=True, **kwargs):
+        log = self._log
+
+        new_struct = self.create_struct(struct_class, key_in_self, **kwargs)
+        if new_struct is not None:
+            new_struct = self.add_struct(key_in_self, new_struct, duplicate_check=duplicate_check)
+
+        if new_struct is None:
+            log.debug("Failed to create/add struct")
+        else:
+            log.debug("Added new struct")
+
+        return new_struct
+
+    def _create_struct_bef(self, *args, **kwargs):
         return True, kwargs
 
-    def _add_aft(self, new_struct, **kwargs):
+    def _add_struct_bef(self, new_struct, **kwargs):
         return True, new_struct
 
     @classmethod
