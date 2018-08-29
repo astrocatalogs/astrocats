@@ -1364,6 +1364,9 @@ class _Entry_New_Adder(_Entry):
 
         source = self.add_struct(self._KEYS.SOURCES, new_source,
                                  duplicate_check=True, duplicate_merge=False)
+
+        # NOTE: This is moved to new method `_get_alias_from_add_struct_return`
+        '''
         # Found duplicate `Source`, the original is returned, return that alias
         if isinstance(source, Source):
             alias = source[SOURCE.ALIAS]
@@ -1376,18 +1379,20 @@ class _Entry_New_Adder(_Entry):
             err = "Unexpected return type '{}' ({}) during `add_source`".format(
                 type(source), source)
             log.raise_error(err)
+        '''
+        alias = self._get_alias_from_add_struct_return(alias, source)
 
         return alias
 
     def add_model(self, allow_alias=False, **kwargs):
         """Add a `Model` instance to this entry."""
+        log = self._log
         if not allow_alias and MODEL.ALIAS in kwargs:
-            err_str = "`{}` passed in kwargs, this shouldn't happen!".format(
-                SOURCE.ALIAS)
-            self._log.error(err_str)
-            raise RuntimeError(err_str)
+            err_str = "`{}` passed in kwargs, this shouldn't happen!".format(SOURCE.ALIAS)
+            log.raise_error(err_str)
 
         # Set alias number to be +1 of current number of models
+        '''
         if MODEL.ALIAS not in kwargs:
             kwargs[MODEL.ALIAS] = str(self.num_models() + 1)
         model_obj = self._init_cat_dict(Model, self._KEYS.MODELS, **kwargs)
@@ -1400,6 +1405,18 @@ class _Entry_New_Adder(_Entry):
 
         self.setdefault(self._KEYS.MODELS, []).append(model_obj)
         return model_obj[model_obj._KEYS.ALIAS]
+        '''
+
+        alias = kwargs.setdefault(MODEL.ALIAS, str(self.num_sources() + 1))
+        new_model = self.create_struct(Source, self._KEYS.MODELS, **kwargs)
+        if new_model is None:
+            log.raise_error("Could not create_struct for model!")
+
+        model = self.add_struct(self._KEYS.MODELS, new_model,
+                                duplicate_check=True, duplicate_merge=False)
+
+        alias = self._get_alias_from_add_struct_return(alias, model)
+        return alias
 
     def add_spectrum(self, compare_to_existing=True, **kwargs):
         """Add a `Spectrum` instance to this entry."""
@@ -1484,3 +1501,21 @@ class _Entry_New_Adder(_Entry):
             self._log.raise_error(err_str, RuntimeError)
 
         return
+
+    def _get_alias_from_add_struct_return(self, alias, retval):
+        log = self._log
+
+        # Found duplicate `Source`, the original is returned, return that alias
+        if isinstance(retval, struct.Meta_Struct):
+            alias = retval[SOURCE.ALIAS]
+        # Source was added successfully, and `alias` (from above) is still accurate
+        elif retval is True:
+            pass
+        elif retval is False:
+            log.raise_error("`add_struct` failed!")
+        else:
+            err = "Unexpected return type '{}' ({}) from `add_struct`".format(
+                type(retval), retval)
+            log.raise_error(err)
+
+        return alias
