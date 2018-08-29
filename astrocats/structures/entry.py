@@ -363,7 +363,9 @@ class _Entry(struct.Meta_Struct):
 
         return new_struct
 
-    def add_struct(self, key_in_self, new_struct, duplicate_check=True, **kwargs):
+    def add_struct(self, key_in_self, new_struct,
+                   duplicate_check=True, duplicate_merge=True,
+                   **kwargs):
         log = self._log
 
         # Perform checks and finalization operations before adding struct to self
@@ -377,29 +379,37 @@ class _Entry(struct.Meta_Struct):
         # Compare this new entry with all previous entries to make sure is new
         #    If it is NOT new, return the entry
         if duplicate_check:
-            for item in self.get(key_in_self, []):
+            for ii, item in enumerate(self.get(key_in_self, [])):
                 if new_struct.is_duplicate_of(item):
-                    item.append_aliases_from(new_struct)
-                    log.info("Duplicate found, merging")
-                    # Return the entry in case we want to use any additional
-                    # tags to augment the old entry
-                    return new_struct
+                    if duplicate_merge:
+                        log.info("Duplicate found, merging")
+                        self._merge_structs(key_in_self, ii, new_struct)
+                        return True
+                    else:
+                        # Return the *old* entry in case we want to use any additional
+                        # tags to augment the old entry
+                        return item
 
         self.setdefault(key_in_self, []).append(new_struct)
         # return new_struct
         return True
 
-    def create_and_add_struct(self, struct_class, key_in_self, duplicate_check=True, **kwargs):
-        log = self._log
+    def create_and_add_struct(self, struct_class, key_in_self,
+                              duplicate_check=True, duplicate_merge=True, **kwargs):
+        # log = self._log
 
         new_struct = self.create_struct(struct_class, key_in_self, **kwargs)
         if new_struct is not None:
-            new_struct = self.add_struct(key_in_self, new_struct, duplicate_check=duplicate_check)
+            new_struct = self.add_struct(
+                key_in_self, new_struct,
+                duplicate_check=duplicate_check, duplicate_merge=duplicate_merge)
 
+        '''
         if new_struct is None:
             log.debug("Failed to create/add struct")
         else:
             log.debug("Added new struct")
+        '''
 
         return new_struct
 
@@ -408,6 +418,20 @@ class _Entry(struct.Meta_Struct):
 
     def _add_struct_bef(self, new_struct, **kwargs):
         return True, new_struct
+
+    def _merge_structs(self, key_in_self, index, new_struct):
+        item = self[key_in_self][index]
+        item.append_aliases_from(new_struct)
+        if isinstance(new_struct, Quantity):
+            # self._append_additional_tags(name, source, new_struct)
+            self._merge_quantities(item, new_struct)
+
+        return
+
+    def _merge_quantities(self, dst, src):
+        # NOTE: FIX: LZK: temporary method here!
+        # See note in `supernovae.supernova.Supernova._merge_quantities`.
+        return
 
     # >>> ==================  STRUCT CREATION/ADDITION  ==================
 
@@ -1213,56 +1237,6 @@ class _Entry_Old_Adder(_Entry):
 
 class _Entry_New_Adder(_Entry):
 
-    def add_data(self, key_in_self, value=None, source=None, struct_class=Quantity,
-                 check_for_dupes=True, dupes_merge_tags=True, **kwargs):
-        """Add a `CatDict` data container (dict) to this `Entry`.
-
-        CatDict only added if initialization succeeds and it
-        doesn't already exist within the Entry.
-        """
-        log = self._log
-        log.debug("Entry.add_data()")
-        FAIL = 0
-        DUPE = -1
-        SUCC = 1
-
-        if value is not None:
-            if QUANTITY.VALUE in kwargs:
-                log.raise_error("`value` given as both arg and kwarg!\n{}".format(kwargs))
-            kwargs[QUANTITY.VALUE] = value
-
-        if source is not None:
-            if QUANTITY.SOURCE in kwargs:
-                log.raise_error("`source` given as both arg and kwarg!\n{}".format(kwargs))
-            kwargs[QUANTITY.SOURCE] = source
-
-        # Make sure that a source, if given, is valid
-        retval = self._check_cat_dict_source(struct_class, key_in_self, **kwargs)
-        if not retval:
-            self._handle_addition_failure(
-                "Entry._check_cat_dict_source()", struct_class, key_in_self, **kwargs)
-            return None, FAIL
-
-        # Try to create a new instance of this subclass of `CatDict`
-        new_data = self._init_cat_dict(struct_class, key_in_self, **kwargs)
-        if new_data is None:
-            self._handle_addition_failure(
-                "Entry._init_cat_dict()", struct_class, key_in_self, **kwargs)
-            return None, FAIL
-
-        # Compare this new entry with all previous entries to make sure is new
-        if check_for_dupes:
-            for item in self.get(key_in_self, []):
-                # Do not add duplicates
-                if new_data.is_duplicate_of(item):
-                    item.append_aliases_from(new_data)
-                    return new_data, DUPE
-
-        # Add data
-        self.setdefault(key_in_self, []).append(new_data)
-
-        return new_data, SUCC
-
     def add_alias(self, alias, source, clean=True, check_for_dupes=True, **kwargs):
         """Add an alias, optionally 'cleaning' the alias string.
 
@@ -1280,8 +1254,10 @@ class _Entry_New_Adder(_Entry):
 
         # self.add_quantity(self._KEYS.ALIAS, alias, source)
         kwargs.update({QUANTITY.VALUE: alias, QUANTITY.SOURCE: source})
+        '''
         new_data, retval = self.add_data(
             self._KEYS.ALIAS, check_for_dupes=check_for_dupes, **kwargs)
+        '''
 
         # Check if this adding this alias makes us a dupe, if so mark ourselves as a dupe.
         if check_for_dupes and (alias in self.catalog.aliases):
@@ -1305,28 +1281,50 @@ class _Entry_New_Adder(_Entry):
     def add_error(self, value, **kwargs):
         """Add an `Error` instance to this entry."""
         kwargs.update({ERROR.VALUE: value})
-        self._add_cat_dict(Error, self._KEYS.ERRORS, **kwargs)
+        # self._add_cat_dict(Error, self._KEYS.ERRORS, **kwargs)
+        self.create_and_add_struct(Error, self._KEYS.ERRORS, **kwargs)
         return
 
-    def add_photometry(self, compare_to_existing=True, **kwargs):
+    def add_photometry(self, **kwargs):
         """Add a `Photometry` instance to this entry."""
-        self._add_cat_dict(Photometry, self._KEYS.PHOTOMETRY,
-                           compare_to_existing=compare_to_existing, **kwargs)
+        # self._add_cat_dict(Photometry, self._KEYS.PHOTOMETRY,
+        #                    compare_to_existing=compare_to_existing, **kwargs)
+        val = kwargs.pop("compare_to_existing", None)
+        if val is not None:
+            utils.log_deprecated_argument(
+                self._log, __file__, "add_photometry", "compare_to_existing", "duplicate_check")
+            kwargs["duplicate_check"] = val
+
+        self.create_and_add_struct(Photometry, self._KEYS.PHOTOMETRY, **kwargs)
         return
 
-    def add_quantity(self, name, value, source,
-                     check_for_dupes=True, compare_to_existing=True, **kwargs):
+    def add_quantity(self, name, value, source, **kwargs):
         """Add an `Quantity` instance to this entry."""
         success = True
         kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: source})
-        cat_dict = self._add_cat_dict(
+        '''
+        new_quantity = self._add_cat_dict(
             Quantity, name,
             compare_to_existing=compare_to_existing, check_for_dupes=check_for_dupes,
             **kwargs)
-        if isinstance(cat_dict, struct.Meta_Struct):
-            self._append_additional_tags(name, source, cat_dict)
+        '''
+
+        val = kwargs.pop("compare_to_existing", None)
+        if val is not None:
+            utils.log_deprecated_argument(
+                self._log, __file__, "add_photometry", "compare_to_existing", "duplicate_check")
+            kwargs["duplicate_check"] = val
+
+        val = kwargs.pop("check_for_dupes", None)
+        if val is not None:
+            utils.log_deprecated_argument(
+                self._log, __file__, "add_photometry", "check_for_dupes")
+
+        new_quantity = self.create_and_add_struct(Quantity, name, **kwargs)
+
+        if isinstance(new_quantity, Quantity):
             success = False
-        elif cat_dict is False:
+        elif new_quantity is False:
             success = False
 
         return success
@@ -1337,14 +1335,16 @@ class _Entry_New_Adder(_Entry):
         log.debug("Entry.add_source()")
         if (not allow_alias) and (SOURCE.ALIAS in kwargs):
             err_str = "`{}` passed in kwargs, this shouldn't happen!".format(SOURCE.ALIAS)
-            log.error(err_str)
-            raise RuntimeError(err_str)
+            log.raise_error(err_str)
 
+        # Set alias number to be +1 of current number of sources
+        alias = kwargs.setdefault(SOURCE.ALIAS, str(self.num_sources() + 1))
+
+        '''
         # Set alias number to be +1 of current number of sources
         if SOURCE.ALIAS not in kwargs:
             kwargs[SOURCE.ALIAS] = str(self.num_sources() + 1)
 
-        # log.warning("Entry.add_source() - Calling `Entry._init_cat_dict()`")
         source_obj = self._init_cat_dict(Source, self._KEYS.SOURCES, **kwargs)
         if source_obj is None:
             return None
@@ -1355,6 +1355,29 @@ class _Entry_New_Adder(_Entry):
 
         self.setdefault(self._KEYS.SOURCES, []).append(source_obj)
         return source_obj[SOURCE.ALIAS]
+        '''
+
+        # source = self.create_and_add_struct(Source, self._KEYS.SOURCES, duplicate_merge=False
+        new_source = self.create_struct(Source, self._KEYS.SOURCES, **kwargs)
+        if new_source is None:
+            log.raise_error("Could not create_struct for source!")
+
+        source = self.add_struct(self._KEYS.SOURCES, new_source,
+                                 duplicate_check=True, duplicate_merge=False)
+        # Found duplicate `Source`, the original is returned, return that alias
+        if isinstance(source, Source):
+            alias = source[SOURCE.ALIAS]
+        # Source was added successfully, and `alias` (from above) is still accurate
+        elif source is True:
+            pass
+        elif source is False:
+            log.raise_error("`add_struct` failed for source!")
+        else:
+            err = "Unexpected return type '{}' ({}) during `add_source`".format(
+                type(source), source)
+            log.raise_error(err)
+
+        return alias
 
     def add_model(self, allow_alias=False, **kwargs):
         """Add a `Model` instance to this entry."""
@@ -1461,10 +1484,3 @@ class _Entry_New_Adder(_Entry):
             self._log.raise_error(err_str, RuntimeError)
 
         return
-
-    def _append_additional_tags(self, name, source, cat_dict):
-        """Append additional bits of data to an existing quantity.
-
-        Called when a newly added quantity is found to be a duplicate.
-        """
-        pass
