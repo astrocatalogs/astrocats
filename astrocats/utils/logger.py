@@ -13,7 +13,7 @@ _STREAM_LEVEL_DEF = WARNING
 _LOADED_LEVEL = INFO
 
 
-__all__ = ["get_logger", "DEBUG", "WARNING", "INFO", "log_memory"]
+__all__ = ["get_logger", "DEBUG", "WARNING", "INFO", "log_memory", "log_deprecated_argument"]
 
 
 class IndentFormatter(logging.Formatter):
@@ -205,4 +205,14 @@ def log_memory(log, pref=None, lvl=logging.DEBUG, raise_flag=True):
     if good:
         log.log(lvl, cyc_str)
 
+    return
+
+
+def log_deprecated_argument(log, file, func_name, old_arg, new_arg=None):
+    msg = "Deprecation: `{}:{}()` argument `{}`".format(file, func_name, old_arg)
+    if new_arg is not None:
+        msg += " ==> `{}`".format(new_arg)
+    else:
+        msg += " has been removed!"
+    log.warning(msg)
     return
