@@ -1420,7 +1420,8 @@ class _Entry_New_Adder(_Entry):
 
     def add_spectrum(self, compare_to_existing=True, **kwargs):
         """Add a `Spectrum` instance to this entry."""
-        spec_key = self._KEYS.SPECTRA
+
+        '''
         # Make sure that a source is given, and is valid (nor erroneous)
         retval = self._check_cat_dict_source(Spectrum, spec_key, **kwargs)
         if not retval:
@@ -1446,8 +1447,19 @@ class _Entry_New_Adder(_Entry):
 
         if not is_dupe:
             self.setdefault(spec_key, []).append(new_spectrum)
+        '''
+
+        val = kwargs.pop("compare_to_existing", None)
+        if val is not None:
+            utils.log_deprecated_argument(
+                self._log, __file__, "add_spectrum", "compare_to_existing", "duplicate_check")
+            kwargs["duplicate_check"] = val
+
+        self.create_and_add_struct(Spectrum, self._KEYS.SPECTRA, **kwargs)
+
         return
 
+    '''
     def add_listed(self, key, value, check=True):
         listed = self.setdefault(key, [])
         # Make sure `value` isn't already in the list
@@ -1456,6 +1468,7 @@ class _Entry_New_Adder(_Entry):
 
         listed.append(value)
         return
+    '''
 
     def add_self_source(self):
         """Add a source that refers to the catalog itself.
