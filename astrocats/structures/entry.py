@@ -67,14 +67,18 @@ class _Entry(struct.Meta_Struct):
                 new_entry[key] = deepcopy(self[key], memo)
         return new_entry
 
-    def __getattr__(self, name):
-        if name in self._DEPRECATED_ADD_FUNCS:
-            log = self._log
-            msg = "Subclass using the `Entry_Old_Adder` class to preserve functionality."
-            log.raise_error("`Entry.{}()` is deprecated! {}".format(name, msg),
-                            struct.DeprecationError)
+    def __getattribute__(self, name):
 
-        return super(_Entry, self).__getattr__(name)
+        try:
+            return super(_Entry, self).__getattribute__(name)
+        except AttributeError:
+            if name in self._DEPRECATED_ADD_FUNCS:
+                log = self._log
+                msg = "Subclass using the `Entry_Old_Adder` class to preserve functionality."
+                log.raise_error("`Entry.{}()` is deprecated! {}".format(name, msg),
+                                struct.DeprecationError)
+            else:
+                raise
 
     def _get_save_path(self, bury=False):
         """Return the path that this Entry should be saved to."""
@@ -316,7 +320,19 @@ class _Entry(struct.Meta_Struct):
             log.info("`_create_struct_bef()` returned False, skipping")
             return None
 
-        source = kwargs.get(struct_class._KEYS.SOURCE, None)
+        try:
+            # `Source` class does not have its own sources
+            if isinstance(struct_class, struct.Source) or issubclass(struct_class, struct.Source):
+                source = None
+            else:
+                source = kwargs.get(struct_class._KEYS.SOURCES, None)
+        except AttributeError:
+            print("struct_class = ", struct_class)
+            print("_keys = ", struct_class._KEYS)
+            print(repr(struct_class))
+            print(repr(struct_class._KEYS))
+            raise
+
         if source is not None:
             # If this source/data is erroneous, skip it
             if self.is_erroneous(key_in_self, source):
@@ -345,7 +361,6 @@ class _Entry(struct.Meta_Struct):
             else:
                 log.info(err_str)
                 return None
-
         except Exception as err:
             log = self._log
             log.error("ERROR in `Entry._init_cat_dict()`!")
