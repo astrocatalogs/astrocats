@@ -18,6 +18,8 @@ from astrocats.structures import struct
 from astrocats.structures.struct import (Error, Model, Photometry, Quantity, Source, Spectrum)
 from astrocats.structures.struct import (ERROR, MODEL, PHOTOMETRY, QUANTITY, SOURCE, SPECTRUM)
 
+DEP_WARN_ARG = False
+
 
 @struct.set_struct_schema("astroschema_entry", extensions="astrocats_entry")  # noqa
 class _Entry(struct.Meta_Struct):
@@ -133,29 +135,30 @@ class _Entry(struct.Meta_Struct):
 
         return ndict
 
-    def _load_data_from_json(self, fhand,
+    def _load_data_from_json(self, fname,
                              clean=False, merge=True, pop_schema=True, ignore_keys=[],
                              compare_to_existing=True, gzip=False, filter_on={}):
-        # FIX: check for overwrite??"""
-        self._log.debug("_load_data_from_json(): {}\n\t{}".format(self.name(), fhand))
+        log = self._log
+        log.debug("_load_data_from_json(): {}\n\t{}".format(self.name(), fname))
         # Store the filename this was loaded from
-        self.filename = fhand
+        self.filename = fname
 
         if gzip:
-            jfil = gz.open(fhand, 'rb')
+            jfil = gz.open(fname, 'rb')
         else:
-            jfil = codecs.open(fhand, 'r')
+            jfil = codecs.open(fname, 'r')
 
         data = json.load(jfil, object_pairs_hook=OrderedDict)
         name = list(data.keys())
         if len(name) != 1:
-            err = "json file '{}' has multiple keys: {}".format(fhand, list(name))
-            self._log.error(err)
-            raise ValueError(err)
+            err = "json file '{}' has multiple top-level keys: {}".format(
+                fname, name)
+            log.raise_error(err)
+
         name = name[0]
         # Remove the outmost dict level
         data = data[name]
-        self._log.debug("Name: {}".format(name))
+        # log.debug("Name: {}".format(name))
 
         # Delete ignored keys
         for key in ignore_keys:
@@ -169,21 +172,21 @@ class _Entry(struct.Meta_Struct):
         self._convert_odict_to_classes(
             data, clean=clean, merge=merge, pop_schema=pop_schema,
             compare_to_existing=compare_to_existing, filter_on=filter_on)
-        if len(data):
+
+        if len(data) > 0:
             err_str = "Remaining entries in `data` after `_convert_odict_to_classes`."
             err_str += "\n{}".format(utils.dict_to_pretty_string(data))
-            self._log.error(err_str)
-            raise RuntimeError(err_str)
+            log.raise_error(err_str)
 
         jfil.close()
 
         # If object doesnt have a name yet, but json does, store it
-        self_name = self[self._KEYS.NAME]
-        if len(self_name) == 0:
+        self_name = self.get(self._KEYS.NAME, None)
+        if (self_name is None) or (len(self_name) == 0):
             self[self._KEYS.NAME] = name
         # Warn if there is a name mismatch
         elif self_name.lower().strip() != name.lower().strip():
-            self._log.warning("Object name '{}' does not match name in json: '{}'".format(
+            log.warning("Object name '{}' does not match name in json: '{}'".format(
                 self_name, name))
 
         self.validate()
@@ -192,8 +195,8 @@ class _Entry(struct.Meta_Struct):
     def _convert_odict_to_classes(self, data, clean=False, merge=True, pop_schema=True,
                                   compare_to_existing=True, filter_on={}):
         """Convert `OrderedDict` into `Entry` or its derivative classes."""
-        self._log.debug("_convert_odict_to_classes(): {}".format(self.name()))
-        self._log.debug("This should be a temporary fix.  Dont be lazy.")
+        log = self._log
+        # log.debug("_convert_odict_to_classes(): {}".format(self.name()))
 
         # Setup filters. Currently only used for photometry.
         fkeys = list(filter_on.keys())
@@ -216,10 +219,6 @@ class _Entry(struct.Meta_Struct):
         if src_key in data:
             # Remove from `data`
             sources = data.pop(src_key)
-            self._log.debug("Found {} '{}' entries".format(
-                len(sources), src_key))
-            self._log.debug("{}: {}".format(src_key, sources))
-
             for src in sources:
                 self.add_source(allow_alias=True, **src)
 
@@ -228,80 +227,59 @@ class _Entry(struct.Meta_Struct):
         photo_key = self._KEYS.PHOTOMETRY
         if photo_key in data:
             photoms = data.pop(photo_key)
-            self._log.debug("Found {} '{}' entries".format(
-                len(photoms), photo_key))
-            phcount = 0
             for photo in photoms:
                 skip = False
                 for fkey in fkeys:
                     if fkey in photo and photo[fkey] not in filter_on[fkey]:
                         skip = True
+                        break
                 if skip:
                     continue
-                self._add_cat_dict(
-                    Photometry,
-                    self._KEYS.PHOTOMETRY,
-                    compare_to_existing=compare_to_existing,
-                    **photo)
-                phcount += 1
-            self._log.debug("Added {} '{}' entries".format(
-                phcount, photo_key))
+
+                self.create_and_add_struct(
+                    Photometry, self._KEYS.PHOTOMETRY,
+                    duplicate_check=compare_to_existing, **photo)
 
         # Handle `spectra`
         # ---------------
         spec_key = self._KEYS.SPECTRA
         if spec_key in data:
-            # When we are cleaning internal data, we don't always want to
-            # require all of the normal spectrum data elements.
             spectra = data.pop(spec_key)
-            self._log.debug("Found {} '{}' entries".format(
-                len(spectra), spec_key))
             for spec in spectra:
-                self._add_cat_dict(
-                    Spectrum,
-                    self._KEYS.SPECTRA,
-                    compare_to_existing=compare_to_existing,
-                    **spec)
+                self.create_and_add_struct(Spectrum, self._KEYS.SPECTRA, **spec)
 
         # Handle `error`
         # --------------
         err_key = self._KEYS.ERRORS
         if err_key in data:
             errors = data.pop(err_key)
-            self._log.debug("Found {} '{}' entries".format(
-                len(errors), err_key))
             for err in errors:
-                self._add_cat_dict(Error, self._KEYS.ERRORS, **err)
+                self.create_and_add_struct(Error, self._KEYS.ERRORS, **err)
 
         # Handle `models`
         # ---------------
         model_key = self._KEYS.MODELS
         if model_key in data:
-            # When we are cleaning internal data, we don't always want to
-            # require all of the normal spectrum data elements.
             model = data.pop(model_key)
-            self._log.debug("Found {} '{}' entries".format(
-                len(model), model_key))
             for mod in model:
-                self._add_cat_dict(
-                    Model, self._KEYS.MODELS, compare_to_existing=compare_to_existing, **mod)
+                self.create_and_add_struct(
+                    Model, self._KEYS.MODELS, duplicate_check=compare_to_existing, **err)
 
         # Handle everything else --- should be `Quantity`s
         # ------------------------------------------------
         if len(data):
-            self._log.debug("{} remaining entries, assuming `Quantity`".format(len(data)))
+            log.debug("{} remaining entries, assuming `Quantity`".format(len(data)))
             # Iterate over remaining keys
+            # `keys` must be converted to a list because `data` may be modified during iteration
             for key in list(data.keys()):
                 vals = data.pop(key)
                 # All quantities should be in lists of that quantity
                 #    E.g. `aliases` is a list of alias quantities
                 if not isinstance(vals, list):
                     vals = [vals]
-                self._log.debug("{}: {}".format(key, vals))
                 for vv in vals:
-                    self._add_cat_dict(
-                        Quantity, key,
-                        check_for_dupes=merge, compare_to_existing=compare_to_existing, **vv)
+                    self.create_and_add_struct(
+                        Quantity, key, duplicate_check=compare_to_existing, **vv)
 
         if merge and self.dupe_of:
             self.merge_dupes()
@@ -325,7 +303,12 @@ class _Entry(struct.Meta_Struct):
             if isinstance(struct_class, struct.Source) or issubclass(struct_class, struct.Source):
                 source = None
             else:
-                source = kwargs.get(struct_class._KEYS.SOURCES, None)
+                try:
+                    src_key = struct_class._KEYS.SOURCES
+                except AttributeError:
+                    src_key = struct_class._KEYS.SOURCE
+
+                source = kwargs.get(src_key, None)
         except AttributeError:
             print("struct_class = ", struct_class)
             print("_keys = ", struct_class._KEYS)
@@ -353,7 +336,7 @@ class _Entry(struct.Meta_Struct):
             msg = "'{}' Not adding '{}': '{}'".format(self[self._KEYS.NAME], key_in_self, str(err))
             log.log(log_lvl, msg)
 
-            err_str = "Entry._init_cat_dict() failed!"
+            err_str = "Entry.create_struct() failed!"
             err_str += "class: '{}', key_in_self: '{}', kwargs: '{}'".format(
                 struct_class, key_in_self, kwargs)
             if self.catalog.RAISE_ERROR_ON_ADDITION_FAILURE:
@@ -363,7 +346,7 @@ class _Entry(struct.Meta_Struct):
                 return None
         except Exception as err:
             log = self._log
-            log.error("ERROR in `Entry._init_cat_dict()`!")
+            log.error("ERROR in `Entry.create_struct()`!")
             log.error("Current task = '{}'".format(self._parent.current_task))
             log.error("name = '{}'".format(self[self._KEYS.NAME]))
             log.error("\n\n\n")
@@ -476,11 +459,11 @@ class _Entry(struct.Meta_Struct):
             log = logging.getLogger()
             catalog = Catalog(None, log)
 
-        catalog.log.debug("init_from_file()")
+        log = catalog.log
+        # log.debug("init_from_file()")
         if name is None and path is None:
             err = ("Either entry `name` or `path` must be specified to load entry.")
-            log.error(err)
-            raise ValueError(err)
+            log.raise_error(err)
 
         # If the path is given, use that to load from
         load_path = ''
@@ -875,7 +858,7 @@ class _Entry_Old_Adder(_Entry):
         doesn't already exist within the Entry.
         """
         log = self._log
-        log.debug("Entry.add_data()")
+        # log.debug("Entry.add_data()")
         FAIL = 0
         DUPE = -1
         SUCC = 1
@@ -989,7 +972,7 @@ class _Entry_Old_Adder(_Entry):
     def add_source(self, allow_alias=False, **kwargs):
         """Add a `Source` instance to this entry."""
         log = self._log
-        log.debug("Entry.add_source()")
+        # log.debug("Entry.add_source()")
         if (not allow_alias) and (SOURCE.ALIAS in kwargs):
             err_str = "`{}` passed in kwargs, this shouldn't happen!".format(SOURCE.ALIAS)
             log.error(err_str)
@@ -1127,7 +1110,7 @@ class _Entry_Old_Adder(_Entry):
     def _init_cat_dict(self, struct_class, key_in_self, **kwargs):
         """Initialize a CatDict object, checking for errors."""
         log = self._log
-        log.debug("Entry._init_cat_dict()")
+        # log.debug("Entry._init_cat_dict()")
 
         # Remove empty string values
         bad_keys = [kk for kk, vv in kwargs.items() if isinstance(vv, str) and len(vv) == 0]
@@ -1249,6 +1232,181 @@ class _Entry_Old_Adder(_Entry):
         self.setdefault(key_in_self, []).append(new_struct)
         return True
 
+    def _load_data_from_json(self, fhand,
+                             clean=False, merge=True, pop_schema=True, ignore_keys=[],
+                             compare_to_existing=True, gzip=False, filter_on={}):
+        # FIX: check for overwrite??"""
+        self._log.debug("_load_data_from_json(): {}\n\t{}".format(self.name(), fhand))
+        # Store the filename this was loaded from
+        self.filename = fhand
+
+        if gzip:
+            jfil = gz.open(fhand, 'rb')
+        else:
+            jfil = codecs.open(fhand, 'r')
+
+        data = json.load(jfil, object_pairs_hook=OrderedDict)
+        name = list(data.keys())
+        if len(name) != 1:
+            err = "json file '{}' has multiple keys: {}".format(fhand, list(name))
+            self._log.error(err)
+            raise ValueError(err)
+        name = name[0]
+        # Remove the outmost dict level
+        data = data[name]
+        # self._log.debug("Name: {}".format(name))
+
+        # Delete ignored keys
+        for key in ignore_keys:
+            if key in data:
+                del data[key]
+
+        # Convert the OrderedDict data from json into class structure i.e.
+        # `Sources` will be extracted and created from the dict Everything
+        # that remains afterwards should be okay to just store to this
+        # `Entry`
+        self._convert_odict_to_classes(
+            data, clean=clean, merge=merge, pop_schema=pop_schema,
+            compare_to_existing=compare_to_existing, filter_on=filter_on)
+        if len(data):
+            err_str = "Remaining entries in `data` after `_convert_odict_to_classes`."
+            err_str += "\n{}".format(utils.dict_to_pretty_string(data))
+            self._log.error(err_str)
+            raise RuntimeError(err_str)
+
+        jfil.close()
+
+        # If object doesnt have a name yet, but json does, store it
+        self_name = self[self._KEYS.NAME]
+        if len(self_name) == 0:
+            self[self._KEYS.NAME] = name
+        # Warn if there is a name mismatch
+        elif self_name.lower().strip() != name.lower().strip():
+            self._log.warning("Object name '{}' does not match name in json: '{}'".format(
+                self_name, name))
+
+        self.validate()
+        return
+
+    def _convert_odict_to_classes(self, data, clean=False, merge=True, pop_schema=True,
+                                  compare_to_existing=True, filter_on={}):
+        """Convert `OrderedDict` into `Entry` or its derivative classes."""
+        # self._log.debug("_convert_odict_to_classes(): {}".format(self.name()))
+        # self._log.debug("This should be a temporary fix.  Dont be lazy.")
+
+        # Setup filters. Currently only used for photometry.
+        fkeys = list(filter_on.keys())
+
+        # Handle 'name'
+        name_key = self._KEYS.NAME
+        if name_key in data:
+            self[name_key] = data.pop(name_key)
+
+        # Cleanup 'internal' repository stuff
+        if clean:
+            # Add data to `self` in ways accomodating 'internal' formats and
+            # leeway.  Removes each added entry from `data` so the remaining
+            # stuff can be handled normally
+            data = self.clean_internal(data)
+
+        # Handle 'sources'
+        # ----------------
+        src_key = self._KEYS.SOURCES
+        if src_key in data:
+            # Remove from `data`
+            sources = data.pop(src_key)
+            self._log.debug("Found {} '{}' entries".format(
+                len(sources), src_key))
+            self._log.debug("{}: {}".format(src_key, sources))
+
+            for src in sources:
+                self.add_source(allow_alias=True, **src)
+
+        # Handle `photometry`
+        # -------------------
+        photo_key = self._KEYS.PHOTOMETRY
+        if photo_key in data:
+            photoms = data.pop(photo_key)
+            self._log.debug("Found {} '{}' entries".format(
+                len(photoms), photo_key))
+            phcount = 0
+            for photo in photoms:
+                skip = False
+                for fkey in fkeys:
+                    if fkey in photo and photo[fkey] not in filter_on[fkey]:
+                        skip = True
+                if skip:
+                    continue
+                self._add_cat_dict(
+                    Photometry,
+                    self._KEYS.PHOTOMETRY,
+                    compare_to_existing=compare_to_existing,
+                    **photo)
+                phcount += 1
+            self._log.debug("Added {} '{}' entries".format(
+                phcount, photo_key))
+
+        # Handle `spectra`
+        # ---------------
+        spec_key = self._KEYS.SPECTRA
+        if spec_key in data:
+            # When we are cleaning internal data, we don't always want to
+            # require all of the normal spectrum data elements.
+            spectra = data.pop(spec_key)
+            self._log.debug("Found {} '{}' entries".format(
+                len(spectra), spec_key))
+            for spec in spectra:
+                self._add_cat_dict(
+                    Spectrum,
+                    self._KEYS.SPECTRA,
+                    compare_to_existing=compare_to_existing,
+                    **spec)
+
+        # Handle `error`
+        # --------------
+        err_key = self._KEYS.ERRORS
+        if err_key in data:
+            errors = data.pop(err_key)
+            self._log.debug("Found {} '{}' entries".format(
+                len(errors), err_key))
+            for err in errors:
+                self._add_cat_dict(Error, self._KEYS.ERRORS, **err)
+
+        # Handle `models`
+        # ---------------
+        model_key = self._KEYS.MODELS
+        if model_key in data:
+            # When we are cleaning internal data, we don't always want to
+            # require all of the normal spectrum data elements.
+            model = data.pop(model_key)
+            self._log.debug("Found {} '{}' entries".format(
+                len(model), model_key))
+            for mod in model:
+                self._add_cat_dict(
+                    Model, self._KEYS.MODELS, compare_to_existing=compare_to_existing, **mod)
+
+        # Handle everything else --- should be `Quantity`s
+        # ------------------------------------------------
+        if len(data):
+            self._log.debug("{} remaining entries, assuming `Quantity`".format(len(data)))
+            # Iterate over remaining keys
+            for key in list(data.keys()):
+                vals = data.pop(key)
+                # All quantities should be in lists of that quantity
+                #    E.g. `aliases` is a list of alias quantities
+                if not isinstance(vals, list):
+                    vals = [vals]
+                self._log.debug("{}: {}".format(key, vals))
+                for vv in vals:
+                    self._add_cat_dict(
+                        Quantity, key,
+                        check_for_dupes=merge, compare_to_existing=compare_to_existing, **vv)
+
+        if merge and self.dupe_of:
+            self.merge_dupes()
+
+        return
+
 
 class _Entry_New_Adder(_Entry):
 
@@ -1306,9 +1464,11 @@ class _Entry_New_Adder(_Entry):
         #                    compare_to_existing=compare_to_existing, **kwargs)
         val = kwargs.pop("compare_to_existing", None)
         if val is not None:
-            utils.log_deprecated_argument(
-                self._log, __file__, "add_photometry", "compare_to_existing", "duplicate_check")
-            kwargs["duplicate_check"] = val
+            if DEP_WARN_ARG:
+                utils.log_deprecated_argument(
+                    self._log, __file__,
+                    "add_photometry", "compare_to_existing", "duplicate_check")
+                kwargs["duplicate_check"] = val
 
         self.create_and_add_struct(Photometry, self._KEYS.PHOTOMETRY, **kwargs)
         return
@@ -1326,14 +1486,17 @@ class _Entry_New_Adder(_Entry):
 
         val = kwargs.pop("compare_to_existing", None)
         if val is not None:
-            utils.log_deprecated_argument(
-                self._log, __file__, "add_photometry", "compare_to_existing", "duplicate_check")
+            if DEP_WARN_ARG:
+                utils.log_deprecated_argument(
+                    self._log, __file__,
+                    "add_photometry", "compare_to_existing", "duplicate_check")
             kwargs["duplicate_check"] = val
 
         val = kwargs.pop("check_for_dupes", None)
         if val is not None:
-            utils.log_deprecated_argument(
-                self._log, __file__, "add_photometry", "check_for_dupes")
+            if DEP_WARN_ARG:
+                utils.log_deprecated_argument(
+                    self._log, __file__, "add_photometry", "check_for_dupes")
 
         new_quantity = self.create_and_add_struct(Quantity, name, **kwargs)
 
@@ -1347,7 +1510,7 @@ class _Entry_New_Adder(_Entry):
     def add_source(self, allow_alias=False, **kwargs):
         """Add a `Source` instance to this entry."""
         log = self._log
-        log.debug("Entry.add_source()")
+        # log.debug("Entry.add_source()")
         if (not allow_alias) and (SOURCE.ALIAS in kwargs):
             err_str = "`{}` passed in kwargs, this shouldn't happen!".format(SOURCE.ALIAS)
             log.raise_error(err_str)
@@ -1466,8 +1629,9 @@ class _Entry_New_Adder(_Entry):
 
         val = kwargs.pop("compare_to_existing", None)
         if val is not None:
-            utils.log_deprecated_argument(
-                self._log, __file__, "add_spectrum", "compare_to_existing", "duplicate_check")
+            if DEP_WARN_ARG:
+                utils.log_deprecated_argument(
+                    self._log, __file__, "add_spectrum", "compare_to_existing", "duplicate_check")
             kwargs["duplicate_check"] = val
 
         self.create_and_add_struct(Spectrum, self._KEYS.SPECTRA, **kwargs)
