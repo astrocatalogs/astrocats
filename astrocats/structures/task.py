@@ -49,7 +49,7 @@ class Task():
         self.module = None
         self.groups = None
         self.repo = None
-        self.function = ''
+        self.function = None
         self.priority = None
         self.always_journal = False
 

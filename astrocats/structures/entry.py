@@ -172,7 +172,7 @@ class _Entry(struct.Meta_Struct):
             log.raise_error(err)
 
         # If the path is given, use that to load from
-        load_path = ''
+        load_path = None
         if path is not None:
             load_path = path
             name = ''
@@ -424,9 +424,9 @@ class _Entry(struct.Meta_Struct):
             msg = "'{}' Not adding '{}': '{}'".format(self[self._KEYS.NAME], key_in_self, str(err))
             log.log(log_lvl, msg)
 
-            err_str = "Entry.create_struct() failed!"
+            err_str = "Entry.create_struct() failed!  "
             err_str += "class: '{}', key_in_self: '{}', kwargs: '{}'".format(
-                struct_class, key_in_self, kwargs)
+                struct_class, key_in_self, utils.dict_to_pretty_string(kwargs))
             if self.catalog.RAISE_ERROR_ON_ADDITION_FAILURE:
                 log.raise_error(err_str)
             else:

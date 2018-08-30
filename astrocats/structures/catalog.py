@@ -127,7 +127,7 @@ class Catalog(object):
             self.log.warning("Running in `travis` mode.")
 
         prev_priority = 0
-        prev_task_name = ''
+        prev_task_name = None
         for task_name, task_obj in tasks_list.items():
             if not task_obj.active:
                 self.log.info("Task: '{}' is inactive".format(task_name))
