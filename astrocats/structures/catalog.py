@@ -457,16 +457,18 @@ class Catalog(object):
                     raise ValueError("Item has no source!")
 
                 nsid = []
-                for sid in item['source'].split(','):
+                for ii, sid in enumerate(item[item_keys.SOURCE].split(',')):
+                    # print(rkey, item, ii, sid)
+                    # NOTE: FIX: this logic should be improved... inefficient now
                     if sid in newsourcealiases:
                         source = newsourcealiases[sid]
                         nsid.append(dst_entry.add_source(**source))
                     else:
                         raise ValueError("Couldn't find source alias!")
-                item['source'] = utils.uniq_cdl(nsid)
+                item[item_keys.SOURCE] = utils.uniq_cdl(nsid)
 
                 if 'model' in item:
-                    _raise_model_deprecation_error
+                    _raise_model_deprecation_error()
                     '''
                     nmid = []
                     for mid in item['model'].split(','):
