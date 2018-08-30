@@ -13,8 +13,6 @@ from astrocats.structures.struct import PHOTOMETRY
 __all__ = ["bandrepf", "bandcolorf", "radiocolorf", "xraycolorf", "bandshortaliasf",
            "bandwavef", "bandmetaf", "set_pd_mag_from_counts", "bandaliasf", "bandgroupf"]
 
-DEFAULT_UL_SIGMA = 5.0
-DEFAULT_ZP = 30.0
 D25 = Decimal('2.5')
 
 BAND_REPS = {
@@ -189,6 +187,10 @@ def bandmetaf(band, field):
         if field in BAND_META[band]:
             return BAND_META[band][field]
     return None
+
+
+DEFAULT_UL_SIGMA = 5.0
+DEFAULT_ZP = 30.0
 
 
 def set_pd_mag_from_counts(photodict, c='', ec='', lec='', uec='',
