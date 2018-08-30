@@ -165,13 +165,18 @@ class _Entry(struct.Meta_Struct):
             if key in data:
                 del data[key]
 
+        if name == 'SN2005fz':
+            DEBUG = True
+        else:
+            DEBUG = False
+
         # Convert the OrderedDict data from json into class structure i.e.
         # `Sources` will be extracted and created from the dict Everything
         # that remains afterwards should be okay to just store to this
         # `Entry`
         self._convert_odict_to_classes(
             data, clean=clean, merge=merge, pop_schema=pop_schema,
-            compare_to_existing=compare_to_existing, filter_on=filter_on)
+            compare_to_existing=compare_to_existing, filter_on=filter_on, DEBUG=DEBUG)
 
         if len(data) > 0:
             err_str = "Remaining entries in `data` after `_convert_odict_to_classes`."
@@ -190,13 +195,26 @@ class _Entry(struct.Meta_Struct):
                 self_name, name))
 
         self.validate()
+        if DEBUG:
+            raise
+
         return
 
     def _convert_odict_to_classes(self, data, clean=False, merge=True, pop_schema=True,
-                                  compare_to_existing=True, filter_on={}):
+                                  compare_to_existing=True, filter_on={}, DEBUG=False):
         """Convert `OrderedDict` into `Entry` or its derivative classes."""
         log = self._log
         # log.debug("_convert_odict_to_classes(): {}".format(self.name()))
+
+        if DEBUG:
+            print("\n\nDEBUG!!! '{}' '{}' '{}'".format(
+                self.get('name', None), data['name'], data.get('alias', None)))
+
+        if DEBUG:
+            rv = ('errors' in data)
+            print("errors: ", rv)
+            if rv:
+                print(utils.dict_to_pretty_string(data['errors']))
 
         # Setup filters. Currently only used for photometry.
         fkeys = list(filter_on.keys())
@@ -254,7 +272,14 @@ class _Entry(struct.Meta_Struct):
         if err_key in data:
             errors = data.pop(err_key)
             for err in errors:
-                self.create_and_add_struct(Error, self._KEYS.ERRORS, **err)
+                if DEBUG:
+                    print("Add: '{}'".format(utils.dict_to_pretty_string(err)))
+                error, new_error = self.create_and_add_struct(Error, self._KEYS.ERRORS, **err)
+                if DEBUG and (error is None):
+                    print("Add failed!")
+                    print("error = ", error)
+                    print("new_error = ", new_error)
+                    raise
 
         # Handle `models`
         # ---------------
@@ -309,6 +334,8 @@ class _Entry(struct.Meta_Struct):
                     src_key = struct_class._KEYS.SOURCE
 
                 source = kwargs.get(src_key, None)
+
+        # NOTE: 2018-08-30: This is temporary, remove when working
         except AttributeError:
             print("struct_class = ", struct_class)
             print("_keys = ", struct_class._KEYS)
@@ -349,11 +376,9 @@ class _Entry(struct.Meta_Struct):
             log.error("ERROR in `Entry.create_struct()`!")
             log.error("Current task = '{}'".format(self._parent.current_task))
             log.error("name = '{}'".format(self[self._KEYS.NAME]))
-            log.error("\n\n\n")
             log.error("`struct_class` = '{}'".format(struct_class))
             log.error("`key_in_self` = '{}'".format(key_in_self))
             log.error("`kwargs = '{}'".format(kwargs))
-            log.error("\n\n")
             log.error("self = \n'{}'".format(repr(self)))
             log.error("\n")
             log.error(str(err))
@@ -362,54 +387,50 @@ class _Entry(struct.Meta_Struct):
         return new_struct
 
     def add_struct(self, key_in_self, new_struct,
-                   duplicate_check=True, duplicate_merge=True,
-                   **kwargs):
+                   duplicate_check=True, duplicate_merge=True, **kwargs):
+        """
+        Returns
+        -------
+        stored_struct :
+        given_struct :
+
+        """
+
         log = self._log
 
         # Perform checks and finalization operations before adding struct to self
         # -----------------------------------------------------------------------------
         valid, new_struct = self._add_struct_bef(new_struct, **kwargs)
         if not valid:
-            log.info("`_add_struct_bef()` returned False, skipping")
+            log.info("`_add_struct_bef()` returned False, not adding")
             # return None
-            return False
+            return None, new_struct
 
         # Compare this new entry with all previous entries to make sure is new
-        #    If it is NOT new, return the entry
         if duplicate_check:
             for ii, item in enumerate(self.get(key_in_self, [])):
                 if new_struct.is_duplicate_of(item):
+                    log.info("Duplicate found, key: {}, index: {}".format(key_in_self, ii))
                     if duplicate_merge:
-                        log.info("Duplicate found, merging")
                         self._merge_structs(key_in_self, ii, new_struct)
-                        return True
-                    else:
-                        # Return the *old* entry in case we want to use any additional
-                        # tags to augment the old entry
-                        return item
+
+                    # Return the entry in case we want to use any additional info from it
+                    return item, new_struct
 
         self.setdefault(key_in_self, []).append(new_struct)
-        # return new_struct
-        return True
+        return new_struct, None
 
     def create_and_add_struct(self, struct_class, key_in_self,
                               duplicate_check=True, duplicate_merge=True, **kwargs):
-        # log = self._log
-
         new_struct = self.create_struct(struct_class, key_in_self, **kwargs)
-        if new_struct is not None:
-            new_struct = self.add_struct(
+        if new_struct is None:
+            stored = None
+        else:
+            stored, new_struct = self.add_struct(
                 key_in_self, new_struct,
                 duplicate_check=duplicate_check, duplicate_merge=duplicate_merge)
 
-        '''
-        if new_struct is None:
-            log.debug("Failed to create/add struct")
-        else:
-            log.debug("Added new struct")
-        '''
-
-        return new_struct
+        return stored, new_struct
 
     def _create_struct_bef(self, *args, **kwargs):
         return True, kwargs
@@ -430,6 +451,22 @@ class _Entry(struct.Meta_Struct):
         # NOTE: FIX: LZK: temporary method here!
         # See note in `supernovae.supernova.Supernova._merge_quantities`.
         return
+
+    def _get_alias_from_add_struct_return(self, alias, struct_return):
+        log = self._log
+
+        # Found duplicate `Source`, the original is returned, return that alias
+        if isinstance(struct_return, struct.Meta_Struct):
+            alias = struct_return[SOURCE.ALIAS]
+        # Source was added successfully, and `alias` (from above) is still accurate
+        elif struct_return is None:
+            log.raise_error("`add_struct` failed!")
+        else:
+            err = "Unexpected return type '{}' ({}) from `add_struct`".format(
+                type(struct_return), struct_return)
+            log.raise_error(err)
+
+        return alias
 
     # >>> ==================  STRUCT CREATION/ADDITION  ==================
 
@@ -1540,24 +1577,8 @@ class _Entry_New_Adder(_Entry):
         if new_source is None:
             log.raise_error("Could not create_struct for source!")
 
-        source = self.add_struct(self._KEYS.SOURCES, new_source,
-                                 duplicate_check=True, duplicate_merge=False)
-
-        # NOTE: This is moved to new method `_get_alias_from_add_struct_return`
-        '''
-        # Found duplicate `Source`, the original is returned, return that alias
-        if isinstance(source, Source):
-            alias = source[SOURCE.ALIAS]
-        # Source was added successfully, and `alias` (from above) is still accurate
-        elif source is True:
-            pass
-        elif source is False:
-            log.raise_error("`add_struct` failed for source!")
-        else:
-            err = "Unexpected return type '{}' ({}) during `add_source`".format(
-                type(source), source)
-            log.raise_error(err)
-        '''
+        source, new_source = self.add_struct(self._KEYS.SOURCES, new_source,
+                                             duplicate_check=True, duplicate_merge=False)
         alias = self._get_alias_from_add_struct_return(alias, source)
 
         return alias
@@ -1590,8 +1611,8 @@ class _Entry_New_Adder(_Entry):
         if new_model is None:
             log.raise_error("Could not create_struct for model!")
 
-        model = self.add_struct(self._KEYS.MODELS, new_model,
-                                duplicate_check=True, duplicate_merge=False)
+        model, new_model = self.add_struct(self._KEYS.MODELS, new_model,
+                                           duplicate_check=True, duplicate_merge=False)
 
         alias = self._get_alias_from_add_struct_return(alias, model)
         return alias
@@ -1693,21 +1714,3 @@ class _Entry_New_Adder(_Entry):
             self._log.raise_error(err_str, RuntimeError)
 
         return
-
-    def _get_alias_from_add_struct_return(self, alias, retval):
-        log = self._log
-
-        # Found duplicate `Source`, the original is returned, return that alias
-        if isinstance(retval, struct.Meta_Struct):
-            alias = retval[SOURCE.ALIAS]
-        # Source was added successfully, and `alias` (from above) is still accurate
-        elif retval is True:
-            pass
-        elif retval is False:
-            log.raise_error("`add_struct` failed!")
-        else:
-            err = "Unexpected return type '{}' ({}) from `add_struct`".format(
-                type(retval), retval)
-            log.raise_error(err)
-
-        return alias
