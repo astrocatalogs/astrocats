@@ -419,6 +419,14 @@ class _Entry(struct.Meta_Struct):
         # -----------------------------------------------------------------------------
         try:
             new_struct = struct_class(self, key=key_in_self, **kwargs)
+        except struct.CleaningError as err:
+            log.info("Caught cleaning error: '{}'".format(err))
+            msg = "Current task = '{}', ".format(self._parent.current_task)
+            msg += "name = '{}', ".format(self[self._KEYS.NAME])
+            msg += "`struct_class` = '{}', ".format(struct_class)
+            msg += "`key_in_self` = '{}'".format(key_in_self)
+            log.info(msg)
+            new_struct = None
         except struct.CatDictError as err:
             log_lvl = log.WARNING if err.warn else log.INFO
             msg = "'{}' Not adding '{}': '{}'".format(self[self._KEYS.NAME], key_in_self, str(err))
@@ -431,7 +439,7 @@ class _Entry(struct.Meta_Struct):
                 log.raise_error(err_str)
             else:
                 log.info(err_str)
-                return None
+                new_struct = None
         except Exception as err:
             log = self._log
             log.error("ERROR in `Entry.create_struct()`!")

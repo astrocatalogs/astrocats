@@ -42,23 +42,27 @@ def set_struct_schema(schema_source, extensions=[], updates=[], **kwargs):
     return wrapper
 
 
-class CatDictError(Exception):
-    """Special Error class for non-fatal errors raised in CatDict."""
+class CatError(Exception):
+    """Base class for custom Astrocats errors"""
 
     def __init__(self, *args, **kwargs):
-        """Initialize `CatDictError`."""
         # If `warn` is True, then a warning should be issues.  Otherwise ignore completely
-        self.warn = True
-        if 'warn' in kwargs:
-            self.warn = kwargs.pop('warn')
+        self.warn = kwargs.pop('warn', True)
         Exception.__init__(self, *args, **kwargs)
         return
 
 
-class DeprecationError(Exception):
+class CatDictError(CatError):
+    """Special Error class for non-fatal errors raised in CatDict."""
+    pass
 
-    def __init__(self, *args, **kwargs):
-        Exception.__init__(self, *args, **kwargs)
+
+class CleaningError(CatError):
+    pass
+
+
+class DeprecationError(CatError):
+    pass
 
 
 class Meta_Struct(pas.struct.Struct):
@@ -173,24 +177,22 @@ class Quantity(Meta_Struct):
                     raise CatDictError(err)
 
             if value in parent.catalog.entries:
-                for df in parent.catalog.entries[value].get(
-                        parent._KEYS.DISTINCT_FROM, []):
+                for df in parent.catalog.entries[value].get(parent._KEYS.DISTINCT_FROM, []):
                     if df[self._KEYS.VALUE] in parent.get_aliases():
                         err = "Alias '{}' in '{}'\' '{}' list".format(
                             value, parent[parent._KEYS.NAME], parent._KEYS.DISTINCT_FROM)
                         raise CatDictError(err)
 
         # Check that value exists
-        if (not self[self._KEYS.VALUE] or self[self._KEYS.VALUE] == '--' or
-                self[self._KEYS.VALUE] == '-'):
-            err = "Value '{}' is empty, not adding to '{}'".format(
-                self[self._KEYS.VALUE], parent[parent._KEYS.NAME])
+        val = self[self._KEYS.VALUE]
+        if (not val) or (val == '--') or (val == '-'):
+            err = "Value '{}' is empty, not adding to '{}'".format(val, parent[parent._KEYS.NAME])
             raise CatDictError(err)
 
         if not parent._clean_quantity(self):
             err = "Value '{}' did not survive cleaning process, not adding to '{}'.".format(
                 self[self._KEYS.VALUE], parent[parent._KEYS.NAME])
-            raise CatDictError(err)
+            raise CleaningError(err)
 
         self.validate()
         return
