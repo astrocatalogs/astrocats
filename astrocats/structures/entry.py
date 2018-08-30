@@ -135,6 +135,73 @@ class _Entry(struct.Meta_Struct):
 
         return ndict
 
+    # <<< ==================  STRUCT CREATION/ADDITION  ==================
+
+    # < ----- From File -----
+
+    @classmethod
+    def init_from_file(cls, catalog, name=None, path=None, try_gzip=False, **kwargs):
+        """Construct a new `Entry` instance from an input file.
+
+        The input file can be given explicitly by `path`, or a path will
+        be constructed appropriately if possible.
+
+        Arguments
+        ---------
+        catalog : `astrocats.structures.catalog.Catalog` instance
+            The parent catalog object of which this entry belongs.
+        name : str or 'None'
+            The name of this entry, e.g. `SN1987A` for a `Supernova` entry.
+            If no `path` is given, a path is constructed by trying to find
+            a file in one of the 'output' repositories with this `name`.
+            note: either `name` or `path` must be provided.
+        path : str or 'None'
+            The absolutely path of the input file.
+            note: either `name` or `path` must be provided.
+
+        """
+        if not catalog:
+            from astrocats.structures.catalog import Catalog
+            log = logging.getLogger()
+            catalog = Catalog(None, log)
+
+        log = catalog.log
+        # log.debug("init_from_file()")
+        if name is None and path is None:
+            err = ("Either entry `name` or `path` must be specified to load entry.")
+            log.raise_error(err)
+
+        # If the path is given, use that to load from
+        load_path = ''
+        if path is not None:
+            load_path = path
+            name = ''
+        # If the name is given, try to find a path for it
+        else:
+            repo_paths = catalog.PATHS.get_repo_output_folders()
+            for rep in repo_paths:
+                filename = utils.get_filename(name)
+                newpath = os.path.join(rep, filename + '.json')
+                if os.path.isfile(newpath):
+                    load_path = newpath
+                    break
+
+        if load_path is None or not os.path.isfile(load_path):
+            # FIX: is this warning worthy?
+            return None
+
+        # Create a new `Entry` instance
+        new_entry = cls(catalog, name)
+
+        # Check if .gz file
+        if try_gzip and not load_path.endswith('.gz'):
+            try_gzip = False
+
+        # Fill it with data from json file
+        new_entry._load_data_from_json(load_path, gzip=try_gzip, **kwargs)
+
+        return new_entry
+
     def _load_data_from_json(self, fname,
                              clean=False, merge=True, pop_schema=True, ignore_keys=[],
                              compare_to_existing=True, gzip=False, filter_on={}):
@@ -158,17 +225,16 @@ class _Entry(struct.Meta_Struct):
         name = name[0]
         # Remove the outmost dict level
         data = data[name]
-        # log.debug("Name: {}".format(name))
 
         # Delete ignored keys
         for key in ignore_keys:
             if key in data:
                 del data[key]
 
-        if name == 'SN2005fz':
-            DEBUG = True
-        else:
-            DEBUG = False
+        # if name == 'SN2005fz':
+        #     DEBUG = True
+        # else:
+        #     DEBUG = False
 
         # Convert the OrderedDict data from json into class structure i.e.
         # `Sources` will be extracted and created from the dict Everything
@@ -176,7 +242,7 @@ class _Entry(struct.Meta_Struct):
         # `Entry`
         self._convert_odict_to_classes(
             data, clean=clean, merge=merge, pop_schema=pop_schema,
-            compare_to_existing=compare_to_existing, filter_on=filter_on, DEBUG=DEBUG)
+            compare_to_existing=compare_to_existing, filter_on=filter_on)
 
         if len(data) > 0:
             err_str = "Remaining entries in `data` after `_convert_odict_to_classes`."
@@ -195,8 +261,10 @@ class _Entry(struct.Meta_Struct):
                 self_name, name))
 
         self.validate()
-        if DEBUG:
-            raise
+        # if DEBUG:
+        #     print("\nAFTER VALIDATE\n")
+        #     print(utils.dict_to_pretty_string(self[self._KEYS.ERRORS]))
+        #    raise
 
         return
 
@@ -206,15 +274,15 @@ class _Entry(struct.Meta_Struct):
         log = self._log
         # log.debug("_convert_odict_to_classes(): {}".format(self.name()))
 
-        if DEBUG:
-            print("\n\nDEBUG!!! '{}' '{}' '{}'".format(
-                self.get('name', None), data['name'], data.get('alias', None)))
-
-        if DEBUG:
-            rv = ('errors' in data)
-            print("errors: ", rv)
-            if rv:
-                print(utils.dict_to_pretty_string(data['errors']))
+        # if DEBUG:
+        #     print("\n\nDEBUG!!! '{}' '{}' '{}'".format(
+        #         self.get('name', None), data['name'], data.get('alias', None)))
+        #
+        # if DEBUG:
+        #     rv = ('errors' in data)
+        #     print("errors: ", rv)
+        #     if rv:
+        #         print(utils.dict_to_pretty_string(data['errors']))
 
         # Setup filters. Currently only used for photometry.
         fkeys = list(filter_on.keys())
@@ -272,14 +340,7 @@ class _Entry(struct.Meta_Struct):
         if err_key in data:
             errors = data.pop(err_key)
             for err in errors:
-                if DEBUG:
-                    print("Add: '{}'".format(utils.dict_to_pretty_string(err)))
                 error, new_error = self.create_and_add_struct(Error, self._KEYS.ERRORS, **err)
-                if DEBUG and (error is None):
-                    print("Add failed!")
-                    print("error = ", error)
-                    print("new_error = ", new_error)
-                    raise
 
         # Handle `models`
         # ---------------
@@ -311,7 +372,7 @@ class _Entry(struct.Meta_Struct):
 
         return
 
-    # <<< ==================  STRUCT CREATION/ADDITION  ==================
+    # > ----- from file -----
 
     def create_struct(self, struct_class, key_in_self, **kwargs):
         log = self._log
@@ -445,6 +506,9 @@ class _Entry(struct.Meta_Struct):
             # self._append_additional_tags(name, source, new_struct)
             self._merge_quantities(item, new_struct)
 
+        # self._log.debug("Merged from: '{}'".format(new_struct))
+        # self._log.debug("Merged into: '{}'".format(item))
+
         return
 
     def _merge_quantities(self, dst, src):
@@ -469,69 +533,6 @@ class _Entry(struct.Meta_Struct):
         return alias
 
     # >>> ==================  STRUCT CREATION/ADDITION  ==================
-
-    @classmethod
-    def init_from_file(cls, catalog, name=None, path=None, try_gzip=False, **kwargs):
-        """Construct a new `Entry` instance from an input file.
-
-        The input file can be given explicitly by `path`, or a path will
-        be constructed appropriately if possible.
-
-        Arguments
-        ---------
-        catalog : `astrocats.structures.catalog.Catalog` instance
-            The parent catalog object of which this entry belongs.
-        name : str or 'None'
-            The name of this entry, e.g. `SN1987A` for a `Supernova` entry.
-            If no `path` is given, a path is constructed by trying to find
-            a file in one of the 'output' repositories with this `name`.
-            note: either `name` or `path` must be provided.
-        path : str or 'None'
-            The absolutely path of the input file.
-            note: either `name` or `path` must be provided.
-
-        """
-        if not catalog:
-            from astrocats.structures.catalog import Catalog
-            log = logging.getLogger()
-            catalog = Catalog(None, log)
-
-        log = catalog.log
-        # log.debug("init_from_file()")
-        if name is None and path is None:
-            err = ("Either entry `name` or `path` must be specified to load entry.")
-            log.raise_error(err)
-
-        # If the path is given, use that to load from
-        load_path = ''
-        if path is not None:
-            load_path = path
-            name = ''
-        # If the name is given, try to find a path for it
-        else:
-            repo_paths = catalog.PATHS.get_repo_output_folders()
-            for rep in repo_paths:
-                filename = utils.get_filename(name)
-                newpath = os.path.join(rep, filename + '.json')
-                if os.path.isfile(newpath):
-                    load_path = newpath
-                    break
-
-        if load_path is None or not os.path.isfile(load_path):
-            # FIX: is this warning worthy?
-            return None
-
-        # Create a new `Entry` instance
-        new_entry = cls(catalog, name)
-
-        # Check if .gz file
-        if try_gzip and not load_path.endswith('.gz'):
-            try_gzip = False
-
-        # Fill it with data from json file
-        new_entry._load_data_from_json(load_path, gzip=try_gzip, **kwargs)
-
-        return new_entry
 
     def merge_dupes(self):
         """Merge two entries that correspond to the same entry."""
