@@ -433,8 +433,10 @@ class _Entry(struct.Meta_Struct):
             log.log(log_lvl, msg)
 
             err_str = "Entry.create_struct() failed!  "
-            err_str += "class: '{}', key_in_self: '{}', kwargs: '{}'".format(
-                struct_class, key_in_self, utils.dict_to_pretty_string(kwargs))
+            err_str += "Current task = '{}', ".format(self._parent.current_task)
+            err_str += "name = '{}', ".format(self[self._KEYS.NAME])
+            err_str += "`struct_class` = '{}', ".format(struct_class)
+            err_str += "`key_in_self` = '{}'".format(key_in_self)
             if self.catalog.RAISE_ERROR_ON_ADDITION_FAILURE:
                 log.raise_error(err_str)
             else:
@@ -447,8 +449,8 @@ class _Entry(struct.Meta_Struct):
             log.error("name = '{}'".format(self[self._KEYS.NAME]))
             log.error("`struct_class` = '{}'".format(struct_class))
             log.error("`key_in_self` = '{}'".format(key_in_self))
-            log.error("`kwargs = '{}'".format(kwargs))
-            log.error("self = \n'{}'".format(repr(self)))
+            # log.error("`kwargs = '{}'".format(kwargs))
+            # log.error("self = \n'{}'".format(repr(self)))
             log.error("\n")
             log.error(str(err))
             raise
