@@ -501,12 +501,12 @@ class Catalog(object):
         """
         return name
 
-    def new_entry(self, name, load=True, delete=True, loadifempty=True, **source_kwargs):
-        newname = self.add_entry(name, load=load, delete=delete)
+    def new_entry(self, entry_name, load=True, delete=True, loadifempty=True, **source_kwargs):
+        new_name = self.add_entry(entry_name, load=load, delete=delete)
         if len(source_kwargs):
-            source = self.entries[newname].add_source(**source_kwargs)
-        self.entries[newname].add_quantity(ENTRY.ALIAS, name, source)
-        return newname, source
+            source = self.entries[new_name].add_source(**source_kwargs)
+        self.entries[new_name].add_quantity(ENTRY.ALIAS, entry_name, source)
+        return new_name, source
 
     def merge_duplicates(self):
         """Merge and remove duplicate entries.
