@@ -10,10 +10,9 @@
             "distinguishing": false
         },
         "kind": {
-            "type": "string",
+            "$ref": "defs.json#/definitions/STRING_LISTABLE",
             "unique": false,
-            "distinguishing": true,
-            "minLength": 1
+            "distinguishing": true
         },
         "realization": {
             "type": "string"
