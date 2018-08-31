@@ -501,13 +501,10 @@ class Catalog(object):
         """
         return name
 
-    def new_entry(self, name, load=True, delete=True, loadifempty=True,
-                  srcname='', reference='', url='', bibcode='', arxivid='',
-                  secondary=False, private=False, acknowledgment=''):
+    def new_entry(self, name, load=True, delete=True, loadifempty=True, **source_kwargs):
         newname = self.add_entry(name, load=load, delete=delete)
-        source = self.entries[newname].add_source(
-            bibcode=bibcode, arxivid=arxivid, name=srcname, reference=reference, url=url,
-            secondary=secondary, private=private, acknowledgment=acknowledgment)
+        if len(source_kwargs):
+            source = self.entries[newname].add_source(**source_kwargs)
         self.entries[newname].add_quantity(ENTRY.ALIAS, name, source)
         return newname, source
 
@@ -1082,8 +1079,7 @@ class Catalog(object):
                     self.current_task.name, cached_path))
 
         # Load url.  'None' is returned on failure - handle that below
-        url_txt = self.download_url(
-            url, timeout, fail=False, post=post, verify=verify)
+        url_txt = self.download_url(url, timeout, fail=False, post=post, verify=verify)
 
         # At this point, we might have both `url_txt` and `file_txt`
         # If either of them failed, then they are set to None
