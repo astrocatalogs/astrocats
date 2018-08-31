@@ -249,7 +249,7 @@ class Photometry(Meta_Struct):
                     # timestrs[ti] = str(utils.astrotime(timestrs[ti], format='isot').mjd)
                     timestrs[ti] = str(utils.astrotime(timestrs[ti], input='isot', output='mjd'))
                 except Exception:
-                    raise CatDictError('Unable to convert date to MJD.')
+                    raise CatDictError("Unable to convert date '{}' to MJD.".format(timestrs[ti]))
             elif timestr:  # Make sure time is string
                 timestrs[ti] = timestr
 
