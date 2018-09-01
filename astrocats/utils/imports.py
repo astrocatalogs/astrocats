@@ -17,8 +17,7 @@ class ADD_FAIL_ACTION:
 
 
 def convert_aq_output(row):
-    return OrderedDict([(x, str(row[x]) if is_number(row[x]) else row[x])
-                        for x in row.colnames])
+    return OrderedDict([(x, str(row[x]) if is_number(row[x]) else row[x]) for x in row.colnames])
 
 
 def read_json_dict(filename):
