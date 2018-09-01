@@ -223,6 +223,9 @@ QUANTITY.U_E_VALUE = QUANTITY.UNITS_ERROR
 @set_struct_schema("astroschema_photometry", extensions="astrocats_photometry")
 class Photometry(Meta_Struct):
 
+    WARN_FIRST__U_TIME = True
+    WARN_FIRST__U_COUNT = True
+
     def __init__(self, parent, key=None, **kwargs):
         super(Photometry, self).__init__(parent, key=key, **kwargs)
 
@@ -243,29 +246,35 @@ class Photometry(Meta_Struct):
         # Convert dates to MJD
         timestrs = [str(x) for x in utils.listify(self.get(self._KEYS.TIME, ''))]
         for ti, timestr in enumerate(timestrs):
-            if (any(x in timestr for x in ['-', '/']) and not timestr.startswith('-')):
+            if any(x in timestr for x in ['-', '/']) and not timestr.startswith('-'):
                 timestrs[ti] = timestr.replace('/', '-')
                 try:
                     # timestrs[ti] = str(utils.astrotime(timestrs[ti], format='isot').mjd)
                     timestrs[ti] = str(utils.astrotime(timestrs[ti], input='isot', output='mjd'))
                 except Exception:
                     raise CatDictError("Unable to convert date '{}' to MJD.".format(timestrs[ti]))
-            elif timestr:  # Make sure time is string
-                timestrs[ti] = timestr
+            # elif timestr:  # Make sure time is string
+            #     timestrs[ti] = timestr
 
-        if len(timestrs) > 0 and timestrs[0] != '':
-            self[self._KEYS.TIME] = timestrs if len(timestrs) > 1 else timestrs[0]
+        # if len(timestrs) > 0 and timestrs[0] != '':
+        #     self[self._KEYS.TIME] = timestrs if len(timestrs) > 1 else timestrs[0]
 
         # Time unit is necessary for maximum time determination
         if self._KEYS.U_TIME not in self and self._KEYS.TIME in self:
-            msg = '`{}` not found in photometry, assuming MJD.'.format(self._KEYS.U_TIME)
-            self._parent._log.info(msg)
+            if Photometry.WARN_FIRST__U_TIME:
+                msg = '`{}` not found in photometry, assuming MJD.'.format(self._KEYS.U_TIME)
+                self._parent._log.warning(msg)
+                Photometry.WARN_FIRST__U_TIME = False
+
             self[self._KEYS.U_TIME] = 'MJD'
 
-        if (self._KEYS.U_COUNT_RATE not in self and
-                self._KEYS.COUNT_RATE in self):
-            msg = '`{}` not found in photometry, assuming s^-1.'.format(self._KEYS.U_COUNT_RATE)
-            self._parent._log.info(msg)
+        if (self._KEYS.U_COUNT_RATE not in self and self._KEYS.COUNT_RATE in self):
+            if Photometry.WARN_FIRST__U_COUNT:
+                msg = '`{}` not found in photometry, assuming s^-1.'.format(
+                    self._KEYS.U_COUNT_RATE)
+                self._parent._log.warning(msg)
+                Photometry.WARN_FIRST__U_COUNT = False
+
             self[self._KEYS.U_COUNT_RATE] = 's^-1'
 
         return
