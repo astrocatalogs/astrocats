@@ -115,19 +115,26 @@
             "replace_better": true
         },
         "explosion_date": {
-            "type": "string"
+            "description": "",
+            "unique": false,
+            "distinguishing": true,
+            "$ref": "astrocats_entry.json#/definitions/QUANTITY_LISTABLE"
         },
         "maxvisualabsmag": {
-            "$ref": "astrocats_entry.json#/definitions/NUMERIC"
+            "description": "",
+            "$ref": "astrocats_entry.json#/definitions/QUANTITY_LISTABLE"
         },
         "maxvisualappmag": {
-            "$ref": "astrocats_entry.json#/definitions/NUMERIC"
+            "description": "",
+            "$ref": "astrocats_entry.json#/definitions/QUANTITY_LISTABLE"
         },
         "maxvisualband": {
-            "type": "string"
+            "description": "",
+            "$ref": "astrocats_entry.json#/definitions/QUANTITY_LISTABLE"
         },
         "maxvisualdate": {
-            "type": "string",
+            "description": "",
+            "$ref": "astrocats_entry.json#/definitions/QUANTITY_LISTABLE",
             "replace_better": true
         }
 
