@@ -124,7 +124,7 @@ def main():
 
     if args.profile:
         pr.disable()
-        pr.print_stats(sort='time')
+        pr.print_stats(sort='cumtime')
         # dt_str = beg_time.strftime("%Y%m%d-%H%M%S")
         dt_str = args._beg_time_str
         profile_fname = "{:}_{:}_cprofile-run-stats.dat".format(catalog_module_name, dt_str)
