@@ -25,6 +25,7 @@ class IndentFormatter(logging.Formatter):
         logging.Formatter.__init__(self, fmt, datefmt)
         self.baseline = None
 
+    '''
     def format(self, rec):
         stack = inspect.stack()
         if self.baseline is None:
@@ -35,6 +36,7 @@ class IndentFormatter(logging.Formatter):
         out = logging.Formatter.format(self, rec)
         del rec.indent
         return out
+    '''
 
 
 def get_logger(name=None, stream_fmt=None, file_fmt=None, date_fmt=None,
@@ -106,7 +108,8 @@ def get_logger(name=None, stream_fmt=None, file_fmt=None, date_fmt=None,
     if tofile is not None:
         if file_fmt is None:
             file_fmt = "%(asctime)s %(levelname)8.8s [%(filename)20.20s:"
-            file_fmt += "%(funcName)-20.20s]%(indent)s%(message)s"
+            # file_fmt += "%(funcName)-20.20s]%(indent)s%(message)s"
+            file_fmt += "%(funcName)-20.20s]%(message)s"
 
         fileFormatter = IndentFormatter(file_fmt, datefmt=date_fmt)
         fileHandler = logging.FileHandler(tofile, 'w')
@@ -120,7 +123,8 @@ def get_logger(name=None, stream_fmt=None, file_fmt=None, date_fmt=None,
     # -------------
     if tostr:
         if stream_fmt is None:
-            stream_fmt = "%(indent)s%(message)s"
+            # stream_fmt = "%(indent)s%(message)s"
+            stream_fmt = "%(message)s"
 
         strFormatter = IndentFormatter(stream_fmt, datefmt=date_fmt)
         strHandler = logging.StreamHandler()
