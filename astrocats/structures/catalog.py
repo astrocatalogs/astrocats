@@ -301,8 +301,8 @@ class Catalog(object):
     def save_caches(self):
         return
 
-    def load_entry_from_name(self, name, delete=True, merge=True):
-        loaded_entry = self.proto.init_from_file(self, name=name, merge=merge)
+    def load_entry_from_name(self, name, delete=True, merge=True, **kwargs):
+        loaded_entry = self.proto.init_from_file(self, name=name, merge=merge, **kwargs)
         if loaded_entry is not None:
             self.entries[name] = loaded_entry
             self.log.debug("Added '{}', from '{}', to `self.entries`".format(
@@ -313,7 +313,7 @@ class Catalog(object):
             return name
         return None
 
-    def add_entry(self, name, load=True, delete=True):
+    def add_entry(self, name, load=True, delete=True, **kwargs):
         """Find an existing entry in, or add a new one to, the `entries` dict.
 
         FIX: rename to `create_entry`???
@@ -352,7 +352,7 @@ class Catalog(object):
 
         # Load entry from file
         if load:
-            loaded_name = self.load_entry_from_name(newname, delete=delete)
+            loaded_name = self.load_entry_from_name(newname, delete=delete, **kwargs)
             if loaded_name:
                 return loaded_name
 
@@ -502,10 +502,11 @@ class Catalog(object):
         return name
 
     def new_entry(self, entry_name, load=True, delete=True, loadifempty=True, **source_kwargs):
-        new_name = self.add_entry(entry_name, load=load, delete=delete)
+        new_name = self.add_entry(entry_name, load=load, delete=delete, validate=False)
         if len(source_kwargs):
             source = self.entries[new_name].add_source(**source_kwargs)
         self.entries[new_name].add_quantity(ENTRY.ALIAS, entry_name, source)
+        self.entries[new_name].validate()
         return new_name, source
 
     def merge_duplicates(self):
