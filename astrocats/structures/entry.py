@@ -13,6 +13,8 @@ import math
 
 import six
 
+import pyastroschema as pas
+
 from astrocats import utils
 from astrocats.structures import struct
 from astrocats.structures.struct import (Error, Model, Photometry, Quantity, Source, Spectrum)
@@ -786,11 +788,13 @@ class _Entry(struct.Meta_Struct):
         if final:
             self.sanitize()
 
-        # FIX: use 'dump' not 'dumps'
-        jsonstring = json.dumps({self[self._KEYS.NAME]: self._ordered(self)},
-                                indent='\t' if sys.version_info[0] >= 3 else 4,
-                                separators=(',', ':'),
-                                ensure_ascii=False)
+        # jsonstring = json.dumps(
+        jsonstring = pas.utils.json_dump_str(
+            {self[self._KEYS.NAME]: self._ordered(self)},
+            indent='\t' if sys.version_info[0] >= 3 else 4,
+            separators=(',', ':'),
+            ensure_ascii=False
+        )
         if not os.path.isdir(outdir):
             raise RuntimeError("Output directory '{}' for event '{}' does "
                                "not exist.".format(outdir, self[self._KEYS.NAME]))
