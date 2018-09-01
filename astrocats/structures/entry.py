@@ -206,7 +206,7 @@ class _Entry(struct.Meta_Struct):
 
     def _load_data_from_json(self, fname,
                              clean=False, merge=True, pop_schema=True, ignore_keys=[],
-                             compare_to_existing=True, gzip=False, filter_on={}):
+                             compare_to_existing=True, gzip=False, filter_on={}, validate=True):
         log = self._log
         log.debug("_load_data_from_json(): {}\n\t{}".format(self.name(), fname))
         # Store the filename this was loaded from
@@ -262,7 +262,8 @@ class _Entry(struct.Meta_Struct):
             log.warning("Object name '{}' does not match name in json: '{}'".format(
                 self_name, name))
 
-        self.validate()
+        if validate:
+            self.validate()
         # if DEBUG:
         #     print("\nAFTER VALIDATE\n")
         #     print(utils.dict_to_pretty_string(self[self._KEYS.ERRORS]))
