@@ -15,15 +15,13 @@ def jd_to_mjd(jd):
     return jd - Decimal(2400000.5)
 
 
-def make_date_string(year, month='', day=''):
+def make_date_string(year, month=None, day=None):
     if not year:
-        raise ValueError(
-            "At least the year must be specified when constructing date "
-            "string")
+        raise ValueError("At least the year must be specified when constructing date string")
     datestring = str(year)
-    if month:
+    if month is not None:
         datestring = datestring + '/' + str(month).zfill(2)
-    if day:
+    if day is not None:
         datestring = datestring + '/' + str(day).zfill(2)
 
     return datestring
