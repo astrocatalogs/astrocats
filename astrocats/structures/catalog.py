@@ -1160,6 +1160,7 @@ class Catalog(object):
         if json_sort is not None and filename.endswith('.json'):
             json_data = json.loads(data)
             json_data = list(sorted(json_data, key=lambda kk: kk[json_sort]))
+            # WARNING: this could error trying to serialize numpy values; use astroschema dumps
             data = json.dumps(json_data, indent=4, separators=(',', ': '))
         # Write txt to file
         with codecs.open(filename, 'w', encoding='utf8') as save_file:
