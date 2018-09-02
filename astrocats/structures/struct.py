@@ -348,7 +348,8 @@ class Spectrum(Meta_Struct):
                     return
 
             errors = self.get(self._KEYS.ERRORS, None)
-            if (errors is not None and max([float(err) for err in errors]) > 0.0):
+            if (errors is not None and len(errors) > 0
+                    and max([float(err) for err in errors]) > 0.0):
                 data = [utils.trim_str_arr(wavelengths), utils.trim_str_arr(fluxes),
                         utils.trim_str_arr(errors)]
             else:
