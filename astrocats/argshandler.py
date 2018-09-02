@@ -164,10 +164,12 @@ def _add_import(import_pars):
     import_pars.add_argument(
         '--min-task-priority', dest='min_task_priority',
         default=None,
+        type=float,
         help='minimum priority for a task to run')
     import_pars.add_argument(
         '--max-task-priority', dest='max_task_priority',
         default=None,
+        type=float,
         help='maximum priority for a task to run')
     import_pars.add_argument(
         '--task-groups', dest='task_groups',
