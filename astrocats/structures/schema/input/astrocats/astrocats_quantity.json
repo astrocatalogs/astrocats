@@ -2,6 +2,20 @@
     "id": "astrocats_quantity.json",
 
     "properties": {
+        "value": {
+            "_description": "Make sure string values arent only '-' characters",
+            "anyOf": [
+                {
+                    "not": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "minLength": 1,
+                    "pattern": "^(?!-+$).*"
+                }
+            ]
+        },
         "prob": {
             "$ref": "#/definitions/NUMERIC"
         },
