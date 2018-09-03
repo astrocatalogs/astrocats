@@ -13,11 +13,15 @@ import pyastroschema as pas
 import pyastroschema.utils  # noqa
 
 
-def setup(log, catalog_info):
+def setup(log, catalog_info=None):
 
     # Path to catalog-specific schema-files
-    catalog_name = catalog_info['catalog_name']
-    catalog_schema_path = catalog_info.get('schema_path', None)
+    if catalog_info is not None:
+        catalog_name = catalog_info['catalog_name']
+        catalog_schema_path = catalog_info.get('schema_path', None)
+    else:
+        catalog_name = None
+        catalog_schema_path = None
 
     # Clear output directory
     pattern = os.path.join(AC_PATHS.SCHEMA_OUTPUT, "", "*.json")

@@ -235,7 +235,7 @@ def run_command(args, log, catalog):
     return
 
 
-def setup(log, catalog_info):
+def setup(log, catalog_info=None):
     log.debug(__file__ + ":setup()")
 
     # Setup schema files
