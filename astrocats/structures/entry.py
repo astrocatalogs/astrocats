@@ -548,7 +548,7 @@ class _Entry(struct.Meta_Struct):
     # >>> ==================  STRUCT CREATION/ADDITION  ==================
 
     def merge_dupes(self):
-        """Merge two entries that correspond to the same entry."""
+        """Merge two entries that correspond to the same object/event."""
         for dupe in self.dupe_of:
             if dupe in self.catalog.entries:
                 if self.catalog.entries[dupe]._stub:
@@ -1483,6 +1483,7 @@ class _Entry_New_Adder(_Entry):
 
         # self.add_quantity(self._KEYS.ALIAS, alias, source)
         kwargs.update({QUANTITY.VALUE: alias, QUANTITY.SOURCE: source})
+        self.create_and_add_struct(Quantity, self._KEYS.ALIAS, **kwargs)
         '''
         new_data, retval = self.add_data(
             self._KEYS.ALIAS, check_for_dupes=check_for_dupes, **kwargs)
