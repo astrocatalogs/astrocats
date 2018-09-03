@@ -66,7 +66,7 @@ class Catalog(object):
     def __init__(self, args={}, log=None):
         if log is None:
             log = logger.get_logger()
-            
+
         # if not self.PATHS._derived:
         #     raise log.raise_error("Catalog instance must have `PATHS` subclass!")
 
@@ -304,17 +304,7 @@ class Catalog(object):
     def save_caches(self):
         return
 
-    def load_entry_from_name(self, name, delete=True, merge=True, **kwargs):
-        loaded_entry = self.proto.init_from_file(self, name=name, merge=merge, **kwargs)
-        if loaded_entry is not None:
-            self.entries[name] = loaded_entry
-            self.log.debug("Added '{}', from '{}', to `self.entries`".format(
-                name, loaded_entry.filename))
-            # Delete source file, if desired
-            if delete:
-                self._delete_entry_file(entry=loaded_entry)
-            return name
-        return None
+    # <<< =========  Adding / Creating / Loading Entries  =========
 
     def add_entry(self, name, load=True, delete=True, **kwargs):
         """Find an existing entry in, or add a new one to, the `entries` dict.
@@ -370,6 +360,26 @@ class Catalog(object):
         self.entries[newname] = new_entry
         return newname
 
+    def new_entry(self, entry_name, load=True, delete=True, loadifempty=True, **source_kwargs):
+        new_name = self.add_entry(entry_name, load=load, delete=delete, validate=False)
+        if len(source_kwargs):
+            source = self.entries[new_name].add_source(**source_kwargs)
+        self.entries[new_name].add_quantity(ENTRY.ALIAS, entry_name, source)
+        self.entries[new_name].validate()
+        return new_name, source
+
+    def load_entry_from_name(self, name, delete=True, merge=True, **kwargs):
+        loaded_entry = self.proto.init_from_file(self, name=name, merge=merge, **kwargs)
+        if loaded_entry is not None:
+            self.entries[name] = loaded_entry
+            self.log.debug("Added '{}', from '{}', to `self.entries`".format(
+                name, loaded_entry.filename))
+            # Delete source file, if desired
+            if delete:
+                self._delete_entry_file(entry=loaded_entry)
+            return name
+        return None
+
     def delete_old_entry_files(self):
         if len(self.entries):
             err_str = "`delete_old_entry_files` with `entries` not empty!"
@@ -407,16 +417,18 @@ class Catalog(object):
 
         return None
 
-    def copy_to_entry_in_catalog(self, fromname, destname):
-        self.copy_entry_to_entry(self.entries[fromname],
-                                 self.entries[destname])
-
     def copy_entry_to_entry(self, src_entry, dst_entry,
                             check_for_dupes=True, compare_to_existing=True):
         """Used by `merge_duplicates`
         """
         KEYS = self.proto._KEYS
         log = self.log
+
+        if isinstance(src_entry, six.string_types):
+            src_entry = self.entries[src_entry]
+
+        if isinstance(dst_entry, six.string_types):
+            dst_entry = self.entries[dst_entry]
 
         log.info("Merging entry '{}' into '{}'".format(src_entry[KEYS.NAME], dst_entry[KEYS.NAME]))
 
@@ -503,14 +515,6 @@ class Catalog(object):
         Should be overridden appropriately in subclassed `Catalog` objects.
         """
         return name
-
-    def new_entry(self, entry_name, load=True, delete=True, loadifempty=True, **source_kwargs):
-        new_name = self.add_entry(entry_name, load=load, delete=delete, validate=False)
-        if len(source_kwargs):
-            source = self.entries[new_name].add_source(**source_kwargs)
-        self.entries[new_name].add_quantity(ENTRY.ALIAS, entry_name, source)
-        self.entries[new_name].validate()
-        return new_name, source
 
     def merge_duplicates(self):
         """Merge and remove duplicate entries.
@@ -607,11 +611,11 @@ class Catalog(object):
                                 priority2 += 1
 
                         if priority1 > priority2:
-                            self.copy_to_entry_in_catalog(name2, name1)
+                            self.copy_entry_to_entry(name2, name1)
                             keys.append(name1)
                             del self.entries[name2]
                         else:
-                            self.copy_to_entry_in_catalog(name1, name2)
+                            self.copy_entry_to_entry(name1, name2)
                             keys.append(name2)
                             del self.entries[name1]
                         count_dupes += 1
