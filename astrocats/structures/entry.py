@@ -1178,6 +1178,9 @@ class _Entry_Old_Adder(_Entry):
                 raise RuntimeError(err)
         except struct.CatDictError as err:
             log_lvl = log.WARNING if err.warn else log.INFO
+            msg = "Task: '{}', function: '{}'".format(
+                self.catalog.get_current_task_str(), self.catalog.current_task.function)
+            log.log(log_lvl, msg)
             msg = "'{}' Not adding '{}': '{}'".format(self[self._KEYS.NAME], key_in_self, str(err))
             log.log(log_lvl, msg)
             return None
