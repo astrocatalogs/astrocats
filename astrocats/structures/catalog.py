@@ -15,7 +15,7 @@ import six
 import astrocats
 from astrocats import utils
 from astrocats import PATHS as _PATHS
-from astrocats.utils import gitter
+from astrocats.utils import gitter, logger
 from astrocats.production import director
 from astrocats.structures.struct import (ENTRY, SOURCE)
 from astrocats.structures.struct import Entry
@@ -63,9 +63,12 @@ class Catalog(object):
     ADS_BIB_URL = ("http://cdsads.u-strasbg.fr/cgi-bin/nph-abs_connect?"
                    "db_key=ALL&version=1&bibcode=")
 
-    def __init__(self, args={}, log=logging.Logger("INFO")):
-        if not self.PATHS._derived:
-            raise log.raise_error("Catalog instance must have `PATHS` subclass!")
+    def __init__(self, args={}, log=None):
+        if log is None:
+            log = logger.get_logger()
+            
+        # if not self.PATHS._derived:
+        #     raise log.raise_error("Catalog instance must have `PATHS` subclass!")
 
         # Store runtime arguments
         self.args = args
