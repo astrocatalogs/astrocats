@@ -474,13 +474,15 @@ class _Entry(struct.Meta_Struct):
 
         # Perform checks and finalization operations before adding struct to self
         # -----------------------------------------------------------------------------
+        '''
+        # NOTE: this isn't currently doing anything; but can be used for whatever checking...
         valid, new_struct = self._add_struct_bef(new_struct, **kwargs)
         if not valid:
             log.info("`_add_struct_bef()` returned False, not adding")
-            # return None
             return None, new_struct
+        '''
 
-        # Compare this new entry with all previous entries to make sure is new
+        # Compare this new struct with all previous structs to make sure it is new
         if duplicate_check:
             for ii, item in enumerate(self.get(key_in_self, [])):
                 if new_struct.is_duplicate_of(item):
@@ -495,8 +497,8 @@ class _Entry(struct.Meta_Struct):
         return new_struct, None
 
     def create_and_add_struct(self, struct_class, key_in_self,
-                              duplicate_check=True, duplicate_merge=True, **kwargs):
-        new_struct = self.create_struct(struct_class, key_in_self, **kwargs)
+                              duplicate_check=True, duplicate_merge=True, **create_kwargs):
+        new_struct = self.create_struct(struct_class, key_in_self, **create_kwargs)
         if new_struct is None:
             stored = None
         else:
@@ -1484,12 +1486,8 @@ class _Entry_New_Adder(_Entry):
         # self.add_quantity(self._KEYS.ALIAS, alias, source)
         kwargs.update({QUANTITY.VALUE: alias, QUANTITY.SOURCE: source})
         self.create_and_add_struct(Quantity, self._KEYS.ALIAS, **kwargs)
-        '''
-        new_data, retval = self.add_data(
-            self._KEYS.ALIAS, check_for_dupes=check_for_dupes, **kwargs)
-        '''
 
-        # Check if this adding this alias makes us a dupe, if so mark ourselves as a dupe.
+        # Check if adding this alias makes us a dupe, if so mark ourselves as a dupe.
         if check_for_dupes and (alias in self.catalog.aliases):
             poss_dupe = self.catalog.aliases[alias]
             if (poss_dupe != self[self._KEYS.NAME]) and (poss_dupe in self.catalog.entries):
@@ -1497,7 +1495,7 @@ class _Entry_New_Adder(_Entry):
 
         # If we're not checking for duplicates, warn about overwriting
         elif alias in self.catalog.aliases:
-            self._log.warning("Warning, overwriting alias '{}': '{}'".format(
+            self._log.warning("Warning: overwriting alias '{}': '{}'".format(
                 alias, self.catalog.aliases[alias]))
 
         # Add this alias to parent catalog's reverse dictionary linking aliases to names
@@ -1511,21 +1509,22 @@ class _Entry_New_Adder(_Entry):
     def add_error(self, value, **kwargs):
         """Add an `Error` instance to this entry."""
         kwargs.update({ERROR.VALUE: value})
-        # self._add_cat_dict(Error, self._KEYS.ERRORS, **kwargs)
         self.create_and_add_struct(Error, self._KEYS.ERRORS, **kwargs)
         return
 
     def add_photometry(self, **kwargs):
         """Add a `Photometry` instance to this entry."""
-        # self._add_cat_dict(Photometry, self._KEYS.PHOTOMETRY,
-        #                    compare_to_existing=compare_to_existing, **kwargs)
+
+        # FIX: temporary: WARN ABOUT DEPRECATIONS ------
         val = kwargs.pop("compare_to_existing", None)
         if val is not None:
             if DEP_WARN_ARG:
                 utils.log_deprecated_argument(
                     self._log, __file__,
                     "add_photometry", "compare_to_existing", "duplicate_check")
-                kwargs["duplicate_check"] = val
+
+            kwargs["duplicate_check"] = val
+        # -----------------------------------------------
 
         self.create_and_add_struct(Photometry, self._KEYS.PHOTOMETRY, **kwargs)
         return
@@ -1534,13 +1533,8 @@ class _Entry_New_Adder(_Entry):
         """Add an `Quantity` instance to this entry."""
         success = True
         kwargs.update({QUANTITY.VALUE: value, QUANTITY.SOURCE: source})
-        '''
-        new_quantity = self._add_cat_dict(
-            Quantity, name,
-            compare_to_existing=compare_to_existing, check_for_dupes=check_for_dupes,
-            **kwargs)
-        '''
 
+        # FIX: temporary: WARN ABOUT DEPRECATIONS ------
         val = kwargs.pop("compare_to_existing", None)
         if val is not None:
             if DEP_WARN_ARG:
@@ -1554,11 +1548,12 @@ class _Entry_New_Adder(_Entry):
             if DEP_WARN_ARG:
                 utils.log_deprecated_argument(
                     self._log, __file__, "add_photometry", "check_for_dupes")
+        # ------------------------------------------------
 
         new_quantity = self.create_and_add_struct(Quantity, name, **kwargs)
 
         if isinstance(new_quantity, Quantity):
-            success = False
+            success = True
         elif new_quantity is False:
             success = False
 
@@ -1574,23 +1569,6 @@ class _Entry_New_Adder(_Entry):
 
         # Set alias number to be +1 of current number of sources
         alias = kwargs.setdefault(SOURCE.ALIAS, str(self.num_sources() + 1))
-
-        '''
-        # Set alias number to be +1 of current number of sources
-        if SOURCE.ALIAS not in kwargs:
-            kwargs[SOURCE.ALIAS] = str(self.num_sources() + 1)
-
-        source_obj = self._init_cat_dict(Source, self._KEYS.SOURCES, **kwargs)
-        if source_obj is None:
-            return None
-
-        for item in self.get(self._KEYS.SOURCES, []):
-            if source_obj.is_duplicate_of(item):
-                return item[SOURCE.ALIAS]
-
-        self.setdefault(self._KEYS.SOURCES, []).append(source_obj)
-        return source_obj[SOURCE.ALIAS]
-        '''
 
         # source = self.create_and_add_struct(Source, self._KEYS.SOURCES, duplicate_merge=False
         new_source = self.create_struct(Source, self._KEYS.SOURCES, **kwargs)
@@ -1611,21 +1589,6 @@ class _Entry_New_Adder(_Entry):
             log.raise_error(err_str)
 
         # Set alias number to be +1 of current number of models
-        '''
-        if MODEL.ALIAS not in kwargs:
-            kwargs[MODEL.ALIAS] = str(self.num_models() + 1)
-        model_obj = self._init_cat_dict(Model, self._KEYS.MODELS, **kwargs)
-        if model_obj is None:
-            return None
-
-        for item in self.get(self._KEYS.MODELS, ''):
-            if model_obj.is_duplicate_of(item):
-                return item[item._KEYS.ALIAS]
-
-        self.setdefault(self._KEYS.MODELS, []).append(model_obj)
-        return model_obj[model_obj._KEYS.ALIAS]
-        '''
-
         alias = kwargs.setdefault(MODEL.ALIAS, str(self.num_sources() + 1))
         new_model = self.create_struct(Source, self._KEYS.MODELS, **kwargs)
         if new_model is None:
@@ -1641,18 +1604,9 @@ class _Entry_New_Adder(_Entry):
         """Add a `Spectrum` instance to this entry."""
 
         '''
-        # Make sure that a source is given, and is valid (nor erroneous)
-        retval = self._check_cat_dict_source(Spectrum, spec_key, **kwargs)
-        if not retval:
-            return None
-
-        # Try to create a new instance of `Spectrum`
-        new_spectrum = self._init_cat_dict(Spectrum, spec_key, **kwargs)
-        if new_spectrum is None:
-            return None
-
         is_dupe = False
-        for item in self.get(spec_key, []):
+        # NOTE: FIX: This functionality has not be re-implemented yet!!
+        for item in self.get(self._KEYS.SPECTRA, []):
             # Only the `filename` should be compared for duplicates. If a
             # duplicate is found, that means the previous `exclude` array
             # should be saved to the new object, and the old deleted
@@ -1665,30 +1619,21 @@ class _Entry_New_Adder(_Entry):
                 break
 
         if not is_dupe:
-            self.setdefault(spec_key, []).append(new_spectrum)
+            self.setdefault(self._KEYS.SPECTRA, []).append(new_spectrum)
         '''
 
+        # FIX: temporary: WARN ABOUT DEPRECATIONS ------
         val = kwargs.pop("compare_to_existing", None)
         if val is not None:
             if DEP_WARN_ARG:
                 utils.log_deprecated_argument(
                     self._log, __file__, "add_spectrum", "compare_to_existing", "duplicate_check")
             kwargs["duplicate_check"] = val
+        # -----------------------------------------------
 
         self.create_and_add_struct(Spectrum, self._KEYS.SPECTRA, **kwargs)
 
         return
-
-    '''
-    def add_listed(self, key, value, check=True):
-        listed = self.setdefault(key, [])
-        # Make sure `value` isn't already in the list
-        if check and (value in listed):
-            return
-
-        listed.append(value)
-        return
-    '''
 
     def add_self_source(self):
         """Add a source that refers to the catalog itself.
