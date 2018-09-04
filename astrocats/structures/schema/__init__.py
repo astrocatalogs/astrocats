@@ -13,6 +13,70 @@ import pyastroschema as pas
 import pyastroschema.utils  # noqa
 
 
+class SchemaCompiler(object):
+
+    # name = None
+    # path = None
+    # base = None
+    # extensions = None
+    # updates = None
+
+    def __init__(self, name, path, base=None, extensions=None, updates=None):
+        self.name = name
+        self.base = base
+
+        # if path is None:
+        #     path = os.path.realpath(os.curdir)
+        # path = os.path.join(path, '')
+        self.path = path
+
+        if extensions is None:
+            extensions = []
+        elif not isinstance(extensions, list):
+            extensions = [extensions]
+
+        if updates is None:
+            updates = []
+        elif not isinstance(updates, list):
+            updates = [updates]
+
+        self.extensions = extensions
+        self.updates = updates
+
+        self._schema = None
+        self._keychain = None
+
+        return
+
+    def compile(self, check_conflict=True, mutable=False, extendable=True):
+        schema_dict = pas.schema.SchemaDict(self.base)
+        for ext in self.extensions:
+            schema_dict.extend(ext, check_conflict=check_conflict)
+        for upd in self.updates:
+            schema_dict.update(upd)
+        schema = schema_dict
+        keychain = pas.keys.Keychain(schema_dict, mutable=mutable, extendable=extendable)
+        self._schema = schema
+        self._keychain = keychain
+        return schema, keychain
+
+    @property
+    def schema(self):
+        if self._schema is None:
+            schema, keychain = self.compile()
+            return schema
+
+        return self._schema
+
+    @property
+    def keychain(self):
+        if self._keychain is None:
+            schema, keychain = self.compile()
+            return keychain
+
+        return self._keychain
+
+
 def setup(log, catalog_info=None):
 
     # Path to catalog-specific schema-files
