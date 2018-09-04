@@ -142,7 +142,7 @@ def main():
     return
 
 
-def load_log(args):
+def load_log(args=None):
     """Load a `logging.Logger` object.
 
     Arguments
@@ -159,15 +159,21 @@ def load_log(args):
 
     # Determine verbosity ('None' means use default)
     log_stream_level = None
-    if args.debug:
-        log_stream_level = logger.DEBUG
-    elif args.verbose:
-        log_stream_level = logger.INFO
+    if args is not None:
+        if args.debug:
+            log_stream_level = logger.DEBUG
+        elif args.verbose:
+            log_stream_level = logger.INFO
+
+        fname = args.log_filename
+    else:
+        fname = None
 
     # Create log
-    log = logger.get_logger(stream_level=log_stream_level, tofile=args.log_filename)
-    log._verbose = args.verbose
-    log._debug = args.debug
+    log = logger.get_logger(stream_level=log_stream_level, tofile=fname)
+    if args is not None:
+        log._verbose = args.verbose
+        log._debug = args.debug
     return log
 
 
@@ -235,7 +241,9 @@ def run_command(args, log, catalog):
     return
 
 
-def setup(log, catalog_info=None):
+def setup(log=None, catalog_info=None):
+    if log is None:
+        log = load_log()
     log.debug(__file__ + ":setup()")
 
     # Setup schema files
