@@ -6,25 +6,29 @@
             "_description": "Make sure string values arent only '-' characters",
             "anyOf": [
                 {
-                    "not": {
-                        "type": "string"
-                    }
+                    "type": "number"
                 },
                 {
+                    "type": "string",
                     "minLength": 1,
                     "pattern": "^(?!-+$).*"
                 }
             ]
         },
+        "error_value": {
+            "allOf": [
+                {"$ref": "#/definitions/NUMERIC_POSITIVE"}
+            ]
+        },
         "prob": {
-            "$ref": "#/definitions/NUMERIC"
+            "$ref": "file:defs.json#/definitions/NUMERIC"
         },
         "model": {
             "type": "string",
             "distinguishing": false
         },
         "kind": {
-            "$ref": "defs.json#/definitions/STRING_LISTABLE",
+            "$ref": "file:defs.json#/definitions/STRING_LISTABLE",
             "unique": false,
             "distinguishing": true
         },
