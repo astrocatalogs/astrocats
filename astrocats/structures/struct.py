@@ -155,7 +155,7 @@ Source._KEYS = SOURCE
 # Quantity
 # =================================
 
-@set_struct_schema("astroschema_quantity", extensions="astrocats_quantity")
+@set_struct_schema("astroschema_quantity", updates="astrocats_quantity")
 class Quantity(Meta_Struct):
 
     def __init__(self, parent, key=None, **kwargs):
