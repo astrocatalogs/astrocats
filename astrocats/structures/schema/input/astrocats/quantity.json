@@ -1,0 +1,39 @@
+{
+    "id": "quantity.json",
+
+    "properties": {
+        "value": {
+            "_description": "Make sure string values arent only '-' characters",
+            "anyOf": [
+                {
+                    "type": "number"
+                },
+                {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "^(?!-+$).*"
+                }
+            ]
+        },
+        "error_value": {
+            "allOf": [
+                {"$ref": "file:defs.json#/definitions/NUMERIC_POSITIVE"}
+            ]
+        },
+        "prob": {
+            "$ref": "file:defs.json#/definitions/NUMERIC"
+        },
+        "model": {
+            "type": "string",
+            "distinguishing": false
+        },
+        "kind": {
+            "$ref": "file:defs.json#/definitions/STRING_LISTABLE",
+            "unique": false,
+            "distinguishing": true
+        },
+        "realization": {
+            "type": "string"
+        }
+    }
+}

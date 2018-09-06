@@ -21,3 +21,16 @@ git clone git@github.com:astrocatalogs/supernovae.git
 ```
 
 Astrocats will soon be listed on PyPi, at which point the install instructions will involve pip and a setup script, for now the install must be performed manually.
+
+
+# To Do
+- Introduce SCHEMA (with validation) for existing schema structure
+- Enhancements to existing SCHEMA structure (in particular, lists of values instead of only individuals)
+- Producer class integration.
+- Speed.  SNe import takes ~13 hours.  Also memory issues.
+- Improve "ROOT" in PATHS object, shouldn't need so much boilerplate
+- schema 'output' should go into catalog directory not astrocats
+- quantity value is currently any type... this needs to be resolve to string vs numeric ones.
+- Create a value schema class to associate units and errors
+- Revisit 'type' vs 'format' distinction... is this the best way to do things?
+- Need to speed up `is_duplicate_of`, or use a different system.  Consider hashing each `struct` for quick comparison, combined with only doing duplicate checks during journaling.

@@ -1,0 +1,37 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "correlation",
+    "description": "",
+    "version": "",
+    "id": "correlation.json",
+    "type": "object",
+
+    "properties": {
+        "value": {
+            "priority": 10
+        },
+        "derived": {
+            "type": "boolean"
+        },
+        "kind": {
+            "anyOf": [
+                {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "quantity": {
+            "type": "string"
+        }
+    },
+
+    "required": ["value", "quantity"]
+
+}

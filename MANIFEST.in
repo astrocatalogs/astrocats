@@ -1,10 +1,7 @@
-include requirements.txt
+include requirements.*
+include dev_requirements.*
 include *.md
 include LICENSE
-exclude supernovae
-exclude tidaldisruptions
-exclude kilonovae
-exclude faststars
-exclude *.key
+include VERSION
 global-exclude .DS_Store
 global-exclude *.prof

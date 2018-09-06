@@ -1,0 +1,14 @@
+{
+    "id": "spectrum.json",
+
+    "properties": {
+        "model": {
+			"type": "string",
+			"distinguishing": false
+		},
+        "realization": {
+			"type": "string",
+			"priority": 15
+		}
+    }
+}

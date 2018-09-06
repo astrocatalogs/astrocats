@@ -1,0 +1,30 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "realization",
+    "description": "",
+    "version": "",
+    "id": "realization.json",
+    "type": "object",
+
+    "definitions": {
+        "NUMERIC": {
+            "type": ["number", "string"]
+        }
+    },
+
+    "properties": {
+        "score": {
+            "$ref": "#/definitions/NUMERIC"
+        },
+        "weight": {
+            "$ref": "#/definitions/NUMERIC"
+        },
+        "parameters": {
+            "type": "object"
+        },
+        "alias": {
+            "type": "string"
+        }
+    }
+
+}

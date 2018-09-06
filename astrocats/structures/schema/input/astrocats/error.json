@@ -1,0 +1,40 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "error",
+    "description": "",
+    "version": "",
+    "id": "error.json",
+    "type": "object",
+
+    "definitions": {
+        "NUMERIC": {
+            "type": ["number", "string"]
+        }
+    },
+
+    "properties": {
+        "value": { },
+        "extra": { },
+        "error": {
+            "$ref": "#/definitions/NUMERIC"
+        },
+        "upper_limit": {
+            "type": "boolean"
+        },
+        "unit": {
+            "type": "string"
+        },
+        "kind": {
+            "type": "string"
+        },
+        "source": {
+            "type": "string"
+        },
+        "source_kind": {
+            "type": "string"
+        }
+    },
+
+    "required": ["value"]
+
+}
