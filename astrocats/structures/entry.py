@@ -23,7 +23,8 @@ from astrocats.structures.struct import (ERROR, MODEL, PHOTOMETRY, QUANTITY, SOU
 DEP_WARN_ARG = False
 
 
-@struct.set_struct_schema("astroschema_entry", extensions="astrocats_entry")  # noqa
+# @struct.set_struct_schema("astroschema_entry", extensions="astrocats_entry")  # noqa
+@struct.set_struct_schema("entry")  # noqa
 class _Entry(struct.Meta_Struct):
 
     _DEPRECATED_ADD_FUNCS = [

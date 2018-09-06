@@ -106,7 +106,8 @@ class Meta_Struct(pas.struct.Struct):
 # =================================
 
 
-@set_struct_schema("astroschema_source", extensions="astrocats_source")
+# @set_struct_schema("astroschema_source", extensions="astrocats_source")
+@set_struct_schema("source")
 class Source(Meta_Struct):
 
     def sort_func(self, key):
@@ -155,7 +156,8 @@ Source._KEYS = SOURCE
 # Quantity
 # =================================
 
-@set_struct_schema("astroschema_quantity", updates="astrocats_quantity")
+# @set_struct_schema("astroschema_quantity", updates="astrocats_quantity")
+@set_struct_schema("quantity")
 class Quantity(Meta_Struct):
 
     def __init__(self, parent, key=None, **kwargs):
@@ -220,7 +222,8 @@ QUANTITY.U_E_VALUE = QUANTITY.UNITS_ERROR
 # =================================
 
 
-@set_struct_schema("astroschema_photometry", extensions="astrocats_photometry")
+# @set_struct_schema("astroschema_photometry", extensions="astrocats_photometry")
+@set_struct_schema("photometry")
 class Photometry(Meta_Struct):
 
     WARN_FIRST__U_TIME = True
@@ -329,7 +332,8 @@ PHOTOMETRY.BAND_SET = PHOTOMETRY.BANDSET
 # ==================================
 
 
-@set_struct_schema("astroschema_spectrum", extensions="astrocats_spectrum")
+# @set_struct_schema("astroschema_spectrum", extensions="astrocats_spectrum")
+@set_struct_schema("spectrum")
 class Spectrum(Meta_Struct):
     """Class for storing a single spectrum."""
 
@@ -415,7 +419,8 @@ Spectrum._KEYS = SPECTRUM
 # ==================================
 
 
-@set_struct_schema("astrocats_error")
+# @set_struct_schema("astrocats_error")
+@set_struct_schema("error")
 class Error(Meta_Struct):
     pass
 
@@ -428,7 +433,8 @@ Error._KEYS = ERROR
 # ==================================
 
 
-@set_struct_schema("astrocats_realization")
+# @set_struct_schema("astrocats_realization")
+@set_struct_schema("realization")
 class Realization(Meta_Struct):
     pass
 
@@ -441,7 +447,8 @@ Realization._KEYS = REALIZATION
 # ==================================
 
 
-@set_struct_schema("astrocats_model")
+# @set_struct_schema("astrocats_model")
+@set_struct_schema("model")
 class Model(Meta_Struct):
     """Container for a model with associated metadata.
 
@@ -502,7 +509,8 @@ Model._KEYS = MODEL
 # ==================================
 
 
-@set_struct_schema("astrocats_correlation")
+# @set_struct_schema("astrocats_correlation")
+@set_struct_schema("correlation")
 class Correlation(Meta_Struct):
     """Class to store correlation of a `Quantity` with another `Quantity`."""
 
