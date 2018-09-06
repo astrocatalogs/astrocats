@@ -1,5 +1,5 @@
 {
-    "id": "astrocats_quantity.json",
+    "id": "quantity.json",
 
     "properties": {
         "value": {
@@ -17,7 +17,7 @@
         },
         "error_value": {
             "allOf": [
-                {"$ref": "#/definitions/NUMERIC_POSITIVE"}
+                {"$ref": "file:defs.json#/definitions/NUMERIC_POSITIVE"}
             ]
         },
         "prob": {
