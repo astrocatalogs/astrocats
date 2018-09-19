@@ -35,6 +35,7 @@ class PHOTOMETRY(KeyCollection):
     EXPOSURE_TIME = Key('exposuretime', KEY_TYPES.NUMERIC)
     OFF_AXIS_ANGLE = Key('offaxisangle', KEY_TYPES.NUMERIC)
     EXTRACTION_RADIUS = Key('extractionradius', KEY_TYPES.NUMERIC)
+    AIRMASS = Key('airmass', KEY_TYPES.NUMERIC)
 
     E_COUNT_RATE = Key('e_countrate', KEY_TYPES.NUMERIC)
     E_FLUX = Key('e_flux', KEY_TYPES.NUMERIC)
