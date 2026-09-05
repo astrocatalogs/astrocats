@@ -10,7 +10,6 @@ from collections import OrderedDict
 from glob import glob
 
 import psutil
-from past.builtins import basestring
 from tqdm import tqdm
 
 from astrocats import __version__
@@ -1384,7 +1383,7 @@ def _get_task_priority(tasks, task_priority):
         return None
     if is_integer(task_priority):
         return task_priority
-    if isinstance(task_priority, basestring):
+    if isinstance(task_priority, str):
         if task_priority in tasks:
             return tasks[task_priority].priority
 

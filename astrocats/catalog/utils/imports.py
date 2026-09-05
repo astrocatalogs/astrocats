@@ -53,8 +53,7 @@ def compress_gz(fname):
     import shutil
     import gzip
     comp_fname = fname + '.gz'
-    with codecs.open(fname, 'rb') as f_in, gzip.open(
-            comp_fname, 'wb') as f_out:
+    with open(fname, 'rb') as f_in, gzip.open(comp_fname, 'wb') as f_out:
         shutil.copyfileobj(f_in, f_out)
     os.remove(fname)
     return comp_fname
@@ -64,8 +63,7 @@ def uncompress_gz(fname):
     import shutil
     import gzip
     uncomp_name = fname.replace('.gz', '')
-    with gzip.open(fname, 'rb') as f_in, codecs.open(
-            uncomp_name, 'wb') as f_out:
+    with gzip.open(fname, 'rb') as f_in, open(uncomp_name, 'wb') as f_out:
         shutil.copyfileobj(f_in, f_out)
     os.remove(fname)
     return uncomp_name

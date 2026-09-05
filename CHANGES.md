@@ -26,6 +26,14 @@ The ['change-log' (below)](#changelog) in this file should summarize **all API c
 ## Versions ##
 
 
+<a name='v0.5.0'>
+### v0.5.0 - 2026/09/05 ###
+
+- Require Python 3.11+ and switch package management to [uv](https://docs.astral.sh/uv/).
+- Replace `setup.py` / `requirements.txt` with `pyproject.toml`.
+- Drop Python 2 compatibility (`future`, `six`, `basestring`).
+- Add a pytest suite covering catalog utilities and the original import test task.
+
 ### Current ###
 
 

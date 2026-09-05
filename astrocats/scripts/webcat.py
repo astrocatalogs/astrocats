@@ -41,11 +41,10 @@ from bokeh.layouts import column, layout
 from bokeh.models import (ColumnDataSource, CustomJS, DatetimeAxis, HoverTool,
                           LinearAxis, Range1d, Slider)
 from bokeh.models.widgets import Select
-from bokeh.plotting import Figure, reset_output
+from bokeh.plotting import figure as Figure, reset_output
 from bokeh.resources import CDN
 from bs4 import BeautifulSoup
 from palettable import cubehelix
-from past.builtins import basestring
 
 parser = argparse.ArgumentParser(
     description='Generate a catalog JSON file and plot HTML files from AstroCats data.'
@@ -2455,7 +2454,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                 if key in catalog[entry] and key not in eventignorekey and len(
                         catalog[entry][key]) > 0:
                     keyhtml = ''
-                    if isinstance(catalog[entry][key], basestring):
+                    if isinstance(catalog[entry][key], str):
                         if key in [
                                 'photolink', 'spectralink', 'radiolink', 'xraylink'
                         ]:
@@ -2593,7 +2592,7 @@ for fcnt, eventfile in enumerate(tq(sorted(files, key=lambda s: s.lower()))):
                                         + entry + "\", \"" + key + "\", \"" + edit + "\", \"" + modulename +
                                         "\")'>Add new value</button>")
                                 keyhtml += r'</span></div><sup>' + sourcehtml + r'</sup>'
-                            elif isinstance(row, basestring):
+                            elif isinstance(row, str):
                                 keyhtml += (r'<br>' if r > 0 else '') + row.strip()
 
                     if keyhtml:

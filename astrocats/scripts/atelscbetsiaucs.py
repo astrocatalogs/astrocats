@@ -3,7 +3,7 @@
 import argparse
 import codecs
 import json
-import urllib
+import urllib.request
 from collections import OrderedDict
 
 from tqdm import tqdm

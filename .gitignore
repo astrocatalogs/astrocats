@@ -5,6 +5,7 @@
 *.csv
 *.html
 *.json
+!astrocats/catalog/input/*.json
 *.sw*
 *.profile
 *.key
@@ -15,7 +16,7 @@ tidaldisruptions
 build/
 dist/
 src/
-astrocats.egg-info/
+*.egg-info/
 wiki
 blackholes
 novae
@@ -24,4 +25,11 @@ faststars
 ads.key
 catalog-test-input/
 catalog-test-output/
+catalog-test-boneyard/
 catexplorer/
+.venv/
+.pytest_cache/
+.coverage
+htmlcov/
+.ruff_cache/
+uv.lock.bak
