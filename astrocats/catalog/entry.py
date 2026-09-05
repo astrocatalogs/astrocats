@@ -240,7 +240,7 @@ class Entry(OrderedDict):
         unit = quantity.get(QUANTITY.U_VALUE, '').strip()
         kind = quantity.get(QUANTITY.KIND, '')
 
-        if isinstance(kind, list) and not isinstance(kind, str):
+        if isinstance(kind, list):
             kind = [x.strip() for x in kind]
         else:
             kind = kind.strip()

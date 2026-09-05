@@ -17,7 +17,7 @@ def get_sig_digits(x, strip_zeroes=True):
 
 
 def is_integer(s):
-    if isinstance(s, list) and not isinstance(s, str):
+    if isinstance(s, list):
         try:
             [int(x) for x in s]
             return True
@@ -32,7 +32,7 @@ def is_integer(s):
 
 
 def is_number(s):
-    if isinstance(s, list) and not isinstance(s, str):
+    if isinstance(s, list):
         try:
             for x in s:
                 if isinstance(x, str) and ' ' in x:
