@@ -12,7 +12,7 @@ from astropy import units as un
 from astropy.coordinates import SkyCoord as coord
 from bokeh.embed import file_html
 from bokeh.models import ColumnDataSource, HoverTool, Label
-from bokeh.plotting import Figure
+from bokeh.plotting import figure as Figure
 from bokeh.resources import CDN
 from palettable import cubehelix
 

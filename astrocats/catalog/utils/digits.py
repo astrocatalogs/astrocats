@@ -3,8 +3,6 @@
 
 from math import floor, log10
 
-from past.builtins import basestring
-
 __all__ = [
     'get_sig_digits', 'is_integer', 'is_number', 'pretty_num', 'round_sig',
     'zpad'
@@ -19,7 +17,7 @@ def get_sig_digits(x, strip_zeroes=True):
 
 
 def is_integer(s):
-    if isinstance(s, list) and not isinstance(s, basestring):
+    if isinstance(s, list) and not isinstance(s, str):
         try:
             [int(x) for x in s]
             return True
@@ -34,10 +32,10 @@ def is_integer(s):
 
 
 def is_number(s):
-    if isinstance(s, list) and not isinstance(s, basestring):
+    if isinstance(s, list) and not isinstance(s, str):
         try:
             for x in s:
-                if isinstance(x, basestring) and ' ' in x:
+                if isinstance(x, str) and ' ' in x:
                     raise ValueError
             [float(x) for x in s]
             return True
@@ -45,7 +43,7 @@ def is_number(s):
             return False
     else:
         try:
-            if isinstance(s, basestring) and ' ' in s:
+            if isinstance(s, str) and ' ' in s:
                 raise ValueError
             float(s)
             return True

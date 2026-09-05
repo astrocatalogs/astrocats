@@ -298,7 +298,13 @@ def get_git():
     git_vers : str
     """
     import subprocess
-    git_vers = subprocess.check_output(["git", "describe", "--always"]).strip()
+    try:
+        git_vers = subprocess.check_output(
+            ["git", "describe", "--always"],
+            stderr=subprocess.DEVNULL,
+        ).decode().strip()
+    except (subprocess.CalledProcessError, FileNotFoundError, OSError):
+        git_vers = "unknown"
     return git_vers
 
 

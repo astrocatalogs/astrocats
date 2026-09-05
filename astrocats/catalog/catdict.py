@@ -6,11 +6,6 @@ from copy import deepcopy
 from astrocats.catalog.key import KEY_TYPES, Key, KeyCollection
 from astrocats.catalog.utils import listify, uniq_cdl
 
-try:
-    basestring
-except NameError:
-    basestring = str
-
 
 class CatDictError(Exception):
     """Special Error class for non-fatal errors raised in CatDict."""
@@ -251,11 +246,11 @@ class CatDict(OrderedDict):
             # Clean leading/trailing whitespace
             if single:
                 value = value.strip() if isinstance(
-                    value, (str, basestring)) else str(value)
+                    value, str) else str(value)
             else:
                 value = [
                     val.strip() if isinstance(
-                        val, (str, basestring)) else str(val)
+                        val, str) else str(val)
                     for val in value
                 ]
                 # Only keep values that are not empty
