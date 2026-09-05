@@ -28,6 +28,8 @@ catalog-test-output/
 catalog-test-boneyard/
 catexplorer/
 .venv/
+.env
+.env.*
 .pytest_cache/
 .coverage
 htmlcov/
