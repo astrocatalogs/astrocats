@@ -25,4 +25,5 @@ def test_module_help():
         check=False,
     )
     output = result.stdout + result.stderr
+    assert result.returncode == 0
     assert "Generate catalogs" in output or "usage:" in output.lower()
