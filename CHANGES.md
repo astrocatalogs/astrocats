@@ -26,8 +26,8 @@ The ['change-log' (below)](#changelog) in this file should summarize **all API c
 ## Versions ##
 
 
-<a name='v0.4.0'>
-### v0.4.0 - 2026/09/05 ###
+<a name='v0.5.0'>
+### v0.5.0 - 2026/09/05 ###
 
 - Require Python 3.14.7 and switch package management to [uv](https://docs.astral.sh/uv/).
 - Replace `setup.py` / `requirements.txt` with `pyproject.toml`.

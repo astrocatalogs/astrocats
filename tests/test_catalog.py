@@ -24,7 +24,7 @@ def test_package_import_and_version():
     from astrocats.catalog.entry import Entry
     from astrocats.catalog.utils import is_number
 
-    assert astrocats.__version__ == "0.4.0"
+    assert astrocats.__version__ == "0.5.0"
     assert CatalogCls is Catalog
     assert Entry is not None
     assert is_number("3.14")
