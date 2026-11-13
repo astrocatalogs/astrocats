@@ -24,7 +24,6 @@ classifiers = [
 ]
 dependencies = [
     "astropy>=7.1",
-    "beautifulsoup4>=4.13",
     "bokeh>=3.7",
     "GitPython>=3.1.45",
     "inflect>=7.5",
