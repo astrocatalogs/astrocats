@@ -1,7 +1,7 @@
 # Astrocats: Open Astronomy Catalogs #
 
 [![CI](https://github.com/astrocatalogs/astrocats/actions/workflows/ci.yml/badge.svg)](https://github.com/astrocatalogs/astrocats/actions/workflows/ci.yml)
-[![Python Version](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org)
+[![Python Version](https://img.shields.io/badge/python-3.11.5%2B-blue.svg)](https://www.python.org)
 [![arXiv](https://img.shields.io/badge/arXiv-1605.01054-green.svg?style=flat)](http://arxiv.org/abs/1605.01054)
 
 The Astrocats package enables astronomers to construct their own curated catalogs of astronomical data with the intention of producing shareable catalogs of that data in human-readable formats. Astrocats is used by several existing open astronomy catalogs, including:
@@ -21,7 +21,7 @@ git clone git@github.com:astrocatalogs/supernovae.git
 
 ## Install
 
-This project requires [Python 3.11](https://www.python.org/downloads/) or later and uses [uv](https://docs.astral.sh/uv/) for package management.
+This project requires [Python 3.11.5](https://www.python.org/downloads/) or later and uses [uv](https://docs.astral.sh/uv/) for package management.
 
 ```shell
 uv python pin 3.11
